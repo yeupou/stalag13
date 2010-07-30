@@ -5,6 +5,7 @@ NEWVERSION = $(shell expr $(VERSION) \+ 1)
 WHOAMI = $(shell whoami)
 
 install: clean
+	@echo "INSTALL WITH PREFIX "$(PREFIX)
 	for content in etc/* usr/* var/* ; do \
 		if [ -d $$content ] && [ `basename $$content` != "CVS" ]; then \
 			for subcontent in $$content/* ; do \
