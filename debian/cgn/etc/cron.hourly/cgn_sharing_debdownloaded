@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+
+. /etc/hosts.nib.sh
+if [ ! $SERVER ]; then exit ; fi
+if [ `hostname` == $SERVER ]; then exit ; fi 
+
+DATE="/bin/date"
+
+LOG="/var/log/cgn_sharing.log"
+DEB="/var/cache/apt/archives"
+LOCK=$DEB/lock
+APT_PID=`pidof http`
+
+$DATE >> $LOG
+
+
+# If we pass this test, it means that apt-get is not running, so
+# we do not risk to break an upgrade.
+#if [ -e $LOCK ]; then
+#    echo "There is a lock ($LOCK) apparently" >> $LOG
+#    exit
+#fi
+if [ "$APT_PID" ]; then
+    echo "There is a apt-get pid ($APT_PID) apparently" >> $LOG 
+    exit
+fi
+
+
+
+for deb in $DEB/*.deb; do
+    if [ $deb == "$DEB/*.deb" ]; then exit ; fi 
+    su moa -c "scp $deb gate:/stock/debian/testing/" >> $LOG
+done
+apt-get clean
+
+echo "Done" >> $LOG

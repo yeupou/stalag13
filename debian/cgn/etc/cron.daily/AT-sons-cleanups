@@ -1,0 +1,128 @@
+#!/usr/bin/perl
+
+use Sys::Hostname;
+use File::Find::Rule;
+use File::Basename;
+
+do "/etc/hosts.nib.pl" or exit;
+exit unless $server;
+exit if hostname() ne $server;
+
+my $path = "/stock/sons";
+
+# Build a big list of mp3/ogg, but ignoring some directories
+my @biglist;
+my %biglist_ignore;
+
+$biglist_ignore{"sautil"} = 1;
+$biglist_ignore{"daube"} = 1;
+$biglist_ignore{"itscrap-lowquality"} = 1;
+$biglist_ignore{"enhiver-lowquality"} = 1;
+$biglist_ignore{"enhiver-unreleased"} = 1;
+$biglist_ignore{"kraftschlag"} = 1;
+
+opendir(REP, $path);
+while (defined(my $dir = readdir(REP))) {
+    # Look into directories only
+    next unless -d "$path/$dir";
+    next if $dir eq ".";
+    next if $dir eq "..";
+    
+    # Find ogg and mp3 available
+    my @files = File::Find::Rule->file()
+	->name('*.ogg', '*.mp3')
+	->in("$path/$dir");
+
+    # Print m3u if any
+    if (scalar(@files) > 0) {
+	my $artist = $dir;
+	$artist =~ s@_@\ @g;
+	$artist = ucfirst(lc($artist));
+	die "No artist found" unless $artist;
+
+	open(M3U, "> $path/$dir/$artist.m3u");
+	print M3U "#EXTM3U\n";
+	foreach $file (sort(@files)) {
+# 	    my ($z,$y,$suffix) = fileparse($file,(".ogg", ".mp3"));
+
+# 	    # Try to guess album
+# 	    my $album = dirname($file);
+# 	    $album =~ s@^/stock/sons/$dir/?@@g;
+# 	    $album =~ s@_@\ @g;
+
+# 	    # Update artist and album comments, if necessary
+# 	    my $currentartist;
+# 	    my $currentalbum;
+
+# 	    if ($suffix eq ".ogg") {
+# 		open(COMMENT, 'vorbiscomment "'.$file.'" |');
+# 		while (<COMMENT>) {
+# 		    $currentartist = $1 if /^artist=(.*)$/;
+# 		    $currentalbum = $1 if /^album=(.*)$/;
+# 		}
+# 		close(COMMENT);
+		
+# 		system("vorbiscomment",
+# 		       "-w",
+# 		       $file,
+# 		       "-R",
+# 		       '-tartist='.$artist)
+# 		    if $currentartist ne $artist;
+		
+# 		system("vorbiscomment",
+# 		       "-w",
+# 		       $file,
+# 		       "-R",
+# 		       '-talbum='.$album)
+# 		    if $currentalbum ne $album and $album ne "";
+
+# 	    }
+# 	    if ($suffix eq ".mp3") {
+# 		open(COMMENT, 'id3tool "'.$file.'" |');
+# 		while (<COMMENT>) {
+# 		    $currentartist = $1 if /^Artist:\s*(.*)$/;
+# 		    $currentalbum = $1 if /^Album:\s*(.*)$/
+# 		}
+# 		close(COMMENT);
+		
+# 		system("idtool",
+# 		       '--set-artist='.$artist,
+# 		       $file)
+# 		    if $currentartist ne $artist;
+		
+# 		system("idtool",
+# 		       '--set-album='.$album,
+# 		       $file)
+# 		    if $currentalbum ne $album and $album ne "";
+
+# 	    }
+	    
+
+
+	    # Build thefile
+	    $file =~ s@^/stock/sons/$dir/@@g;
+	    print M3U "#EXTINF:,$file\n";
+	    print M3U "$file\n";
+ 	    
+	    # Add in big list only if not ignored
+	    next if $biglist_ignore{$dir};
+	    push(@biglist, "$dir/$file");
+	}
+	close(M3U);
+    }    
+}
+closedir(REP);
+
+
+open(M3U, "> $path/Tout.m3u");
+print M3U "#EXTM3U\n";
+foreach $file (@biglist) {
+    print M3U "#EXTINF:,$file\n";
+    print M3U "$file\n";
+}
+close(M3U);
+
+
+
+# Off topic: make sure nobody can remove files by mistake
+system("chown", "root.sons", "-R", $path);

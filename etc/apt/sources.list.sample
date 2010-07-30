@@ -1,0 +1,25 @@
+# attique.ici debs
+deb http://apt.attique.ici/ stable all 
+deb http://apt.attique.ici/ testing updates
+
+# In fact, 10 hops to ftp.fr.debian.org
+#          22 hops to ftp.de.debian.org
+deb http://ftp.fr.debian.org/debian/ testing main 
+deb-src http://ftp.fr.debian.org/debian/ testing main 
+deb http://security.debian.org/ testing/updates main 
+deb-src http://security.debian.org/ testing/updates main 
+deb http://security.debian.org/ sarge/updates main 
+deb-src http://security.debian.org/ sarge/updates main 
+
+# sometimes, need to pass in unstable
+#deb http://ftp.fr.debian.org/debian/ unstable main  
+#deb-src http://ftp.fr.debian.org/debian/ unstable main  
+
+
+deb http://apt.gna.org/debian/ external all
+deb http://dl.gna.org/darius-tools/ ./
+deb http://dl.gna.org/latex-indexbuild/ ./ 
+#deb http://dl.gna.org/pdbv/  pdbv.perl.pkg/
+
+# mplayer
+deb ftp://ftp.nerim.net/debian-marillat/ etch main 

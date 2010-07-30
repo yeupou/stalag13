@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+#
+# Once per day, update a file that contains ink info, that will be used by
+# mrtg
+# 
+#Black:         83%
+#Cyan:          99%
+#Magenta:       99%
+#Yellow:
+
+my $black;
+my $cyan;
+my $magenta;
+my $yellow;
+
+
+open(INK, "ink -p usb |");
+while (<INK>) {
+    s/\ //;
+    $black = $1 if /Black:(.*)\%/;
+    $cyan = $1 if /Cyan:(.*)\%/;
+    $magenta = $1 if /Magenta:(.*)\%/;
+    $yellow = $1 if /Yellow:(.*)\%/;
+}
+close(INK);
+
+if ($black && $cyan && $magenta && $yellow) {
+    open(OUT, "> /var/www/mrtg/inkdata");
+    print OUT "black$black\ncyan$cyan\nmagenta$magenta\nyellow$yellow\n";
+    close(OUT);
+}
+

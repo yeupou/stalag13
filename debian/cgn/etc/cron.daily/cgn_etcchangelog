@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ -e /etc/CVS ]; then
+    if [ -e "/home/transit/.hephaistos" ]; then
+	(cd /etc && cvs2cl) 2> /dev/null
+    fi
+else
+    (cd /etc && rcs2log  -R) > /etc/ChangeLog
+fi

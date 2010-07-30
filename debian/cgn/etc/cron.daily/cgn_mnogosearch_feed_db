@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Met à jour les données pour mnogosearch.
+# C'est le boulot de dionysos/wotan
+#
+# $Id: cgn_mnogosearch_feed_db,v 1.8 2006-01-16 16:39:23 moa Exp $
+
+# off for now
+exit
+
+LOG="/var/log/cgn_mnogosearch.log"
+
+. /etc/hosts.nib.sh
+if [ `hostname` == $SERVER ]; then exit ; fi 
+if [ ! `which indexer` ]; then exit ; fi
+
+date >> $LOG
+# -e: most expired first
+# -o: less depth first
+# -c: max number of sec
+# -n: max number of pages
+indexer -e -o -c 3600 -n 10000 2>> $LOG 
+date >> $LOG

@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2006 Mathieu Roy <yeupou--gnu.org>
+ * http://yeupou.coleumes.org
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the gnu general public license
+ *  as published by the free software foundation; either version 2
+ *  of the license, or (at your option) any later version.
+ * 
+ *  This program is distributed in the hope that it will be useful,
+ *  but without any warranty; without even the implied warranty of
+ *  merchantability or fitness for a particular purpose.  see the
+ *  gnu general public license for more details.
+ *
+ *  You should have received a copy of the gnu general public license
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, inc., 59 temple place - suite 330, Boston, MA 02111-1307
+ *  USA.
+ *
+ * $Id: attique.css,v 1.5 2006-03-23 21:59:56 moa Exp $
+ *
+*/
+
+body { 
+	background-color: #c8bdd3; 
+	color: #2f2f2f; 
+	font-family: sans-serif;
+}
+
+hr { 	
+	display: none;
+}
+
+
+li {
+	font-size: smaller;
+}
+
+li > ul {
+	background-color: #d5cbdf;
+}
+
+b {
+	font-style: italic;
+}
+
+a {
+	display: block;
+	background-color: #d5cbdf;
+	border-bottom: thin solid #c8bdd3;
+	color: #176c6b;
+	padding-left: 0.3em;
+}
+
+a:hover {
+	background-color: #2c9394;
+	color: #d3f4f4;
+	text-decoration:  none;
+}

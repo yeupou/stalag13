@@ -1,0 +1,1 @@
+export PRINTER="brouillon@gate"

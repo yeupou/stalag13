@@ -1,0 +1,1493 @@
+stalag13-utils (2.7-20100730) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 30 Jul 2010 07:50:18 +0200
+ 
+stalag13-utils (2.6-20100309) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 09 Mar 2010 02:31:36 +0100
+ 
+stalag13-utils (2.5-20100309) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 09 Mar 2010 02:30:26 +0100
+ 
+stalag13-utils (2.4-20100309) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 09 Mar 2010 02:13:40 +0100
+ 
+stalag13-utils (2.3-20100309) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 09 Mar 2010 01:58:22 +0100
+ 
+stalag13-utils (2.2-20080617) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <root@eos.attique.ici>  Tue, 17 Jun 2008 11:21:25 +0200
+ 
+stalag13-utils (2.1-20080617) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <klink@eos.attique.ici>  Tue, 17 Jun 2008 11:20:45 +0200
+ 
+cgn (1.656-20070902) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 02 Sep 2007 10:43:34 +0200
+ 
+cgn (1.655-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 15:22:10 +0200
+ 
+cgn (1.654-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 15:12:01 +0200
+ 
+cgn (1.653-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 15:08:49 +0200
+ 
+cgn (1.652-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 15:03:49 +0200
+ 
+cgn (1.651-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:56:09 +0200
+ 
+cgn (1.650-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:51:14 +0200
+ 
+cgn (1.649-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:50:35 +0200
+ 
+cgn (1.648-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:48:49 +0200
+ 
+cgn (1.647-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:40:47 +0200
+ 
+cgn (1.646-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:38:43 +0200
+ 
+cgn (1.645-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:37:08 +0200
+ 
+cgn (1.644-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:35:54 +0200
+ 
+cgn (1.643-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:34:28 +0200
+ 
+cgn (1.642-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:32:29 +0200
+ 
+cgn (1.641-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:31:23 +0200
+ 
+cgn (1.640-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:30:23 +0200
+ 
+cgn (1.639-20070824) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 24 Aug 2007 14:27:21 +0200
+ 
+cgn (1.638-20070430) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 30 Apr 2007 10:12:33 +0200
+ 
+cgn (1.637-20070410) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 10 Apr 2007 07:48:18 +0200
+ 
+cgn (1.636-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 12:12:11 +0100
+ 
+cgn (1.635-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 12:10:13 +0100
+ 
+cgn (1.634-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 11:53:05 +0100
+ 
+cgn (1.633-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 11:51:08 +0100
+ 
+cgn (1.632-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 11:47:58 +0100
+ 
+cgn (1.631-20061210) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 10 Dec 2006 11:44:26 +0100
+ 
+cgn (1.630-20060827) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 27 Aug 2006 13:18:41 +0200
+ 
+cgn (1.629-20060822) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 22 Aug 2006 17:16:01 +0200
+ 
+cgn (1.628-20060822) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 22 Aug 2006 17:02:40 +0200
+ 
+cgn (1.627-20060620) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 20 Jun 2006 11:00:37 +0200
+ 
+cgn (1.626-20060602) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 02 Jun 2006 18:34:45 +0200
+ 
+cgn (1.625-20060602) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 02 Jun 2006 18:07:46 +0200
+ 
+cgn (1.624-20060602) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 02 Jun 2006 18:05:59 +0200
+ 
+cgn (1.623-20060421) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 21 Apr 2006 09:54:56 +0200
+ 
+cgn (1.622-20060421) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 21 Apr 2006 09:38:21 +0200
+ 
+cgn (1.621-20060421) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 21 Apr 2006 09:34:18 +0200
+ 
+cgn (1.620-20060421) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 21 Apr 2006 09:30:03 +0200
+ 
+cgn (1.619-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 22:59:52 +0100
+ 
+cgn (1.618-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 22:51:46 +0100
+ 
+cgn (1.617-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 22:21:42 +0100
+ 
+cgn (1.616-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 22:15:43 +0100
+ 
+cgn (1.615-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 22:15:09 +0100
+ 
+cgn (1.614-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 21:58:42 +0100
+ 
+cgn (1.613-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 21:41:56 +0100
+ 
+cgn (1.612-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 21:33:18 +0100
+ 
+cgn (1.611-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 21:29:48 +0100
+ 
+cgn (1.610-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 21:09:12 +0100
+ 
+cgn (1.609-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 20:05:50 +0100
+ 
+cgn (1.608-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 20:03:57 +0100
+ 
+cgn (1.607-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:54:28 +0100
+ 
+cgn (1.606-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:38:27 +0100
+ 
+cgn (1.605-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:21:22 +0100
+ 
+cgn (1.604-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:15:48 +0100
+ 
+cgn (1.603-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:11:37 +0100
+ 
+cgn (1.602-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 19:11:06 +0100
+ 
+cgn (1.601-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 18:21:58 +0100
+ 
+cgn (1.600-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 18:18:30 +0100
+ 
+cgn (1.599-20060323) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 23 Mar 2006 18:14:16 +0100
+ 
+cgn (1.598-20060322) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Wed, 22 Mar 2006 11:07:51 +0100
+ 
+cgn (1.597-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 16:18:47 +0100
+ 
+cgn (1.596-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 16:04:37 +0100
+ 
+cgn (1.595-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 16:02:17 +0100
+ 
+cgn (1.594-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 15:55:24 +0100
+ 
+cgn (1.593-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 15:52:44 +0100
+ 
+cgn (1.592-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 15:46:48 +0100
+ 
+cgn (1.591-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 15:34:29 +0100
+ 
+cgn (1.590-20060321) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Mar 2006 15:27:22 +0100
+ 
+cgn (1.589-20060213) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 13 Feb 2006 19:30:11 +0100
+ 
+cgn (1.588-20060213) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 13 Feb 2006 19:29:04 +0100
+ 
+cgn (1.587-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:35:28 +0100
+ 
+cgn (1.586-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:32:28 +0100
+ 
+cgn (1.585-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:29:23 +0100
+ 
+cgn (1.584-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:23:16 +0100
+ 
+cgn (1.583-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:22:38 +0100
+ 
+cgn (1.582-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:21:16 +0100
+ 
+cgn (1.581-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:18:44 +0100
+ 
+cgn (1.580-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:17:49 +0100
+ 
+cgn (1.579-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:15:29 +0100
+ 
+cgn (1.578-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:11:39 +0100
+ 
+cgn (1.577-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:07:46 +0100
+ 
+cgn (1.576-20060207) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 07 Feb 2006 15:05:21 +0100
+ 
+cgn (1.575-20060116) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 16 Jan 2006 17:40:28 +0100
+ 
+cgn (1.574-20060116) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 16 Jan 2006 17:39:18 +0100
+ 
+cgn (1.573-20060103) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 03 Jan 2006 11:06:59 +0100
+ 
+cgn (1.572-20051104) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 04 Nov 2005 13:42:45 +0100
+ 
+cgn (1.571-20051104) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 04 Nov 2005 13:39:37 +0100
+ 
+cgn (1.570-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:53:25 +0200
+ 
+cgn (1.569-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:51:38 +0200
+ 
+cgn (1.568-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:42:24 +0200
+ 
+cgn (1.567-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:39:43 +0200
+ 
+cgn (1.566-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:38:33 +0200
+ 
+cgn (1.565-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:32:19 +0200
+ 
+cgn (1.564-20051017) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Mon, 17 Oct 2005 09:30:33 +0200
+ 
+cgn (1.563-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:52:12 +0200
+ 
+cgn (1.562-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:47:37 +0200
+ 
+cgn (1.561-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:46:39 +0200
+ 
+cgn (1.560-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:45:44 +0200
+ 
+cgn (1.559-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:45:10 +0200
+ 
+cgn (1.558-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:43:48 +0200
+ 
+cgn (1.557-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 18:43:12 +0200
+ 
+cgn (1.556-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 17:52:34 +0200
+ 
+cgn (1.555-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 17:44:24 +0200
+ 
+cgn (1.554-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 14:43:22 +0200
+ 
+cgn (1.553-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 14:42:41 +0200
+ 
+cgn (1.552-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 14:40:02 +0200
+ 
+cgn (1.551-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 14:29:36 +0200
+ 
+cgn (1.550-20051015) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 15 Oct 2005 14:27:37 +0200
+ 
+cgn (1.549-20051013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 13 Oct 2005 15:32:29 +0200
+ 
+cgn (1.548-20051013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 13 Oct 2005 14:45:55 +0200
+ 
+cgn (1.547-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Tue, 11 Oct 2005 16:55:42 +0200
+ 
+cgn (1.546-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Tue, 11 Oct 2005 14:56:31 +0200
+ 
+cgn (1.545-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Tue, 11 Oct 2005 14:51:10 +0200
+ 
+cgn (1.544-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Tue, 11 Oct 2005 14:48:46 +0200
+ 
+cgn (1.543-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 12:47:25 +0200
+ 
+cgn (1.542-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 12:28:32 +0200
+ 
+cgn (1.541-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 12:28:15 +0200
+ 
+cgn (1.540-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 12:27:42 +0200
+ 
+cgn (1.539-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 11:55:27 +0200
+ 
+cgn (1.538-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 11:11:35 +0200
+ 
+cgn (1.537-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 11:01:00 +0200
+ 
+cgn (1.536-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 10:32:42 +0200
+ 
+cgn (1.535-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 10:31:03 +0200
+ 
+cgn (1.534-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 10:26:02 +0200
+ 
+cgn (1.533-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 10:20:17 +0200
+ 
+cgn (1.532-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 09:09:30 +0200
+ 
+cgn (1.531-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:50:17 +0200
+ 
+cgn (1.530-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:50:00 +0200
+ 
+cgn (1.529-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:47:38 +0200
+ 
+cgn (1.528-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:43:50 +0200
+ 
+cgn (1.527-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:40:49 +0200
+ 
+cgn (1.526-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:34:43 +0200
+ 
+cgn (1.525-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:33:07 +0200
+ 
+cgn (1.524-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:27:47 +0200
+ 
+cgn (1.523-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:24:20 +0200
+ 
+cgn (1.522-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:23:17 +0200
+ 
+cgn (1.521-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:21:49 +0200
+ 
+cgn (1.520-20051011) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 11 Oct 2005 00:18:54 +0200
+ 
+cgn (1.519-20051008) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 08 Oct 2005 11:24:40 +0200
+ 
+cgn (1.518-20051008) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 08 Oct 2005 11:24:00 +0200
+ 
+cgn (1.517-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 12:42:48 +0200
+ 
+cgn (1.516-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 12:05:09 +0200
+ 
+cgn (1.515-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 09:58:52 +0200
+ 
+cgn (1.514-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 09:46:38 +0200
+ 
+cgn (1.513-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 09:43:23 +0200
+ 
+cgn (1.512-20051003) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Mon, 03 Oct 2005 09:41:41 +0200
+ 
+cgn (1.511-20051002) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 02 Oct 2005 20:28:23 +0200
+ 
+cgn (1.510-20051002) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Sun, 02 Oct 2005 19:51:37 +0200
+ 
+cgn (1.509-20050902) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 02 Sep 2005 23:36:33 +0200
+ 
+cgn (1.508-20050902) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Fri, 02 Sep 2005 23:35:14 +0200
+ 
+cgn (1.507-20050721) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Thu, 21 Jul 2005 12:38:47 +0200
+ 
+cgn (1.506-20050709) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 09 Jul 2005 13:41:44 +0200
+ 
+cgn (1.505-20050709) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.ici>  Sat, 09 Jul 2005 13:41:23 +0200
+ 
+cgn (1.504-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 13:24:49 +0200
+ 
+cgn (1.503-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 13:10:13 +0200
+ 
+cgn (1.502-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 11:19:07 +0200
+ 
+cgn (1.501-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 11:18:07 +0200
+ 
+cgn (1.500-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 11:14:29 +0200
+ 
+cgn (1.499-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 11:09:47 +0200
+ 
+cgn (1.498-20050621) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.ici>  Tue, 21 Jun 2005 09:11:26 +0200
+ 
+cgn (1.497-20050620) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.org>  Mon, 20 Jun 2005 22:53:56 +0200
+ 
+cgn (1.496-20050618) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.org>  Sat, 18 Jun 2005 16:13:17 +0200
+ 
+cgn (1.495-20050617) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 17 Jun 2005 16:15:43 +0200
+ 
+cgn (1.494-20050617) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 17 Jun 2005 16:14:19 +0200
+ 
+cgn (1.493-20050617) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 17 Jun 2005 16:11:29 +0200
+ 
+cgn (1.492-20050612) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sun, 12 Jun 2005 22:49:44 +0200
+ 
+cgn (1.491-20050612) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sun, 12 Jun 2005 22:48:11 +0200
+ 
+cgn (1.490-20050423) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 23 Apr 2005 13:31:42 +0200
+ 
+cgn (1.489-20050423) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 23 Apr 2005 12:59:42 +0200
+ 
+cgn (1.488-20050413) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Wed, 13 Apr 2005 10:15:34 +0200
+ 
+cgn (1.487-20050305) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 05 Mar 2005 16:37:40 +0100
+ 
+cgn (1.486-20050305) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 05 Mar 2005 16:32:45 +0100
+ 
+cgn (1.485-20050305) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 05 Mar 2005 16:29:13 +0100
+ 
+cgn (1.484-20050304) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 04 Mar 2005 21:13:54 +0100
+ 
+cgn (1.483-20050224) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Thu, 24 Feb 2005 10:09:45 +0100
+ 
+cgn (1.482-20050223) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Wed, 23 Feb 2005 10:20:27 +0100
+ 
+cgn (1.481-20050223) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Wed, 23 Feb 2005 00:06:47 +0100
+ 
+cgn (1.480-20050222) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 22 Feb 2005 12:01:43 +0100
+ 
+cgn (1.479-20050221) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Mon, 21 Feb 2005 10:21:59 +0100
+ 
+cgn (1.478-20050221) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Mon, 21 Feb 2005 10:21:12 +0100
+ 
+cgn (1.477-20050218) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 18 Feb 2005 13:16:05 +0100
+ 
+cgn (1.476-20041213) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Mon, 13 Dec 2004 14:07:34 +0100
+ 
+cgn (1.475-20041213) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Mon, 13 Dec 2004 14:04:05 +0100
+ 
+cgn (1.474-20041209) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Thu, 09 Dec 2004 14:55:15 +0100
+ 
+cgn (1.473-20041209) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Thu, 09 Dec 2004 14:52:09 +0100
+ 
+cgn (1.472-20041205) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sun, 05 Dec 2004 23:22:54 +0100
+ 
+cgn (1.471-20041205) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sun, 05 Dec 2004 11:05:46 +0100
+ 
+cgn (1.470-20041204) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Sat, 04 Dec 2004 11:20:58 +0100
+ 
+cgn (1.469-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 16:30:48 +0100
+ 
+cgn (1.468-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:55:44 +0100
+ 
+cgn (1.467-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:55:22 +0100
+ 
+cgn (1.466-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:54:09 +0100
+ 
+cgn (1.465-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:26:04 +0100
+ 
+cgn (1.464-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:02:53 +0100
+ 
+cgn (1.463-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 15:00:28 +0100
+ 
+cgn (1.462-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 12:02:33 +0100
+ 
+cgn (1.461-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 11:51:39 +0100
+ 
+cgn (1.460-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 11:42:37 +0100
+ 
+cgn (1.459-20041203) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@eos.attique.in>  Fri, 03 Dec 2004 11:42:09 +0100
+ 
+cgn (1.458-20041201) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 01 Dec 2004 20:45:28 +0100
+ 
+cgn (1.457-20041125) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Thu, 25 Nov 2004 19:00:48 +0100
+ 
+cgn (1.456-20041125) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Thu, 25 Nov 2004 17:35:02 +0100
+ 
+cgn (1.455-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:37:59 +0100
+ 
+cgn (1.454-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:36:17 +0100
+ 
+cgn (1.453-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:33:37 +0100
+ 
+cgn (1.452-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:25:05 +0100
+ 
+cgn (1.451-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:17:14 +0100
+ 
+cgn (1.450-20041124) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@ulysse.attique.in>  Wed, 24 Nov 2004 19:12:58 +0100
+ 
+cgn (1.449-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 12:17:56 +0100
+ 
+cgn (1.448-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 12:16:08 +0100
+ 
+cgn (1.447-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 12:11:39 +0100
+ 
+cgn (1.446-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 12:03:13 +0100
+ 
+cgn (1.445-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:41:46 +0100
+ 
+cgn (1.444-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:39:02 +0100
+ 
+cgn (1.443-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:36:26 +0100
+ 
+cgn (1.442-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:35:17 +0100
+ 
+cgn (1.441-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:33:38 +0100
+ 
+cgn (1.440-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:31:48 +0100
+ 
+cgn (1.439-20041102) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Tue, 02 Nov 2004 11:30:27 +0100
+ 
+cgn (1.438-20041022) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Fri, 22 Oct 2004 10:10:41 +0200
+ 
+cgn (1.437-20041022) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Fri, 22 Oct 2004 10:05:06 +0200
+ 
+cgn (1.436-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:53:59 +0200
+ 
+cgn (1.435-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:51:21 +0200
+ 
+cgn (1.434-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:46:54 +0200
+ 
+cgn (1.433-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:39:09 +0200
+ 
+cgn (1.432-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:37:54 +0200
+ 
+cgn (1.431-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:32:19 +0200
+ 
+cgn (1.430-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:31:11 +0200
+ 
+cgn (1.429-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:29:21 +0200
+ 
+cgn (1.428-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:26:11 +0200
+ 
+cgn (1.427-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:19:19 +0200
+ 
+cgn (1.426-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:10:13 +0200
+ 
+cgn (1.425-20041020) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 20 Oct 2004 23:08:02 +0200
+ 
+cgn (1.424-20041016) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Sat, 16 Oct 2004 16:14:40 +0200
+ 
+cgn (1.423-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 16:10:54 +0200
+ 
+cgn (1.422-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 16:07:12 +0200
+ 
+cgn (1.421-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 15:56:48 +0200
+ 
+cgn (1.420-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 15:33:35 +0200
+ 
+cgn (1.419-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 15:32:10 +0200
+ 
+cgn (1.418-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@wotan.attique.in>  Wed, 13 Oct 2004 15:29:14 +0200
+ 
+cgn (1.417-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 13 Oct 2004 15:04:05 +0200
+ 
+cgn (1.416-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 13 Oct 2004 14:56:02 +0200
+ 
+cgn (1.415-20041013) unstable; urgency=low
+ 
+  * Upstream release
+ 
+ -- Mathieu Roy <moa@dionysos.attique.in>  Wed, 13 Oct 2004 14:24:58 +0200

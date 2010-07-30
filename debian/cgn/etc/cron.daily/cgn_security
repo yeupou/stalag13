@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. /etc/hosts.nib.sh
+if [ ! $SERVER ]; then exit ; fi
+
+if [ `hostname` == $SERVER ]; then 
+    chkrootkit -q
+fi
+
+# à complete avec un système de md5 vérifiés sur les postes clients

@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# S'assure que fetchmail tourne
+
+. /etc/hosts.nib.sh
+if [ ! $SERVER ]; then exit ; fi
+if [ `hostname` != $SERVER ]; then exit ; fi 
+
+
+if [ ! `pidof fetchmail` ]; then 
+    echo "Fetchmail seems to be dead." >> /var/log/messages
+    ictl fetchmail r  >> /var/log/messages
+fi
+

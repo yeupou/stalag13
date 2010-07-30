@@ -1,0 +1,6 @@
+#!/bin/sh
+# the load is * by 100
+cat /proc/loadavg | cut -d " " -f 2 | tr -d "."
+expr `ps ax 2>/dev/null|wc -l` - 1
+uptime|sed 's,.*up ,,'|sed 's/, [0-9]* users.*//'
+hostname

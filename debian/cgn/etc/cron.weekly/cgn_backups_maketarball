@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# $Id: cgn_backups_maketarball,v 1.17 2004-12-03 14:26:03 moa Exp $
+
+/usr/local/bin/cgn-backups.pl >> /var/log/cgn_backups.log
+
+# End

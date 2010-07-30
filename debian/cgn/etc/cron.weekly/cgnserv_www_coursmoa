@@ -1,0 +1,57 @@
+#!/usr/bin/perl
+#
+# $Id: cgnserv_www_coursmoa,v 1.1 2003-10-29 10:21:39 cgn-dionysos Exp $
+
+use Sys::Hostname;
+use POSIX qw(strftime);
+
+exit; #currently deactivated
+
+
+
+do "/etc/hosts.nib.pl" or exit;
+exit unless $server;
+exit if hostname() ne $server;
+
+my $log = "/var/log/cgn_cours.log";
+my $ret;
+my $www = "/var/www/moa.cours";
+my $source = $www."/cvs";
+
+
+open(LOG, ">> $log");
+print LOG "--> ".strftime("%Y-%m-%d %H:%M:%S", localtime)."\n";
+
+# D'abord, on met à jour tout les cvs
+opendir(DIR, $source);
+while (defined(my $dir = readdir(DIR))) {
+    next if $dir eq '.';
+    next if $dir eq '..';
+    `cd $source/$dir && cvs update -d > /dev/null 2> /dev/null`;
+    print LOG "`cd $source/$dir && cvs update -d > /dev/null 2> /dev/null`\n";
+} 
+close(DIR);
+
+# Ensuite, on cherche tout les Makefile pour créer des tex à jour 
+my @makefile = split '\n', `find $source -name "Makefile"`;
+foreach my $file (@makefile) {
+    $file =~ s/\Makefile//;
+    `cd $file && make latex`;
+    print LOG "`cd $file && make latex`\n";
+}
+
+# Finalement, on crée toutes les sorties
+my @latex = split '\n', `find $source -name "*.tex" ! -name "*contenu.d*"`;
+for (@latex) {
+    next if m/contenu.d/;
+    my $name = `basename $_`;
+    chomp($name);
+    $name = `basename $name .tex`;
+    chomp($name);
+    `mkdir $www/$name >/dev/null 2>/dev/null`; 
+    `latex2html -split 1 -dir $www/$name $_ >/dev/null 2>/dev/null`;
+    print LOG "`latex2html -split 1 -dir $www/$name $_ >/dev/null 2>/dev/null`\n";
+}
+
+print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." <--\n";
+# End

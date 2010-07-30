@@ -1,0 +1,88 @@
+#!/usr/bin/perl
+#
+# Archiver les courriers recus, mis dans un fichier  
+# /home/$user/.mail-vers-archives/$YYYY-MM.mbox
+# dans un dossier /var/www/$user.mail
+#
+# On peut tomber sur les fichiers mis en place par procmail à chaque
+# distribution de courrier.
+# On peut aussi tomber sur des fichiers issues des archives de lecteurs
+# de courriels, ceux envoyés (voir cron.weekly/mail-archives). 
+#
+# On ne redefinit pas la date, on se fie a celle du filtrage.
+#
+# $Id: cgnserv_mailarchives_monharcize,v 1.13 2005-06-17 14:14:21 moa Exp $
+
+use Sys::Hostname;
+use POSIX qw(strftime);
+
+do "/etc/hosts.nib.pl" or exit;
+exit unless $server;
+exit if hostname() ne $server;
+
+sub achown {
+    my ($user, @files) = @_;
+    chown((getpwnam($user))[2,3], @files) == @files
+	or print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." chown impossible for @files : $!\n";
+}
+
+my @users = ("moa", "egh");
+my $log = "/var/log/mail.archiving";
+
+my @monharc_args = ("-rcfile",
+		    "/etc/resource.mrc",
+		    "-quiet",
+		    "-nodoc",
+		    "-multipg",
+		    "-treverse",
+		    "-nokeeponrmm",
+		    "-tsort",
+		    "-multipg",
+		    "-reverse",
+#		    "-time", generate noize on STDERR
+		    "-url",
+		    "-idxsize",
+		    "0",
+		    "-idxfname",
+		    "index.html");
+
+
+open(LOG, ">> $log");
+print LOG "-----------------------------------------------------------\n";
+print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." Start archiving.\n";
+
+
+foreach my $user (@users) {
+    my $done = 0;
+    my $incdir = "/home/$user/.mail-vers-archives";  
+    opendir(DIR, $incdir);
+
+    while (defined(my $mbox = readdir(DIR))) {
+	my $in = $incdir."/".$mbox;
+	next unless $mbox =~ s/(.*)\.mbox$/\1/;
+	my $out = "/var/www/$user.mail/$mbox";
+
+	unless (-e $out) {
+	    mkdir $out;
+	    achown("www-data", $out);
+	} 
+
+	my $result = system("/usr/bin/mhonarc",
+			    @monharc_args,
+			    "-add",
+			    $in,
+			    "-outdir",
+			    $out,
+			    "> /dev/null");
+	
+	unlink($in);  
+	print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." OK: Doing mbox $in for $user\n";
+	$done = 1;
+    }
+    closedir(DIR);
+    print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." !!! No mbox for $user\n" unless $done;
+
+}
+    
+print LOG strftime("%Y-%m-%d %H:%M:%S", localtime)." Archiving finished.\n";
+# End

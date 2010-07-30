@@ -1,0 +1,75 @@
+#!/usr/bin/perl
+
+# remove outdated stuff
+my @outdated_nov2003 = ("/etc/cron.daily/backuparea",
+			"/etc/cron.daily/autoapt",
+			"/etc/cron.daily/emacsstart",
+			"/etc/cron.daily/eximstats",
+			"/etc/cron.daily/indexer",
+			"/etc/cron.daily/majfichiersenligne",
+			"/etc/cron.daily/mrclean",
+			"/etc/cron.daily/rcs2log",
+			"/etc/cron.daily/sharing",
+			"/etc/cron.daily/majfichiersenligne",
+			"/etc/cron.d/fetchmailupdate",
+			"/etc/cron.d/xplanet",
+			"/etc/cron.d/apt-ftparchive",
+			"/etc/cron.weekly/apt-ftparchive",
+			"/etc/cron.weekly/autoapt",
+			"/etc/cron.weekly/cours",
+			"/etc/cron.weekly/mail-archives",
+			"/etc/cron.weekly/backups",
+			"/etc/cron.hourly/checkout",
+			"/etc/cron.hourly/fetchmail_restart",
+			"/etc/cron.hourly/mail-achives",
+			"/etc/cron.hourly/poids",
+			"/etc/cron.hourly/sharing",
+			"/etc/cron.hourly/www-cache");
+
+my @outdated_dec2003 = ("/etc/cron.hourly/cgnserv_wwwcache",
+			"/etc/cron.hourly/mail-archives",
+			"/etc/cron.hourly/sharing.deb",
+			"/etc/profile.d/ssh.sh",
+			"/etc/profile.d/aterm.sh",
+			"/etc/profile.d/gdict.sh");
+
+my @outdated_2004 = ("/etc/cron.d/cgn_xplanet",
+		     "/etc/cron.daily/cgn_sharing",
+		     "/etc/profile.d/rsync.sh",
+		     "/etc/cron.weekly/cgnserv_backups_maketarball");
+
+
+my @outdated_dec2004 = ("/etc/dhcp3/dhclient-enter-hooks.d/cgn-sendaddress.sh",
+			"/etc/cron.daily/cgn_autoapt");
+
+my @outdated_2005 = ("/etc/cron.weekly/cgn_sharing",
+		     "/etc/cron.d/cgnserv_aptarchive_updateinfo",
+		     "/etc/cron.hourly/cgnserv_aptarchives_update",
+		     "/etc/AT-server.bouquins2kwiki");
+
+my @outdated_2006 = ("/etc/cron.weekly/cgnserv_son_makeplaylists.pl",
+		     "/etc/apache/conf.d/newicons.conf",
+		     "/etc/cron.daily/cgnserv_wwwcache",
+		     "/etc/cron.daily/AT-server.bouquins2kwiki",
+		     "/etc/cron.daily/AT-server.sons-makeplaylists.pl",
+		     "/etc/cron.d/AT-clients.update-bookmarks",
+		     "/etc/cron.d/AT-server.apt-archives-update",
+		     "/etc/cron.d/cgnserv_dilbertget");
+
+my @outdated_2007 = ("/etc/cron.daily/cgn_eximstats",
+		     "/etc/cron.daily/AT-sons-makeplaylists.pl");
+
+
+
+my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007);
+
+foreach my $file (@outdated) {
+    unlink($file) && print "$file removed\n" if -e $file;
+}
+
+
+system("mv", "/usr/bin/xmms", "/usr/bin/xmms.real") 
+    if (-e "/usr/bin/xmms" and ! -e "/usr/bin/xmms.real");
+
+
+

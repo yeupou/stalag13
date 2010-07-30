@@ -1,0 +1,8 @@
+#!/bin/sh
+
+mrclean=/usr/bin/mrclean
+LIST="/etc /root"
+
+for dir in $LIST; do
+    $mrclean $dir >> /dev/null 
+done

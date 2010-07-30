@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+
+. /etc/hosts.nib.sh
+if [ ! $SERVER ]; then exit ; fi
+if [ `hostname` == $SERVER ]; then exit ; fi 
+
+# If we pass this test, it means that loge is available
+test -e "/home/transit/.shares" || exit 0
+
+
+
+RSYNC="/usr/bin/rsync"
+DATE="/bin/date"
+
+LOG="/var/log/cgn_backuparea.log"
+
+USERS="moa egh"
+
+
+$DATE >> $LOG
+
+for user in $USERS; do 
+    # Make sure the backup area exists
+    if [ ! -e /home/$user/backup-area ]; then
+	mkdir /home/$user/backup-area
+	echo "Cet espace est quotidiennement synchronisé et hebdomadairement archivé, avec les dossiers gérés par CVS.\nCet espace est synchronisé de manière brutale : un fichier plus ancien est écrasé par un fichier plus récent, il est donc possible de perdre des données, vous ne devriez pas l'utiliser pour des documents importants." > /home/$user/backup-area/EXPLICATION
+	chown $user.users /home/$user/backup-area -R
+    fi
+    
+    # we do not want any output
+    # first, we put what we have
+    su $user -c "$RSYNC --quiet --update --cvs-exclude --archive /home/$user/backup-area/* $SERVER:/backup-area/$user/ > /dev/null" >> $LOG
+    # second, we get what loge have
+    su $user -c "$RSYNC --quiet --update --cvs-exclude --archive $SERVER:/backup-area/$user/  /home/$user/backup-area/ > /dev/null" >> $LOG
+done
