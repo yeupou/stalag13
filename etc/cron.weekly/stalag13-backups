@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ `hostname` == "moe" ]; then
+if [ `hostname` = "moe" ]; then
     /usr/bin/rsync -a --delete /var/lib/wiki /backups/
     /usr/bin/rsync -a --delete /server/perso /backups/
     /usr/bin/rsync -a --delete /server/musique /backups/
