@@ -54,6 +54,7 @@ move:
 #CGN	scp ../cgn-depends_*.deb gate:/stock/debian/stable-all
 	ssh moe "rm -f stalag13-utils_2.*.deb"
 	scp ../stalag13-utils_2.*.deb moe:~/
+	ssh root@moe "dpkg -i /home/klink/stalag13-utils_2.*.deb"
 
 clean:
 	mrclean .
