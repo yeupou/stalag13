@@ -41,6 +41,8 @@ deb:
 	debian/makechangelog.sh $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 #CGN	@cvs ci -m 'nouvelle version $(NEWVERSION)'
+	@git commit -a -m 'nouvelle version $(NEWVERSION)'
+	@git push
 	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils_2.$(NEWVERSION)*.deb"
 	make clean
@@ -49,6 +51,8 @@ deb:
 move:
 #CGN	scp ../cgn_*.deb gate:/stock/debian/stable-all
 #CGN	scp ../cgn-depends_*.deb gate:/stock/debian/stable-all
+	ssh moe "rm -f stalag13-utils_2.*.deb"
+	scp ../stalag13-utils_2.*.deb moe:~/
 
 clean:
 	mrclean .
@@ -57,6 +61,7 @@ clean:
 
 clean-prev-dir:
 	rm -f ../cgn_* ../cgn-depends_* 
+	rm -f ../stalag13-utils_* ../stalag13-utils-depends_* 
 
 clean-deb-dir:
 #CGN	ssh gate "rm -f /stock/debian/stable-all/cgn_* /stock/debian/stable-all/cgn-depends_*"

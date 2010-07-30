@@ -1,7 +1,7 @@
 ;; -*- emacs-lisp -*-
-;; System-wide configuration for Emacs 21.x at CGN
+;; System-wide configuration for Emacs 23.
 ;; /etc/emacs/site-start.d/99cgn.el
-;; Copyright 2000-2003 (c) Mathieu Roy <yeupou --à-- gnu.org>
+;; Copyright 2000-2010 (c) Mathieu Roy <yeupou -- gnu.org>
 ;;
 ;; "Emacs is not built by hate of vi.  vi is irrelevant.  It is no more 
 ;; then a strange punishment that the unbelievers submit themselves to.
@@ -82,10 +82,10 @@ ection is enhanced in various ways.")
 
 ;; French i18n, utf-8 support
 ;; (specific emacs >= 21!)
-(require 'ucs-tables)
-(unify-8859-on-encoding-mode 1)
-(unify-8859-on-decoding-mode 1)
-(set-input-mode nil nil 1)
+;(require 'ucs-tables)
+;(unify-8859-on-encoding-mode 1)
+;(unify-8859-on-decoding-mode 1)
+;(set-input-mode nil nil 1)
 
 (setq calendar-week-start-day 1)
 (setq calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi" "Jeudi" "Vendredi" "Samedi"])

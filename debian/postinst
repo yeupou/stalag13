@@ -59,6 +59,9 @@ my @outdated_2006 = ("/etc/cron.weekly/cgnserv_son_makeplaylists.pl",
 my @outdated_2007 = ("/etc/cron.daily/cgn_eximstats",
 		     "/etc/cron.daily/AT-sons-makeplaylists.pl");
 
+my @outdated_2010 = ("/etc/emacs/site-start.d/stalag13.el",
+		     "/etc/cron.daily/AT-sons-makeplaylists.pl");
+
 
 
 my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007);
