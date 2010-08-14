@@ -72,6 +72,7 @@ install: build
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/init.d 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apt
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apache/conf.d
+	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/munin/plugins-stalag13
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/apache/icons.stalag13.ici
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/xbel
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/xbel
