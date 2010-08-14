@@ -1,0 +1,48 @@
+#!/bin/bash
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+if [ "$1" = "config" ]; then
+    echo "graph_title Spams Caught Today
+graph_args --base 1000 -l 0
+graph_vlabel number of spams
+graph_category mail
+graph_info This graph shows how many and who caught spams during the latest 24H
+total.label Total
+spamassassin.label SpamAssassin
+bogofilter.label Bogofilter
+byhand.label User, By Hand"
+    exit 0
+fi
+
+SPAM_DIR="/home/klink/.Maildir/.Poubelle.Spam/cur/ /home/klink/.Maildir/.Poubelle.Spam/new/"
+SPAMS_24H=`find $SPAM_DIR -type f -ctime -1`
+
+SPAMS=0
+SPAMS_SPAMD=0
+SPAMS_BOGOF=0
+# go thru all spams modified in the latest 24 hours
+for i in $SPAMS_24H; do 
+    # increment total
+    SPAMS=`expr $SPAMS \+ 1`; 
+    
+    # find out if caught by spamd
+    if [ "`grep "^X-Spam-Flag: YES" $i`" ]; then 
+	SPAMS_SPAMD=`expr $SPAMS_SPAMD \+ 1`;
+    fi
+
+    # find out if caught by bogofilter
+    if [ "`grep "^X-Bogosity: Spam" $i`" ]; then
+	SPAMS_BOGOF=`expr $SPAMS_BOGOF \+ 1`;
+    fi
+done
+
+# spams caught by hand
+SPAMS_BYHANDS=`expr $SPAMS \- $SPAMS_SPAMD \- $SPAMS_BOGOF`
+
+echo total.value $SPAMS
+echo spamassassin.value $SPAMS_SPAMD
+echo bogofilter.value $SPAMS_BOGOF
+echo byhand.value $SPAMS_BYHANDS
