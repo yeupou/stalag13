@@ -15,7 +15,7 @@ MAGENTA='\[\033[1;35m\]'
 cyan='\[\033[0;36m\]'
 CYAN='\[\033[1;36m\]'
 grey='\[\033[0;37m\]'
-GREY='\[\033[1;30m\]'
+GREY='\[\033[1;37m\]'
 NC='\[\033[0m\]'
 
 # Nice colored prompt (with a space before the pwd, to ease copy/paste)

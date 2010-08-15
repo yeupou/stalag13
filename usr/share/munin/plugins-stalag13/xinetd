@@ -1,0 +1,55 @@
+#!/bin/sh
+# Plugin to monitor daemon.log for xinetd events.
+#
+# Require read permitions for $LOG
+#  (set in /etc/munin/plugin-conf.d/munin-node on debian)
+#
+# Parameters:
+#
+#       config   (required)
+#       autoconf (optional - used by munin-config)
+#
+
+LOG=${logfile:-/var/log/daemon.log}
+
+
+if [ "$1" = "autoconf" ]; then
+        if [ -r "$LOG" ]; then
+                echo yes
+                exit 0
+        else
+                echo no
+                exit 1
+        fi
+fi
+
+if [ "$1" = "config" ]; then
+
+        echo 'graph_title xinetd stats from' $LOG
+        echo 'graph_args --base 1000 -l 0'
+        echo 'graph_vlabel n'
+        echo 'graph_category security'
+
+	echo 'IPBanned.label IPs banned by xinetd sensors'
+	echo 'AccessDenied.label Access denied'
+	echo 'AccessRequested.label Access requested'
+	echo 'AccessTelnet.label Telnet'
+	echo 'AccessSSH.label SSH'
+	echo 'AccessIMAP.label IMAP(s)'
+	echo 'AccessSamba.label Samba'
+	echo 'AccessIRC.label IRC'
+	echo 'AccessFTP.label (s)FTP'
+        exit 0
+fi
+
+awk 'BEGIN{c["IPBanned"]=0;c["AccessDenied"]=0;c["AccessRequested"]=0;c["AccessIMAP"]=0;c["AccessSSH"]=0;c["AccessTelnet"]=0;c["AccessFTP"]=0;c["AccessIrc"]=0;c["AccessSamba"]=0; }
+     /xinetd\[.* {process_sensor} Adding /{c["IPBanned"]++}
+     /xinetd\[.* FAIL: /{c["AccessDenied"]++}
+     /xinetd\[.* START: /{c["AccessRequested"]++}
+     /xinetd\[.* (START|FAIL): imaps? from=/{c["AccessIMAP"]++}
+     /xinetd\[.* (START|FAIL): ssh from=/{c["AccessSSH"]++}
+     /xinetd\[.* (START|FAIL): telnet from=/{c["AccessTelnet"]++}
+     /xinetd\[.* (START|FAIL): s?ftp from=/{c["AccessFTP"]++}
+     /xinetd\[.* (START|FAIL): irc from=/{c["AccessIRC"]++}
+     /xinetd\[.* (START|FAIL): swat from=/{c["AccessSamba"]++}a
+     END{for(i in c){print i".value " c[i]} }' < $LOG
