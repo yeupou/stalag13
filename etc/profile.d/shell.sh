@@ -21,14 +21,13 @@ NC='\[\033[0m\]'
 # Nice colored prompt (with a space before the pwd, to ease copy/paste)
 showuser=''
 if [ "`id -u`" != 0 ]; then showuser="\u@"; fi
-PS1="${yellow}\$(date +%H:%M),\! ${cyan}${showuser}\h: ${green}\w${NC}\n  ${grey}"'\$'"${NC} "
+PS1="${yellow}\! ${magenta}\$(date +%H:%M) ${cyan}${showuser}\h:${green}\w${NC}\n  ${yellow}"'\$'"${NC} "
 
 # update window title only if we have an X terminal
 case $TERM in
     xterm|rxvt*|konsole|aterm|wterm)
-	# Why not using directly PS1?
-	#PROMPT_COMMAND='echo -ne "\033]0;${USER}@#${HOSTNAME%%.*}: ${PWD/$HOME/~}\007"'
-	PS1=$PS1"\033]0;${USER}@${HOSTNAME%%.*}: ${PWD/$HOME/~}\007"
+	# Why not using directly PS1?: because it mess up other things
+	PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
 esac	
 
 
@@ -37,5 +36,5 @@ if [ "$EMACS" == "t" ]; then
  # No colors here.
     alias ls='ls --color=never'
  # must not set a window title
- # (now using PS1)    unset PROMPT_COMMAND
+    unset PROMPT_COMMAND
 fi
