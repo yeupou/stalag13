@@ -1,3 +1,0 @@
-*/5 * * * *	root	/usr/local/bin/AT-clients.update-bookmarks.pl
-
-8 * * * *	root	/usr/local/bin/AT-server.update-bookmarks-www.pl

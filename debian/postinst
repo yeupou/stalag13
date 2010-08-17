@@ -60,7 +60,11 @@ my @outdated_2007 = ("/etc/cron.daily/cgn_eximstats",
 		     "/etc/cron.daily/AT-sons-makeplaylists.pl");
 
 my @outdated_2010 = ("/etc/emacs/site-start.d/stalag13.el",
-		     "/etc/cron.daily/AT-sons-makeplaylists.pl");
+		     "/etc/cron.daily/AT-sons-makeplaylists.pl",
+		     "/etc/profile.d/tar.sh",
+		     "/etc/profile.d/ls.sh",
+		     "/etc/profile.d/aptall.sh",
+		     "/etc/profile.d/shell.sh");
 
 
 

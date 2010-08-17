@@ -1,1 +1,0 @@
-0-50/25 * * * *	root	/usr/local/bin/cgn-updateaddress.pl

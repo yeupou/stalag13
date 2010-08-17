@@ -1,6 +1,0 @@
-#!/bin/sh
-# accept Mem of Swap as argument
-free |grep "$1:"|awk '{print $3"000"}'
-echo 0
-uptime|sed 's,.*up ,,'|sed 's/, [0-9]* users.*//'
-hostname

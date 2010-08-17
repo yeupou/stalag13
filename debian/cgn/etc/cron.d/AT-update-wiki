@@ -1,2 +1,0 @@
-*/10 * * * *	root	/usr/local/bin/AT-server.update-wiki.pl
-
