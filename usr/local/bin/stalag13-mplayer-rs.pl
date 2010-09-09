@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use strict;
+use POSIX qw/setsid/;
 
 # kills redshift before starting, put it back afterwards
 system("killall",
@@ -11,13 +12,22 @@ system("killall",
 system("mplayer", 
        @ARGV);
 
-# when mplayer died, restart redshift, with nohup so it is kept up even
+# when mplayer dies, restart redshift, with nohup so it is kept up even
 # if this script was called in a xterm killed afterwards.
-exec("nohup",
-     "redshift",
+# (actually, mimic nohup but do not use it)
+#     spawn a child,
+fork();
+#     die parent
+exit 0;
+#     free the child
+setsid();
+#     deal with STDIN/STDOUT
+open(STDIN, "</dev/null");
+open(STDOUT, ">/dev/null");
+open(STDERR, ">&STDOUT");
+#     exec redshift
+exec("redshift",
      "-l 48.799:2.505",
-     "-t 6500:9300",
-     ">/dev/null",
-     "2>/dev/null");
+     "-t 6500:9300");
 
 # EOF
