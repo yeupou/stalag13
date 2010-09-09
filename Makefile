@@ -29,7 +29,7 @@ install: clean
 	done
 	mkdir -p $(PREFIX)usr/bin $(PREFIX)usr/local/bin
 	for content in $(PREFIX)usr/local/bin/stalag13-* ; do \
-		cd $(PREFIX)usr/local/bin/ && ln -s $$content `echo $$content | sed s/^stalag13-//g | sed s/\\.[^.]*\\$//g`; \
+		cd $(PREFIX)usr/local/bin/ && ln -s $$content `echo $$content | sed s/^stalag13-//g | sed s/\\.[^.]*\\$$//g`; \
 	done
 #	ln -s /usr/bin/juk $(PREFIX)usr/local/bin/xmms
 #	rm -rf /usr/src/cgn
