@@ -2,7 +2,7 @@
 use strict;
 use POSIX qw/setsid/;
 
-# kills redshift before starting, put it back afterwards
+# shut down redshift
 system("killall",
        "-TERM",
        "redshift");
@@ -16,16 +16,16 @@ system("mplayer",
 # if this script was called in a xterm killed afterwards.
 # (actually, mimic nohup but do not use it)
 #     spawn a child,
-fork();
+my $pid = fork();
 #     die parent
-exit 0;
+exit 0 if $pid;
 #     free the child
 setsid();
 #     deal with STDIN/STDOUT
 open(STDIN, "</dev/null");
 open(STDOUT, ">/dev/null");
 open(STDERR, ">&STDOUT");
-#     exec redshift
+#     make it redshift
 exec("redshift",
      "-l 48.799:2.505",
      "-t 6500:9300");
