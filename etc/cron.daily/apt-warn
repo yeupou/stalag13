@@ -110,14 +110,14 @@ while (my ($pack, $latest) = each(%latest_candidates)) {
 ## not yet advertised 
 if (scalar(@latest_candidates_output)) {
     # Newly available
-    print "Follows ".scalar(@latest_candidates_output)." newly updated package(s) that could upgraded on ".hostname().":\n";
+    print "Follows ".scalar(@latest_candidates_output)." newly updated package(s) that you could upgrade on ".hostname().":\n";
     for (sort(@latest_candidates_output)) {
 	print "\t$_\n";
     }
 
     # Previously available
     if (scalar(@previous_candidates_output)) {
-	print "\n\nFollows ".scalar(@previous_candidates_output)." recently updated package(s) that also could upgraded:\n";
+	print "\n\nFollows ".scalar(@previous_candidates_output)." recently updated package(s) that you also could upgrade:\n";
 	
 	for (sort(@previous_candidates_output)) {
 	    print "\t$_\n";
