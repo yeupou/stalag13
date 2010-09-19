@@ -1,0 +1,129 @@
+#!/usr/bin/perl
+#
+# Copyright (c) 2010 Mathieu Roy <yeupou--gnu.org>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+#   USA
+
+use strict;
+use warnings;
+use Sys::Hostname;
+
+
+## Get list of packages now in /var/lib/dpkg/status
+# FIXME: would be more portable using AptPkg interface
+my @installed_packages;
+# usual dpkg location
+my $dpkg_status = "/var/lib/dpkg/status";
+open(DPKG_STATUS, $dpkg_status) or die "Unable to open $dpkg_status.\n\nStopped";
+local $/ = '';
+while (<DPKG_STATUS>) {
+    if (/^Package: / ... /^$/) {
+	# Do not bother if not installed
+	next unless /^Status: install ok installed$/m;
+	# Figure out the package name
+	my ($pack) = /^Package: (.*)$/m;
+	push(@installed_packages, $pack);
+    }
+}
+close(DPKG_STATUS);
+@installed_packages = sort(@installed_packages);
+
+## Defines a sub that returns a list of packages that should
+## be upgraded according to current cache
+my %installed_version;
+sub UpgradeCandidatesList {
+    my %list;
+
+    use AptPkg::Config '$_config';
+    use AptPkg::System '$_system';
+    use AptPkg::Cache;
+    (my $self = $0) =~ s#.*/##;
+    # initialise the global config object with the default values and
+    # setup the $_system object
+    $_config->init;
+    $_system = $_config->system;
+    # supress cache building messages
+    $_config->{quiet} = 2;
+    # set up the cache
+    my $cache = AptPkg::Cache->new;
+    my $policy = $cache->policy;
+
+    for (@installed_packages) {
+	my $pack = $cache->{$_};
+	
+	# Skip if not enough version info found
+	unless ($pack && $pack->{CurrentVer}) {
+	    warn "Not enough info about package $_!\n";
+	    next;
+	}
+	
+	# Compare current version and update candidate, add to the list if
+	# it diverges
+	if ($pack->{CurrentVer}{VerStr} ne $policy->candidate($pack)->{VerStr}) {
+	    $installed_version{$_} = $pack->{CurrentVer}{VerStr}; 
+	    $list{$_} = $policy->candidate($pack)->{VerStr};
+	}
+	
+    }
+    return %list;    
+}
+
+## Determines pending updates already known and advertised,
+## according to the current apt cache
+my %previous_candidates = UpgradeCandidatesList();
+
+## Silently updates cache and determines pending updates afterwards
+system("apt-get", "-qq", "update");
+my %latest_candidates = UpgradeCandidatesList();
+
+
+## Compares pending updates already known and advertised and new ones,
+## and fills list that will serves as output
+my @previous_candidates_output;
+my @latest_candidates_output;
+while (my ($pack, $latest) = each(%latest_candidates)) {
+    # Case of a package not yet known pending upgrade 
+    unless (exists($previous_candidates{$pack})) {
+	push(@latest_candidates_output, "$pack  (".$installed_version{$pack}." -> ".$latest.")");
+	next;
+    }
+    
+    # Then if we get here, case of a package pending upgrade already
+    # known as such
+    push(@previous_candidates_output, "$pack  (".$installed_version{$pack}." -> ".$latest.")");	      
+}
+
+## Finally, print relevant info, if there is at least one pendingpackage 
+## not yet advertised 
+if (scalar(@latest_candidates_output)) {
+    # Newly available
+    print "Follows ".scalar(@latest_candidates_output)." newly updated package(s) that could upgraded on ".hostname().":\n";
+    for (sort(@latest_candidates_output)) {
+	print "\t$_\n";
+    }
+
+    # Previously available
+    if (scalar(@previous_candidates_output)) {
+	print "\n\nFollows ".scalar(@previous_candidates_output)." recently updated package(s) that also could upgraded:\n";
+	
+	for (sort(@previous_candidates_output)) {
+	    print "\t$_\n";
+	}
+    }    
+}
+
+
+# EOF
