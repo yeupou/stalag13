@@ -35,6 +35,8 @@ if [ "$1" = "config" ]; then
 	echo 'AccessRequested.label Access requested'
 	echo 'AccessTelnet.label Telnet'
 	echo 'AccessSSH.label SSH'
+	echo 'AccessSMTPLocal.label SMTP (local)'
+	echo 'AccessSMTPExternal.label SMTP (external)'
 	echo 'AccessIMAP.label IMAP(s)'
 	echo 'AccessSamba.label Samba'
 	echo 'AccessIRC.label IRC'
@@ -48,6 +50,8 @@ awk 'BEGIN{c["IPBanned"]=0;c["AccessDenied"]=0;c["AccessRequested"]=0;c["AccessI
      /xinetd\[.* START: /{c["AccessRequested"]++}
      /xinetd\[.* (START|FAIL): imaps? from=/{c["AccessIMAP"]++}
      /xinetd\[.* (START|FAIL): ssh from=/{c["AccessSSH"]++}
+     /xinetd\[.* (START|FAIL): s?smtp_(loopback|intranet) from=/{c["AccessSMTPLocal"]++}
+     /xinetd\[.* (START|FAIL): s?smtp_(internet) from=/{c["AccessSMTPExternal"]++}
      /xinetd\[.* (START|FAIL): telnet from=/{c["AccessTelnet"]++}
      /xinetd\[.* (START|FAIL): s?ftp from=/{c["AccessFTP"]++}
      /xinetd\[.* (START|FAIL): irc from=/{c["AccessIRC"]++}
