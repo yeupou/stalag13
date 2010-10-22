@@ -52,7 +52,7 @@ sub _tuple {
 }
 
 sub _create_memcached {
-  my $config = "/etc/exim/memcached.conf";
+  my $config = "/etc/exim4/memcached.conf";
   my $namespace = 'exim:';  # set default namespace
   my $servers;
   if ( -f $config ) {
