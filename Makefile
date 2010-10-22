@@ -15,15 +15,15 @@ install: clean
 							for subsubsubcontent in $$subsubcontent/* ; do \
 								install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
 							done \
-						else \
+						elif [ -e $$subsubcontent ]; \
 							install $$subsubcontent $(PREFIX)$$subsubcontent ; \
 						fi \
 					done \
-				else \
+				elif [ -e $$subcontent ]; \
 					install $$subcontent $(PREFIX)$$subcontent; \
 				fi \
 			done \
-		else \
+		elif [ -e $$content ]; \
 			install $$content $(PREFIX)$$content; \
 		fi \
 	done
