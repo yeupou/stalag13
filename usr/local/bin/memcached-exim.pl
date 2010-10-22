@@ -18,7 +18,7 @@ sub check_greylist {
     $memd->replace($key, $val, $now + $expire);
     # Has exceeded the timeout, don't defer it
     if ( $now > $val + $timeout ) {
-      Exim::log_write("PASS GREYLIST: '$key'");
+      #Exim::log_write("PASS GREYLIST: '$key'");
       return(0);
     }
     #Exim::log_write("CONTINUE GREYLIST: '$key' still greylisted for " . ($val + $timeout - $now) . " seconds");
