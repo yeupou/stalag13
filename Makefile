@@ -7,23 +7,23 @@ WHOAMI = $(shell whoami)
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
 	for content in etc/* usr/* var/* ; do \
-		if [ -d $$content ] && [ `basename $$content` != "CVS" ]; then \
+		if [ -d $$content ]; then \
 			for subcontent in $$content/* ; do \
-				if [ -d $$subcontent ] && [ `basename $$subcontent` != "CVS" ]; then \
+				if [ -d $$subcontent ]; then \
 					for subsubcontent in $$subcontent/* ; do \
-						if [ -d $$subsubcontent ] && [ `basename $$subsubcontent` != "CVS" ]; then \
+						if [ -d $$subsubcontent ]; then \
 							for subsubsubcontent in $$subsubcontent/* ; do \
 								install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
 							done \
-						elif  [ `basename $$subsubcontent` != "CVS" ]; then \
+						else \
 							install $$subsubcontent $(PREFIX)$$subsubcontent ; \
 						fi \
 					done \
-				elif [ `basename $$subcontent` != "CVS" ]; then \
+				else \
 					install $$subcontent $(PREFIX)$$subcontent; \
 				fi \
 			done \
-		elif [ `basename $$content` != "CVS" ]; then \
+		else \
 			install $$content $(PREFIX)$$content; \
 		fi \
 	done
