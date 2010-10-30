@@ -53,18 +53,14 @@ my $host = "127.0.0.1:11211";
 my $sock = IO::Socket::INET->new(PeerAddr => $host,
                                  Proto    => 'tcp');
 die "Couldn't connect to $host\n" unless $sock;
-my %items;
+print $sock "stats\r\n";
 while (<$sock>) {
-    last if /^END/;
     chomp;
-    if (/^STAT\s+(\S*)\s+(.*)/) {
-	$items{$1} = $2;
+    if (/^STAT\s+curr_items\s+(.*)/) {
+	print "greylist.value $1\n";
+	last;
     }
-}
-foreach my $name (sort(keys(%items))) {
-    next unless $name eq "curr_items";
-    printf "greylist.value $items{$name}";
-    last;
+    last if /^END/;
 }
 
 ## Get SeeYouLater IP count
@@ -82,7 +78,6 @@ my $dbd = DBI->connect('DBI:mysql:database='.$db_name.':host='.$db_host,
 my $hop;
 $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
 $hop->execute;
-my $result = $hop->fetchrow_hashref();
-print "banned.value ".$hop->fetchrow_hashref();
+print "banned.value ".$hop->fetchrow;
 
 # EOF
