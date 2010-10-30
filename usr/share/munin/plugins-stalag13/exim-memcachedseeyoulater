@@ -68,7 +68,7 @@ foreach my $name (sort(keys(%items))) {
 }
 
 ## Get SeeYouLater IP count
-cdmy $conffile = "/etc/seeyoulater.conf.pl";
+my $conffile = "/etc/seeyoulater.conf.pl";
 our $db_host;
 our $db_name;
 our $db_user;
