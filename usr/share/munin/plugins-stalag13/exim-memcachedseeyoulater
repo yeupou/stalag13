@@ -89,7 +89,7 @@ if (-e "/usr/bin/seeyoulater-butcher") {
     my $hop;
     $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
     $hop->execute;
-    print "banned.value ".$hop->fetchrow;
+    print "banned.value ".$hop->fetchrow."\n";
 }
 
 # EOF
