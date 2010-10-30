@@ -1,0 +1,87 @@
+#!/usr/bin/perl -w
+#
+# Copyright (C) 2010 Mathieu Roy
+#
+# Count IP - in exim greylist with memcached
+#          - banned by SeeYouLater  
+#
+# Parameters supported:
+#
+#       config
+#       autoconf
+#
+# Magic markers:
+#%# family=auto
+#%# capabilities=autoconf
+
+use strict;
+
+if (defined $ARGV[0] and $ARGV[0] eq "autoconf") {
+    if (defined $ret) {
+	print "no ($ret)\n";
+	exit 1;
+    } else {
+	print "yes\n";
+	exit 0;
+    }
+}
+
+if (defined $ARGV[0] and $ARGV[0] eq "config") {
+
+    print "graph_title Filtered IPs\n";
+    print "graph_args --base 1000 -l 0\n";
+    print "graph_category exim\n";
+    print "graph_info This graph shows filtered IPs (banned by SeeYouLater or greylisted with memcached) count.\n";
+    print "graph_vlabel IPs\n";
+
+    print "greylist.label Greylisted\n";
+    print "greylist.info Greylisted (exim)\n";
+    print "greylist.draw STACK\n";
+
+    print "banned.label Banned\n";
+    print "banned.info Banned (all services)\n";
+    print "banned.draw AREA\n";
+    
+    exit 0;
+}
+
+## Memcached IP count
+# inspired by memcached-tool
+use IO::Socket::INET;
+my $host = "127.0.0.1:11211";
+my $sock = IO::Socket::INET->new(PeerAddr => $host,
+                                 Proto    => 'tcp');
+die "Couldn't connect to $host\n" unless $sock;
+my %items;
+while (<$sock>) {
+    last if /^END/;
+    chomp;
+    if (/^STAT\s+(\S*)\s+(.*)/) {
+	$items{$1} = $2;
+    }
+}
+foreach my $name (sort(keys(%items))) {
+    next unless $name eq "curr_items";
+    printf "greylist.value $items{$name}";
+    last;
+}
+
+## Get SeeYouLater IP count
+cdmy $conffile = "/etc/seeyoulater.conf.pl";
+our $db_host;
+our $db_name;
+our $db_user;
+our $db_password;
+do $conffile or die "Unable to run $conffile.\n Most commonly, it's a privilege issue.\n\nStopped";
+my $dbd = DBI->connect('DBI:mysql:database='.$db_name.':host='.$db_host,
+		       $db_user, 
+		       $db_password,
+		       { RaiseError => 1, AutoCommit => 1});
+my $hop;
+$hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
+$hop->execute;
+my $result = $hop->fetchrow_hashref();
+print "banned.value $result->{ip_address}\n";
+
+
+# EOF
