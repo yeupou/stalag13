@@ -88,7 +88,7 @@ if (-e "/usr/bin/seeyoulater-butcher") {
 			   $db_password,
 			   { RaiseError => 1, AutoCommit => 1});
     my $hop;
-    $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
+    $hop = $dbd->prepare("SELECT DISTINCT COUNT(ip_address) FROM ips");
     $hop->execute;
     print "banned.value ".$hop->fetchrow."\n";
 } else {
