@@ -42,11 +42,11 @@ if (defined $ARGV[0] and $ARGV[0] eq "config") {
 
     print "greylist.label Greylisted\n";
     print "greylist.info Greylisted (exim)\n";
-    print "greylist.draw STACK\n";
+    print "greylist.draw AREA\n";
 
     print "banned.label Banned\n";
     print "banned.info Banned (all services)\n";
-    print "banned.draw AREA\n";
+    print "banned.draw STACK\n";
     
     exit 0;
 }
