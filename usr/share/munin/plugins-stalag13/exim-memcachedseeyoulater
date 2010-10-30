@@ -16,6 +16,7 @@
 
 use strict;
 
+my $ret;
 if (defined $ARGV[0] and $ARGV[0] eq "autoconf") {
     if (defined $ret) {
 	print "no ($ret)\n";
