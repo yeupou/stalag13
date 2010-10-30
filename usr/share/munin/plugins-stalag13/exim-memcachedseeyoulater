@@ -31,7 +31,12 @@ if (defined $ARGV[0] and $ARGV[0] eq "config") {
 
     print "graph_title Filtered IPs\n";
     print "graph_args --base 1000 -l 0\n";
-    print "graph_category exim\n";
+    use Sys::Hostname;
+    if (hostname() eq "moe") {
+	print "graph_category Mail\n";
+    } else {
+	print "graph_category exim\n";
+    }
     print "graph_info This graph shows filtered IPs (banned by SeeYouLater or greylisted with memcached) count.\n";
     print "graph_vlabel IPs\n";
 
