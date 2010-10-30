@@ -68,6 +68,7 @@ foreach my $name (sort(keys(%items))) {
 }
 
 ## Get SeeYouLater IP count
+use DBI;
 my $conffile = "/etc/seeyoulater.conf.pl";
 our $db_host;
 our $db_name;
@@ -82,7 +83,6 @@ my $hop;
 $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
 $hop->execute;
 my $result = $hop->fetchrow_hashref();
-print "banned.value $result->{ip_address}\n";
-
+print "banned.value ".$hop->fetchrow_hashref();
 
 # EOF
