@@ -69,7 +69,8 @@ if (-e "/usr/bin/memcached") {
 	}
 	last if /^END/;
     }
-
+} else {
+    print "greylist.value \n";
 }
 
 ## Get SeeYouLater IP count
@@ -90,6 +91,8 @@ if (-e "/usr/bin/seeyoulater-butcher") {
     $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
     $hop->execute;
     print "banned.value ".$hop->fetchrow."\n";
+} else {
+    print "banned.value \n";
 }
 
 # EOF
