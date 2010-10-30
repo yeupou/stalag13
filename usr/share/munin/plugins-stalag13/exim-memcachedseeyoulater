@@ -48,36 +48,43 @@ if (defined $ARGV[0] and $ARGV[0] eq "config") {
 
 ## Memcached IP count
 # inspired by memcached-tool
-use IO::Socket::INET;
-my $host = "127.0.0.1:11211";
-my $sock = IO::Socket::INET->new(PeerAddr => $host,
-                                 Proto    => 'tcp');
-die "Couldn't connect to $host\n" unless $sock;
-print $sock "stats\r\n";
-while (<$sock>) {
-    chomp;
-    if (/^STAT\s+curr_items\s+(.*)/) {
-	print "greylist.value $1\n";
-	last;
+if (-e /usr/bin/memcached) {
+
+    use IO::Socket::INET;
+    my $host = "127.0.0.1:11211";
+    my $sock = IO::Socket::INET->new(PeerAddr => $host,
+				     Proto    => 'tcp');
+    die "Couldn't connect to $host\n" unless $sock;
+    print $sock "stats\r\n";
+    while (<$sock>) {
+	chomp;
+	if (/^STAT\s+curr_items\s+(.*)/) {
+	    print "greylist.value $1\n";
+	    last;
+	}
+	last if /^END/;
     }
-    last if /^END/;
+
 }
 
 ## Get SeeYouLater IP count
-use DBI;
-my $conffile = "/etc/seeyoulater.conf.pl";
-our $db_host;
-our $db_name;
-our $db_user;
-our $db_password;
-do $conffile or die "Unable to run $conffile.\n Most commonly, it's a privilege issue.\n\nStopped";
-my $dbd = DBI->connect('DBI:mysql:database='.$db_name.':host='.$db_host,
-		       $db_user, 
-		       $db_password,
-		       { RaiseError => 1, AutoCommit => 1});
-my $hop;
-$hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
-$hop->execute;
-print "banned.value ".$hop->fetchrow;
+if (-e /usr/bin/seeyoulater-butcher) {
+    
+    use DBI;
+    my $conffile = "/etc/seeyoulater.conf.pl";
+    our $db_host;
+    our $db_name;
+    our $db_user;
+    our $db_password;
+    do $conffile or die "Unable to run $conffile.\n Most commonly, it's a privilege issue.\n\nStopped";
+    my $dbd = DBI->connect('DBI:mysql:database='.$db_name.':host='.$db_host,
+			   $db_user, 
+			   $db_password,
+			   { RaiseError => 1, AutoCommit => 1});
+    my $hop;
+    $hop = $dbd->prepare("SELECT COUNT(ip_address) FROM ips");
+    $hop->execute;
+    print "banned.value ".$hop->fetchrow;
+}
 
 # EOF
