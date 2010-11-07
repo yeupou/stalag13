@@ -5,7 +5,7 @@ case "$1" in
    echo "Starting rtorrent..."
    # run screen as root, otherwise rtorrent would own a screen process
    # it cannot access to, due to /dev/pts/* acls.
-   screen -dmS rtorrent 'su --login rtorrent -c rtorrent'
+   screen -dmS rtorrent su --login rtorrent -c rtorrent
    ;;
   stop)
    echo "Stopping rtorrent..."
