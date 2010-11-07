@@ -3,7 +3,7 @@
 case "$1" in
   start)
    echo "Starting rtorrent..."
-    su rtorrent -c 'screen -dmS rtorrent rtorrent'
+    su --login rtorrent -c 'screen -dmS rtorrent rtorrent'
     ;;
   stop)
    echo "Stopping rtorrent..."
