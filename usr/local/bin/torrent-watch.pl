@@ -52,7 +52,7 @@ my @to_be_added;
 my %to_be_paused;
 my %marked_as_being_completed;
 my %marked_as_being_processed;
-my %newly_processed;
+
 opendir(WATCH, $watchdir);
 while (defined(my $file = readdir(WATCH))) {
     next if ($file eq "." or
@@ -75,7 +75,6 @@ while (defined(my $file = readdir(WATCH))) {
     # new .torrent file
     if ($suffix eq ".torrent") {
 	push(@to_be_added, $file);
-	$newly_processed{$hash} = $file;
 	next;
     }
 
@@ -94,7 +93,7 @@ while (defined(my $file = readdir(WATCH))) {
 	$marked_as_being_processed{$hash} = $file;
 	next;
     }
-    # marked as being processed
+    # marked as being completed
     if ($suffix eq ".hash+") {
 	$marked_as_being_completed{$hash} = $file;
 	next;
@@ -106,15 +105,6 @@ while (defined(my $file = readdir(WATCH))) {
     }
 }
 closedir(WATCH);
-
-# add new torrents
-foreach my $torrent (@to_be_added) {
-    print "$bin --add $watchdir/$torrent\n" if $debug;
-    system($bin,
-	   "--add",
-	   "$watchdir/$torrent");
-}
-unlink(@to_be_added);
 
 # update hashes of torrent beings processed,
 #  start/pause/remove if need be
@@ -137,7 +127,7 @@ while (<INFO>) {
     }
     
     # should be removed 
-    unless (-e "$watchdir/$file.hash" and !exists($newly_processed{$hash})) {
+    unless (-e "$watchdir/$file.hash") {
 	print "$bin --remove $hash\n" if $debug;
 	system($bin,
 	       "--remove",
@@ -152,16 +142,39 @@ while (<INFO>) {
 	   $hash)
 	unless $pause_all;
     $being_processed{$hash} = $file;
- 
-    # not yet noticed, add a hashfile
+}
+close(INFO);
+
+
+# add new torrents
+foreach my $torrent (@to_be_added) {
+    print "$bin --add $watchdir/$torrent\n" if $debug;
+    system($bin,
+	   "--add",
+	   "$watchdir/$torrent");
+}
+unlink(@to_be_added);
+open(INFO, "$bin --info |");
+while (<INFO>) {
+    # create the hashfile for the newly added torrents
+    next if -e "$watchdir/$file.hash+";
+    next if -e "$watchdir/$file.hash-";
     next if -e "$watchdir/$file.hash";
     print "echo $hash > $watchdir/$file.hash\n" if $debug;
     open(HASHFILE, "> $watchdir/$file.hash");
     print HASHFILE $hash;
-    close(HASHFILE);
+    close(HASHFILE); 
 
+    # start them
+    print "$bin --start $hash\n" if $debug and !$pause_all;
+    system($bin,
+	   "--start",
+	   $hash)
+	unless $pause_all;
+    $being_processed{$hash} = $file;
 }
 close(INFO);
+
 
 # Update/check status, warn of finished jobs and add README if necessary
 # (fix send mail when finished)
@@ -174,7 +187,8 @@ while (<STATUS>) {
     $file = $1 if /^([^\s]*)/;
     $percent = $2 if /^[^\s]*\s\(\d*\s.?iB\)\s\-\s(\d*\%)\s/;
 
-    print "mv $watchdir/$file.hash $watchdir/$file.hash+\n" if $debug;
+    print "$percent mv $watchdir/$file.hash $watchdir/$file.hash+\n" if $debug;
+
     # updated status file with an extra line break 
     print STATUSFILE $_."\n";
 }
