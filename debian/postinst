@@ -64,7 +64,8 @@ my @outdated_2010 = ("/etc/emacs/site-start.d/stalag13.el",
 		     "/etc/profile.d/tar.sh",
 		     "/etc/profile.d/ls.sh",
 		     "/etc/profile.d/aptall.sh",
-		     "/etc/profile.d/shell.sh");
+		     "/etc/profile.d/shell.sh",
+		     "/etc/init.d/rtorrent");
 
 
 

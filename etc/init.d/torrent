@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+   echo "Starting rtorrent..."
+   # run screen as root, otherwise rtorrent would own a screen process
+   # it cannot access to, due to /dev/pts/* acls.
+   screen -dmS torrent su --login torrent -c transmission-daemon -f
+   # configure
+   su --login torrent -c transmission-remote --folder /server/torrent/download/ --port-mapping --encryption preferred --download-unlimited --upload-limit 5 --enable-pex
+   ;;
+  stop)
+   echo "Stopping rtorrent..."
+   su --login torrent -c transmission-remote -q
+   screen -X "exit" torrent
+   ;;
+  *)
+   echo "Usage: $0 {start|stop}"
+   exit 1
+   ;;
+esac
+
+exit 0

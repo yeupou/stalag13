@@ -1,0 +1,26 @@
+# ~/watch syntax :
+#    $file.torrent		= torrent to be added
+#    $file.torrent-registered	= torrent known to transmission
+#
+#    $hash.$file.hash		= informative
+#    $hash.$file.hash-		= to be paused
+#    $hash.$file.hash--		= to be removed
+#
+#    all-			= pause all
+#
+# (note : $file may differ from the final torrent name, that's why 
+# we must work on hashes)
+
+# every minute, add new torrents, rename known ones as -register
+#* * * * *	torrent	    cd ~/watch && for torrent in *.torrent; do if [ -e "$torrent" ]; then transmission-remote -a "$torrent" ; fi; done
+
+
+# every minute, start any hash not specifically asked to be paused or removed
+#* * * * *	torrent	    cd ~/watch && for torrent in *.torrent; do if [ -e "$torrent" ]; then transmission-remote -a "$torrent" ; fi; done
+
+
+# every minute, pause flagged torrents with - at the end
+#* * * * *	torrent	    cd ~/watch && for torrent in *.torrent-registered-; do if [ -e "$torrent" ]; then transmission-remote -a "$torrent" && mv "$torrent" "$torrent"-registered; fi; done
+
+# every minute, remove flagged torrents with -- at the end
+#* * * * *	torrent	    cd ~/watch && for torrent in *.torrent; do if [ -e "$torrent" ]; then transmission-remote -a "$torrent" && mv "$torrent" "$torrent"-registered; fi; done
