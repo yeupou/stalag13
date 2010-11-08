@@ -20,11 +20,11 @@
 use strict "vars";
 use Fcntl ':flock';
 use POSIX qw(strftime);
+use Time::Local;
 use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote";
-my $log = "$watchdir/log";
 my $debug = 0;
 
 # ~/watch syntax :
@@ -68,7 +68,7 @@ closedir(PROC);
 die "transmission-daemon appears to be dead. Exit" unless $isup;
 
 # open log
-open(LOG, ">> $log");
+open(LOG, ">> $watchdir/$log");
 
 # examine ~/watch
 my $pause_all = 0;
