@@ -24,6 +24,7 @@ use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote";
+my $log = "$watchdir/log";
 my $debug = 0;
 
 # ~/watch syntax :
@@ -65,6 +66,9 @@ while (defined(my $pid = readdir(PROC))) {
 }
 closedir(PROC);
 die "transmission-daemon appears to be dead. Exit" unless $isup;
+
+# open log
+open(LOG, ">> $log");
 
 # examine ~/watch
 my $pause_all = 0;
@@ -133,6 +137,7 @@ while (<INFO>) {
     # should be paused
     if (exists($to_be_paused{$hash})) {
 	print "$bin --stop $hash\n" if $debug;
+	print LOG strftime "%c - pause $file\n", localtime;
 	system($bin,
 	       "--stop",
 	       $hash);
@@ -142,13 +147,14 @@ while (<INFO>) {
     # should be removed 
     unless (-e "$watchdir/$file.hash") {
 	print "$bin --remove $hash\n" if $debug;
+	print LOG strftime "%c - remove $file\n", localtime;
 	system($bin,
 	       "--remove",
 	       $hash);
 	next;
     }
 
-    # any other case, ask to start it
+    # any other case, ask to start it (dont log it, we do it everytime)
     print "$bin --start $hash\n" if $debug and !$pause_all;
     system($bin,
 	   "--start",
@@ -178,12 +184,14 @@ while (<INFO>) {
     next if -e "$watchdir/$file.hash-";
     next if -e "$watchdir/$file.hash";
     print "echo $hash > $watchdir/$file.hash\n" if $debug;
+    print LOG strftime "%c - add $file\n", localtime;
     open(HASHFILE, "> $watchdir/$file.hash");
     print HASHFILE $hash;
     close(HASHFILE); 
 
     # start them
     print "$bin --start $hash\n" if $debug and !$pause_all;
+    print LOG strftime "%c - start $file\n", localtime;
     system($bin,
 	   "--start",
 	   $hash)
@@ -207,6 +215,7 @@ while (<STATUS>) {
 
     if ($percent eq "100%") {
 	print "mv $file.hash $file.hash+\n" if $debug;
+	print LOG strftime "%c - completed $file\n", localtime;
 	# do not bother removing the torrent, it will be done 
 	# during next run
 	rename("$watchdir/$file.hash",
@@ -240,7 +249,9 @@ unless ($readme_exists) {
 while (my($hash, $file) = each (%marked_as_being_processed)) {
     next if exists($being_processed{$hash});
     print "rm $watchdir/$file\n" if $debug;
+    print LOG strftime "%c - [cleanup] remove $file\n", localtime;
     unlink("$watchdir/$file");
 }
 
+close(LOG);
 # EOF
