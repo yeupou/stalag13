@@ -29,7 +29,7 @@ stop_screen() {
 case "$1" in
     start)
 	echo "Starting torrent..."
-	stop_screen # we shouldn't have concurrent screen sessions
+	stop_screen > /dev/null # we shouldn't have concurrent screen sessions
 	start_transmission
 	configure_transmission
 	;;
