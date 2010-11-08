@@ -38,11 +38,15 @@ case "$1" in
 	stop_transmission
 	stop_screen
 	;;
-    restart|force-reload)
-	echo "Restarting/reloading torrent..."
+    restart)
+	echo "Restarting torrent..."
 	stop_transmission
 	stop_screen	
 	start_transmission
+	configure_transmission
+	;;
+    force-reload)
+	echo "Reloading torrent..."
 	configure_transmission
 	;;
     status)
