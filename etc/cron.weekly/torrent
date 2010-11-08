@@ -1,9 +1,8 @@
 #!/bin/sh
 
 if [ `hostname` = "moe" ]; then
-    su torrent
-    cd ~/.config/transmission/blocklists
-    wget -O btlevel1.gz http://list.iblocklist.com/?list=bt_level1
-    wget -O nexus23.gz http://list.iblocklist.com/?list=nxs23_ipfilterx
-    gunzip -f btlevel1.gz nexus23.gz
+    cd /home/torrent/.config/transmission/blocklists
+    su torrent -c "wget -O btlevel1.gz http://list.iblocklist.com/?list=bt_level1"
+    su torrent -c "wget -O nexus23.gz http://list.iblocklist.com/?list=nxs23_ipfilterx"
+    su torrent -c "gunzip -f btlevel1.gz nexus23.gz"
 fi
