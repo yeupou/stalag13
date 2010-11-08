@@ -45,6 +45,27 @@ chdir($watchdir) or die "Unable to enter $watchdir. Exit";
 open(LOCK, "< $0") or die "Failed to ask lock. Exit";
 flock(LOCK, LOCK_EX | LOCK_NB) or exit;
 
+# check whether transmission-daemon is up
+my $isup = 0;
+opendir(PROC, "/proc");
+while (defined(my $pid = readdir(PROC))) {
+    # not a process if not a directory
+    next unless -d "/proc/$pid";
+    # not a process if not containing cmdline
+    next unless -e "/proc/$pid/cmdline";
+    # look out for transmission-daemon
+    open(PID, "< /proc/$pid/cmdline");
+    while (<PID>) {
+	# with or without path
+	next unless m/^transmission-daemon/ or m/^\/usr\/bin\/transmission-daemon/;
+	$isup = 1;
+	last;
+    }
+    close(PID);
+}
+closedir(PROC);
+die "transmission-daemon appears to be dead. Exit" unless $isup;
+
 # examine ~/watch
 my $pause_all = 0;
 my $readme_exists = 0;
