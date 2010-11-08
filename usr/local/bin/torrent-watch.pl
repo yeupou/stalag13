@@ -217,7 +217,7 @@ unless ($readme_exists) {
 while (my($hash, $file) = each (%marked_as_being_processed)) {
     next if exists($being_processed{$hash});
     print "rm $watchdir/$file\n" if $debug;
-#    unlink("$watchdir/$file");
+    unlink("$watchdir/$file");
 }
 
 # EOF
