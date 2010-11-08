@@ -181,8 +181,8 @@ my $count = 0;
 while (<STATUS>) {
     # check if completed at 100%
     my ($file, $percent);
-    $file = $1 if /^([^\s]*)/;
-    $percent = $1 if /^[^\s]*\s\(.*\s.?iB\)\s\-\s(\d*\%)\s/;
+    $file = $1 if /^([^\(]*)\s\(.*\s.?iB\)/;
+    $percent = $1 if /\s\(.*\s.?iB\)\s\-\s(\d*\%)\s/;
 
     if ($percent eq "100%") {
 	print "mv $file.hash $file.hash+\n" if $debug;
