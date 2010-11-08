@@ -24,7 +24,7 @@ use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote";
-my $debug = 1;
+my $debug = 0;
 
 # ~/watch syntax :
 #    $file.torrent = torrent to be added
@@ -50,7 +50,6 @@ my $pause_all = 0;
 my $readme_exists = 0;
 my @to_be_added;
 my %to_be_paused;
-my %marked_as_being_completed;
 my %marked_as_being_processed;
 
 opendir(WATCH, $watchdir);
@@ -93,11 +92,6 @@ while (defined(my $file = readdir(WATCH))) {
 	$marked_as_being_processed{$hash} = $file;
 	next;
     }
-    # marked as being completed
-    if ($suffix eq ".hash+") {
-	$marked_as_being_completed{$hash} = $file;
-	next;
-    }
     # to be paused
     if ($suffix eq ".hash-") {
 	$to_be_paused{$hash} = $file;
@@ -113,9 +107,6 @@ open(INFO, "$bin --info |");
 while (<INFO>) {
     # output format: $hash $file
     my ($hash, $file) = split(" ", $_);
-
-    # previously marked as completed, ignore completely
-    next if "$watchdir/$file.hash+";
 
     # should be paused
     if (exists($to_be_paused{$hash})) {
@@ -156,6 +147,9 @@ foreach my $torrent (@to_be_added) {
 unlink(@to_be_added);
 open(INFO, "$bin --info |");
 while (<INFO>) {
+    # output format: $hash $file
+    my ($hash, $file) = split(" ", $_);
+
     # create the hashfile for the newly added torrents
     next if -e "$watchdir/$file.hash+";
     next if -e "$watchdir/$file.hash-";
@@ -181,13 +175,26 @@ close(INFO);
 open(STATUS, "$bin --list |");
 open(STATUSFILE, "> $watchdir/status");
 print STATUSFILE "Last run: ", strftime "%c\n\n", localtime;
+my $count = 0;
 while (<STATUS>) {
     # check if completed at 100%
-    my $file;
+    my ($file, $percent);
     $file = $1 if /^([^\s]*)/;
-    $percent = $2 if /^[^\s]*\s\(\d*\s.?iB\)\s\-\s(\d*\%)\s/;
+    $percent = $1 if /^[^\s]*\s\(.*\s.?iB\)\s\-\s(\d*\%)\s/;
 
-    print "$percent mv $watchdir/$file.hash $watchdir/$file.hash+\n" if $debug;
+    if ($percent eq "100%") {
+	print "mv $file.hash $file.hash+\n" if $debug;
+	# do not bother removing the torrent, it will be done 
+	# during next run
+	rename("$watchdir/$file.hash",
+	       "$watchdir/$file.hash+");
+	
+	# warn (it should send a mail, if cron is properly configured)
+	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
+	    unless $count;
+	print $_."\n";
+	$count++;
+    }
 
     # updated status file with an extra line break 
     print STATUSFILE $_."\n";
@@ -210,7 +217,7 @@ unless ($readme_exists) {
 while (my($hash, $file) = each (%marked_as_being_processed)) {
     next if exists($being_processed{$hash});
     print "rm $watchdir/$file\n" if $debug;
-    unlink("$watchdir/$file");
+#    unlink("$watchdir/$file");
 }
 
 # EOF
