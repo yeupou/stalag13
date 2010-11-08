@@ -89,7 +89,8 @@ while (defined(my $file = readdir(WATCH))) {
 
     next if ($file eq "README" or
 	     $file eq "all-" or
-	     $file eq "status");
+	     $file eq "status" or
+	     $file eq "log");
 
     # find out suffix, ignore file if none found
     my $suffix = 0;
