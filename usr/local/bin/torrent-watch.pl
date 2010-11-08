@@ -24,13 +24,13 @@ use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote";
-my $debug = 0;
+my $debug = 1;
 
 # ~/watch syntax :
 #    $file.torrent = torrent to be added
-#    $realfile.hash = contains the hash, being processed
+#    $realfile.hash = being processed (delete it to remove the torrent) 
 #    $realfile.hash- = to be paused
-#    $realfile.hash-- = to be removed
+#    $realfile.hash+ = (supposedly) completed
 #    all- = pause all 
 
 # check if we are running with torrent user (not with getlogin() because
@@ -50,8 +50,9 @@ my $pause_all = 0;
 my $readme_exists = 0;
 my @to_be_added;
 my %to_be_paused;
-my %to_be_removed;
+my %marked_as_being_completed;
 my %marked_as_being_processed;
+my %newly_processed;
 opendir(WATCH, $watchdir);
 while (defined(my $file = readdir(WATCH))) {
     next if ($file eq "." or
@@ -74,6 +75,7 @@ while (defined(my $file = readdir(WATCH))) {
     # new .torrent file
     if ($suffix eq ".torrent") {
 	push(@to_be_added, $file);
+	$newly_processed{$hash} = $file;
 	next;
     }
 
@@ -92,14 +94,14 @@ while (defined(my $file = readdir(WATCH))) {
 	$marked_as_being_processed{$hash} = $file;
 	next;
     }
+    # marked as being processed
+    if ($suffix eq ".hash+") {
+	$marked_as_being_completed{$hash} = $file;
+	next;
+    }
     # to be paused
     if ($suffix eq ".hash-") {
 	$to_be_paused{$hash} = $file;
-	next;
-    }
-    # to removed
-    if ($suffix eq ".hash--") {
-	$to_be_removed{$hash} = $file;
 	next;
     }
 }
@@ -121,7 +123,10 @@ open(INFO, "$bin --info |");
 while (<INFO>) {
     # output format: $hash $file
     my ($hash, $file) = split(" ", $_);
-    
+
+    # previously marked as completed, ignore completely
+    next if "$watchdir/$file.hash+";
+
     # should be paused
     if (exists($to_be_paused{$hash})) {
 	print "$bin --stop $hash\n" if $debug;
@@ -132,12 +137,11 @@ while (<INFO>) {
     }
     
     # should be removed 
-    if (exists($to_be_removed{$hash})) {
+    unless (-e "$watchdir/$file.hash" and !exists($newly_processed{$hash})) {
 	print "$bin --remove $hash\n" if $debug;
-        system($bin,
+	system($bin,
 	       "--remove",
 	       $hash);
-	unlink($to_be_removed{$hash});
 	next;
     }
 
@@ -159,13 +163,19 @@ while (<INFO>) {
 }
 close(INFO);
 
-# Update status and add README if necessary
+# Update/check status, warn of finished jobs and add README if necessary
 # (fix send mail when finished)
 open(STATUS, "$bin --list |");
 open(STATUSFILE, "> $watchdir/status");
 print STATUSFILE "Last run: ", strftime "%c\n\n", localtime;
 while (<STATUS>) {
-    # add extra line break
+    # check if completed at 100%
+    my $file;
+    $file = $1 if /^([^\s]*)/;
+    $percent = $2 if /^[^\s]*\s\(\d*\s.?iB\)\s\-\s(\d*\%)\s/;
+
+    print "mv $watchdir/$file.hash $watchdir/$file.hash+\n" if $debug;
+    # updated status file with an extra line break 
     print STATUSFILE $_."\n";
 }
 close(STATUS);
@@ -173,14 +183,16 @@ close(STATUSFILE);
 
 unless ($readme_exists) {
     open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed (for reference - not required)\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
+    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed (delete it to remove the torrent)\n \$realfile.hash- = to be paused\n \$realfile.hash+ = (supposedly) completed\n all- = pause all\n";
     close(README);
 }
 
 
 
+
+
 # cleanups
-# (remove hashes of removed torrents, etc)
+# (remove hashes of torrents removed by any other mean, etc)
 while (my($hash, $file) = each (%marked_as_being_processed)) {
     next if exists($being_processed{$hash});
     print "rm $watchdir/$file\n" if $debug;
