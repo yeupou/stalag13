@@ -14,13 +14,13 @@
 start_transmission() {
     # run screen as root, otherwise rtorrent would own a screen process
     # it cannot access to, due to /dev/pts/* acls.
-    screen -dmS torrent su --login torrent -c transmission-daemon -f
+    screen -dmS torrent su --login torrent -c "transmission-daemon -f"
 }
 configure_transmission() {
-    su --login torrent -c transmission-remote --folder /server/torrent/download/ --port-mapping --encryption preferred --download-unlimited --upload-limit 5 --enable-pex
+    su --login torrent -c "transmission-remote --folder /server/torrent/download/ --port-mapping --encryption preferred --download-unlimited --upload-limit 5 --enable-pex"
 }
 stop_transmission() {
-    su --login torrent -c transmission-remote -q
+    su --login torrent -c "transmission-remote -q"
 }
 stop_screen() {
     screen -X "exit" torrent
