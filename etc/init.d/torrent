@@ -43,7 +43,7 @@ case "$1" in
 	stop_transmission
 	stop_screen	
 	start_transmission
-	configure_transmission
+	sleep 5s && configure_transmission & # time for the daemon to start
 	;;
     force-reload)
 	echo "Reloading torrent..."
