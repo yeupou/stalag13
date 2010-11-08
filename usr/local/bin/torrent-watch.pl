@@ -20,7 +20,6 @@
 use strict "vars";
 use Fcntl ':flock';
 use POSIX qw(strftime);
-use Time::Local;
 use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
