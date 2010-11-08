@@ -5,4 +5,7 @@ if [ `hostname` = "moe" ]; then
     su torrent -c "wget -O btlevel1.gz http://list.iblocklist.com/?list=bt_level1"
     su torrent -c "wget -O nexus23.gz http://list.iblocklist.com/?list=nxs23_ipfilterx"
     su torrent -c "gunzip -f btlevel1.gz nexus23.gz"
+    /etc/init.d/torrent stop
+    sleep 15s
+    /etc/init.d/torrent start
 fi
