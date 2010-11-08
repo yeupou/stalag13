@@ -47,7 +47,7 @@ case "$1" in
 	;;
     status)
 	# quite crude
-	ps aux | grep tranmission
+	ps aux | grep transmission
 	;;
     *)
 	echo "Usage: $0 {start|stop|restart|force-reload|status}"
