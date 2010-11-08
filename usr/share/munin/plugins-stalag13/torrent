@@ -24,8 +24,8 @@ cd /home/torrent/watch
 
 echo active.value `ls *.hash -1 2>/dev/null | wc -l`
 if [ ! -e "all-" ]; then 
-    echo pause.value `ls *.hash- -1 2>/dev/null | wc -l`
+    echo paused.value `ls *.hash- -1 2>/dev/null | wc -l`
 else
-    echo pause.value `ls *.hash *.hash- -1 2>/dev/null | wc -l`
+    echo paused.value `ls *.hash *.hash- -1 2>/dev/null | wc -l`
 fi
 echo completed.value `ls *.hash+ -1 2>/dev/null | wc -l`
