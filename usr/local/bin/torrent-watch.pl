@@ -173,7 +173,7 @@ close(STATUSFILE);
 
 unless ($readme_exists) {
     open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
+    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed (for reference - not required)\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
     close(README);
 }
 
