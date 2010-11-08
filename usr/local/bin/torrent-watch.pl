@@ -106,7 +106,8 @@ my %being_processed;
 open(INFO, "$bin --info |");
 while (<INFO>) {
     # output format: $hash $file
-    my ($hash, $file) = split(" ", $_);
+    my ($hash, $file);
+    if (/^([^\s]*)\s(.*)$/) { $hash = $1; $file = $2; }
 
     # should be paused
     if (exists($to_be_paused{$hash})) {
@@ -148,7 +149,8 @@ unlink(@to_be_added);
 open(INFO, "$bin --info |");
 while (<INFO>) {
     # output format: $hash $file
-    my ($hash, $file) = split(" ", $_);
+    my ($hash, $file);
+    if (/^([^\s]*)\s(.*)$/) { $hash = $1; $file = $2; }
 
     # create the hashfile for the newly added torrents
     next if -e "$watchdir/$file.hash+";
