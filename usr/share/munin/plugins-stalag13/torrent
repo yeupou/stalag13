@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+if [ "$1" = "config" ]; then
+    echo "graph_title Torrents
+graph_args --base 1000 -l 0
+graph_vlabel number of torrents
+graph_category Storage
+graph_info This graph shows how many torrents are active
+active.label Active
+active.draw AREA
+paused.label Paused
+paused.draw STACK
+completed.label Completed
+completed.draw STACK
+"
+    exit 0
+fi
+
+cd /home/torrent/watch
+
+echo active.value `ls *.hash -1 2>/dev/null | wc -l`
+if [ ! -e "all-" ]; then 
+    echo pause.value `ls *.hash- -1 2>/dev/null | wc -l`
+else
+    echo pause.value `ls *.hash *.hash- -1 2>/dev/null | wc -l`
+fi
+echo completed.value `ls *.hash+ -1 2>/dev/null | wc -l`
