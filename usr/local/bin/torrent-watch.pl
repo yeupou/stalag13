@@ -19,6 +19,7 @@
 
 use strict "vars";
 use Fcntl ':flock';
+use POSIX qw(strftime);
 use File::Basename;
 
 my $watchdir = "/home/torrent/watch";
@@ -60,6 +61,11 @@ while (defined(my $file = readdir(WATCH))) {
     $readme_exists = 1 if $file eq "README";
     # check whether pause all is required
     $pause_all = 1 if $file eq "all-";
+
+    next if ($file eq "README" or
+	     $file eq "all-" or
+	     $file eq "status");
+
     # find out suffix, ignore file if none found
     my $suffix = 0;
     $suffix = $1 if $file =~ /^.*(\.[^.]*)$/;
@@ -153,6 +159,26 @@ while (<INFO>) {
 }
 close(INFO);
 
+# Update status and add README if necessary
+# (fix send mail when finished)
+open(STATUS, "$bin --list |");
+open(STATUSFILE, "> $watchdir/status");
+print STATUSFILE "Last run: ", strftime "%c\n\n", localtime;
+while (<STATUS>) {
+    # add extra line break
+    print STATUSFILE $_."\n";
+}
+close(STATUS);
+close(STATUSFILE);
+
+unless ($readme_exists) {
+    open(README, "> $watchdir/README");
+    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
+    close(README);
+}
+
+
+
 # cleanups
 # (remove hashes of removed torrents, etc)
 while (my($hash, $file) = each (%marked_as_being_processed)) {
@@ -160,12 +186,5 @@ while (my($hash, $file) = each (%marked_as_being_processed)) {
     print "rm $watchdir/$file\n" if $debug;
     unlink("$watchdir/$file");
 }
-
-unless ($read_exists) {
-    open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
-    close(README);
-}
-
 
 # EOF
