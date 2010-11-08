@@ -68,7 +68,7 @@ closedir(PROC);
 die "transmission-daemon appears to be dead. Exit" unless $isup;
 
 # open log
-open(LOG, ">> $watchdir/$log");
+open(LOG, ">> $watchdir/log");
 
 # examine ~/watch
 my $pause_all = 0;
