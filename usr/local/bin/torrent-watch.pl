@@ -161,9 +161,11 @@ while (my($hash, $file) = each (%marked_as_being_processed)) {
     unlink("$watchdir/$file");
 }
 
-open(README, "> $watchdir/README");
-print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
-close(README);
+unless ($read_exists) {
+    open(README, "> $watchdir/README");
+    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.hash =  being processed\n \$realfile.hash- = to be paused\n \$realfile.hash-- = to be removed\n all- = pause all\n";
+    close(README);
+}
 
 
 # EOF
