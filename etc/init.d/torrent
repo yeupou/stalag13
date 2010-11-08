@@ -31,7 +31,7 @@ case "$1" in
 	echo "Starting torrent..."
 	stop_screen > /dev/null # we shouldn't have concurrent screen sessions
 	start_transmission
-	configure_transmission
+	sleep 5s && configure_transmission & # time for the daemon to start
 	;;
     stop)
 	echo "Stopping torrent..."
