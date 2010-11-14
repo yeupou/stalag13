@@ -64,7 +64,17 @@ while (defined(my $pid = readdir(PROC))) {
     close(PID);
 }
 closedir(PROC);
-die "transmission-daemon appears to be dead. Exit" unless $isup;
+unless ($isup) {
+    unless (-e "$watchdir/.down") {
+	# send warning only once (dont want more than one mail to be sent)
+	system("/usr/bin/touch", "$watchdir/.down");
+	die "transmission-daemon appears to be dead. Exit";
+    }
+    # otherwise, silently exit
+    exit;
+}
+unlink("$watchdir/.down") if -e "$watchdir/.down";
+
 
 # open log
 open(LOG, ">> $watchdir/log");
