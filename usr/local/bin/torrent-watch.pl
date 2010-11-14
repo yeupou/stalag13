@@ -64,7 +64,7 @@ while (defined(my $pid = readdir(PROC))) {
     close(PID);
 }
 closedir(PROC);
-unless ($isup) {
+sunless ($isup) {
     unless (-e "$watchdir/.down") {
 	# send warning only once (dont want more than one mail to be sent)
 	system("/usr/bin/touch", "$watchdir/.down");
