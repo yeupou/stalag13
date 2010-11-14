@@ -64,7 +64,7 @@ while (defined(my $pid = readdir(PROC))) {
     close(PID);
 }
 closedir(PROC);
-sunless ($isup) {
+unless ($isup) {
     unless (-e "$watchdir/.down") {
 	# send warning only once (dont want more than one mail to be sent)
 	system("/usr/bin/touch", "$watchdir/.down");
@@ -73,7 +73,11 @@ sunless ($isup) {
     # otherwise, silently exit
     exit;
 }
-unlink("$watchdir/.down") if -e "$watchdir/.down";
+# warn if back online after failure to run
+if (-e "$watchdir/.down") {
+    print "transmission-daemon is back on line, resuming watch.\n";
+    unlink("$watchdir/.down");
+}
 
 
 # open log
