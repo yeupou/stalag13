@@ -45,6 +45,9 @@ chdir($watchdir) or die "Unable to enter $watchdir. Exit";
 open(LOCK, "< $0") or die "Failed to ask lock. Exit";
 flock(LOCK, LOCK_EX | LOCK_NB) or exit;
 
+# open log
+open(LOG, ">> $watchdir/log");
+
 # check whether transmission-daemon is up
 my $isup = 0;
 opendir(PROC, "/proc");
@@ -68,6 +71,7 @@ unless ($isup) {
     unless (-e "$watchdir/.down") {
 	# send warning only once (dont want more than one mail to be sent)
 	system("/usr/bin/touch", "$watchdir/.down");
+	print LOG strftime "%c - transmission-daemon appears to be dead\n", localtime;
 	die "transmission-daemon appears to be dead. Exit";
     }
     # otherwise, silently exit
@@ -76,12 +80,9 @@ unless ($isup) {
 # warn if back online after failure to run
 if (-e "$watchdir/.down") {
     print "transmission-daemon is back on line, resuming watch.\n";
+    print LOG strftime "%c - transmission-daemon is back on line, resuming watch\n", localtime;
     unlink("$watchdir/.down");
 }
-
-
-# open log
-open(LOG, ">> $watchdir/log");
 
 # examine ~/watch
 my $pause_all = 0;
