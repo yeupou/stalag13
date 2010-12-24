@@ -10,3 +10,10 @@ Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4
 Description: Stuff useful on stalag13 computers.
  .
  Homepage: https://www.stalag13.ici
+
+Package: stalag13-utils-extra
+Architecture: all
+Depends: stalag13-utils
+Description: Stuff maybe useful on stalag13 computers.
+ .
+ Homepage: https://www.stalag13.ici
