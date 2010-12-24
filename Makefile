@@ -65,7 +65,7 @@ clean:
 
 clean-prev-dir:
 	rm -f ../cgn_* ../cgn-depends_* 
-	rm -f ../stalag13-utils_* ../stalag13-utils-depends_* 
+	rm -f ../stalag13-utils_* ../stalag13-utils-depends_* ../stalag13-utils-extra_*
 
 clean-deb-dir:
 #CGN	ssh gate "rm -f /stock/debian/stable-all/cgn_* /stock/debian/stable-all/cgn-depends_*"
