@@ -11,15 +11,13 @@
 # Short-Description: Start torrent in a screen session
 ### END INIT INFO
 
-# For tranmission 2.03
-
 start_transmission() {
     # run screen as root, otherwise rtorrent would own a screen process
     # it cannot access to, due to /dev/pts/* acls.
     screen -dmS torrent su --login torrent -c "transmission-daemon -f"
 }
 configure_transmission() {
-    su --login torrent -c "transmission-remote --download-dir /server/torrent/download/ --no-incomplete-dir --dht --portmap --encryption-preferred --no-downlimit --uplimit 5 --pex"
+    su --login torrent -c "transmission-remote --folder /server/torrent/download/ --port-mapping --encryption preferred --download-unlimited --upload-limit 5 --enable-pex"
 }
 stop_transmission() {
     su --login torrent -c "transmission-remote -q"
