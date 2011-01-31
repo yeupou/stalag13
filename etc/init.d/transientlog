@@ -24,6 +24,8 @@ SOLIDDIR=/var/.log-solid
 #   1 if transient log was already running
 #   2 if transient log could not be started
 
+NAME=varlog
+DESC=$NAME
 RAMNAME=`echo $RAMDIR | sed s@/@@g`
 RAMLOCK=$RAMDIR/.ramfs
 
@@ -120,9 +122,9 @@ case "$1" in
 	;;
   status)
   	if [ -f $RAMLOCK ]; then
-		echo "$DESC is running"
+		echo "tmpfs varlog is on"
 	else
-		echo "$DESC is stopped"
+		echo "tmpfs varlog is off"
 		exit 1
 	fi
 	;;
