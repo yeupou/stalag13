@@ -3,6 +3,7 @@
 ### BEGIN INIT INFO
 # Provides:          varlog
 # Required-Start:    $local_fs
+# Required-Stop: $local_fs
 # X-Start-Before:  $syslog
 # X-Stop-After:    $syslog
 # Default-Start:     2 3 4 5
