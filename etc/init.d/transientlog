@@ -52,7 +52,7 @@ do_start()
 
     # if it worked ok, populate the ramdisk
     if [ $? -eq 0 ]; then
-	cp -rfp $SOLIDDIR/* $RAMDIR/
+	cp -rfp $SOLIDDIR -T $RAMDIR
 	touch $RAMLOCK
 	return 0
     fi
@@ -76,7 +76,7 @@ do_stop() {
 
         # Merge back to permanent storage
 	rm -f $RAMLOCK
-        cp -rfup $RAMDIR/* $SOLIDDIR/
+        cp -rfup $RAMDIR -T $SOLIDDIR
 
         umount -l $RAMDIR
         umount -l $SOLIDDIR
@@ -95,7 +95,7 @@ do_save() {
 
         # Merge back to permanent storage
 	rm -f $RAMLOCK
-        cp -rfup $RAMDIR/* $SOLIDDIR/
+        cp -rfup $RAMDIR -T $SOLIDDIR
 	touch $RAMLOCK
 
         return 0
