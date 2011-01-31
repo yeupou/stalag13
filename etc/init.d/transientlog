@@ -12,7 +12,8 @@
 # X-Interactive:   yes
 ### END INIT INFO
 
-# based on http://www.debian-administration.org/article/661/A_transient_/var/log
+# Based on
+# http://www.debian-administration.org/article/661/A_transient_/var/log
 # and debian tmpfs for /var/run and /var/lock
 
 # Config:
