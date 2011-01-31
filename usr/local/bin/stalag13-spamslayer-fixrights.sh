@@ -20,7 +20,7 @@
 if [ "`id -u`" != 0 ]; then echo "Only for root" && exit; fi
 
 MAILDIR="/home/klink/.Maildir/"
-AFFECTED_DIRS="$MAILDIR/.Poubelle.Spam/cur/ $MAILDIR/.Poubelle.Spam/new/ $MAILDIR/cur/ $MAILDIR/new/"
+AFFECTED_DIRS="$MAILDIR/Poubelle/Spam/cur/ $MAILDIR/Poubelle/Spam/new/ $MAILDIR/INBOX/cur/ $MAILDIR/INBOX/new/"
 
 for file in `find $AFFECTED_DIRS -type f`; do 
     chmod 640 $file; 

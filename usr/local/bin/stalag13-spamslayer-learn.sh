@@ -21,8 +21,8 @@ VALID_USER="Debian-exim"
 if [ `whoami` != $VALID_USER ]; then echo "Only for "$VALID_USER && exit; fi
 
 MAILDIR="/home/klink/.Maildir/"
-SPAM_DIRS="$MAILDIR/.Poubelle.Spam/cur/ $MAILDIR/.Poubelle.Spam/new/"
-HAM_DIRS="$MAILDIR/cur/ $MAILDIR/new/"
+SPAM_DIRS="$MAILDIR/Poubelle/Spam/cur/ $MAILDIR/Poubelle/Spam/new/"
+HAM_DIRS="$MAILDIR/INBOX/cur/ $MAILDIR/INBOX/new/"
 
 # SpamAssassin keeps tracks, so we can pass him everything as it comes
 /usr/bin/sa-learn --spam $SPAM_DIRS > /dev/null
