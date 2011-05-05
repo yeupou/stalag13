@@ -154,6 +154,7 @@ foreach my $torrent (@to_be_added) {
 	}
     }
     $added{$id} = 1;
+    print LOG strftime "%c - add $file (#$id)\n", localtime; 
 }
 unlink(@to_be_added);
 
@@ -189,7 +190,6 @@ while (<LIST>) {
 	$count++;
 
     }
-
 
     # should be paused
     if (exists($to_be_paused{$file})) {
