@@ -25,6 +25,7 @@ use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
 
+my $user = "debian-transmission";
 my $watchdir = "/server/torrent/watch";
 my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
 my $debug = 0;
@@ -38,7 +39,7 @@ my $debug = 0;
 
 # check if we are running with torrent user (not with getlogin() because
 # su often mess it up)
-die "This should not be started by ".(getpwuid($<))[0]." but torrent instead. Exit" unless ((getpwuid($<))[0] eq 'torrent');
+die "This should not be started by ".(getpwuid($<))[0]." but $user instead. Exit" unless ((getpwuid($<))[0] eq $user);
 
 # enter ~/watch
 chdir($watchdir) or die "Unable to enter $watchdir. Exit";
