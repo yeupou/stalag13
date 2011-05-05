@@ -231,7 +231,7 @@ open(LIST, "$bin --list |");
 while (<LIST>) { print STATUSFILE $_; }
 close(LIST);
 open(STATS, "$bin --session-stats |");
-while (<STATS>) { print STATUSFILE $_; }
+while (<STATS>) { last if /^TOTAL/; print STATUSFILE $_; }
 close(STATS);
 close(STATUSFILE);
 
