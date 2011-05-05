@@ -154,7 +154,7 @@ foreach my $torrent (@to_be_added) {
 	}
     }
     $added{$id} = 1;
-    print LOG strftime "%c - add $file (#$id)\n", localtime; 
+    print LOG strftime "%c - add $torrent (#$id)\n", localtime; 
 }
 unlink(@to_be_added);
 
