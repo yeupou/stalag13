@@ -215,9 +215,7 @@ while (<LIST>) {
     # for any processed file, update the info file 
     open(TRSFILE, "> $watchdir/$file.trs");
     open(INFO, "$bin --torrent $id --info |");
-    while (<INFO>) {
-	print TRSFILE $_;
-    }
+    while (<INFO>) { last if /^PIECES/; print TRSFILE $_; }
     close(INFO);
     close(TRSFILE); 
 
