@@ -25,7 +25,7 @@ use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
 
-my $watchdir = "/root/tmprm";
+my $watchdir = "/server/torrent/watch";
 my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
 my $debug = 0;
 
@@ -38,15 +38,15 @@ my $debug = 0;
 
 # check if we are running with torrent user (not with getlogin() because
 # su often mess it up)
-#die "This should not be started by ".(getpwuid($<))[0]." but torrent instead. Exit" unless ((getpwuid($<))[0] eq 'torrent');
+die "This should not be started by ".(getpwuid($<))[0]." but torrent instead. Exit" unless ((getpwuid($<))[0] eq 'torrent');
 
 # enter ~/watch
 chdir($watchdir) or die "Unable to enter $watchdir. Exit";
 
 # silently forbid concurrent runs
 # (http://perl.plover.com/yak/flock/samples/slide006.html)
-#open(LOCK, "< $0") or die "Failed to ask lock. Exit";
-#flock(LOCK, LOCK_EX | LOCK_NB) or exit;
+open(LOCK, "< $0") or die "Failed to ask lock. Exit";
+flock(LOCK, LOCK_EX | LOCK_NB) or exit;
 
 # open log
 open(LOG, ">> $watchdir/log");
