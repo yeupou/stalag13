@@ -125,8 +125,10 @@ while (defined(my $file = readdir(WATCH))) {
 
     # if we get here, we have a id-XX.trs file (contains infos about 
     # the torrent)
-    if ($realfile =~ /^\d.*\-(.*)$/) { $realfile = $1; }
+    if ($realfile =~ /^(\d.*\-)(.*)$/) { $prefix = $1; $realfile = $2; }
   
+    next unless $prefix;
+
     # being processed or should be started
     if ($suffix eq ".trs") {
 	$marked_as_being_processed{$realfile} = 1;
