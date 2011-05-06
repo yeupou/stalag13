@@ -178,7 +178,7 @@ while (<LIST>) {
     # obtain the real file nale
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { 
-	last if (/\s*Name\:\s*(.*)$/) { $file = $1; }
+	if (/\s*Name\:\s*(.*)$/) { $file = $1; last; }
 	last if /^TRANSFER/; 
     }
     close(INFO);
