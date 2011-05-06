@@ -113,9 +113,8 @@ while (defined(my $file = readdir(WATCH))) {
 
     # find out suffix, ignore file if none found
     my $suffix = 0;
-    my $prefix = 0;
     my $realfile;
-    if ($file =~ /^(\d*\-)(.*)(\.[^.]*)$/) { $suffix = $3; $realfile = $2; $prefix = $1; }
+    if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
     next unless $suffix && $realfile;
     
     # new .torrent file
@@ -124,7 +123,9 @@ while (defined(my $file = readdir(WATCH))) {
 	next;
     }
 
-    # if we get here, we have a .trs file (contains infos about the torrent)
+    # if we get here, we have a id-XX.trs file (contains infos about 
+    # the torrent)
+    if ($realfile =~ /^\d.*\-(.*)$/) { $realfile = $1; }
   
     # being processed or should be started
     if ($suffix eq ".trs") {
