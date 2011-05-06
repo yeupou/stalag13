@@ -32,9 +32,9 @@ my $debug = 0;
 
 # ~/watch syntax :
 #    $file.torrent = torrent to be added
-#    $realfile.trs = being processed (delete it to remove the torrent) 
-#    $realfile.trs- = to be paused
-#    $realfile.trs+ = (supposedly) completed
+#    $id-$realfile.trs = being processed (delete it to remove the torrent) 
+#    $id-$realfile.trs- = to be paused
+#    $id-$realfile.trs+ = (supposedly) completed
 #    all- = pause all 
 
 # check if we are running with torrent user (not with getlogin() because
@@ -169,24 +169,36 @@ while (<LIST>) {
     # ID  Done  Have  ETA  Up  Down  Ratio  Status  Name
     my ($id, $percent, $file);
     if (/^\s*(\d*)\*?\s*(\d*\%)\s*/) { $id = $1; $percent = $2; }
-    if (/\s*([^\s]*)$/) { $file = $1; }
-    print "ID:$id FILE:$file PERCENT:$percent => $_\n" if $debug;
 
     # skip if missing info
+    next unless $id;     
+    
+
+    # obtain the real file nale
+    open(INFO, "$bin --torrent $id --info |");
+    while (<INFO>) { 
+	last if (/\s*Name\:\s*(.*)$/) { $file = $1; }
+	last if /^TRANSFER/; 
+    }
+    close(INFO);
+
+    print "ID:$id FILE:$file PERCENT:$percent => $_\n" if $debug;
+
+    # skip if still missing info
     next unless $id and $file;     
     
     # finished
     if ($percent eq "100%") {
 	print "mv $file.hash $file.hash+\n" if $debug;
-	print LOG strftime "%c - completed $file\n", localtime;
+	print LOG strftime "%c - completed $file (#$id)\n", localtime;
 	# do not bother removing the torrent, done below
-	rename("$watchdir/$file.trs",
-	       "$watchdir/$file.trs+");
+	rename("$watchdir/$id-$file.trs",
+	       "$watchdir/$id-$file.trs+");
 	
 	# warn (it should send a mail, if cron is properly configured)
 	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
 	    unless $count;
-	print "$file (id: $id)\n";
+	print "$file (#$id)\n";
 	$count++;
 
     }
@@ -194,15 +206,15 @@ while (<LIST>) {
     # should be paused
     if (exists($to_be_paused{$file})) {
 	print "$bin -t $id --stop\n" if $debug;
-	print LOG strftime "%c - pause $file\n", localtime;
+	print LOG strftime "%c - pause $file (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
 	next;
     }
     
     # should be removed 
-    unless (-e "$watchdir/$file.trs" or $added{$id}) {
+    unless (-e "$watchdir/$id-$file.trs" or $added{$id}) {
 	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
-	print LOG strftime "%c - remove $file\n", localtime;
+	print LOG strftime "%c - remove $file (#$id)\n", localtime;
 	`$bin --torrent $id --remove >/dev/null`;
 	next;
     }
@@ -213,7 +225,7 @@ while (<LIST>) {
     $being_processed{$file} = 1;
 
     # for any processed file, update the info file 
-    open(TRSFILE, "> $watchdir/$file.trs");
+    open(TRSFILE, "> $watchdir/$id-$file.trs");
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { last if /^PIECES/; print TRSFILE $_; }
     close(INFO);
@@ -235,7 +247,7 @@ close(STATUSFILE);
 
 unless ($readme_exists) {
     open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$realfile.trs =  being processed (delete it to remove the torrent)\n \$realfile.trs- = to be paused\n \$realfile.trs+ = (supposedly) completed\n all- = pause all\n";
+    print README "watch syntax :\n \$file.torrent = to be added\n \$id-\$realfile.trs =  being processed (delete it to remove the torrent)\n \$id-\$realfile.trs- = to be paused\n \$id-\$realfile.trs+ = (supposedly) completed\n all- = pause all\n";
     close(README);
 }
 
