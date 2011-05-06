@@ -125,6 +125,7 @@ while (defined(my $file = readdir(WATCH))) {
 
     # if we get here, we have a id-XX.trs file (contains infos about 
     # the torrent)
+    my $prefix = 0;
     if ($realfile =~ /^(\d.*\-)(.*)$/) { $prefix = $1; $realfile = $2; }
   
     next unless $prefix;
