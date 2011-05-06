@@ -113,8 +113,9 @@ while (defined(my $file = readdir(WATCH))) {
 
     # find out suffix, ignore file if none found
     my $suffix = 0;
+    my $prefix = 0;
     my $realfile;
-    if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
+    if ($file =~ /^(\d*\-)(.*)(\.[^.]*)$/) { $suffix = $3; $realfile = $2; $prefix = $1; }
     next unless $suffix && $realfile;
     
     # new .torrent file
