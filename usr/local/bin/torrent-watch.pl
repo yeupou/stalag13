@@ -148,7 +148,7 @@ closedir(WATCH);
 my %added;
 foreach my $torrent (@to_be_added) {
     print "$bin --add $watchdir/$torrent --start\n" if $debug;
-    `$bin --add $watchdir/$torrent --start >/dev/null`;
+    `$bin --add "$watchdir/$torrent" --start >/dev/null`;
 
     # get the ID (should be the latest)
     my $id;
