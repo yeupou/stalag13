@@ -22,8 +22,8 @@ if [ $NFS_SHARES = "" ]; then exit ; fi
 # check if we need to mount or umount and do it
 case $reason in
     BOUND)
-	# use standard mount
-	for share in $NFS_SHARES; do mount $share ;done
+	# nothing to do yet, we'll mount stuff only when when dhcp did
+	# its magic
 	;;
     EXPIRE|FAIL|TIMEOUT|RELEASE|REBOOT|STOP)
 	# use nfs4 specific umount in case we need to force stuff
