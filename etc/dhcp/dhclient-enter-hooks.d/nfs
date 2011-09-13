@@ -1,0 +1,34 @@
+#!/bin/sh
+# mount/umount stalag13 NFS shares on laptops
+# (so only otto and tdcdell)
+# This assume /etc/fstab is already correctly set up (with NFS shares
+# in noauto, like:
+# gate:/musique /stockage/musique nfs4 nolock,noauto 0 0)
+
+# only on stalag13.ici
+if [ $new_domain_name != 'stalag13.ici' ]; then exit ; fi
+
+NFS_SHARES=""
+if [[ $new_ip_address = '192.168.1.11' ] && [ $new_host_name = 'otto' ]]; then
+    NFS_SHARES="/stockage/temp /stockage/suxor /stockage/torrent/download /stockage/torrent/watch /stockage/musique /stockage/videos /home/klink/sur-moe"
+fi
+if [[ $new_ip_address = '192.168.1.21' ] && [ $new_host_name = 'tdcdell' ]]; then
+    NFS_SHARES="/lan/stalag13.ici/musique /lan/stalag13.ici/videos /lan/stalag13.ici/temp /lan/stalag13.ici/suxor /lan/stalag13.ici/torrent-watch /lan/stalag13.ici/torrent-download"
+fi
+
+# no share defined? exit
+if [ $NFS_SHARES = "" ]; then exit ; fi
+
+# check if we need to mount or umount and do it
+case $reason in
+    BOUND)
+	# use standard mount
+	for share in $NFS_SHARES; do mount $share ;done
+	;;
+    EXPIRE|FAIL|TIMEOUT|RELEASE|REBOOT|STOP)
+	# use nfs4 specific umount in case we need to force stuff
+	for share in $NFS_SHARES; do umount.nfs4 -f $share ;done
+	;;
+esac
+
+# EOF
