@@ -6,13 +6,13 @@
 # gate:/musique /stockage/musique nfs4 nolock,noauto 0 0)
 
 # only on stalag13.ici
-if [ $new_domain_name != 'stalag13.ici' ]; then exit ; fi
+if [ "$new_domain_name" != 'stalag13.ici' ]; then exit ; fi
 
 NFS_SHARES=""
-if [[ $new_ip_address = '192.168.1.11' ] && [ $new_host_name = 'otto' ]]; then
+if [ "$new_ip_address" = '192.168.1.11' && "$new_host_name" = 'otto' ]; then
     NFS_SHARES="/stockage/temp /stockage/suxor /stockage/torrent/download /stockage/torrent/watch /stockage/musique /stockage/videos /home/klink/sur-moe"
 fi
-if [[ $new_ip_address = '192.168.1.21' ] && [ $new_host_name = 'tdcdell' ]]; then
+if [ "$new_ip_address" = '192.168.1.21' && "$new_host_name" = 'tdcdell']; then
     NFS_SHARES="/lan/stalag13.ici/musique /lan/stalag13.ici/videos /lan/stalag13.ici/temp /lan/stalag13.ici/suxor /lan/stalag13.ici/torrent-watch /lan/stalag13.ici/torrent-download"
 fi
 
