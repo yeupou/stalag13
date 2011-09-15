@@ -26,7 +26,7 @@
 
 use strict;
 
-my $debug = 1;
+my $debug = 0;
 
 use File::Copy;
 use File::Temp qw(tempfile tempdir); 

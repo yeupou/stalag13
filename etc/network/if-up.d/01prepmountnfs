@@ -32,7 +32,7 @@
 use strict;
 use Socket;   
 
-my $debug = 1;
+my $debug = 0;
 
 
 ## 
