@@ -69,7 +69,8 @@ my @outdated_2010 = ("/etc/emacs/site-start.d/stalag13.el",
 
 my @outdated_2011 = ("/etc/init.d/torrent",
 		     "/etc/dhcp/dhclient-enter-hooks.d/nfs",
-		     "/etc/dhcp/dhclient-exit-hooks.d/nfs");
+		     "/etc/dhcp/dhclient-exit-hooks.d/nfs",
+		     "/etc/network/if-down.d/prepandumountnfs");
 
 
 my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011);

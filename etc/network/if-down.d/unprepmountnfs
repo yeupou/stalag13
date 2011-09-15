@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+#
+# Copyright (c) 2011 Mathieu Roy <yeupou@gnu.org>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+#   USA
+#
+# Counter part of both if-up.d/prepmountnfs
+# Actually, only clean up /etc/fstab. It won't umount the NFS shares. Yeah
+# I know that unmounted NFS shares mess up the system, but that's too much
+# work just to figure out if the current if-down relates to the interface
+# that provides access to the server. And we would not want to loose NFS
+# share each time wlan goes down while eth is still up. 
+
+use strict;
+
+my $debug = 1;
+
+use File::Copy;
+use File::Temp qw(tempfile tempdir); 
+
+# Create a (secure) temporary file
+my ($tempfilefh, $tempfile) = tempfile(UNLINK => 1);
+
+open(FSTAB, "< /etc/fstab");
+my $count = 0;
+my $skip_next_line = 0;
+while (<FSTAB>) {
+    # skip this line the previous was a backup
+    if ($skip_next_line > 0) {
+	print "DBG: skip: $_";
+	$skip_next_line = 0;
+	next;
+    }
+
+    # find previously backed-up lines, revert the changes
+    if (s/^#CLEVERNFSS###//g) {
+	$count++;
+	$skip_next_line = 1 
+    }
+    print $tempfilefh $_;
+}
+close(FSTAB);
+close($tempfilefh);
+
+print "DBG: $count line(s) modified in /etc/fstab\n" if $debug;
+exit if $count < 1;
+
+# replace fstab with the (readable to everybody) temporary file
+# (obviously, must be root to do so)
+system("chmod", "a+r", $tempfile);
+move($tempfile, "/etc/fstab")
+    or die "unable to overwrite /etc/fstab, are you root? Exit";
+print "DBG: /etc/fstab overwrote by $tempfile\n" if $debug;
+
+# EOF
