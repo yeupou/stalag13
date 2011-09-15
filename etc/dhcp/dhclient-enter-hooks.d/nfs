@@ -28,7 +28,7 @@ case $reason in
 	# (and before the IP was actually released by dhcp)
 	echo "Lost connection to stalag13.ici:"
 	for share in $NFS_SHARES; do
-	    umount.nfs4 -fv $share 
+	    umount.nfs4 $share -fv 
 	done
 	;;
 esac
