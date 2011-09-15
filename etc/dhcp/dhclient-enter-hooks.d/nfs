@@ -26,7 +26,8 @@ case $reason in
     EXPIRE|FAIL|RELEASE|STOP)
 	# use nfs4 specific umount in case we need to force stuff
 	# (and before the IP was actually released by dhcp)
-	for share in $NFS_SHARES; do 
+	for share in $NFS_SHARES; do
+	    echo "Lost stalag13.ici, unmounting $share...*
 	    umount.nfs4 -f $share 
 	done
 	;;
