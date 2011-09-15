@@ -73,7 +73,7 @@ while (my ($this_host,) = each(%hosts)) {
     next unless defined $packed_ip,
     my $ip = inet_ntoa($packed_ip);
     next unless $ip =~ /^192\.168\./ or $ip =~ /^10\./;
-    print "DBG: $this_host DNS record exists and points to LAN $ip\n";
+    print "DBG: $this_host DNS record exists and points to LAN $ip\n" if $debug;
 
     # now set this host value to 2 as valid host
     $hosts{$this_host} = 2;
