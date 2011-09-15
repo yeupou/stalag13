@@ -40,7 +40,7 @@ my $skip_next_line = 0;
 while (<FSTAB>) {
     # skip this line the previous was a backup
     if ($skip_next_line > 0) {
-	print "DBG: skip: $_";
+	print "DBG: skip: $_" if $debug;
 	$skip_next_line = 0;
 	next;
     }
