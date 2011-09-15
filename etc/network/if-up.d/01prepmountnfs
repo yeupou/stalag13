@@ -49,9 +49,9 @@ while (<FSTAB>) {
     next unless /noauto/;
     $count++;
 
-    # identify the NFS host, initially set the value to 0
+    # identify the NFS host
     my $this_host = $1 if /^([^\:]*)\:/;
-    $hosts{$this_host} = 0
+    $hosts{$this_host} = 1
 	unless $hosts{$this_host};
 }
 close(FSTAB);
@@ -75,8 +75,8 @@ while (my ($this_host,) = each(%hosts)) {
     next unless $ip =~ /^192\.168\./ or $ip =~ /^10\./;
     print "DBG: $this_host DNS record exists and points to LAN $ip\n";
 
-    # now set this host value to 1 as valid host
-    $hosts{$this_host} = 1;
+    # now set this host value to 2 as valid host
+    $hosts{$this_host} = 2;
     $count++;
 }
     
@@ -102,7 +102,7 @@ open(FSTAB, "< /etc/fstab");
 while (<FSTAB>) {
     # copy current fstab while removing noauto for each host
     while (my ($this_host,$is_active) = each(%hosts)) {
-	next unless $is_active eq 1;
+	next unless $is_active eq 2;
 	if (/^$this_host\:/) {
 	    # back up the change
 	    print $tempfilefh "#CLEVERNFSS###$_" if /\,?noauto/;
