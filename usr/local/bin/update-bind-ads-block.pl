@@ -90,7 +90,7 @@ foreach $url (@urls) {
          # Should take care of host files in the following format: name
          if ( $_ =~ /^[0-9a-zA-Z\-]+\.[0-9a-zA-Z\-]+$/) {
               printf("zone \"%s\" { type master\; notify no\;", $_);
-              print  " file \"db.ads\"\; }\;\n";
+              print  " file \"/etc/bind/db.ads\"\; }\;\n";
          }
     }
 }
