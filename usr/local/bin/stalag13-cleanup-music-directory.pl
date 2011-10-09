@@ -80,7 +80,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	# if image, simply move it
 	if ($suffix eq ".png" or $suffix eq ".jpg") {
 	    print "mv $file $destdir/";
-	    move($file, $destdir) unless $debug;
+	    move("$importdir/$dir/$file", $destdir) unless $debug;
 	}
 	
 	# if mp3 or ogg, use lltag to update tag and rename
