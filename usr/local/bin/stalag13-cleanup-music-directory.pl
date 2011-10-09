@@ -86,6 +86,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	# if mp3 or ogg, use lltag to update tag and rename
 	if ($suffix eq ".ogg" or $suffix eq ".mp3") {
 	    system("lltag", "--dry-run", "--preserve-time", "--yes",
+		   "--id3v2",
 		   "--ARTIST", $band,
 		   "--ALBUM", $album,
 		   "--DATE", $year,
@@ -96,6 +97,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		   "--rename", "$destdir/%a-%d-%A-%n-%t",
 		   "$importdir/$dir/$file") if $debug;
 	    system("lltag", "--preserve-time", "--yes", "--quiet",
+		   "--id3v2",  
 		   "--ARTIST", $band,
 		   "--ALBUM", $album,
 		   "--DATE", $year,
