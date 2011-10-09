@@ -21,6 +21,7 @@ use strict "vars";
 use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
+use File::Copy;
 
 my $user = "klink";
 my $maindir = "/server/musique";
