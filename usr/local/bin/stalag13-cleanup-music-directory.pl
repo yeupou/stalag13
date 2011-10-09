@@ -122,6 +122,8 @@ while (defined(my $dir = readdir(IMPORT))) {
     }
     close(ALBUMDIR);
     
+    # ccleanup rights
+    system("/bin/chown", "-R", "klink:klink", $destdir);
     
     # if we get here, everything was moved, we can safely eraze initial dir
     print "rm -rvf $importdir/$dir";	
