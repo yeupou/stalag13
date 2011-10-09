@@ -26,7 +26,7 @@ use File::Copy;
 my $user = "klink";
 my $maindir = "/server/musique";
 my $importdir = "/server/musique/A TRIER";
-my $debug = 0;
+my $debug = 1;
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
@@ -90,7 +90,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	       "--GENRE", $style,
 	       "--rename-min",
 	       "--rename-slash", "_",
-	       "--rename", "%a-%d-%A-%n-%t.%E",
+	       "--rename", "%a-%d-%A-%n-%t",
 	       "$importdir/$dir/$file") if $debug;
 	system("lltag", "--preserve-time", "--yes", "--quiet",
 	       "--ARTIST", $band,
@@ -100,7 +100,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	       "--GENRE", $style,
 	       "--rename-min",
 	       "--rename-slash", "_",
-	       "--rename", "%a-%d-%A-%n-%t.%E",
+	       "--rename", "%a-%d-%A-%n-%t",
 	       "$importdir/$dir/$file") unless $debug;
     }
     close(ALBUMDIR); 
@@ -124,7 +124,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     close(ALBUMDIR);
     
     # ccleanup rights
-    system("/bin/chown", "-R", "klink:klink", $destdir);
+    system("/bin/chown", "-R", "klink:klink", "$maindir/".lc("$style/$band/");
     
     # if we get here, everything was moved, we can safely eraze initial dir
     print "rm -rvf $importdir/$dir";	
