@@ -26,7 +26,7 @@ use File::Copy;
 my $user = "klink";
 my $maindir = "/server/musique";
 my $importdir = "/server/musique/A TRIER";
-my $debug = 1;
+my $debug = 0;
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
@@ -78,53 +78,40 @@ while (defined(my $dir = readdir(IMPORT))) {
 	next unless $suffix && $realfile;
 	
 	# if image, simply move it
-	print "mv $file $destdir/" if $suffix eq ".png" or $suffix eq ".jpg";
-	move($file, $destdir) unless $debug;
-
+	if ($suffix eq ".png" or $suffix eq ".jpg") {
+	    print "mv $file $destdir/";
+	    move($file, $destdir) unless $debug;
+	}
+	
 	# if mp3 or ogg, use lltag to update tag and rename
-	system("lltag", "--dry-run", "--preserve-time", "--yes",
-	       "--ARTIST", $band,
-	       "--ALBUM", $album,
-	       "--DATE", $year,
-	       "--maj",
-	       "--GENRE", $style,
-	       "--rename-min",
-	       "--rename-slash", "_",
-	       "--rename", "%a-%d-%A-%n-%t",
-	       "$importdir/$dir/$file") if $debug;
-	system("lltag", "--preserve-time", "--yes", "--quiet",
-	       "--ARTIST", $band,
-	       "--ALBUM", $album,
-	       "--DATE", $year,
-	       "--maj",
-	       "--GENRE", $style,
-	       "--rename-min",
-	       "--rename-slash", "_",
-	       "--rename", "%a-%d-%A-%n-%t",
-	       "$importdir/$dir/$file") unless $debug;
+	if ($suffix eq ".ogg" or $suffix eq ".mp3") {
+	    system("lltag", "--dry-run", "--preserve-time", "--yes",
+		   "--ARTIST", $band,
+		   "--ALBUM", $album,
+		   "--DATE", $year,
+		   "--maj",
+		   "--GENRE", $style,
+		   "--rename-min",
+		   "--rename-slash", "_",
+		   "--rename", "$destdir/%a-%d-%A-%n-%t",
+		   "$importdir/$dir/$file") if $debug;
+	    system("lltag", "--preserve-time", "--yes", "--quiet",
+		   "--ARTIST", $band,
+		   "--ALBUM", $album,
+		   "--DATE", $year,
+		   "--maj",
+		   "--GENRE", $style,
+		   "--rename-min",
+		   "--rename-slash", "_",
+		   "--rename", "$destdir/%a-%d-%A-%n-%t",
+		   "$importdir/$dir/$file") unless $debug;
+	}
     }
     close(ALBUMDIR); 
-    # second run, now move properly tagged and renamed ogg/mp3
-    opendir(ALBUMDIR, $dir);
-    while (defined(my $file = readdir(ALBUMDIR))) {
-	# ignore dirs
-	next if -d $file;
-
-	# find out suffix, ignore file if none found
-	my $suffix = 0;
-	my $realfile;
-	if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
-	next unless $suffix && $realfile;
-	
-	# only deals with ogg and mp3 here
-	next unless $suffix eq ".ogg" or $suffix eq ".mp3";
-	print "mv $file $destdir/\n";
-	move($file, $destdir) unless $debug;
-    }
-    close(ALBUMDIR);
     
     # ccleanup rights
-    system("/bin/chown", "-R", "klink:klink", "$maindir/".lc("$style/$band/");
+    system("/bin/chown", "-R", "klink:klink", "$maindir/".lc("$style/$band/"));
+    system("/bin/chmod", "-R", "a+r", "$maindir/".lc("$style/$band/"));
     
     # if we get here, everything was moved, we can safely eraze initial dir
     print "rm -rvf $importdir/$dir";	
