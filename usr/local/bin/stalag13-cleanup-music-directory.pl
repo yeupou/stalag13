@@ -109,7 +109,8 @@ while (defined(my $dir = readdir(IMPORT))) {
     }
     close(ALBUMDIR); 
     
-    # ccleanup rights
+    # more cleanups
+    system("/usr/bin/urlize", "-D", $destdir);
     system("/bin/chown", "-R", "klink:klink", "$maindir/".lc("$style/$band/"));
     system("/bin/chmod", "-R", "a+r", "$maindir/".lc("$style/$band/"));
     
