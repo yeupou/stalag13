@@ -39,12 +39,12 @@ deb:
 	make clean-prev-dir
 #	@echo "A lancer en root"
 #	if [ $(WHOAMI) != "root" ]; then exit ; fi
-	@echo "nouvelle version : "$(NEWVERSION)
+	@echo "New release "$(NEWVERSION)
 #CGN	@cvs2cl
 	debian/makechangelog.sh $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 #CGN	@cvs ci -m 'New release $(NEWVERSION)'
-	@git commit -a -m 'nouvelle version $(NEWVERSION)'
+	@git commit -a -m 'New release $(NEWVERSION)'
 	@git push
 	@git push github
 	dpkg-buildpackage -uc -us -rfakeroot
