@@ -46,6 +46,7 @@ deb:
 #CGN	@cvs ci -m 'nouvelle version $(NEWVERSION)'
 	@git commit -a -m 'nouvelle version $(NEWVERSION)'
 	@git push
+	@git push github
 	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils_2.$(NEWVERSION)*.deb"
 	make clean
