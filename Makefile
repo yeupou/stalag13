@@ -43,7 +43,7 @@ deb:
 #CGN	@cvs2cl
 	debian/makechangelog.sh $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
-#CGN	@cvs ci -m 'nouvelle version $(NEWVERSION)'
+#CGN	@cvs ci -m 'New release $(NEWVERSION)'
 	@git commit -a -m 'nouvelle version $(NEWVERSION)'
 	@git push
 	@git push github
