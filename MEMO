@@ -1,0 +1,32 @@
+Using Git:
+----------
+
+* Create repository on the server:
+
+  ssh $server
+  mkdir $dir.git
+  cd $dir.git
+  git init --bare
+  exit
+
+
+* Get a working copy on the client:
+
+  git clone ssh://$server/~$user/$dir
+  git commit -a
+  git push ssh://$server/~$user/$dir master
+
+  (then, afterwards)
+  git commit -a
+  git push
+
+
+* Keep GitHub up-to-date:
+
+  git remote add github git@github.com:$user/$dir.git
+  git push github master
+
+  (then, afterwards)
+  git commit -a
+  git push github
+
