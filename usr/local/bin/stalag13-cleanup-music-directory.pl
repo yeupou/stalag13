@@ -42,7 +42,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with no import file within
-    print "Pas de fichier $dir/import (style|band|album|year), dossier ignoré.\n" unless -e "$dir/import";
+    print "Pas de fichier $dir/import (style|band|year|album), dossier ignoré.\n" unless -e "$dir/import";
     next unless -e "$dir/import";
 
     # otherwise, find out band name and all
@@ -53,7 +53,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     my $year = "0000";
     while (<ALBUMINFO>) {
 	chomp($_);
-	($style,$band,$album,$year) = split(/\|/, $_);
+	($style,$band,$year,$album) = split(/\|/, $_);
     }
     
     # create the destination directory, skip everything if it already exists
