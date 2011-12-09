@@ -13,7 +13,6 @@ defer  !senders       = :
 
 
 warn   condition      = ${if eq {$acl_c_grey_host}{1}}
-       add_header     = X-Greylist: $sender_host_address passed GREY_MINUTES min
-ute in greylist
+       add_header     = X-Greylist: $sender_host_address passed GREY_MINUTES minute in greylist
 
 .endif

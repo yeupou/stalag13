@@ -11,4 +11,4 @@ GREYLIST_ARGS = {$sender_host_address}{${quote:$sender_address}}{${quote:$local_
 # site-wide subroutine: no distinction on the local_part
 ##GREYLIST_ARGS = {$sender_host_address}{${quote:$sender_address}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
 # laxist site-wide subroutine : without the sender/local 
-##GREYLIST_ARGS = {$sender_host_address}{${quote:x}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS
+##GREYLIST_ARGS = {$sender_host_address}{${quote:x}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
