@@ -1,0 +1,14 @@
+# Uncommented these first three lines to activate it:
+##perl_startup = do '/usr/local/bin/memcached-exim.pl'
+##perl_at_start
+##GREYLISTING_ENABLE = 1
+#
+# Greylist duration, TTL for entry, adjust as desired
+GREY_MINUTES  = 5
+GREY_TTL_DAYS = 7
+# standard subroutine
+GREYLIST_ARGS = {$sender_host_address}{${quote:$sender_address}}{${quote:$local_part}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
+# site-wide subroutine: no distinction on the local_part
+##GREYLIST_ARGS = {$sender_host_address}{${quote:$sender_address}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
+# laxist site-wide subroutine : without the sender/local 
+##GREYLIST_ARGS = {$sender_host_address}{${quote:x}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS

@@ -72,7 +72,8 @@ install: build
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/cron.monthly 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/network/if-up.d
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/network/if-down.d
-	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/exim4
+	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/exim4/conf.d/acl
+	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/exim4/conf.d/main
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/profile.d 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/init.d 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apt
