@@ -1,4 +1,4 @@
-# Uncommented these first three lines to activate it:
+# Uncomment these first three lines to activate greylisting:
 ##perl_startup = do '/usr/local/bin/memcached-exim.pl'
 ##perl_at_start
 ##GREYLISTING_ENABLE = 1
