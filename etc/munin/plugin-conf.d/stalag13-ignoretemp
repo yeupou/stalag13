@@ -1,0 +1,8 @@
+# SAME AS munin-node.conf be tailored
+#
+# Ignore list to avoid too noisy temp/fan info 
+
+[sensors_*]
+#  env.ignore_volt7 yes
+#  env.ignore_fan2 yes
+#  env.ignore_temp3 yes
