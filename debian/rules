@@ -78,11 +78,10 @@ install: build
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/init.d 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apt
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/munin/plugin-conf.d 
-	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apache/conf.d
+	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/apt/apt.conf.d
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/munin/plugins-stalag13
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/apache/icons.stalag13.ici
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/xbel
-	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/wallpapers
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/emacs/site-start.d $(CURDIR)/debian/stalag13-utils/etc/dhcp3/dhclient-enter-hooks.d
 	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils/
 	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/
