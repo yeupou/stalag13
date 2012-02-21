@@ -304,7 +304,7 @@ my $input;
 while ($valid_exit < 300 && $word ne $input) {
     # increase sound volume every 5s, until 100%
     if (($valid_exit%5) && ($mixer_volume < $volume_max)) {
-	$mixer_volume = ($mixer_volume+5);
+	$mixer_volume = ($mixer_volume+2);
 	system($mixer, "-q", "set", "Master", $mixer_volume."%");
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
