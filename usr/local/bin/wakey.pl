@@ -305,17 +305,21 @@ print $clear;
 # Enter in an 5 minutes (300s) loop waiting for the user to wake up
 # (if 5 minutes arent enough, call 911)
 my $valid_exit = 0;
+
+# get raw input, so we deactivate CTRL-C, CTRL-Z, etc
 ReadMode("raw");
 my $input;
+
 while ($valid_exit < 300 && $word ne $input) {
-    # increase sound volume every 5s, until 100%
+
+    # increase sound volume every 5s, until volume-max %
     if (($valid_exit%5) && ($mixer_volume < $volume_max)) {
 	$mixer_volume = ($mixer_volume+2);
 	system($mixer, "-q", "set", "Master", $mixer_volume."%");
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
 
-    # title
+    # print colored title
     if ($valid_exit%2) {
 	print ON_RED, WHITE, "\t\t\tWAKEY", RESET, BOLD, " wakey", RESET "\n\n";
 	print BOLD, "\twakey ", RESET, ON_RED, WHITE, "WAKEY", RESET "\n\n";
@@ -347,12 +351,15 @@ while ($valid_exit < 300 && $word ne $input) {
 }
 
 ## That is all, almost
+
+# reset term readmode to normal
 ReadMode("normal");
-# make sure the child is dead
+
+# make sure to kill the player process
 kill('KILL', $pid);
 print "Killing $pid\n" if $debug;
 
-# Before exiting, reset the volume to previous values
+# Reset the volume to previous values
 system($mixer, "-q", "set", "Master", $mixer_volume_before."%");
 system($mixer, "-q", "set", "PCM", $mixer_volume_pcm_before."%");
 
