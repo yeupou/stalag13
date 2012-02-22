@@ -1,13 +1,6 @@
 #!/bin/sh
 # (hum, not .pl!)
 
-# handles heterogenous pathes
-if [ -d /stockage/torrent/watch ]; then
-    cd /stockage/torrent/watch
-fi
-if [ -d /lan/stalag13.ici/torrent-watch ]; then
-    cd /lan/stalag13.ici/torrent-watch
-fi
-
+cd /mnt/lan/gate.stalag13.ici/watch
 newname=`echo "$*" | sed "s/[^a-z|A-Z|0-9]//g;"`
 wget -O $newname.torrent "$*"
