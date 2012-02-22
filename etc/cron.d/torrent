@@ -1,2 +1,5 @@
 # every minute, watch /home/torrent/watch
 #* * * * *	torrent	    cd ~/watch && /usr/local/bin/torrent-watch.pl
+
+# once per day, clean up
+#35 9 * * * 	torrent     find ~/ -name "*.trs+" -atime +4 | xargs rm
