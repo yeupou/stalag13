@@ -332,7 +332,6 @@ while ($valid_exit < 300 && $word ne $input) {
     $input = "" if (length($input) >= 5);
 
     # check if the latest char the user type is correct, if not cancel it
-#    print "Last ".substr($input, (length($input)-1), 1)."\n";
     if ((substr($word, (length($input)-1), 1)) ne
 	(substr($input, (length($input)-1), 1))) {
 	chop($input);
