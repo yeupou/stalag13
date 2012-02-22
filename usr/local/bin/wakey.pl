@@ -114,7 +114,16 @@ exit(1);
 
 # check if we are not using a powersave plan that may cause the box to 
 # sleep or hibernate
-#TODO
+# # check if we are not using a powersave plan that may cause the box to 
+# # sleep or hibernate: FIXME, is there any really portable way to do so?
+# http://lists.freedesktop.org/archives/xdg/2010-February/011309.html
+# system("qdbus",
+#        "org.freedesktop.PowerManagement.Inhibit",
+#        "/org/freedesktop/PowerManagement/Inhibit",
+#        "org.freedesktop.PowerManagement.Inhibit.Inhibit",
+#        "wakey.pl",
+#        "Would kill me") unless $ignore_powersave;
+
 
 # check if we can run the player
 die "Unable to execute $player. Exiting" unless -x $player; 
