@@ -26,7 +26,7 @@ use POSIX qw(strftime);
 use File::Basename;
 
 my $user = "debian-transmission";
-my $watchdir = "/server/torrent/watch";
+my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
 my $debug = 0;
 
