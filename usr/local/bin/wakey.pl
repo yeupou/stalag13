@@ -201,10 +201,7 @@ if ($timer) {
 my $delta = $requested - $elapsed;
 print "initial delta $delta\n" if $debug;
 
-# Timer: compared time elapsed to what was requested (duh!)
-# Normal: hour must be exactly the same (because if a at 22PM you asked
-# for 7AM, it makes no sense to compare the numbers), minute must be equal
-# or superior (in case we missed the exact minute, god knows how).
+# loop until elapsed time reached what was requested
 while ($requested > $elapsed) {
 
     # provide nice info (before any computation so it is brought immediatly,
