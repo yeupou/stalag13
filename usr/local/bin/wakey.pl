@@ -208,18 +208,26 @@ while ($requested > $elapsed) {
     # while the clear() is made below)
     print BOLD, "\tWakey Wakey (not yet)", RESET "\n\n";
 
+    # determine if we ll count the remaining time in s, m or h, set 
+    # a color
+    print YELLOW;
     my $still = ($requested - $elapsed);
     my $still_unit = "s";
     if ($still  > 180 && $still < 10800) {
+	# more than 3m and less than 3h
+      	print CYAN if $still > 1800;
 	$still = int(($still / 60));
 	$still_unit = "m";
     }
     if ($still > 10799) {
+	# more than 3h
 	$still = int(($still / 3600));
 	$still_unit = "h";
+	print GREEN;
     }
+
     # show ~ remaining time 
-    print GREEN, "\t\t... ~ ".$still.$still_unit, RESET " \n\n";
+    print "\t\t... ~ ".$still.$still_unit, RESET " \n\n";
 
     # show progression bar
     # available chars = width - 4 chars
