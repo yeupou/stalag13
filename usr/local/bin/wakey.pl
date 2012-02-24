@@ -308,7 +308,7 @@ if (defined $pid && $pid == 0) {
 }
 
 # back to parent, trash noise on STDOUT
-print $clear;
+print $clear unless $debug;
 
 # Enter in an 5 minutes (300s) loop waiting for the user to wake up
 # (if 5 minutes arent enough, call 911)
@@ -317,11 +317,18 @@ my $valid_exit = 0;
 # get raw input, so we deactivate CTRL-C, CTRL-Z, etc
 ReadMode("raw");
 my $input;
+my $previous_input;
 
 while ($valid_exit < 300 && $word ne $input) {
+    print "Run $valid_exit\n" if $debug;
 
-    # increase sound volume every 5s, until volume-max %
-    if (($valid_exit%5) && ($mixer_volume < $volume_max)) {
+    # after 5s, increase sound volume of 2% every 2s, until volume-max %
+    # avoiding anychange if the user type anything
+    # (by default, it should take 45s total to get to 100%)
+    if (($valid_exit > 5) &&
+	($previous_input eq $input) &&
+	($valid_exit%2) && 
+	($mixer_volume < $volume_max)) {
 	$mixer_volume = ($mixer_volume+2);
 	system($mixer, "-q", "set", "Master", $mixer_volume."%");
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
@@ -350,12 +357,16 @@ while ($valid_exit < 300 && $word ne $input) {
 	print (substr($word, (length($input)-1), 1))." (dict) ne ".(substr($input, (length($input)-1), 1))." (input), erase last char of ".length($input)."\n" if $debug;
     }
 
+    # save for later current input
+    $previous_input = $input;
+    
     # redraw the window each second or each time the user put some input
     (($input .= ReadKey(1)) || sleep 1);
 
-    print $clear unless $debug;
-
+    # increment counter anyway
     $valid_exit++;
+
+    print $clear unless $debug;
 }
 
 ## That is all, almost
