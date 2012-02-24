@@ -304,7 +304,8 @@ if (defined $pid && $pid == 0) {
 	 "-loop", "0",
 	 "-really-quiet",
 	 "-noconsolecontrols",
-	 "-nomouseinput");
+	 "-nomouseinput",
+	 "-nolirc");
 }
 
 # back to parent, trash noise on STDOUT
