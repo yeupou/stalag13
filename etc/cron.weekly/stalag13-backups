@@ -2,7 +2,7 @@
 
 if [ `hostname` = "moe" ]; then
     /usr/bin/rsync -a --delete /var/lib/wiki /backups/
-    /usr/bin/rsync -a --delete /server/perso /backups/
-    /usr/bin/rsync -a --delete /server/musique /backups/
+    /usr/bin/rsync -a --delete /storage/abstract/perso /backups/
+    /usr/bin/rsync -a --delete /storage/abstract/musique /backups/
     date > /backups/.lastrun
 fi
