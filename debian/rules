@@ -59,7 +59,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/pdbv.
+	# create package
 	rm -rf $(CURDIR)/debian/stalag13-utils/
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/X11/Xsession.d 
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/local/bin 
@@ -84,7 +84,9 @@ install: build
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/xbel
 	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/xbel
 	mkdir -p $(CURDIR)/debian/stalag13-utils/etc/emacs/site-start.d $(CURDIR)/debian/stalag13-utils/etc/dhcp3/dhclient-enter-hooks.d
+	mkdir -p $(CURDIR)/debian/stalag13-utils/usr/share/wallpapers
 	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils/
+	# create -extra
 	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/wallpapers
 	mv -f $(CURDIR)/debian/stalag13-utils/usr/share/wallpapers/ $(CURDIR)/debian/stalag13-utils-extra/usr/share/
 
