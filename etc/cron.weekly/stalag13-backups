@@ -1,8 +1,61 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ `hostname` = "moe" ]; then
-    /usr/bin/rsync -a --delete /var/lib/wiki /backups/
-    /usr/bin/rsync -a --delete /storage/abstract/perso /backups/
-    /usr/bin/rsync -a --delete /storage/abstract/musique /backups/
-    date > /backups/.lastrun
-fi
+if [ `hostname` != "moe" ]; then exit; fi
+
+## data backups
+/usr/bin/rsync -a --delete /var/lib/wiki /backups/
+/usr/bin/rsync -a --delete /storage/abstract/perso /backups/
+/usr/bin/rsync -a --delete /storage/abstract/musique /backups/
+date > /backups/.lastrun
+
+## system backups
+orig=wd2T
+dest=sg2T
+sys=debian64
+swap=swap
+destdev=`blkid -L $dest$sys | tr -d [:digit:]`
+mount=/mnt/sysclone
+ignore="backups dev lost+found media proc run sys tmp"
+
+# mount clone system
+if [ ! -d $mount ]; then exit; fi
+mount -L $dest$sys $mount
+
+# set up ignore list
+for dir in $ignore; do 
+    touch /$dir.ignore
+done
+
+# do copy
+for dir in /*; do 
+    if [ -d $dir ]; then
+	if [ ! -e $dir.ignore ]; then
+	    # update if not set to be ignored
+	    /usr/bin/rsync --archive --one-file-system --delete $dir $mount/
+	else
+	    # otherwise just make sure the directory actually exists 
+	    if [ ! -e $mount/$dir ]; then mkdir $mount/$dir; fi
+	    rm $dir.ignore
+	fi
+    fi
+done
+
+# update filesystem data
+sed -i s/^LABEL\=$orig$sys/LABEL\=$dest$sys/g $mount/etc/fstab
+sed -i s/^LABEL\=$orig$swap/LABEL\=$dest$swap/g $mount/etc/fstab
+
+# make system bootable (use --force: gpt partition table)
+mount --bind /dev $mount/dev
+mount --bind /sys $mount/sys
+mount proc -t proc $mount/proc
+chroot $mount /usr/sbin/grub-mkdevicemap 2>/dev/null
+chroot $mount /usr/sbin/update-grub 2>/dev/null
+chroot $mount /usr/sbin/grub-install --force $destdev >/dev/null 2>/dev/null
+
+# exit (sleep to avoid weird timeout after rsync)
+sleep 10s
+umount $mount/dev $mount/sys $mount/proc
+umount $mount
+
+
+# EOF
