@@ -26,7 +26,7 @@ use Date::Calc qw(Delta_Days);
 use Time::Local;
 use Term::ANSIColor qw(:constants);
 
-my $debug = 1;
+my $debug = 0;
 
 ## get input
 
