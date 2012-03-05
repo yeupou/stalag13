@@ -150,7 +150,7 @@ if ($pause_all) {
     # set only once
     unless (-e "$watchdir/.slow") {
 	print "$bin --alt-speed\n" if $debug;
-	print LOG strftime "%c - use turtle speed from now one\n", localtime; 
+	print LOG strftime "%c - use turtle speed from now on\n", localtime; 
 	`$bin --alt-speed >/dev/null`;
 	system("/usr/bin/touch", "$watchdir/.slow");
     }
@@ -159,7 +159,7 @@ if ($pause_all) {
     if (-e "$watchdir/.slow") {
 	print "$bin --no-alt-speed\n" if $debug;
 	`$bin --no-alt-speed >/dev/null`;
-	print LOG strftime "%c - back to normal speed from now one\n", localtime;
+	print LOG strftime "%c - back to normal speed from now on\n", localtime;
 	unlink("$watchdir/.slow");
     }
 }
