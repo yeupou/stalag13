@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2010-2011 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2010-2012 Mathieu Roy <yeupou--gnu.org>
+#                   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@ my $debug = 0;
 #    $id-$realfile.trs = being processed (delete it to remove the torrent) 
 #    $id-$realfile.trs- = to be paused
 #    $id-$realfile.trs+ = (supposedly) completed
-#    all- = pause all 
+#    all- = use alt-speed (even pause) 
 
 # check if we are running with torrent user (not with getlogin() because
 # su often mess it up)
@@ -144,6 +145,26 @@ while (defined(my $file = readdir(WATCH))) {
 closedir(WATCH);
 
 
+# set to slowdown/pause (use --alt-speed or turtle speed)
+if ($pause_all) {
+    # set only once
+    unless (-e "$watchdir/.slow") {
+	print "$bin --alt-speed\n" if $debug;
+	print LOG strftime "%c - use turtle speed from now one\n", localtime; 
+	`$bin --alt-speed >/dev/null`;
+	system("/usr/bin/touch", "$watchdir/.slow");
+    }
+} else {
+    # reset only once
+    if (-e "$watchdir/.slow") {
+	print "$bin --no-alt-speed\n" if $debug;
+	`$bin --no-alt-speed >/dev/null`;
+	print LOG strftime "%c - back to normal speed from now one\n", localtime;
+	unlink("$watchdir/.slow");
+    }
+}
+
+
 # add new torrents
 my %added;
 foreach my $torrent (@to_be_added) {
@@ -239,6 +260,7 @@ while (<LIST>) {
 }
 close(LIST);
 
+
 # update status info after everything was done
 open(STATUSFILE, "> $watchdir/status");
 print STATUSFILE "Last run: ", strftime "%c\n\n", localtime;
@@ -252,7 +274,7 @@ close(STATUSFILE);
 
 unless ($readme_exists) {
     open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$id-\$realfile.trs =  being processed (delete it to remove the torrent)\n \$id-\$realfile.trs- = to be paused\n \$id-\$realfile.trs+ = (supposedly) completed\n all- = pause all\n";
+    print README "watch syntax :\n \$file.torrent = to be added\n \$id-\$realfile.trs =  being processed (delete it to remove the torrent)\n \$id-\$realfile.trs- = to be paused\n \$id-\$realfile.trs+ = (supposedly) completed\n all- = use alt-speed (to slowdown/pause)\n";
     close(README);
 }
 
