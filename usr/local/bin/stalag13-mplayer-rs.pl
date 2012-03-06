@@ -46,7 +46,7 @@ system("mplayer",
        @ARGV);
 
 # wait a few seconds after mplayer died, in case it segfault immediately 
-sleep(5);
+sleep(1);
 
 # when mplayer dies, restart redshift, with nohup so it is kept up even
 # if this script was called in a xterm killed afterwards.
