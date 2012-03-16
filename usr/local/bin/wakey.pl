@@ -33,8 +33,10 @@ use Text::Wrap qw(&wrap $columns);
 ## SETUP
 # take into account user input
 my $fallback = "/usr/share/sounds/KDE-Sys-Log-In-Long.ogg";
+my $beep = "/usr/share/sounds/KDE-Sys-App-Positive.ogg";
 my $songs = File::HomeDir->my_home()."/.wakey";
 my $player = "/usr/bin/mplayer";
+my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc");
 my $mixer = "/usr/bin/amixer";
 my $volume_max = "100";
 my $dict = "/usr/share/dict/words";
@@ -172,6 +174,17 @@ die "Unable to find words in $dict, dying" if scalar(@words) < 1;
 my $word = $words[rand @words];
 chomp($word);
 
+# now play a sound (without bothering changing volume or anything else,
+# just so the user can be sure right now we can output audio
+# (do that in a child so we can keep control)
+my $pid = fork();
+if (defined $pid && $pid == 0) {
+    # child
+    exec($player, 
+	 $beep,
+	 @player_opts);
+}
+
 
 ## CHECK TIME 
 # Every n secs, check the current time. This allows us to make sure to always
@@ -300,12 +313,10 @@ system($mixer, "-q", "set", "PCM", "100%");
 my $pid = fork();
 if (defined $pid && $pid == 0) {
     # child
-    exec($player, $song,
+    exec($player, 
+	 $song,
 	 "-loop", "0",
-	 "-really-quiet",
-	 "-noconsolecontrols",
-	 "-nomouseinput",
-	 "-nolirc");
+	 @player_opts);
 }
 
 # back to parent, trash noise on STDOUT
