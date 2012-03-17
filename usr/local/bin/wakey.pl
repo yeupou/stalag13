@@ -18,6 +18,9 @@
 #   USA
 #
 # requires debian packages libfile-homedir-perl libterm-readkey-perl
+# 
+# for sound volume  consistency, you should run 
+#       cd ~/.wakey && normalize-audio -b *
 
 use strict;
 
