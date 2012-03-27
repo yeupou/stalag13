@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ use File::Basename;
 use File::Copy;
 
 my $user = "klink";
-my $maindir = "/server/musique";
-my $importdir = "/server/musique/A TRIER";
+my $maindir = "/storage/abstract/musique";
+my $importdir = "/storage/abstract/musique/.A TRIER";
 my $debug = 0;
 
 # enter working directories
@@ -55,7 +55,8 @@ while (defined(my $dir = readdir(IMPORT))) {
 	chomp($_);
 	($style,$band,$year,$album) = split(/\|/, $_);
     }
-    
+    close(ALBUMINFO);
+
     # create the destination directory, skip everything if it already exists
     my $destdir = "$maindir/".lc("$style/$band/$year-$album");
     print "$destdir existe déjà, dossier ignoré.\n" if -d "$destdir";
@@ -109,11 +110,11 @@ while (defined(my $dir = readdir(IMPORT))) {
 		   "$importdir/$dir/$file") unless $debug;
 	}
     }
-    close(ALBUMDIR); 
+    closedir(ALBUMDIR); 
     
     # more cleanups
     system("/usr/bin/urlize", "-D", $destdir);
-    system("/bin/chown", "-R", "klink:klink", "$maindir/".lc("$style/$band/"));
+    system("/bin/chown", "-R", "$user:$user", "$maindir/".lc("$style/$band/"));
     system("/bin/chmod", "-R", "a+r", "$maindir/".lc("$style/$band/"));
     
     # if we get here, everything was moved, we can safely eraze initial dir
@@ -121,5 +122,6 @@ while (defined(my $dir = readdir(IMPORT))) {
     system("/bin/rm", "-rf", "$importdir/$dir") unless $debug;
 
 }
+closedir(IMPORT);
 
 # EOF
