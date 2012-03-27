@@ -37,7 +37,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     # silently ignores anything but standard directories
     next unless -d $dir;
     next if $dir eq "." or $dir eq "..";
-    next if $dir ~= /^\..*/;
+    next if $dir =~ /^\..*/;
 
 }
 closedir(STYLES);
