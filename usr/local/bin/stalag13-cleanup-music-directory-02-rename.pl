@@ -58,7 +58,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     close(ALBUMINFO);
 
     # create the destination directory, skip everything if it already exists
-    my $destdir = "$maindir/$style/".lc("$band/$year-$album");
+    my $destdir = "$maindir/$style/$band/$year-$album";
     print "$destdir existe déjà, dossier ignoré.\n" if -d "$destdir";
     next if -d "$destdir";
     system("/bin/mkdir", "-p", $destdir) unless $debug;
@@ -115,10 +115,10 @@ while (defined(my $dir = readdir(IMPORT))) {
     # more cleanups
     print "/usr/bin/urlize -D $destdir\n";
     system("/usr/bin/urlize", "-D", $destdir) unless $debug;
-    print "/bin/chown -R $user:$user $maindir/$style/".lc("$band/")."\n";
-    system("/bin/chown", "-R", "$user:$user", "$maindir/$style/".lc("$band/")) unless $debug;
-    print "/bin/chmod -R a+r $maindir/$style/".lc("$band/")."\n";
-    system("/bin/chmod", "-R", "a+r", "$maindir/$style/".lc("$band/")) unless $debug;
+    print "/bin/chown -R $user:$user $maindir/$style/band/\n";
+    system("/bin/chown", "-R", "$user:$user", "$maindir/$style/$band/") unless $debug;
+    print "/bin/chmod -R a+r $maindir/$style/$band/\n";
+    system("/bin/chmod", "-R", "a+r", "$maindir/$style/$band/") unless $debug;
     
     # if we get here, everything was moved, we can safely eraze initial dir
     print "rm -rvf $importdir/$dir";

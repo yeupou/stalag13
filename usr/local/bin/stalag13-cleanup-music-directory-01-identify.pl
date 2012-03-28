@@ -103,7 +103,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 
     # Provides first results,
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
-    print "\t$style|$band|$album|$year\n";
+    print "\t$style|$band|$year|$album\n";
     print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n> ";
     # show style list (not refreshed after first start)
     for (my $i = 1; $i < scalar(@style); $i++) {
@@ -118,12 +118,12 @@ while (defined(my $dir = readdir(IMPORT))) {
     # If a digit is typed, change the style to the relevant one
     if ($stdin =~ m/^\d*$/ and $stdin != 0) {
 	$style = $style[$stdin];
-	print "\t$style|$band|$album|$year\n";
+	print "\t$style|$band|$year|$album\n";
     }
 
     # Create the import file
     open(IMPORT, "> $dir/import");
-    print IMPORT "$style|$band|$album|$year\n";
+    print IMPORT "$style|$band|$year|$album\n";
     close(IMPORT);
 
     # If E was type, then fire up emacs to edit it
