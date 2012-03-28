@@ -40,7 +40,7 @@ chdir($maindir) or die "Unable to enter $maindir. Exit";
 opendir(STYLES, $maindir);
 my @style;
 print "Found style... ";
-while (defined(my $dir = readdir(IMPORT))) {
+while (defined(my $dir = readdir(STYLES))) {
     # silently ignores anything but standard directories
     next unless -d $dir;
     next if $dir eq "." or $dir eq "..";
