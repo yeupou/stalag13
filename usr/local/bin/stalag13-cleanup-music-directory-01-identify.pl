@@ -100,9 +100,9 @@ while (defined(my $dir = readdir(IMPORT))) {
 
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t($style|$band|$album|$year)\n";
-    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n> ";
+    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n";
     for (my $i = 1; $i <= $#style; $i++) {
-	print BOLD "$i", RESET ") ".$style[$i]."\n";
+	print BOLD "> $i", RESET ") ".$style[$i]."\n";
     }       
 }
 closedir(IMPORT);
