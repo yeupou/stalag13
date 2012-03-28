@@ -26,7 +26,7 @@ use File::Copy;
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 1;
+my $debug = 0;
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
