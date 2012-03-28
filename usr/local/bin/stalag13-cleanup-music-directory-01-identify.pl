@@ -84,7 +84,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	
 	# if a music file, extract the tag
 	print "Extract tags from $file\n";
-	open(ALBUMINFO, "lltag --id3v2 -S $importdir/$dir/$file |");
+	open(ALBUMINFO, "lltag --id3v2 -S '$importdir/$dir/$file' |");
 	while(<ALBUMINFO>) {
 	    print $_;
 	    $band = $1 if /\sARTIST=(.*)$/;
