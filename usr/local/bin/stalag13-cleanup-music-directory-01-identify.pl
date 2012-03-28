@@ -69,10 +69,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if -e "$dir/import";
 
     # go inside the directory and try to get tags for an ogg or mp3 or else
-    my $band;
-    my $album;
-    my $style;
-    my $year;
+    my ($band, $album, $style, $year);
     opendir(ALBUMDIR, $dir);
     while (defined(my $file = readdir(ALBUMDIR))) {
 	# ignore dirs
@@ -86,12 +83,13 @@ while (defined(my $dir = readdir(IMPORT))) {
 	next unless ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac");
 	
 	# if a music file, extract the tag
-	print "Extract tags from $dir/$file\n";
-	open(ALBUMINFO, "lltag --id3v2 -S $importdir/$dir/$file|");
+	print "Extract tags from $file\n";
+	open(ALBUMINFO, "lltag --id3v2 -S $importdir/$dir/$file |");
 	while(<ALBUMINFO>) {
+	    print $_;
 	    $band = $1 if /\sARTIST=(.*)$/;
 	    if (/ALBUM=(.*)$/) { $album = $1; }
-	    $style = $1 if /\sGENRE=(.*)$/;
+	    if (/\s*GENRE=(.*)$/) { $style = $1; }
 	    $year = $1 if /\sDATE=(.*)$/;
 	    last if ($band and $album and $style and $year);
 	}
@@ -101,7 +99,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	last if ($band and $album and $style and $year);
     }
 
-    print "So far, we found ", BOLD $dir, RESET "to contain:\n";
+    print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t($style|$band|$album|$year)\n";
        
 }
