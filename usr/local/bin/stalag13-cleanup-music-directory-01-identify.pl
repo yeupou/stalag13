@@ -22,6 +22,11 @@ use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
 use File::Copy;
+use Term::ANSIColor qw(:constants);
+use Term::ReadKey;
+my ($columns) = GetTerminalSize();;
+my $clear = `clear`;
+use Text::Wrap qw(&wrap $columns);
 
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
@@ -84,10 +89,10 @@ while (defined(my $dir = readdir(IMPORT))) {
 	print "Extract tags from $dir/$file\n";
 	open(ALBUMINFO, "lltag --id3v2 -S $importdir/$dir/$file|");
 	while(<ALBUMINFO>) {
-	    $band = $1 if /ARTIST=(.*)$/;
-	    $album = $1 if /ALBUM=(.*)$/;
-	    $style = $1 if /GENRE=(.*)$/;
-	    $year = $1 if /DATE=(.*)$/;
+	    $band = $1 if /\sARTIST=(.*)$/;
+	    if (/ALBUM=(.*)$/) { $album = $1; }
+	    $style = $1 if /\sGENRE=(.*)$/;
+	    $year = $1 if /\sDATE=(.*)$/;
 	    last if ($band and $album and $style and $year);
 	}
 	close(ALBUMINFO);
@@ -96,7 +101,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	last if ($band and $album and $style and $year);
     }
 
-    print "So far, we found $dir to contain:\n";
+    print "So far, we found ", BOLD $dir, RESET "to contain:\n";
     print "\t($style|$band|$album|$year)\n";
        
 }
