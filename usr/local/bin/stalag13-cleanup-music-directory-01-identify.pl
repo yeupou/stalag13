@@ -116,7 +116,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     chomp($stdin = <STDIN>);
 
     # If a digit is typed, change the style to the relevant one
-    if ($stdin =~ m/^\d*$/ and $stdin ne 0) {
+    if ($stdin =~ m/^\d*$/ and $stdin != 0) {
 	$style = $style[$stdin];
 	print "\t($style|$band|$album|$year)\n";
     }
