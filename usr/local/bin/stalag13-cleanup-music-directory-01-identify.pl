@@ -123,7 +123,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 
     # Create the import file
     open(IMPORT, "> $dir/import");
-    print IMPORT "($style|$band|$album|$year)\n";
+    print IMPORT "$style|$band|$album|$year\n";
     close(IMPORT);
 
     # If E was type, then fire up emacs to edit it
