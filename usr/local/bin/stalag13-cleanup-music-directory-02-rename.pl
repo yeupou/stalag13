@@ -118,7 +118,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     print "/bin/chown -R $user:$user $maindir/$style/".lc("$band/")."\n";
     system("/bin/chown", "-R", "$user:$user", "$maindir/$style/".lc("$band/")) unless $debug;
     print "/bin/chmod -R a+r $maindir/$style/".lc("$band/")."\n";
-    system("/bin/chmod", "-R", "a+r", "$maindir/$style/."lc("$band/")) unless $debug;
+    system("/bin/chmod", "-R", "a+r", "$maindir/$style/".lc("$band/")) unless $debug;
     
     # if we get here, everything was moved, we can safely eraze initial dir
     print "rm -rvf $importdir/$dir";
