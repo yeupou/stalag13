@@ -103,10 +103,25 @@ while (defined(my $dir = readdir(IMPORT))) {
 
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t($style|$band|$album|$year)\n";
-    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n";
+    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n> ";
     for (my $i = 1; $i <= scalar(@style); $i++) {
-	print BOLD "> $i", RESET ") ".$style[$i]."\n";
-    }       
+	print BOLD " $i", RESET ") ".$style[$i];
+    }
+    print "\n";
+    
+    my $stdin;
+    chomp($stdin = <STDIN>);
+
+    if ($stdin =~ m/^\d$/) {
+	$style = $style[$stdin];
+	print "\t($style|$band|$album|$year)\n";
+    }
+
+    print "Would start emacs\n" if (lc($stdin) eq "e"); 
+   
+
+    
+
 }
 closedir(IMPORT);
 
