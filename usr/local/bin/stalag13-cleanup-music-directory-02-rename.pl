@@ -26,7 +26,7 @@ use File::Copy;
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 0;
+my $debug = 1;
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
@@ -80,12 +80,12 @@ while (defined(my $dir = readdir(IMPORT))) {
 	
 	# if image, simply move it
 	if ($suffix eq ".png" or $suffix eq ".jpg") {
-	    print "mv $file $destdir/";
+	    print "mv $file $destdir/\n";
 	    move("$importdir/$dir/$file", $destdir) unless $debug;
 	}
 	
 	# if mp3 or ogg, use lltag to update tag and rename
-	if ($suffix eq ".ogg" or $suffix eq ".mp3") {
+	if ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac") {
 	    system("lltag", "--dry-run", "--preserve-time", "--yes",
 		   "--id3v2",
 		   "--ARTIST", $band,
@@ -113,14 +113,18 @@ while (defined(my $dir = readdir(IMPORT))) {
     closedir(ALBUMDIR); 
     
     # more cleanups
-    system("/usr/bin/urlize", "-D", $destdir);
-    system("/bin/chown", "-R", "$user:$user", "$maindir/".lc("$style/$band/"));
-    system("/bin/chmod", "-R", "a+r", "$maindir/".lc("$style/$band/"));
+    print "/usr/bin/urlize -D $destdir\n";
+    system("/usr/bin/urlize", "-D", $destdir) unless $debug;
+    print "/bin/chown -R $user:$user $maindir/".lc("$style/$band/")."\n";
+    system("/bin/chown", "-R", "$user:$user", "$maindir/".lc("$style/$band/")) unless $debug;
+    print "/bin/chmod -R a+r $maindir/".lc("$style/$band/")."\n";
+    system("/bin/chmod", "-R", "a+r", "$maindir/".lc("$style/$band/")) unless $debug;
     
-    # if we get here, everything was moved, we can safely eraze initial dir
-    print "rm -rvf $importdir/$dir";	
-    system("/bin/rm", "-rf", "$importdir/$dir") unless $debug;
-
+    ## if we get here, everything was moved, we can safely eraze initial dir
+    #print "rm -rvf $importdir/$dir";
+    #system("/bin/rm", "-rf", "$importdir/$dir") unless $debug;
+    # Ask to do it manually to avoid data loss
+    print "Job done, now you should remove content of $importdir/$dir\n";
 }
 closedir(IMPORT);
 

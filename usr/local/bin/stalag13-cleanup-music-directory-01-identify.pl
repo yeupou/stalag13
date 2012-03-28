@@ -26,22 +26,24 @@ use File::Copy;
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 0;
+my $debug = 1;
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
 
 # identify styles available
 opendir(STYLES, $maindir);
+my @style;
 while (defined(my $dir = readdir(IMPORT))) {
     # silently ignores anything but standard directories
     next unless -d $dir;
     next if $dir eq "." or $dir eq "..";
     next if $dir =~ /^\..*/;
 
+    push(@style, $dir);
+
 }
 closedir(STYLES);
-exit;
 
 
 # now enter import dir
@@ -59,8 +61,44 @@ while (defined(my $dir = readdir(IMPORT))) {
 
     # ignores directories with no import file within
     print "Fichier $dir/import disponible, dossier ignoré.\n" if -e "$dir/import";
+    next if -e "$dir/import";
 
+    # go inside the directory and try to get tags for an ogg or mp3 or else
+    my $band;
+    my $album;
+    my $style;
+    my $year;
+    opendir(ALBUMDIR, $dir);
+    while (defined(my $file = readdir(ALBUMDIR))) {
+	# ignore dirs
+	next if -d $file;
 
+	# find out suffix, ignore file if none found
+	my $suffix = 0;
+	my $realfile;
+	if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
+	next unless $suffix && $realfile;
+	next unless ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac");
+	
+	# if a music file, extract the tag
+	print "Extract tags from $dir/$file\n";
+	open(ALBUMINFO, "lltag --id3v2 -S $importdir/$dir/$file|");
+	while(<ALBUMINFO>) {
+	    $band ~= $1 if /ARTIST=(.*)$/;
+	    $album ~= $1 if /ALBUM=(.*)$/;
+	    $style ~= $1 if /GENRE=(.*)$/;
+	    $year ~= $1 if /DATE=(.*)$/;
+	    last if ($band and $album and $style and $year);
+	}
+	close(ALBUMINFO);
+
+	# if we get here, we had at least one file with all relevant info, exit
+	last if ($band and $album and $style and $year);
+    }
+
+    print "So far, we found $dir to contain:\n";
+    print "\t($style|$band|$album|$year)\n";
+       
 }
 closedir(IMPORT);
 
