@@ -39,16 +39,19 @@ chdir($maindir) or die "Unable to enter $maindir. Exit";
 # identify styles available
 opendir(STYLES, $maindir);
 my @style;
+print "Found style... ";
 while (defined(my $dir = readdir(IMPORT))) {
     # silently ignores anything but standard directories
     next unless -d $dir;
     next if $dir eq "." or $dir eq "..";
     next if $dir =~ /^\..*/;
 
+    print "$dir... ";
     push(@style, $dir);
 
 }
 closedir(STYLES);
+print "\n";
 
 
 # now enter import dir
@@ -101,7 +104,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t($style|$band|$album|$year)\n";
     print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n";
-    for (my $i = 1; $i <= $#style; $i++) {
+    for (my $i = 1; $i <= scalar(@style); $i++) {
 	print BOLD "> $i", RESET ") ".$style[$i]."\n";
     }       
 }
