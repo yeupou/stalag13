@@ -51,7 +51,7 @@ while (defined(my $dir = readdir(STYLES))) {
 
 }
 closedir(STYLES);
-print "\n";
+print "\n\n\n";
 
 
 # now enter import dir
