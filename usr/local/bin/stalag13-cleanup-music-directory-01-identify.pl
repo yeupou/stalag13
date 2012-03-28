@@ -36,9 +36,9 @@ my $debug = 1;
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
 
-# identify styles available
+# identify styles available (set with 0 = null, to ease user input later)
 opendir(STYLES, $maindir);
-my @style;
+my @style = ("null");
 print "Found style... ";
 while (defined(my $dir = readdir(STYLES))) {
     # silently ignores anything but standard directories
@@ -116,7 +116,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     chomp($stdin = <STDIN>);
 
     # If a digit is typed, change the style to the relevant one
-    if ($stdin =~ m/^\d*$/) {
+    if ($stdin =~ m/^\d*$/ and $stdin ne "0") {
 	$style = $style[$stdin];
 	print "\t($style|$band|$album|$year)\n";
     }
