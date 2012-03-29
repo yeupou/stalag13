@@ -130,7 +130,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     system("/bin/chmod", "-R", "a+r", "$maindir/$style/$band/") unless $debug;
     
     # if we get here, everything was moved, we can safely eraze initial dir
-    print "rm -rvf $importdir/$dir";
+    print "rm -rvf $importdir/$dir\n";
     system("/bin/rm", "-rf", "$importdir/$dir") unless $debug;
 }
 closedir(IMPORT);
