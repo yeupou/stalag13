@@ -22,11 +22,20 @@ use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
 use File::Copy;
+use Getopt::Long;
 
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
 my $debug = 0;
+my $getopt;
+
+
+# get standard opts with getopt
+eval {
+    $getopt = GetOptions("debug" => \$debug);
+};
+
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
