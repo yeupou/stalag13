@@ -66,6 +66,9 @@ while (defined(my $dir = readdir(IMPORT))) {
     }
     close(ALBUMINFO);
 
+    # check we have something valid
+    die "style = $style; band = $band ; album = $album, exit working $dir " unless ($style and $band and $album);
+
     # create the destination directory,
     my $destdir = "$maindir/$style/$band/$album";
     $destdir = "$maindir/$style/$band/$year-$album" if $year;
