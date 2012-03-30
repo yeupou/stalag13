@@ -63,6 +63,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     while (<ALBUMINFO>) {
 	chomp($_);
 	($style,$band,$year,$album) = split(/\|/, $_);
+	last;
     }
     close(ALBUMINFO);
 
