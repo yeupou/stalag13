@@ -81,7 +81,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	# find out suffix, ignore file if none found
 	my $suffix = 0;
 	my $realfile;
-	if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
+	if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = lc($2); $realfile = $1; }
 	next unless $suffix && $realfile;
 	next unless ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac");
 	
