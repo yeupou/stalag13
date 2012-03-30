@@ -66,12 +66,17 @@ while (defined(my $dir = readdir(IMPORT))) {
     }
     close(ALBUMINFO);
 
-    # create the destination directory, skip everything if it already exists
-    my $destdir = "$maindir/$style/$band/$year-$album";
-    print "$destdir existe déjà, dossier ignoré.\n" if -d "$destdir";
-    next if -d "$destdir";
-    system("/bin/mkdir", "-p", $destdir) unless $debug;
-    print "/bin/mkdir -p $destdir\n";
+    # create the destination directory,
+    my $destdir = "$maindir/$style/$band/$album";
+    $destdir = "$maindir/$style/$band/$year-$album" if $year;
+ 
+    if (-d "$destdir") {
+	print "$destdir existe déjà!\n";
+	<STDIN>;
+    } else  {
+	system("/bin/mkdir", "-p", $destdir) unless $debug;
+	print "/bin/mkdir -p $destdir\n";
+    }
     
     # now deals with each file within: 
     #  - move images to new dir

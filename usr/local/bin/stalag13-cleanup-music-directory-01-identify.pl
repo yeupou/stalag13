@@ -104,7 +104,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     # Provides first results,
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t$style|$band|$year|$album\n";
-    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or \n> ";
+    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or ", BOLD "I", RESET "gnore or \n> ";
     # show style list (not refreshed after first start)
     for (my $i = 1; $i < scalar(@style); $i++) {
 	print BOLD "$i", RESET ") ".$style[$i]." ";
@@ -114,6 +114,9 @@ while (defined(my $dir = readdir(IMPORT))) {
     # Ask for confirmation
     my $stdin;
     chomp($stdin = <STDIN>);
+
+    # Ignore if I was typed
+    next if (lc($stdin) eq "i"); 
 
     # If a digit is typed, change the style to the relevant one
     if ($stdin =~ m/^\d*$/ and $stdin != 0) {
