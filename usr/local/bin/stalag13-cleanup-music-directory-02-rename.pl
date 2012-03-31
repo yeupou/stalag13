@@ -36,6 +36,10 @@ eval {
     $getopt = GetOptions("debug" => \$debug);
 };
 
+if ($debug) {
+    print "DEBUG MODE:\n";	     
+    <STDIN>;
+}
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
