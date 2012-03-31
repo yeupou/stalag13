@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MUSIC_DIR="/storage/abstract/musique"
+MUSIC_DIR="/storage/abstract/musique/*"
 
 if [ "$1" = "autoconf" ]; then
     echo yes
