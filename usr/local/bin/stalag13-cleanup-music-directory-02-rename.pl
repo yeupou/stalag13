@@ -113,9 +113,27 @@ while (defined(my $dir = readdir(IMPORT))) {
 	
 	# if mp3 or ogg, use lltag to update tag and rename
 	if ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac") {
+
+	    # lltag is buggy with ogg files, it fails sometimes to find
+	    # out the NUMBER and TITLE tags values on the fly. Extract them
+	    # beforehand
+	    my @lltag_opts = ();
+	    if ($suffix eq ".ogg") {
+		print "Extract TITLE and NUMBER tags from $file\n";
+		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
+		my ($title, $number);
+		while(<ALBUMINFO>) {
+		    $title = $1 if /\sTITLE=(.*)$/i;
+		    $number = $1 if /\sTRACKNUMBER=(.*)$/i;
+		    last if ($title and $number);
+		}
+		close(ALBUMINFO);
+		@lltag_opts = ("--TITLE", $title,
+			       "--NUMBER", $number);
+	    }
+
 	    
-	    if ($debug) {
-		
+	    if ($debug) {		
 		system("lltag", "--dry-run", "--preserve-time", "--yes",
 		       "--id3v2",
 		       "--ARTIST", $band,
@@ -123,6 +141,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		       "--DATE", $year,
 		       "--maj",
 		       "--GENRE", $style,
+		       @lltag_opts,
 		       "--rename-min",
 		       "--rename-slash", "_",
 		       "--rename", "$destdir/%a-%d-%A-%n-%t",
@@ -136,6 +155,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		       "--DATE", $year,
 		       "--maj",
 		       "--GENRE", $style,
+		       @lltag_opts,
 		       "--rename-min",
 		       "--rename-slash", "_",
 		       "--rename", "$destdir/%a-%d-%A-%n-%t",
