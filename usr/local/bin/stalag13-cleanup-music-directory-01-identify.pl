@@ -67,9 +67,15 @@ while (defined(my $dir = readdir(IMPORT))) {
     next unless -d $dir;
     next if $dir eq "." or $dir eq "..";
 
-    # ignores directories with no import file within
+    # ignores directories with already import file within
     print "Fichier $dir/import disponible, dossier ignoré.\n" if -e "$dir/import";
     next if -e "$dir/import";
+
+    # ignores directories flagged
+    print "Fichier $dir/ignore existant, dossier ignoré.\n" if -e "$dir/ignore";
+    next if -e "$dir/ignore";
+
+
 
     # go inside the directory and try to get tags for an ogg or mp3 or else
     my ($band, $album, $style, $year);
@@ -115,8 +121,12 @@ while (defined(my $dir = readdir(IMPORT))) {
     my $stdin;
     chomp($stdin = <STDIN>);
 
-    # Ignore if I was typed
-    next if (lc($stdin) eq "i"); 
+    # Ignore if I was typed (create ignore file so it will be ignored the next
+    # run
+    if (lc($stdin) eq "i") {
+	system("touch", "$dir/ignore");
+	next;
+    }
 
     # If a digit is typed, change the style to the relevant one
     if ($stdin =~ m/^\d*$/ and $stdin != 0) {
@@ -130,7 +140,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     close(IMPORT);
 
     # If E was type, then fire up emacs to edit it
-    system("emacs", "$importdir/$dir/import", "-nw") if (lc($stdin) eq "e"); 
+    system("emacs", "$dir/import", "-nw") if (lc($stdin) eq "e"); 
     
     print "\n\n";
 }

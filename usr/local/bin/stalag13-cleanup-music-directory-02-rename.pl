@@ -54,6 +54,11 @@ while (defined(my $dir = readdir(IMPORT))) {
     print "Pas de fichier $dir/import (style|band|year|album), dossier ignoré.\n" unless -e "$dir/import";
     next unless -e "$dir/import";
 
+    # ignores flagged directories
+    print "Fichier $dir/ignore, dossier ignoré.\n" if -e "$dir/ignore";
+    next if -e "$dir/ignore";
+
+
     # otherwise, find out band name and all
     open(ALBUMINFO, "< $dir/import");
     my $style;
