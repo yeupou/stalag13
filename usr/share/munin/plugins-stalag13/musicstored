@@ -1,0 +1,26 @@
+#!/bin/bash
+
+MUSIC_DIR="/storage/abstract/musique"
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+if [ "$1" = "config" ]; then
+    echo "graph_title Music per genre
+graph_args --base 1000 -l 0
+graph_category disk
+graph_info This graph shows the amount of music stored per genre"
+
+    for dir in $MUSIC_DIR; do 
+	if [ -d $dir ]; then
+	    echo "$dir.label $dir"
+    done
+    exit 0
+fi
+
+
+for dir in $MUSIC_DIR; do 
+    if [ -d $dir ]; then
+	echo "$dir.value "`du -s $dir | tr -d [:alpha:][:blank:]`
+done
