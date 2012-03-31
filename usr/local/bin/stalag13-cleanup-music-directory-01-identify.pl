@@ -95,10 +95,10 @@ while (defined(my $dir = readdir(IMPORT))) {
 	print "Extract tags from $file\n";
 	open(ALBUMINFO, "lltag --id3v2 -S \"$importdir/$dir/$file\" |");
 	while(<ALBUMINFO>) {
-	    $band = $1 if /\sARTIST=(.*)$/;
-	    $album = $1 if /\sALBUM=(.*)$/;
-	    $style = $1 if /\sGENRE=(.*)$/;
-	    $year = $1 if /\sDATE=(.*)$/;
+	    $band = $1 if /\sARTIST=(.*)$/i;
+	    $album = $1 if /\sALBUM=(.*)$/i;
+	    $style = $1 if /\sGENRE=(.*)$/i;
+	    $year = $1 if /\sDATE=(.*)$/i;
 	    last if ($band and $album and $style and $year);
 	}
 	close(ALBUMINFO);
