@@ -14,7 +14,7 @@ graph_info This graph shows the amount of music stored per genre"
 
     for dir in $MUSIC_DIR; do 
 	if [ -d $dir ]; then
-	    echo "$dir.label $dir"
+	    echo "$dir.label `basename $dir`"
 	fi
     done
     exit 0
@@ -23,6 +23,6 @@ fi
 
 for dir in $MUSIC_DIR; do 
     if [ -d $dir ]; then
-	echo "$dir.value "`du -s $dir | tr -d [:alpha:][:blank:]`
+	echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`"
     fi
 done
