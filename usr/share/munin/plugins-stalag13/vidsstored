@@ -1,16 +1,16 @@
 #!/bin/bash
 
-DIR="/storage/abstract/musique"
+DIR="/storage/abstract/videos"
 
 if [ "$1" = "autoconf" ]; then
     echo yes
     exit 0
 fi
 if [ "$1" = "config" ]; then
-    echo "graph_title Music per genre
+    echo "graph_title Videos per genre
 graph_args -l 0
 graph_category disk
-graph_info This graph shows the amount of music stored per genre"
+graph_info This graph shows the amount of videos stored per genre"
 
     cd $DIR
     for dir in *; do 
