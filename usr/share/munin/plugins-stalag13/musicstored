@@ -8,7 +8,7 @@ if [ "$1" = "autoconf" ]; then
 fi
 if [ "$1" = "config" ]; then
     echo "graph_title Music per genre
-graph_args -l 0 --units-exponent 9
+graph_args -l 0
 graph_category disk
 graph_info This graph shows the amount of music stored per genre"
 
@@ -25,6 +25,6 @@ fi
 cd $MUSIC_DIR
 for dir in *; do 
     if [ -d $dir ]; then
-	echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`"
+	echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`000"
     fi
 done
