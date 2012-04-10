@@ -1,0 +1,35 @@
+#!/bin/bash
+
+DIR="/storage/abstract"
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+if [ "$1" = "config" ]; then
+    echo "graph_title Data stored
+graph_args -l 0
+graph_category disk
+graph_info This graph shows the amount of data stored"
+
+    cd $DIR
+    for dir in *; do 
+	if [ `echo $dir | cut -b 1-5` != "perso" ]; then
+	    if [ -d $dir ]; then
+		echo "$dir.label `basename $dir`"
+		echo "$dir.draw AREASTACK"
+	    fi
+	fi
+    done
+    exit 0
+fi
+
+
+cd $DIR
+for dir in *; do 
+    if [ `echo $dir| cut -b 1-5` != "perso" ]; then
+	if [ -d $dir ]; then
+	    echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`000"
+	fi
+    fi
+done
