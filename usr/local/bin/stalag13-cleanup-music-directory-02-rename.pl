@@ -122,6 +122,9 @@ while (defined(my $dir = readdir(IMPORT))) {
 	# if mp3 or ogg, use lltag to update tag and rename
 	if ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac") {
 
+	    # default name scheme
+	    $naming = "%a-%d-%A-%n-%t";
+
 	    # lltag is buggy with ogg files, it fails sometimes to find
 	    # out the NUMBER and TITLE tags values on the fly. Extract them
 	    # beforehand
@@ -158,6 +161,10 @@ while (defined(my $dir = readdir(IMPORT))) {
 
 		# add specific tags (try to set the usual ones)
 		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));
+
+		# specific naming scheme
+		$naming = "%A-%d-%a-%n-%t";
+
 	    }
 	    
 	    if ($debug) {		
