@@ -24,10 +24,11 @@ use File::Basename;
 use File::Copy;
 use Getopt::Long;
 
+# config:
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 0;
+my $debug = 1;
 my $getopt;
 
 
@@ -66,6 +67,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     # otherwise, find out band name and all
     open(ALBUMINFO, "< $dir/import");
     my $style;
+    my $is_va = 0;
     my $band;
     my $album;
     my $year = "0000";
@@ -79,9 +81,18 @@ while (defined(my $dir = readdir(IMPORT))) {
     # check we have something valid
     die "style = $style; band = $band ; album = $album, exit working $dir " unless ($style and $band and $album);
 
+    # various artists case
+    if ($band eq "-----VARIOUS ARTISTS-----") {
+	$is_va = 1;
+	$band = 0;
+    }
+
     # create the destination directory,
+    # FIXME: seems to be some issues with accentued characters, not sure
+    # why.
     my $destdir = "$maindir/$style/$band/$album";
     $destdir = "$maindir/$style/$band/$year-$album" if $year;
+    $destdir = "$maindir/$style/$album" if $is_va;
  
     if (-d "$destdir") {
 	print "$destdir existe déjà!\n";
@@ -108,7 +119,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	# if image, simply move it
 	if ($suffix eq ".png" or $suffix eq ".jpg") {
 	    print "mv $file $destdir/\n";
-	    move("$importdir/$dir/$file", $destdir) unless $debug;
+	    move("$importdir/$dir/$file", "$destdir") unless $debug;
 	}
 	
 	# if mp3 or ogg, use lltag to update tag and rename
@@ -132,6 +143,22 @@ while (defined(my $dir = readdir(IMPORT))) {
 			       "--NUMBER", $number);
 	    }
 
+	    # Various artists
+	    if ($is_va) {
+		# always extract the correct band name
+		# (yes, not uberclean to call so many times lltag, but let's
+		# keep it stupid/simple)
+		print "Extract BAND from $file (various artists)\n";
+		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
+		while(<ALBUMINFO>) {
+		    $band = $1 if /\sARTIST=(.*)$/i;
+		    last if $band;
+		}
+		close(ALBUMINFO);
+
+		# add specific tags (try to set the usual ones)
+		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));
+	    }
 	    
 	    if ($debug) {		
 		system("lltag", "--dry-run", "--preserve-time", "--yes",

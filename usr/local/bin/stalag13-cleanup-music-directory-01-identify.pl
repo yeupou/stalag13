@@ -28,10 +28,11 @@ my ($columns) = GetTerminalSize();;
 my $clear = `clear`;
 use Text::Wrap qw(&wrap $columns);
 
-my $user = "klink";
+# config:
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
 my $debug = 1;
+
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
@@ -110,7 +111,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     # Provides first results,
     print "So far, we found ", BOLD $dir, RESET " to contain:\n";
     print "\t$style|$band|$year|$album\n";
-    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or ", BOLD "I", RESET "gnore or \n> ";
+    print "> ", BOLD "Y", RESET "es/enter or ", BOLD "E", RESET "dit or ", BOLD "I", RESET "gnore or\n> ", BOLD "S", RESET "et to various artists or set style to\n> ";
     # show style list (not refreshed after first start)
     for (my $i = 1; $i < scalar(@style); $i++) {
 	print BOLD "$i", RESET ") ".$style[$i]." ";
@@ -120,6 +121,12 @@ while (defined(my $dir = readdir(IMPORT))) {
     # Ask for confirmation
     my $stdin;
     chomp($stdin = <STDIN>);
+
+    # If S was typed, set band to various artists (this tag should be
+    # unique enough, I dont think a band with such name exists)
+    if (lc($stdin) eq "s") {
+	$band = "-----VARIOUS ARTISTS-----";
+    }
 
     # Ignore if I was typed (create ignore file so it will be ignored the next
     # run
@@ -139,7 +146,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     print IMPORT "$style|$band|$year|$album\n";
     close(IMPORT);
 
-    # If E was type, then fire up emacs to edit it
+    # If E was typed, then fire up emacs to edit it
     system("emacs", "$dir/import", "-nw") if (lc($stdin) eq "e"); 
     
     print "\n\n";
