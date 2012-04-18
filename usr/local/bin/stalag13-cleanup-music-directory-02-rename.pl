@@ -146,7 +146,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		# always extract the correct band name
 		# (yes, not uberclean to call so many times lltag, but let's
 		# keep it stupid/simple)
-		$band = 0;
+		$band = "";
 		print "Extract BAND from $file (various artists)... ";
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		while(<ALBUMINFO>) {
