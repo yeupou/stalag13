@@ -126,6 +126,8 @@ while (defined(my $dir = readdir(IMPORT))) {
     # unique enough, I dont think a band with such name exists)
     if (lc($stdin) eq "s") {
 	$band = "-----VARIOUS ARTISTS-----";
+	# in this case, always review/edit
+	$stdin = "e";
     }
 
     # Ignore if I was typed (create ignore file so it will be ignored the next
