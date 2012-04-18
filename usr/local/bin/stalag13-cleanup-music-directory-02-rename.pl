@@ -123,7 +123,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	if ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac") {
 
 	    # default name scheme
-	    $naming = "%a-%d-%A-%n-%t";
+	    my $naming = "%a-%d-%A-%n-%t";
 
 	    # lltag is buggy with ogg files, it fails sometimes to find
 	    # out the NUMBER and TITLE tags values on the fly. Extract them
