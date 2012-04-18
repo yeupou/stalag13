@@ -28,7 +28,7 @@ use Getopt::Long;
 my $user = "klink";
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 0;
+my $debug = 1;
 my $getopt;
 
 
