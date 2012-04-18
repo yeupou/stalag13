@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2012 Mathieu Roy <yeupou--gnu.org>
+#      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -31,8 +32,7 @@ use Text::Wrap qw(&wrap $columns);
 # config:
 my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
-my $debug = 1;
-
+my $editor = "emacs";
 
 # enter working directories
 chdir($maindir) or die "Unable to enter $maindir. Exit";
@@ -69,11 +69,11 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with already import file within
-    print "Fichier $dir/import disponible, dossier ignoré.\n" if -e "$dir/import";
+    print "No $dir/import available, skip directory.\n" if -e "$dir/import";
     next if -e "$dir/import";
 
     # ignores directories flagged
-    print "Fichier $dir/ignore existant, dossier ignoré.\n" if -e "$dir/ignore";
+    print "$dir/ignore exists, skip directory.\n" if -e "$dir/ignore";
     next if -e "$dir/ignore";
 
 
@@ -149,7 +149,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     close(IMPORT);
 
     # If E was typed, then fire up emacs to edit it
-    system("emacs", "$dir/import", "-nw") if (lc($stdin) eq "e"); 
+    system($editor, "$dir/import", "-nw") if (lc($stdin) eq "e"); 
     
     print "\n\n";
 }

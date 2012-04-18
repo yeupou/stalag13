@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2012 Mathieu Roy <yeupou--gnu.org>
+#      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ eval {
 };
 
 if ($debug) {
-    print "DEBUG MODE:\n";	     
+    print "DEBUG MODE: (type enter)\n";	     
     <STDIN>;
 }
 
@@ -56,11 +57,11 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with no import file within
-    print "Pas de fichier $dir/import (style|band|year|album), dossier ignoré.\n" unless -e "$dir/import";
+    print "No $dir/import (style|band|year|album), skip directory.\n" unless -e "$dir/import";
     next unless -e "$dir/import";
 
     # ignores flagged directories
-    print "Fichier $dir/ignore, dossier ignoré.\n" if -e "$dir/ignore";
+    print "$dir/ignore exists, skip directory.\n" if -e "$dir/ignore";
     next if -e "$dir/ignore";
 
 
@@ -92,7 +93,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     $destdir = "$maindir/$style/$album" if $is_va;
  
     if (-d "$destdir") {
-	print "$destdir existe déjà!\n";
+	print "$destdir already exists (check and type enter if ready)!\n";
 	<STDIN>;
     } else  {
 	system("/bin/mkdir", "-p", $destdir) unless $debug;
