@@ -130,7 +130,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    # beforehand
 	    my @lltag_opts = ();
 	    if ($suffix eq ".ogg") {
-		print "Extract TITLE and NUMBER tags from $file\n";
+		print "Extract TITLE and NUMBER tags from $file... ";
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		my ($title, $number);
 		while(<ALBUMINFO>) {
@@ -139,6 +139,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		    last if ($title and $number);
 		}
 		close(ALBUMINFO);
+		print "$number, $title\n";
 		@lltag_opts = ("--TITLE", $title,
 			       "--NUMBER", $number);
 	    }
@@ -148,13 +149,14 @@ while (defined(my $dir = readdir(IMPORT))) {
 		# always extract the correct band name
 		# (yes, not uberclean to call so many times lltag, but let's
 		# keep it stupid/simple)
-		print "Extract BAND from $file (various artists)\n";
+		print "Extract BAND from $file (various artists)... ";
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		while(<ALBUMINFO>) {
 		    $band = $1 if /\sARTIST=(.*)$/i;
 		    last if $band;
 		}
 		close(ALBUMINFO);
+		print "$band\n";
 
 		# add specific tags (try to set the usual ones)
 		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));
