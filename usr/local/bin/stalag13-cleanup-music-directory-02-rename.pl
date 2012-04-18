@@ -178,7 +178,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		       @lltag_opts,
 		       "--rename-min",
 		       "--rename-slash", "_",
-		       "--rename", "$destdir/%a-%d-%A-%n-%t",
+		       "--rename", "$destdir/$naming",
 		       "$importdir/$dir/$file");
 		<STDIN>;
 	    } else {
@@ -192,7 +192,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		       @lltag_opts,
 		       "--rename-min",
 		       "--rename-slash", "_",
-		       "--rename", "$destdir/%a-%d-%A-%n-%t",
+		       "--rename", "$destdir/$naming",
 		       "$importdir/$dir/$file");
 	    }
 	}
