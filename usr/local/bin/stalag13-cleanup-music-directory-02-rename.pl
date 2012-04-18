@@ -82,7 +82,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     die "style = $style; band = $band ; album = $album, exit working $dir " unless ($style and $band and $album);
 
     # various artists case
-    $is_va if ($band eq "-----VARIOUS ARTISTS-----");
+    $is_va = 1 if ($band eq "-----VARIOUS ARTISTS-----");
 
     # create the destination directory,
     # FIXME: seems to be some issues with accentued characters, not sure
