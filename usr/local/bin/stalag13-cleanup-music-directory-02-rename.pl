@@ -163,7 +163,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));
 
 		# specific naming scheme
-		$naming = "%A-%d-%a-%n-%t";
+		$naming = "%A-%d-%n-%a-%t";
 
 	    }
 	    
