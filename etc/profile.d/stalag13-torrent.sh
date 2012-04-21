@@ -1,10 +1,15 @@
-# Wild assumption
-TORRENT_BASEDIR=/mnt/lan/gate.stalag13.ici
+# Wild assumption?
+if [ -d /home/torrent/watch ]; then
+    TORRENT_BASEDIR=/home/torrent
+elif [ -d /mnt/lan/gate.stalag13.ici/watch ]; then
+    TORRENT_BASEDIR=/mnt/lan/gate.stalag13.ici
+fi
 
 # Run
 function tcdcheck {
     if [ ! -d "$TORRENT_BASEDIR" ]; then 
 	 echo "TORRENT_BASEDIR ($TORRENT_BASEDIR) does not exists."
+	 echo "(It should point to the directory that contains watch & download)"
 	 return 1
     fi
     return 0
