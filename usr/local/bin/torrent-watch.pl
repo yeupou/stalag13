@@ -77,6 +77,10 @@ unless ($isup) {
 	# send warning only once (dont want more than one mail to be sent)
 	system("/usr/bin/touch", "$watchdir/.down");
 	print LOG strftime "%c - transmission-daemon appears to be dead\n", localtime;
+        # update status info
+	open(STATUSFILE, "> $watchdir/status");
+	print STATUSFILE "transmission-daemon appeared to be dead starting ", strftime "%c\n\n", localtime;
+	close(STATUSFILE);
 	die "transmission-daemon appears to be dead. Exit";
     }
     # otherwise, silently exit
