@@ -53,7 +53,7 @@ deb-prerelease:
 
 deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
-	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION) 0
+	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)
 	@git commit -a -m 'New release $(MAJORVERSION).$(NEWVERSION)'
