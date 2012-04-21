@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# (c) 2001-2012 Mathieu Roy <yeupou@gnu.org>
+# (c) 2001-2012 Mathieu Roy <yeupou--gnu.org>
 #     http://yeupou.wordpress.com
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ use Getopt::Long;
 
 # Usual for Darius Tools perl scripts
 my $DARIUS_AUTHOR="2002-2012 Mathieu Roy";
-my $DARIUS_MAIL="yeupou@gnu.org";
+my $DARIUS_MAIL="yeupou--gnu.org";
 my $DARIUS_VER="Irrelevant";
 
 # Specific
