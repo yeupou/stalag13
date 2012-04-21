@@ -9,28 +9,31 @@ WHOAMI = $(shell whoami)
 
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
-	for content in etc/* usr/* var/* ; do \
+	@for content in etc/* usr/* var/* ; do \
 		if [ -d $$content ]; then \
 			for subcontent in $$content/* ; do \
 				if [ -d $$subcontent ]; then \
 					for subsubcontent in $$subcontent/* ; do \
 						if [ -d $$subsubcontent ]; then \
 							for subsubsubcontent in $$subsubcontent/* ; do \
+								mkdir -pv $(PREFIX)`dirname $$subsubsubcontent` ; \
 								install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
 							done \
 						elif [ -e $$subsubcontent ]; then \
+							mkdir -pv $(PREFIX)`dirname $$subsubcontent` ; \
 							install $$subsubcontent $(PREFIX)$$subsubcontent ; \
 						fi \
 					done \
 				elif [ -e $$subcontent ]; then \
+					mkdir -pv $(PREFIX)`dirname $$subcontent` ; \
 					install $$subcontent $(PREFIX)$$subcontent; \
 				fi \
 			done \
 		elif [ -e $$content ]; then \
+			mkdir -pv $(PREFIX)`dirname $$content` ; \
 			install $$content $(PREFIX)$$content; \
 		fi \
 	done
-	mkdir -p $(PREFIX)usr/bin $(PREFIX)usr/local/bin
 	for content in $(PREFIX)usr/local/bin/stalag13-* ; do \
 		cd $(PREFIX)usr/local/bin/ && ln -fs /usr/local/bin/`basename $$content` $(PREFIX)usr/local/bin/`basename $$content | sed s/^stalag13-//g | sed s/\\.[^.]*$$//g`; \
 	done
@@ -45,7 +48,7 @@ deb-prerelease:
 	echo $(NEWPREVERSION) >> $(LATESTIS)
 	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(VERSION))'
 	make log
-	dpkg-buildpackage -uc -us -rfakeroot stalag13-utils
+	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
 
 deb-release:
