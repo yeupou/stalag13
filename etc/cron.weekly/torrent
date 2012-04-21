@@ -19,7 +19,7 @@ if [ ! $1 ]; then sleep 3s ; fi
 /usr/bin/killall -9 transmission-daemon 2>/dev/null
 # Need to be down at least more than one minute so the torrent watcher script
 # noticed we went down.
-if [ ! $1 ]; then sleep 61s ; fi
+if [ ! $1 ]; then sleep 71s ; fi
 /usr/sbin/invoke-rc.d transmission-daemon start >/dev/null
 
 # EOF
