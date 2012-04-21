@@ -1,0 +1,25 @@
+#!/bin/bash
+# $1 = nowait
+
+if [ ! -d /var/lib/transmission-daemon/info/blocklists ]; then exit; fi
+
+cd /var/lib/transmission-daemon/info/blocklists
+LISTS="http://list.iblocklist.com/?list=bt_level1 http://list.iblocklist.com/?list=bt_spyware http://list.iblocklist.com/?list=ghlzqtqxnzctvvajwwag http://list.iblocklist.com/?list=ijfqtofzixtwayqovmxn"
+
+count=0
+for list in $LISTS; do
+    count=`expr $count \+ 1`
+    short=$count`basename $list | sed s/[^0-9a-zA-Z]]*/./g`
+    su debian-transmission -c "wget -O $short.gz $list"
+    su debian-transmission -c "gunzip -f $short.gz"
+done
+
+/usr/sbin/invoke-rc.d transmission-daemon stop
+if [ ! $1 ]; then sleep 3s ; fi
+/usr/bin/killall -9 transmission-daemon
+# Need to be down at least more than one minute so the torrent watcher script
+# noticed we went down.
+if [ ! $1 ]; then sleep 61s ; fi
+/usr/sbin/invoke-rc.d transmission-daemon start
+
+# EOF

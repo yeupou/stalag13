@@ -82,11 +82,15 @@ unless ($isup) {
     # otherwise, silently exit
     exit;
 }
-# warn if back online after failure to run
+# warn if back online after failure to run, keep it in mind because
+# later well have to make sure that a .trs exists for any active torrent
+# (despite ID changes)
+my $justwokeup = 0;
 if (-e "$watchdir/.down") {
     print "transmission-daemon is back on line, resuming watch.\n";
     print LOG strftime "%c - transmission-daemon is back on line, resuming watch\n", localtime;
     unlink("$watchdir/.down");
+    $justwokeup = 1;
 }
 
 
@@ -238,7 +242,7 @@ while (<LIST>) {
     }
     
     # should be removed 
-    unless (-e "$watchdir/$id-$file.trs" or $added{$id}) {
+    unless (-e "$watchdir/$id-$file.trs" or $added{$id} or $justwokeup) {
 	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
 	print LOG strftime "%c - remove $file (#$id)\n", localtime;
 	`$bin --torrent $id --remove >/dev/null`;

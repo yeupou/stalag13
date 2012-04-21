@@ -22,10 +22,11 @@ fi
 
 cd /home/torrent/watch
 
-echo active.value `ls *.trs -1 2>/dev/null | wc -l`
 if [ ! -e "all-" ]; then 
+    echo active.value `ls *.trs -1 2>/dev/null | wc -l`
     echo paused.value `ls *.trs- -1 2>/dev/null | wc -l`
 else
+    echo active.value 0
     echo paused.value `ls *.trs *.trs- -1 2>/dev/null | wc -l`
 fi
 echo completed.value `ls *.trs+ -1 2>/dev/null | wc -l`
