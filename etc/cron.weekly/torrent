@@ -9,7 +9,7 @@ LISTS="http://list.iblocklist.com/?list=bt_level1 http://list.iblocklist.com/?li
 count=0
 for list in $LISTS; do
     count=`expr $count \+ 1`
-    short=$count`basename $list | sed s/[^0-9a-zA-Z]]*/./g`
+    short=$count`basename $list | sed s/[^0-9a-zA-Z]]*/-/g`
     su debian-transmission -c "wget --quiet -O $short.gz $list"
     su debian-transmission -c "gunzip -f $short.gz"
 done
