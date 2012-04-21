@@ -42,21 +42,21 @@ log:
 	git log --stat -n50 --pretty=format:"%s of %ar" > ChangeLog
 
 deb-prerelease:
-	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(VERSION)")"
+	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"
 	debian/makechangelog.sh $(MAJORVERSION) $(VERSION) $(NEWPREVERSION)
 	echo $(VERSION) > $(LATESTIS)
 	echo $(NEWPREVERSION) >> $(LATESTIS)
-	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(VERSION))'
+	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(MAJORVERSION).$(VERSION))'
 	make log
 	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
 
 deb-release:
-	@echo "New release "$(NEWVERSION)
+	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION) 0
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)
-	@git commit -a -m 'New release $(NEWVERSION)'
+	@git commit -a -m 'New release $(MAJORVERSION).$(NEWVERSION)'
 	@git push
 	@git push github
 	make log
