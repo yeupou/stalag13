@@ -9,28 +9,28 @@ WHOAMI = $(shell whoami)
 
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
-	@for content in etc/* usr/* var/* ; do \
+	for content in etc/* usr/* var/* ; do \
 		if [ -d $$content ]; then \
 			for subcontent in $$content/* ; do \
 				if [ -d $$subcontent ]; then \
 					for subsubcontent in $$subcontent/* ; do \
 						if [ -d $$subsubcontent ]; then \
 							for subsubsubcontent in $$subsubcontent/* ; do \
-								mkdir -pv $(PREFIX)`dirname $$subsubsubcontent` ; \
+								mkdir -p $(PREFIX)`dirname $$subsubsubcontent` ; \
 								install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
 							done \
 						elif [ -e $$subsubcontent ]; then \
-							mkdir -pv $(PREFIX)`dirname $$subsubcontent` ; \
+							mkdir -p $(PREFIX)`dirname $$subsubcontent` ; \
 							install $$subsubcontent $(PREFIX)$$subsubcontent ; \
 						fi \
 					done \
 				elif [ -e $$subcontent ]; then \
-					mkdir -pv $(PREFIX)`dirname $$subcontent` ; \
+					mkdir -p $(PREFIX)`dirname $$subcontent` ; \
 					install $$subcontent $(PREFIX)$$subcontent; \
 				fi \
 			done \
 		elif [ -e $$content ]; then \
-			mkdir -pv $(PREFIX)`dirname $$content` ; \
+			mkdir -p $(PREFIX)`dirname $$content` ; \
 			install $$content $(PREFIX)$$content; \
 		fi \
 	done

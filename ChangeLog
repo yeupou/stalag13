@@ -1,4 +1,12 @@
-New prerelease 1 (on top of 0) of 0 seconds ago
+New prerelease 2 (on top of 0) of 1 seconds ago
+ ChangeLog        |  298 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ LATESTIS         |    2 +-
+ Makefile         |    9 +-
+ debian/changelog |    6 ++
+ debian/rules     |   25 +----
+ 5 files changed, 312 insertions(+), 28 deletions(-)
+
+New prerelease 1 (on top of 0) of 2 hours ago
  LATESTIS                |    3 ++-
  Makefile                |   59 ++++++++++++++++++++++++++---------------------
  debian/changelog        |    6 +++++
@@ -291,9 +299,3 @@ New release 303 of 3 weeks ago
  debian/changelog                                   |    6 ++++++
  .../stalag13-cleanup-music-directory-02-rename.pl  |   18 ++++++++----------
  3 files changed, 15 insertions(+), 11 deletions(-)
-
-New release 302 of 3 weeks ago
- LATESTIS                                           |    2 +-
- debian/changelog                                   |    6 ++++++
- .../stalag13-cleanup-music-directory-02-rename.pl  |    2 +-
- 3 files changed, 8 insertions(+), 2 deletions(-)
