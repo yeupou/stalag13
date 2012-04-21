@@ -1,24 +1,31 @@
-New prerelease 5 (on top of 0) of 0 seconds ago
+New prerelease 6 (on top of 3.0) of 0 seconds ago
+ ChangeLog        |   19 ++++++++++---------
+ LATESTIS         |    2 +-
+ Makefile         |    8 ++++----
+ debian/changelog |    6 ++++++
+ 4 files changed, 21 insertions(+), 14 deletions(-)
+
+New prerelease 5 (on top of 0) of 6 minutes ago
  ChangeLog        |   15 ++++++++-------
  LATESTIS         |    2 +-
  debian/changelog |    6 ++++++
  debian/rules     |    3 +--
  4 files changed, 16 insertions(+), 10 deletions(-)
 
-New prerelease 4 (on top of 0) of 3 minutes ago
+New prerelease 4 (on top of 0) of 9 minutes ago
  ChangeLog        |   15 ++++++++-------
  LATESTIS         |    2 +-
  debian/changelog |    6 ++++++
  3 files changed, 15 insertions(+), 8 deletions(-)
 
-New prerelease 3 (on top of 0) of 4 minutes ago
+New prerelease 3 (on top of 0) of 10 minutes ago
  ChangeLog        |   16 +++++++++-------
  LATESTIS         |    2 +-
  Makefile         |   10 +++++-----
  debian/changelog |    6 ++++++
  4 files changed, 21 insertions(+), 13 deletions(-)
 
-New prerelease 2 (on top of 0) of 5 minutes ago
+New prerelease 2 (on top of 0) of 11 minutes ago
  ChangeLog        |  298 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
  LATESTIS         |    2 +-
  Makefile         |    9 +-
@@ -295,10 +302,3 @@ New release 307 of 3 weeks ago
  debian/changelog                                   |    6 ++++++
  ...stalag13-cleanup-music-directory-01-identify.pl |    2 +-
  3 files changed, 8 insertions(+), 2 deletions(-)
-
-New release 306 of 3 weeks ago
- LATESTIS                                           |    2 +-
- debian/changelog                                   |    6 ++++++
- ...stalag13-cleanup-music-directory-01-identify.pl |    6 +++---
- .../stalag13-cleanup-music-directory-02-rename.pl  |   10 +++++-----
- 4 files changed, 15 insertions(+), 9 deletions(-)
