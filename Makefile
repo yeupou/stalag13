@@ -35,7 +35,7 @@ install: clean
 		fi \
 	done
 	for content in $(PREFIX)usr/local/bin/* ; do \
-		@echo "#############  `echo $$content | grep -vc stalag13" ; \
+		@echo "#############  `echo $$content | grep -vc stalag13`" ; \
 		cd $(PREFIX)usr/local/bin/ && if [ `echo $$content | grep -vc stalag13` == 1 ]; then ln -fs /usr/local/bin/`basename $$content` $(PREFIX)usr/local/bin/`basename $$content | sed s/\\.[^.]*$$//g`; fi ; \
 	done
 	for content in $(PREFIX)usr/local/bin/stalag13-* ; do \
