@@ -72,7 +72,7 @@ rel: release
 release: clean-prev-dir deb-release clean move
 
 clean:
-	mrclean .
+	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -f backup*
 	rm -rf doc-pak
 
