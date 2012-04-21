@@ -13,9 +13,15 @@ orig=wd2T
 dest=sg2T
 sys=debian64
 swap=swap
+origdev=`blkid -L $orig$sys | tr -d [:digit:]`
 destdev=`blkid -L $dest$sys | tr -d [:digit:]`
 mount=/mnt/sysclone
 ignore="backups dev lost+found media proc run sys tmp"
+
+# easy reminder of the last cloning run
+date > /etc/.lastclone
+etckeeper commit "cloning $sys system from $orig ($origdev) to $dest ($destdev)"
+
 
 # mount clone system
 if [ ! -d $mount ]; then exit; fi
