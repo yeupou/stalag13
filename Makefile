@@ -1,7 +1,10 @@
 PREFIX = /
 LATESTIS = LATESTIS
-VERSION = $(shell cat $(LATESTIS))
+MAJORVERSION = 3
+VERSION = $(shell cat $(LATESTIS) | head -1)
+PREVERSION = $(shell cat $(LATESTIS) | tail -1)
 NEWVERSION = $(shell expr $(VERSION) \+ 1)
+NEWPREVERSION = $(shell expr $(PREVERSION) \+ 1)
 WHOAMI = $(shell whoami)
 
 install: clean
@@ -31,33 +34,39 @@ install: clean
 	for content in $(PREFIX)usr/local/bin/stalag13-* ; do \
 		cd $(PREFIX)usr/local/bin/ && ln -fs /usr/local/bin/`basename $$content` $(PREFIX)usr/local/bin/`basename $$content | sed s/^stalag13-//g | sed s/\\.[^.]*$$//g`; \
 	done
-#	ln -s /usr/bin/juk $(PREFIX)usr/local/bin/xmms
-#	rm -rf /usr/src/cgn
-#	cp -rf . /usr/src/cgn
 
-deb:
-	make clean-prev-dir
-#	@echo "A lancer en root"
-#	if [ $(WHOAMI) != "root" ]; then exit ; fi
+log:
+	git log --stat -n50 --pretty=format:"%s of %ar" > ChangeLog
+
+deb-prerelease:
+	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(VERSION)")"
+	debian/makechangelog.sh $(MAJORVERSION) $(VERSION) $(NEWPREVERSION)
+	echo $(VERSION) > $(LATESTIS)
+	echo $(NEWPREVERSION) >> $(LATESTIS)
+	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(VERSION))'
+	make log
+	dpkg-buildpackage -uc -us -rfakeroot stalag13-utils
+	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
+
+deb-release:
 	@echo "New release "$(NEWVERSION)
-#CGN	@cvs2cl
-	debian/makechangelog.sh $(NEWVERSION)
+	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION) 0
 	echo $(NEWVERSION) > $(LATESTIS)
-#CGN	@cvs ci -m 'New release $(NEWVERSION)'
+	echo 0 >> $(LATESTIS)
 	@git commit -a -m 'New release $(NEWVERSION)'
 	@git push
 	@git push github
+	make log
 	dpkg-buildpackage -uc -us -rfakeroot
-	su -c "dpkg -i ../stalag13-utils_2.$(NEWVERSION)*.deb"
-	make clean
-	make chmod
+	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(NEWVERSION)*.deb"
 
-move:
-#CGN	scp ../cgn_*.deb gate:/stock/debian/stable-all
-#CGN	scp ../cgn-depends_*.deb gate:/stock/debian/stable-all
-	ssh moe "rm -f stalag13-utils_2.*.deb stalag13-utils-extra_2.*.deb"
-	scp ../stalag13-utils*_2.*.deb moe:~/
-	ssh root@moe "cd /var/www/apt && rm -f stalag13-utils_2.*.deb stalag13-utils-extra_2.*.deb && cp /home/klink/stalag13-utils*_2.*.deb . && apt-ftparchive packages . > Packages && gzip -f Packages && dpkg -i stalag13-utils_2.*.deb"
+pre: prerelease
+
+prerelease: clean-prev-dir deb-prerelease clean move
+
+rel: release
+
+release: clean-prev-dir deb-release clean move
 
 clean:
 	mrclean .
@@ -68,10 +77,8 @@ clean-prev-dir:
 	rm -f ../cgn_* ../cgn-depends_* 
 	rm -f ../stalag13-utils_* ../stalag13-utils-depends_* ../stalag13-utils-extra_*
 
-clean-deb-dir:
-#CGN	ssh gate "rm -f /stock/debian/stable-all/cgn_* /stock/debian/stable-all/cgn-depends_*"
+move:
+	ssh gate "rm -f stalag13-utils_$(MAJORVERSION).*.deb stalag13-utils-extra_$(MAJORVERSION).*.deb"
+	scp ../stalag13-utils*_$(MAJORVERSION).*.deb moe:~/
+	ssh root@gate "cd /var/www/apt && rm -f stalag13-utils_$(MAJORVERSION).*.deb stalag13-utils-extra_$(MAJORVERSION).*.deb && cp /home/klink/stalag13-utils*_$(MAJORVERSION).*.deb . && apt-ftparchive packages . > Packages && gzip -f Packages && dpkg -i stalag13-utils_$(MAJORVERSION).*.deb"
 
-chmod:
-#	chmod a+w . -Rv
-
-everything: deb move clean-prev-dir
