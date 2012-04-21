@@ -1,5 +1,7 @@
 #!/usr/bin/perl
-#  Copyright 2010 (c) Mathieu Roy <yeupou--gnu.org> 
+#
+#  Copyright 2010-2012 (c) Mathieu Roy <yeupou--gnu.org> 
+#     http://yeupou.wordpress.com
 #
 # Thi program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,6 +19,9 @@
 #
 use strict;
 use POSIX qw/setsid/;
+
+my @redshift_opts=("-l", "48.799:2.505",
+		   "-t", "6500:3700");
 
 # search for any redshift process in /proc
 my @tokill;
@@ -62,8 +67,6 @@ open(STDIN, "</dev/null");
 open(STDOUT, ">/dev/null");
 open(STDERR, ">&STDOUT");
 #     make it redshift
-exec("redshift",
-     "-l 48.799:2.505",
-     "-t 6500:9300");
+exec("redshift", @redshift_opts);
 
 # EOF

@@ -201,8 +201,8 @@ while (defined(my $dir = readdir(IMPORT))) {
     closedir(ALBUMDIR); 
     
     # more cleanups
-    print "/usr/bin/urlize -D $destdir\n";
-    system("/usr/bin/urlize", "-D", $destdir) unless $debug;
+    print "/usr/local/bin/urlize -D $destdir\n";
+    system("/usr/local/bin/urlize", "-D", $destdir) unless $debug;
     print "/bin/chown -R $user:$user $maindir/$style/band/\n";
     system("/bin/chown", "-R", "$user:$user", "$maindir/$style/$band/") unless $debug;
     print "/bin/chmod -R a+r $maindir/$style/$band/\n";
