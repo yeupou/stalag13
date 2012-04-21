@@ -20,7 +20,7 @@ ignore="backups dev lost+found media proc run sys tmp"
 
 # easy reminder of the last cloning run
 date > /etc/.lastclone
-etckeeper commit "cloning $sys system from $orig ($origdev) to $dest ($destdev)"
+etckeeper commit "cloning $sys system from $orig ($origdev) to $dest ($destdev)" >/dev/null 2>/dev/null
 
 
 # mount clone system
