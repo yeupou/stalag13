@@ -9,6 +9,8 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # cleanup
-function mrclean { find $1 \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \; }
+function mrclean { 
+    find $1 \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \; 
+}
 
 # EOF
