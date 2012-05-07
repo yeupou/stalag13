@@ -64,7 +64,7 @@ mutt $DEST -a $FILE < $FAKEMAIL
 
 # Commit the change
 mv $FILE over/
-if [ "$USEGIT" == 1]; then 
+if [ "$USEGIT" == 1 ]; then 
     git add over/*
     git commit -am 'Daily post' >/dev/null
     git push  >/dev/null 2>/dev/null
