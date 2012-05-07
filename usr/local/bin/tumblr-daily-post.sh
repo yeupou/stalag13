@@ -31,7 +31,7 @@
 
 WHOAMI=`whoami`
 RCFILE=/home/$WHOAMI/.tumblr-daily-postrc
-CONTENT=/home/$WHOAMI/tmprm/tumblr
+CONTENT=/home/$WHOAMI/tmp/tumblr
 DEST=0
 USEGIT=1
 
