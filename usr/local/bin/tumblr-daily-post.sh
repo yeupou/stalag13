@@ -22,6 +22,7 @@
 # email address), move it to over then commit the change with git
 #   $CONTENT is by default ~/tumblr
 #   there is no default for DEST, it must be set in ~/.tumblr-daily-postrc
+# This was designed to be set up as a daily cronjob
 
 WHOAMI=`whoami`
 RCFILE=/home/$WHOAMI/.tumblr-daily-postrc
@@ -34,7 +35,7 @@ if [ `whoami` == "root" ]; then echo "Not supposed to run as root, die here" && 
 # Must have a rcfile to get DEST (could redefine CONTENT)
 if [ ! -r $RCFILE ]; then exit; fi
 source $RCFILE
-if [[ "$DEST" -eq 0 ]]; then echo "DEST unset after reading $RCFILE, die here" && exit; fi
+if [ "$DEST" == 0 ]; then echo "DEST unset after reading $RCFILE, die here" && exit; fi
 
 # Go inside content
 if [ ! -d $CONTENT ]; then echo "$DEST not found/not a directory, die here" && exit; fi
