@@ -29,13 +29,15 @@ CONTENT=/home/$WHOAMI/tumblr
 DEST=0
 
 # Wont run as root
-if [[ `whoami` -eq "root" ]]; then echo "Not supposed to run as root, die here" && exit; fi
+if [ `whoami` == "root" ]; then echo "Not supposed to run as root, die here" && exit; fi
+
 # Must have a rcfile to get DEST (could redefine CONTENT)
 if [ ! -r $RCFILE ]; then exit; fi
 source $RCFILE
 if [[ $DEST -eq 0 ]]; then echo "DEST unset after reading $RCFILE, die here" && exit; fi
 
 # Go inside content
+if [ ! -d $DEST ]; then echo "$DEST not found/not a directory, die here" && exit; fi
 cd $DEST
 
 # Mutt need some empty file to succesfully send a mail without content
