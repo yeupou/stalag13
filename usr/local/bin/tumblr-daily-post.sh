@@ -42,7 +42,7 @@ if [ ! -d $CONTENT ]; then echo "$DEST not found/not a directory, die here" && e
 cd $CONTENT
 
 # Mutt need some empty file to succesfully send a mail without content
-FAKECONTENT=`mktemp`
+FAKEMAIL=`mktemp`
 
 # Select the first file
 FILE=`ls -1 --color=no queue/* | head -1`
@@ -51,7 +51,7 @@ FILE=`ls -1 --color=no queue/* | head -1`
 if [ ! -e "$FILE" ]; then exit; fi
 
 # Otherwise, mail it
-mutt $DEST -a $FILE < $FAKECONTENT
+mutt $DEST -a $FILE < $FAKEMAIL
 
 # Commit the change
 mv $FILE over/
@@ -60,7 +60,7 @@ git commit -am 'Daily post' >/dev/null
 git push  >/dev/null 2>/dev/null
 
 # Cleanup
-rm -f $FAKECONTENT
+rm -f $FAKEMAIL
 
 
 # EOF
