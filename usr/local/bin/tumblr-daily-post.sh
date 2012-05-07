@@ -26,7 +26,7 @@
 
 WHOAMI=`whoami`
 RCFILE=/home/$WHOAMI/.tumblr-daily-postrc
-CONTENT=/home/$WHOAMI/tumblr
+CONTENT=/home/$WHOAMI/tmprm/tumblr
 DEST=0
 
 # Wont run as root
