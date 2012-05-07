@@ -19,12 +19,13 @@
 
 # Will go into $CONTENT where two subdirs exists: queue and over
 # It will take the first file in queue (pulled with git) and
-#  post it to $DEST (tumblr post by email address), 
+#  post it to $DEST (tumblr post by email address) with mutt (which one
+# uses $EMAIL), 
 # move it to over then commit the change with git
 #
 #   - $CONTENT is by default ~/tumblr
-#   - there is no default for DEST, it must be set in ~/.tumblr-daily-postrc
-#   - git will not be used if USEGIT is not set to 1
+#   - there is no default for $DEST, it must be set in ~/.tumblr-daily-postrc
+#   - git will not be used if $USEGIT is not set to 1
 #
 # This was designed to be set up as a daily cronjob
 
