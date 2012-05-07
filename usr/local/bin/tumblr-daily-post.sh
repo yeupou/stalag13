@@ -20,14 +20,17 @@
 # Will source  ~/.tumblr-daily-postrc
 # Then
 # Will go into $CONTENT where two subdirs exists: queue and over
-# It will take the first file in queue (pulled with git) and
-#  post it to $DEST (tumblr post by email address) with mutt (which must be
-# set up to use gmail smtp, otherwise tumblr will not handle the mail - you
-# can set $MUTTRC to set it to something else than ~/.muttrc), 
-# move it to over then commit the change with git
+# It will take the first file in queue/ (pulled with git) and
+#  post it to $DEST (tumblr post by email address) with mutt, 
+# move it to over/ then commit the change with git
+#
+# Important:
 #
 #   - there is no default for $DEST, it must be set in ~/.tumblr-daily-postrc
 #   - $CONTENT is by default ~/tumblr
+#   - mutt must be set up to use gmail smtp (smtp_url/smtp_pass in .muttrc)
+#     otherwise tumblr will not handle the mail (alternative $MUTTRC
+#     can be set)
 #   - git will not be used if $USEGIT is not set to 1
 #
 # This was designed to be set up as a daily cronjob
@@ -44,9 +47,9 @@ USEGIT=1
 if [ `whoami` == "root" ]; then echo "Not supposed to run as root, die here" && exit; fi
 
 # Must have a rcfile to get DEST (could redefine CONTENT)
-if [ ! -r $RCFILE ]; then exit; fi
-source $RCFILE
-if [ "$DEST" == 0 ]; then echo "DEST unset after reading $RCFILE, die here" && exit; fi
+if [ ! -r $RC ]; then exit; fi
+source $RC
+if [ "$DEST" == 0 ]; then echo "DEST unset after reading $RC, die here" && exit; fi
 
 # Go inside content
 if [ ! -d $CONTENT ]; then echo "$DEST not found/not a directory, die here" && exit; fi
