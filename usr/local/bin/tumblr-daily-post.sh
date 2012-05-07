@@ -48,7 +48,7 @@ if [ ! -d $CONTENT ]; then echo "$DEST not found/not a directory, die here" && e
 cd $CONTENT
 
 # Update content
-if [ "$USEGIT" == 1]; then git pull >/dev/null 2>/dev/null; fi
+if [ "$USEGIT" == 1 ]; then git pull >/dev/null 2>/dev/null; fi
 
 # Mutt need some empty file to succesfully send a mail without content
 FAKEMAIL=`mktemp`
