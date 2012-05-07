@@ -17,21 +17,25 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 
+# Will source  ~/.tumblr-daily-postrc
+# Then
 # Will go into $CONTENT where two subdirs exists: queue and over
 # It will take the first file in queue (pulled with git) and
-#  post it to $DEST (tumblr post by email address) with mutt (which one
-# uses $EMAIL), 
+#  post it to $DEST (tumblr post by email address) with mutt (which must be
+# set up to use gmail smtp, otherwise tumblr will not handle the mail - you
+# can set $MUTTRC to set it to something else than ~/.muttrc), 
 # move it to over then commit the change with git
 #
-#   - $CONTENT is by default ~/tumblr
 #   - there is no default for $DEST, it must be set in ~/.tumblr-daily-postrc
+#   - $CONTENT is by default ~/tumblr
 #   - git will not be used if $USEGIT is not set to 1
 #
 # This was designed to be set up as a daily cronjob
 
 
 WHOAMI=`whoami`
-RCFILE=/home/$WHOAMI/.tumblr-daily-postrc
+RC=/home/$WHOAMI/.tumblr-daily-postrc
+MUTTRC=/home/$WHOAMI/.muttrc
 CONTENT=/home/$WHOAMI/tmp/tumblr
 DEST=0
 USEGIT=1
@@ -61,7 +65,7 @@ FILE=queue/`ls -1 --color=no queue/ | head -1`
 if [ ! -f "$FILE" ]; then exit; fi
 
 # Otherwise, mail it
-mutt $DEST -a $FILE < $FAKEMAIL
+mutt $DEST -F $MUTTRC -a $FILE < $FAKEMAIL
 
 # Commit the change
 mv $FILE over/
