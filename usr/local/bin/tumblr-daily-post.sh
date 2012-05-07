@@ -45,7 +45,7 @@ cd $CONTENT
 FAKEMAIL=`mktemp`
 
 # Select the first file
-FILE=`ls -1 --color=no queue/* | head -1`
+FILE=queue/`ls -1 --color=no queue/ | head -1`
 
 # Stop silently if the queue is empty
 if [ ! -e "$FILE" ]; then exit; fi
