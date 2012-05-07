@@ -48,7 +48,7 @@ FAKEMAIL=`mktemp`
 FILE=queue/`ls -1 --color=no queue/ | head -1`
 
 # Stop silently if the queue is empty
-if [ ! -e "$FILE" ]; then exit; fi
+if [ ! -f "$FILE" ]; then exit; fi
 
 # Otherwise, mail it
 mutt $DEST -a $FILE < $FAKEMAIL
