@@ -20,9 +20,9 @@ extract() {
             *.7z)  c='7z x' ;;
             *.Z)   c='uncompress' ;;
             *.bz2) c='bunzip2' ;;
-            *.exe) c='cabextract' ;;
+            *.@(exe|cab)) c='cabextract' ;;
             *.gz)  c='gunzip' ;;
-            *.@(ace|cab)) c='unace x' ;;
+            *.ace) c='unace x' ;;
             *.rar) c='unrar x' ;;
             *.xz)  c='unxz' ;;
             *.zip) c='unzip' ;;
