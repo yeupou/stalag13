@@ -17,14 +17,14 @@ extract() {
         fi
 
         case $i in
-        *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
+            *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
                c='tar xvf';;
         *.7z)  c='7z x';;
         *.Z)   c='uncompress';;
         *.bz2) c='bunzip2';;
         *.exe) c='cabextract';;
         *.gz)  c='gunzip';;
-        *.ace) c='unace x';;
+        *.(ace|cab)) c='unace x';;
         *.rar) c='unrar x';;
         *.xz)  c='unxz';;
         *.zip) c='unzip';;
