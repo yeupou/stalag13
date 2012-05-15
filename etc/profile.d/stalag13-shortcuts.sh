@@ -1,8 +1,6 @@
-# tar.[bz2|gz] decompression 
-alias targ='tar zxvf'
-alias tarb='tar jxvf'
+# decompression with an unusual name (so faster completion)
 
-extract() {
+pluck() {
     local c i
 
     (($#)) || return
@@ -33,6 +31,7 @@ extract() {
         command $c "$i"
     done
 }
+alias extract='echo "Going to pluck()" && pluck'
 
 
 
