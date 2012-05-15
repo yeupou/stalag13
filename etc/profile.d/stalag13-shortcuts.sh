@@ -3,13 +3,12 @@ alias targ='tar zxvf'
 alias tarb='tar jxvf'
 
 extract() {
-    local c e i
+    local c i
 
     (($#)) || return
 
     for i; do
         c=''
-        e=1
 
         if [[ ! -r $i ]]; then
             echo "$0: file is unreadable: \`$i'" >&2
@@ -32,10 +31,7 @@ extract() {
         esac
 
         command $c "$i"
-        e=$?З
     done
-
-    return $e
 }
 
 
