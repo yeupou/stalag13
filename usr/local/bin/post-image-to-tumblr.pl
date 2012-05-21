@@ -34,8 +34,8 @@
 use strict;
 use locale;
 use File::HomeDir;
+use File::Copy;
 use Tumblr;
-use WWW::Mechanize;
 
 my $git = "/usr/bin/git";
 
@@ -79,29 +79,20 @@ closedir(IMAGES);
 exit if scalar(@images) < 1;
 for (sort(@images)) { $image = $_; last; }
 
+# Post to tumblr using https://github.com/damog/www-tumblr
+my $tumblr = WWW::Tumblr->new;
+$tumblr->email($tumblr_user);
+$tumblr->password($tumblr_password);
+$tumblr->write(type => 'photo', data => $image)
+    or die $tumblr->errstr;
 
-# Connect to tumblr
-my $browser = WWW::Mechanize->new();
-$browser->agent_alias("Linux Konqueror");
-$browser->use_plugin('Ajax');
-
-$browser->get("https://www.tumblr.com/login");
-$browser->click("signup_button_login");
-$browser->form_with_fields(('user[email]', 'user[password]'))
-    or die "tumblr.com: Unable select the login form, exiting";
-# try to set the login/password fields by lucky guess first
-$browser->set_visible($tumblr_user, $tumblr_password); 
-$browser->set_fields('user[email]' => $tumblr_user,
-		     'user[password]' => $tumblr_password);
-$browser->click("login_btn");
-#$browser->submit(); 
-
-print $browser->content();
-
-print $browser->success.": ".$browser->uri.": ".$browser->response->status_line."\n";
-#$browser->get("https://www.tumblr.com/new/photo");
-#print $browser->success.": ".$browser->uri.": ".$browser->response->status_line."\n";
-#print $browser->content;
+# If we get here, we can assume everything went well. So move the
+# file in the over directory and commit to git
+chdir($content);
+move($queue."/".$image, $over."/");
+system($git, "add", $over);
+system($git, "commit", "--quiet", "-am", "Posted by post-image-to-tumblr.pl");
+system($git, "push", "--quiet");
 
 
 # EOF
