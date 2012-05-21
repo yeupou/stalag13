@@ -34,11 +34,11 @@
 use strict;
 use locale;
 use File::HomeDir;
+use WWW::Tumblr;
 use WWW::Mechanize;
 
 my $git = "/usr/bin/git";
 
-print @INC;
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";

@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# 
+# Grabbed at https://github.com/damog/www-tumblr/blob/master/lib/WWW/Tumblr.pm
 
 =head1 NAME
 
