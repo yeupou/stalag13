@@ -42,7 +42,7 @@ install: clean
 	done
 
 log:
-	git log --stat -n50 --pretty=format:"%s of %ar" > ChangeLog
+	git log --stat -n100 --pretty=format:"%s of %ad" > ChangeLog
 
 deb-prerelease:
 	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"

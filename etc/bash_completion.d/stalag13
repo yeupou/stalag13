@@ -1,0 +1,9 @@
+_pluck () {
+	local cur;
+	COMPREPLY=();
+	cur=${COMP_WORDS[COMP_CWORD]};
+	VALID="*.tgz *.gz *.bz2 *.7z *.Z *.exe *.ace *.cab *.rar *.zip *.xz"
+	COMPREPLY=( $( compgen -W '$(for i in $VALID; do if [ -e $i ]; then echo $i; fi; done)' -- $cur ) );
+}
+
+complete -F _pluck pluck
