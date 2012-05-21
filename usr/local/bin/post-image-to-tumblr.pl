@@ -34,7 +34,7 @@
 use strict;
 use locale;
 use File::HomeDir;
-use WWW::Tumblr;
+use Tumblr;
 use WWW::Mechanize;
 
 my $git = "/usr/bin/git";
