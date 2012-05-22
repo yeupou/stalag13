@@ -26,7 +26,7 @@
 #   for i in *; do mv "$i" `mktemp --dry-run --tmpdir=. -t XXXXXXX$i`; done
 #
 #   - content is by default ~/tmp/tumblr
-#   - ~/.tumblrrc must be set containing username= and password= and 
+#   - ~/.tumblrrc must be set containing email= and password= and 
 #   eventualy content= as path
 #
 # This was designed to be set up as a daily cronjob
@@ -37,22 +37,25 @@ use File::HomeDir;
 use File::Copy;
 use Tumblr;
 
+my $debug = 0;
 my $git = "/usr/bin/git";
+$git = "/bin/echo" if $debug;
 
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
 my $content = File::HomeDir->my_home()."/tmp/tumblr";
-my ($tumblr_user, $tumblr_password);
+my ($tumblr_email, $tumblr_password);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
 while(<RCFILE>){
-    $tumblr_user = $1 if /^user\s?=\s?(\S*)\s*$/i;
+    $tumblr_email = $1 if /^user\s?=\s?(\S*)\s*$/i;
+    $tumblr_email = $1 if /^email\s?=\s?(\S*)\s*$/i;
     $tumblr_password = $1 if /^password\s?=\s?(\S*)\s*$/i;
     $content = $1 if /^content\s?=\s?(.*)$/i;
 }
 close(RCFILE);
-die "Unable to determine user (found: $tumblr_user) and/or password (found: $tumblr_password) after reading $rc, exiting" unless $tumblr_user and $tumblr_password;
+die "Unable to determine email (found: $tumblr_email) and/or password (found: $tumblr_password) after reading $rc, exiting" unless $tumblr_email and $tumblr_password;
 my $queue = $content."/queue";
 my $over = $content."/over";
 
@@ -81,15 +84,16 @@ for (sort(@images)) { $image = $_; last; }
 
 # Post to tumblr using https://github.com/damog/www-tumblr
 my $tumblr = WWW::Tumblr->new;
-$tumblr->email($tumblr_user);
+$tumblr->email($tumblr_email);
 $tumblr->password($tumblr_password);
-$tumblr->write(type => 'photo', data => $image)
-    or die $tumblr->errstr;
+($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
+print "$image ===> $tumblr_email\n" if $debug;
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
 chdir($content);
-move($queue."/".$image, $over."/");
+move($queue."/".$image, $over."/") unless $debug;
+print "mv $queue/$image $over/\n" if $debug;
 system($git, "add", $over);
 system($git, "commit", "--quiet", "-am", "Posted by post-image-to-tumblr.pl");
 system($git, "push", "--quiet");
