@@ -24,7 +24,7 @@ use strict;
 
 use Getopt::Long;
 use Calendar::Simple;
-use POSIX qw(strftime);
+use POSIX qw(strftime isatty);
 use Date::Calc qw(Delta_Days);
 use Time::Local;
 use Term::ANSIColor qw(:constants);
@@ -34,40 +34,83 @@ my $month = (localtime)[4] + 1;
 my $year  = (localtime)[5] + 1900;
 my $group  = 3;
 my $full_year = 0;
+my $html = 0;
+
+# do HTML is not started by a terminal
+unless (isatty(*STDOUT)) {
+    $html = 1;
+}
+
+## set up output: HTML or terminal?
+my $out_linebreak = "\n";
+my ($out_startrow, $out_starttable, $out_endtable, $out_startcolumn, $out_endcolumn);
+my $out_endrow = $out_linebreak;
+my $out_style_reset = RESET;
+my $out_style_startbold = BOLD;
+my $out_style_endbold = $out_style_reset;
+my $out_style_color_blue = WHITE ON_BLUE;
+my $out_style_color_magenta = WHITE ON_MAGENTA;
+
+if ($html) {
+    # if not a TTY, assume we want HTML
+    use CGI qw(:standard Link);
+    $out_linebreak = br();
+    $out_starttable = '<table>';
+    $out_endtable = '</table>';    
+    $out_startrow = '<tr>';
+    $out_endrow = '</tr>';
+    $out_startcolumn = '<td>';
+    $out_endcolumn = '</td>';
+    $out_style_reset = $out_endcolumn;
+    $out_style_startbold = '<span style="font-weight: bold">';
+    $out_style_endbold = '</span>';
+    $out_style_color_blue = '<td style="background-color: blue; color: white">';
+    $out_style_color_magenta = '<td style="background-color: red; color: white">';
 
 
-## get input with standard opts.
+
+        
+    # Immediately create the HTML layout
+    print start_html(-title => '4-2cal');
+}
+
+
+## get tty input with standard opts.
 my $getopt;
-eval {
-    $getopt = GetOptions("debug" => \$debug,
-			 "full-year" => \$full_year,
-			 "group=s" => \$group,
-			 "year=s" => \$year,
-			 "month=s" => \$month);
-};
+unless ($html) {
+    eval {
+	$getopt = GetOptions("debug" => \$debug,
+			     "full-year" => \$full_year,
+			     "group=s" => \$group,
+			     "year=s" => \$year,
+			     "month=s" => \$month);
+    };
+}
 
-## get input with what remains in ARGS
-for (@ARGV) { 
-    # case month/year
-    if (/^(\d{1,2})\/(\d{4})$/) {
-	$month = $1;
-	$year = $2;
-	last;
+## get tty input with what remains in ARGS
+unless ($html) {
+    for (@ARGV) { 
+	# case month/year
+	if (/^(\d{1,2})\/(\d{4})$/) {
+	    $month = $1;
+	    $year = $2;
+	    last;
+	}
+	# case year/month
+	if (/^(\d{4})\/(\d{1,2})$/) {
+	    $year = $1;
+	    $month = $2;
+	    last;
+	}
+	# one or two numbers: a month
+	if (/^(\d{1,2})$/i) {
+	    $month = $1;
+	}
+	# four numbers: a year
+	if (/^(\d{4})$/i) {
+	    $year = $1;
+	}      
     }
-    # case year/month
-    if (/^(\d{4})\/(\d{1,2})$/) {
-	$year = $1;
-	$month = $2;
-	last;
-    }
-    # one or two numbers: a month
-    if (/^(\d{1,2})$/i) {
-	$month = $1;
-    }
-    # four numbers: a year
-    if (/^(\d{4})$/i) {
-	$year = $1;
-    }      
 }
 
 
@@ -78,7 +121,7 @@ my $output_count = 0;
 my $output_max = 3;
 $output_max = 12 if $full_year;
 for ($month = ($month - 1); $output_count < $output_max; $month++) {
-    print "\n" if $output_count > 0;
+    print $out_linebreak if $output_count > 0;
     $output_count++;
     # month is 0, go back a year
     if ($month < 1) {
@@ -125,17 +168,19 @@ for ($month = ($month - 1); $output_count < $output_max; $month++) {
     
     ## print output
     
-    # print group
-#    print "$group/";
     # print i18n month
-    print "    ", strftime("%B %Y", localtime(timelocal(1,0,0,1,($month-1),($year-1900)))), "\n";
+    print "   ", strftime("%B %Y", localtime(timelocal(1,0,0,1,($month-1),($year-1900)))), $out_linebreak;
     # print i18n week day
+    print $out_starttable.$out_startrow;
     for (my $i=2; $i < 9; $i++) {
-	print substr(strftime("%a", localtime(timelocal(1,0,0,$i,0,112))),
-		     0, 2)." ";
+	print $out_startcolumn.
+	    substr(strftime("%a", localtime(timelocal(1,0,0,$i,0,112))),
+		   0, 2)." ".
+		   $out_endcolumn;
     }
-    print "\n";
+    print $out_endrow;
     foreach (@days) {
+	print $out_startrow;
 	map { 
 	    if ($_) {
 		# take into account when we are in the cycle
@@ -143,10 +188,12 @@ for ($month = ($month - 1); $output_count < $output_max; $month++) {
 		# - change from AM/PM the 6th and reset
 		if ($cycleday < 5) {
 		    if ($cyclemeridiem eq "AM") {
-			print WHITE ON_BLUE;
+			print $out_style_color_blue;
 		    } else {
-			print WHITE ON_MAGENTA;
+			print $out_style_color_magenta;
 		    }
+		} else {
+		    print $out_startcolumn;
 		}
 		$cycleday++;
 		if ($cycleday > 6) {
@@ -159,17 +206,23 @@ for ($month = ($month - 1); $output_count < $output_max; $month++) {
 		}
 		
 		# print in bold current day
-		print BOLD if ($_ eq $currentday);
+		print $out_style_startbold if ($_ eq $currentday);
 		print sprintf "%2d ", $_;
+		print $out_style_endbold if ($_ eq $currentday);
 		
 		# always reset
-		print RESET;
+		print $out_style_reset;
 	    } else {
-		print '   '; }
+		print $out_startcolumn."   ".$out_endcolumn; 
+	    }
 	} @$_;
-	print "\n";
+	print $out_endrow;
     }
+    print $out_endtable;
 }
+
+print end_html() if $html;
+
 
 # EOF
 
