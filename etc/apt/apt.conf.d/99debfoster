@@ -1,0 +1,3 @@
+// Make sure database is always known to debfoster
+
+DPkg::Post-Invoke {"if [ -x /usr/bin/debfoster ]; then debfoster; fi"; };
