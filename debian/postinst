@@ -77,7 +77,8 @@ my @outdated_2012 = ("/etc/init.d/fcgi",
 		     "/etc/cron.daily/stalag13-ntpdate",
 		     "/etc/cron.daily/torrent",
 		     "/etc/profile.d/stalag13-ls.sh",
-		     "/etc/profile.d/stalag13-tar.sh");
+		     "/etc/profile.d/stalag13-tar.sh",
+		     "/etc/apt/apt.conf.d/99debfoster");
 
 
 my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011, @outdated_2012);
