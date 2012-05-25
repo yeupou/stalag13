@@ -23,7 +23,6 @@ function mrclean {
 
 ### BASHism stuff
 [ -z "$BASH_VERSION" -o -z "$PS1" ] && return
-echo A
 
 # decompression with an unusual name (so faster completion)
 pluck() {
