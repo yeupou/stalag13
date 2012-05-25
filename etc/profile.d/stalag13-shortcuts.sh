@@ -1,40 +1,3 @@
-# decompression with an unusual name (so faster completion)
-
-pluck() {
-    local c i
-
-    (($#)) || return
-
-    for i; do
-        c=''
-
-        if [[ ! -r $i ]]; then
-            echo "$0: file is unreadable: \`$i'" >&2
-            continue
-        fi
-
-        case $i in
-            *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz))))) c='tar xvf';;
-            *.7z)  c='7z x' ;;
-            *.Z)   c='uncompress' ;;
-            *.bz2) c='bunzip2' ;;
-            *.@(exe|cab)) c='cabextract' ;;
-            *.gz)  c='gunzip' ;;
-            *.ace) c='unace x' ;;
-            *.rar) c='unrar x' ;;
-            *.xz)  c='unxz' ;;
-            *.zip) c='unzip' ;;
-            *)     echo "$0: unrecognized file extension: \`$i'" >&2
-            continue ;;
-        esac
-
-        command $c "$i"
-    done
-}
-alias extract='echo "Going to pluck()" && pluck'
-
-
-
 # ls 
 alias ls='ls --color'
 alias ll='ls -l'
@@ -57,5 +20,44 @@ fi
 function mrclean { 
     find $1 \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \; 
 }
+
+### BASHism stuff
+[ -z "$BASH_VERSION" -o -z "$PS1" ] && return
+echo A
+
+# decompression with an unusual name (so faster completion)
+pluck() {
+    local c i
+
+    (($#)) || return
+
+    for i; do
+        c=''
+
+        if [[ ! -r $i ]]; then
+            echo "$0: file is unreadable: \`$i'" >&2
+            continue
+        fi
+
+        case $i in
+            *.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))) ) c='tar xvf';;
+            *.7z)  c='7z x' ;;
+            *.Z)   c='uncompress' ;;
+            *.bz2) c='bunzip2' ;;
+            *.@(exe|cab)) echo AAAA && c='cabextract' ;;
+            *.gz)  c='gunzip' ;;
+            *.ace) c='unace x' ;;
+            *.rar) c='unrar x' ;;
+            *.xz)  c='unxz' ;;
+            *.zip) c='unzip' ;;
+            *)     echo "$0: unrecognized file extension: \`$i'" >&2
+            continue ;;
+        esac
+
+        command $c "$i"
+    done
+}
+alias extract='echo "Going to pluck()" && pluck'
+
 
 # EOF
