@@ -96,13 +96,16 @@ foreach my $file (@outdated) {
 my $need_to_add_bashrcd = 0;
 open(BASHRC, "< /etc/bash.bashrc");
 while(<BASHRC>) {
-    next unless m@in \/etc\/bashrc\.d\/\*\.sh@;
-    $need_to_add_bashrcd = 1;
+    print $_."\n";
+    $need_to_add_bashrcd = 1 
+	if m@in \/etc\/bashrc\.d\/\*\.sh@;
+    print "->> string in \/etc\/bashrc\.d\/\*\.sh found\n" if
+	$need_to_add_bashrcd;
 }
 close(BASHRC);
 if ($need_to_add_bashrcd) {
     open(BASHRC, ">> /etc/bash.bashrc");
-    print BASHRC '[ -z "\$ETC_BASHRC_SOURCED" ] && for i in /etc/bashrc.d/*.sh ; do if [ -r "\$i" ]; then . \$i; fi; done\n';
+    print BASHRC '[ -z "$ETC_BASHRC_SOURCED" ] && for i in /etc/bashrc.d/*.sh ; do if [ -r "$i" ]; then . $i; fi; done'."\n";
     print "/etc/bash.bashrc.d now handled\n";
     close(BASHRC);
 }
