@@ -105,7 +105,7 @@ close(BASHRC);
 if ($need_to_add_bashrcd) {
     open(BASHRC, ">> /etc/bash.bashrc");
     print BASHRC "\n".'[ -z "$ETC_BASHRC_SOURCED" ] && for i in /etc/bashrc.d/*.sh ; do if [ -r "$i" ]; then . $i; fi; done'."\n";
-    print "/etc/bash.bashrc.d now handled by /etc/bash.bashrc\n";
+    print "/etc/bashrc.d/ now handled by /etc/bash.bashrc\n";
     close(BASHRC);
 }
 
