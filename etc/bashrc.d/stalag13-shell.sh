@@ -39,4 +39,5 @@ if [ "$EMACS" == "t" ]; then
     unset PROMPT_COMMAND
 fi
 
+[ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF

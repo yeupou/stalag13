@@ -58,5 +58,5 @@ pluck() {
 }
 alias extract='echo "Going to pluck()" && pluck'
 
-
+[ ! -z "$DEBUG" ] && echo "$BASH_SOURCE completely sourced"
 # EOF

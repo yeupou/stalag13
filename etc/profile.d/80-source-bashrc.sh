@@ -6,5 +6,6 @@
 
 . /etc/bash.bashrc
 
+[ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF
 

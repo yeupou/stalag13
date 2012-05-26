@@ -22,4 +22,5 @@ alias ts='tcd && cat status'
 alias t='tcd && ls *.trs'
 alias t+='tcd && ls *.trs+'
 
+[ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF
