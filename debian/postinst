@@ -91,8 +91,21 @@ foreach my $file (@outdated) {
     unlink($file) && print "$file removed\n" if -e $file;
 }
 
-#system("mv", "/usr/bin/xmms", "/usr/bin/xmms.real") 
-#    if (-e "/usr/bin/xmms" and ! -e "/usr/bin/xmms.real");
+# make sure we have do run /etc/bashrc.d because not (yet?) debian standard
+# do nothing if the string "in /etc/bashrc.d/*.sh" exists.
+my $need_to_add_bashrcd = 0;
+open(BASHRC, "< /etc/bash.bashrc");
+while(<BASHRC>) {
+    next unless m@in \/etc\/bashrc\.d\/\*\.sh@;
+    $need_to_add_bashrcd = 1;
+}
+close(BASHRC);
+if ($need_to_add_bashrcd) {
+    open(BASHRC, ">> /etc/bash.bashrc");
+    print BASHRC '[ -z "\$ETC_BASHRC_SOURCED" ] && for i in /etc/bashrc.d/*.sh ; do if [ -r "\$i" ]; then . \$i; fi; done\n';
+    print "/etc/bash.bashrc.d now handled\n";
+    close(BASHRC);
+}
 
 
 # make sure some arbitrary symlinks exists
