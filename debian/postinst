@@ -93,12 +93,12 @@ foreach my $file (@outdated) {
 
 # make sure we have do run /etc/bashrc.d because not (yet?) debian standard
 # do nothing if the string "in /etc/bashrc.d/*.sh" exists.
-my $need_to_add_bashrcd = 0;
+my $need_to_add_bashrcd = 1;
 open(BASHRC, "< /etc/bash.bashrc");
 while(<BASHRC>) {
-    $need_to_add_bashrcd = 1 
-	if m@in \/etc\/bashrc\.d\/\*\.sh@;
-    print "->> string in \/etc\/bashrc\.d\/\*\.sh found\n" if
+    $need_to_add_bashrcd = 0 
+	if m/in\s\/etc\/bashrc\.d\/\*\.sh/;
+    print "->> string in \/etc\/bashrc\.d\/\*\.sh found\n" unless
 	$need_to_add_bashrcd;
 }
 close(BASHRC);
