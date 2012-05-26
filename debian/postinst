@@ -98,8 +98,8 @@ open(BASHRC, "< /etc/bash.bashrc");
 while(<BASHRC>) {
     $need_to_add_bashrcd = 0 
 	if m/in\s\/etc\/bashrc\.d\/\*\.sh/;
-    print "string in \/etc\/bashrc\.d\/\*\.sh found in /etc/bash.bashrc, no update required.\n" unless
-	$need_to_add_bashrcd;
+#    print "string in \/etc\/bashrc\.d\/\*\.sh found in /etc/bash.bashrc, no update required.\n" unless
+#	$need_to_add_bashrcd;
 }
 close(BASHRC);
 if ($need_to_add_bashrcd) {
