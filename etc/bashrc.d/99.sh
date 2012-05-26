@@ -1,3 +1,4 @@
 # For the record:
-export ETC_BASHRC_SOURCED=1
+ETC_BASHRC_SOURCED=1
+[ ! -z "$DEBUG" ] && echo "/etc/bashrc.d sourced"
 # EOF
