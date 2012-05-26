@@ -1,5 +1,5 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+# Only for bash
+[ -z "$BASH_VERSION" ] && return
 
 # See http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/index.html
 red='\[\033[0;31m\]'
@@ -38,3 +38,5 @@ if [ "$EMACS" == "t" ]; then
  # must not set a window title
     unset PROMPT_COMMAND
 fi
+
+# EOF

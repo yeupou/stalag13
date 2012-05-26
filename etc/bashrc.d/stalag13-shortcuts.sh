@@ -21,8 +21,8 @@ function mrclean {
     find $1 \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \; 
 }
 
-### BASHism stuff
-[ -z "$BASH_VERSION" -o -z "$PS1" ] && return
+### BASHism stuff from now on
+[ -z "$BASH_VERSION" ] && return
 
 # decompression with an unusual name (so faster completion)
 pluck() {

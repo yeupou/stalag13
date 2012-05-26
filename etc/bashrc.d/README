@@ -1,0 +1,29 @@
+Not standard in Debian (yet?), you must add (one line) to /etc/bash.bashrc:
+
+[ -z "$ETC_BASHRC_SOURCED" ] && for i in /etc/bashrc.d/*.sh ; do if [ -r "$i" ]; then . $i; fi; done
+
+
+(the debian package stalag13-utils should add it for you)
+
+
+
+
+Rationale:
+----------
+  /etc/profile is sourced for interactive login shells (bash --login)
+while /etc/bash.bashrc is sourced for interactive non-login shells.
+
+  Anything in /etc/profile.d will be ignored by non-login shells, most common
+with an X session. So it's a no-go to put there aliases and other stuff that
+you want available in all your bash sessions. Moreover, LFS and all describes
+/etc/profile as a run-once thing for a login, not something supposed to run
+for each term/console you may start. So it's unwise to force /etc/bash.bashrc
+to run it each time.
+
+  So what are we supposed to do? Edit /etc/bash.bashrc on each computer to 
+get a consistent network? Use skels for ~/.bashrc? It find easier to mimic
+/etc/profile.d with /etc/bashrc.d, that will contain anything bash want. And
+while it's not acceptable to have /etc/bash.bashrc to run /etc/profile as
+described before, it is perfectly fine for /etc/profile.d to do the contrary.
+  
+  So we'll add /etc/bashrc.d/ and add /etc/profile.d/80-source-bashrc.sh
