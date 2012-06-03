@@ -5,6 +5,7 @@ if [ ! -d /var/lib/transmission-daemon/info/blocklists ]; then exit; fi
 
 cd /var/lib/transmission-daemon/info/blocklists
 LISTS="http://list.iblocklist.com/?list=bt_level1 http://list.iblocklist.com/?list=bt_spyware http://list.iblocklist.com/?list=ghlzqtqxnzctvvajwwag http://list.iblocklist.com/?list=ijfqtofzixtwayqovmxn"
+WATCHDIR=/home/torrent/watch
 
 count=0
 for list in $LISTS; do
@@ -12,7 +13,12 @@ for list in $LISTS; do
     short=$count`basename $list | sed s/[^0-9a-zA-Z]]*/-/g`
     su debian-transmission -c "wget --quiet -O $short.gz $list"
     su debian-transmission -c "gunzip -f $short.gz"
+    su debian-transmission -c "echo `date +%c` blacklist $short updated >> $WATCHDIR/log"
 done
+
+# add specific tag so the torrent watcher script stays silent and consider
+# the following shutdown as normal operation
+touch $WATCHDIR/.upgradingblocklists
 
 /usr/sbin/invoke-rc.d transmission-daemon stop >/dev/null
 if [ ! $1 ]; then sleep 3s ; fi

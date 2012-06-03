@@ -81,6 +81,9 @@ unless ($isup) {
 	open(STATUSFILE, "> $watchdir/status");
 	print STATUSFILE "transmission-daemon appeared to be dead starting ", strftime "%c\n\n", localtime;
 	close(STATUSFILE);
+	# die here, or silently exists if we have reason to believe we are
+	# just doing the weekly blocklists upgrade
+	exit if (-e "$watchdir/.upgradingblocklists");
 	die "transmission-daemon appears to be dead. Exit";
     }
     # otherwise, silently exit
@@ -91,9 +94,11 @@ unless ($isup) {
 # (despite ID changes)
 my $justwokeup = 0;
 if (-e "$watchdir/.down") {
-    print "transmission-daemon is back on line, resuming watch.\n";
+    # stays silent if we are doing weekly blocklists upgrade
+    print "transmission-daemon is back on line, resuming watch.\n"
+	unless (-e "$watchdir/.upgradingblocklists");
     print LOG strftime "%c - transmission-daemon is back on line, resuming watch\n", localtime;
-    unlink("$watchdir/.down");
+    unlink("$watchdir/.down", "$watchdir/.upgradingblocklists");
     $justwokeup = 1;
 }
 
