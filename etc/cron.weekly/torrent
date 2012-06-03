@@ -13,7 +13,7 @@ for list in $LISTS; do
     short=$count`basename $list | sed s/[^0-9a-zA-Z]]*/-/g`
     su debian-transmission -c "wget --quiet -O $short.gz $list"
     su debian-transmission -c "gunzip -f $short.gz"
-    su debian-transmission -c "echo `date +%c` blacklist $short updated >> $WATCHDIR/log"
+    su debian-transmission -c "echo `date +%c` - blacklist $short updated >> $WATCHDIR/log"
 done
 
 # add specific tag so the torrent watcher script stays silent and consider
