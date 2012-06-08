@@ -1,9 +1,0 @@
-# useful to kill catchall shopping adresses like wtf-amazon.com:
-# a burned alias may be banned via /etc/aliases.ban
-acl_check_system_aliases_ban:
-  deny
-    message = blacklisted here. If you think this is wrong, get in touch with postmaster
-    log_message = tried to send mail to $sen that exists in /etc/aliases.ban ++BAN:$sender_host_address++
-    recipients = ${if exists{/etc/aliases.ban}{/etc/aliases.ban}}
-
-
