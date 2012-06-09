@@ -83,7 +83,8 @@ my @outdated_2012 = ("/etc/init.d/fcgi",
 		     "/etc/profile.d/stalag13-torrent.sh",
 		     "/etc/profile.d/stalag13-shortcuts.sh",
 		     "/etc/profile.d/01-stalag13-bashrc.sh",
-		     "/etc/exim4/conf.d/acl/25_stalag13-greylist");
+		     "/etc/exim4/conf.d/acl/25_stalag13-greylist",
+		     "/etc/exim4/conf.d/rewrite/15_rewritestalag");
 
 
 my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011, @outdated_2012);

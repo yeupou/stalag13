@@ -1,0 +1,8 @@
+# a specific domain was set to catchall mails from shopping websites
+# this catchall is prefiltered with the aliases.ban list
+shopping_catchall:
+  debug_print = "R: shopping_catchall for $local_part@$domain"
+  driver = redirect
+  local_part_prefix = wtf-
+  domains = plow.attique.org
+  data = $local_part@attique.org

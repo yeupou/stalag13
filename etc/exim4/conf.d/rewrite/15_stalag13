@@ -1,0 +1,29 @@
+# E rewrite all envelope fields
+# F rewrite the envelope From field
+# T rewrite the envelope To field
+# b rewrite the 'Bcc:' header
+# c rewrite the 'Cc:' header
+# f rewrite the 'From:' header
+# h rewrite all headers
+# r rewrite the 'Reply-To:' header
+# s rewrite the 'Sender:' header
+# t rewrite the 'To:' header
+# Anyway check RFC822 for details on fields and headers
+
+# Use /usr/sbin/exim -brw user@host to test the rewriting rules
+
+# For example, flags EFbcfhrs specify that the rewriting rule
+# apply to all headers except the 'To:' header.
+
+#
+# THE RULES ARE SCANNED IN ORDER, and replacements from earlier
+# rules can themselves be replaced as a result of later rules
+# (see also q and R flags).
+
+# specific catchalls that should be keept as they are
+^wtf-(.*)@plow\.attique\.org * frFsbcTtr
+
+# Remove irrelevant subdomains 
+^(.*)@.*\.attique\.org ${1}@attique.org frFsbcTtr
+^(.*)@.*\.attique\.ici ${1}@stalag13.ici frFsbcTtr
+^(.*)@.*\.stalag13\.ici ${1}@stalag13.ici frFsbcTtr

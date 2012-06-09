@@ -6,5 +6,6 @@ omain"
   domains = +local_domains
   allow_fail
   allow_defer
+  condition = ${if exists{/etc/aliases.d/$domain}}
   data = ${lookup{$local_part}lsearch{/etc/aliases.d/$domain}}
   file_transport = address_file
