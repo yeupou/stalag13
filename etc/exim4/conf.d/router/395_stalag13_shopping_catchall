@@ -1,8 +1,12 @@
-# a specific domain was set to catchall mails from shopping websites
+# a specific domain was set to catchall mails from shopping website
 # this catchall is prefiltered with the aliases.ban list
 shopping_catchall:
-  debug_print = "R: shopping_catchall for $local_part@$domain"
+  debug_print = "R: shopping_catchall for [wtf-]$local_part[.*]@plow"
   driver = redirect
   local_part_prefix = wtf-
+  local_part_suffix = .*
   domains = plow.attique.org
-  data = $local_part@attique.org
+  condition = ${if exists{/etc/aliases.d/attique.org}}
+  data = ${lookup{$local_part}lsearch{/etc/aliases.d/attique.org}}
+  file_transport = address_file
+
