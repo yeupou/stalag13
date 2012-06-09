@@ -1,20 +1,20 @@
 # some burned aliases may be banned. Send them to the spam mailbox so
 # bayesian filters get to learn something
 system_aliases_banned:
-  debug_print = "R: system_aliases_banned for $local_part@$domain"
+  debug_print = "R: system_aliases_banned check for $local_part@$domain"
   driver = redirect
   domains = +local_domains
-  condition = ${if and{ {exists{/etc/aliases.ban}} } { {${lookup{$local_part}ls\
-earch{/etc/aliases.ban}}}} }
-  data = spam@$domain
+  require_files = /etc/aliases.ban
+#  condition = ${lookup{$local_part}lsearch{/etc/aliases.ban}}
+#  data = spam@$domain
+  data = ${lookup{$local_part}lsearch{/etc/aliases.ban}}
 
 # counterpart of the later shopping_catchall
 system_aliases_banned_wtf:
-  debug_print = "R: system_aliases_banned_wtf for $local_part@plow.attique.org"
+  debug_print = "R: system_aliases_banned check for [wtf-]$local_part[.*]@plow"
   driver = redirect
   domains = plow.attique.org
   local_part_prefix = wtf-
-  condition = ${if and{ {exists{/etc/aliases.ban}} } { {${lookup{$local_part}ls\
-earch{/etc/aliases.ban}}}} }
-  data = spam@attique.org
+  local_part_suffix = .*  
+  data = ${lookup{$local_part}lsearch{/etc/aliases.ban}}
 
