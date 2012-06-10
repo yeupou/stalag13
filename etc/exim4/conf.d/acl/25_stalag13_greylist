@@ -6,7 +6,6 @@
 defer  !senders       = :
        !authenticated = *
        !hosts         = +relay_from_hosts
-       !domains	      = plow.attique.org
        set acl_c_grey_host = 1
        condition      = ${perl{check_greylist}GREYLIST_ARGS}
        set acl_c_grey_time = ${perl{greylist_time}GREYLIST_ARGS}
