@@ -1,5 +1,8 @@
-# spam checking
+### router/450_spamblock
+#################################
+.ifdef SPAMBLOCK_ENABLE
 
+# spam checking
 # first bogofilter
 spamslay_router_bogofilter:
   debug_print = "R: bogofilter for $local_part@$domain received with protocol $received_protocol with X-Spam-Flag=$h_X-Spam-Flag and X-Bogosity=$h_X-Bogosity"
@@ -34,3 +37,5 @@ spamslay_killit:
   data = spam
   file_transport = address_file
   pipe_transport = address_pipe
+
+.endif
