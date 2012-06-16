@@ -1,0 +1,32 @@
+spamslay_bogofilter:
+    driver = pipe
+    command = /usr/sbin/exim4 -oMr spamslayed-bogofilter -bS
+    use_bsmtp = true
+    transport_filter = /usr/bin/bogofilter -l -p -e
+    # must use a privileged user to set $received_protocol on the way back in!
+    user = Debian-exim
+    group = spamslayer
+    log_output = true
+    return_fail_output = true
+    return_path_add = false
+    message_prefix =
+    message_suffix =
+
+# SpamAssassin
+# http://dman13.dyndns.org/~dman/config_docs/exim-spamassassin/node12.html
+spamslay_spamd:
+    driver = pipe
+    command = /usr/sbin/exim4 -oMr spamslayed-spamd -bS
+    use_bsmtp = true
+    transport_filter = /usr/bin/spamc
+    home_directory = "/tmp"
+    current_directory = "/tmp"
+    # must use a privileged user to set $received_protocol on the way back in!
+    user = Debian-exim
+    group = spamslayer
+    log_output = true
+    return_fail_output = true
+    return_path_add = false
+    message_prefix =
+    message_suffix =
+

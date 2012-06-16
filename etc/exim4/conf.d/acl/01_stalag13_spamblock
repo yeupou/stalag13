@@ -1,0 +1,13 @@
+# sender host check
+CHECK_RCPT_IP_DNSBLS_NEGATIVE = dnsbl.ahbl.org=127.0.0.9 : dnsbl.ahbl.org=127.0.0.11
+CHECK_RCPT_IP_DNSBLS = sbl-xbl.spamhaus.org : dnsbl.ahbl.org : list.dsbl.org : smtp.dnsbl.sorbs.net : http.dnsbl.sorbs.net : socks.dnsbl.sorbs.net : zombie.dnsbl.sorbs.net
+
+# sender address domain check
+CHECK_RCPT_DOMAIN_DNSBLS = dsn.rfc-ignorant.org/$sender_address_domain
+
+# SPF
+CHECK_RCPT_SPF = 1
+
+# DKIM
+CHECK_RCPT_DKIM = 1
+

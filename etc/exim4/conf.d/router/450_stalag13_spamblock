@@ -1,0 +1,36 @@
+# spam checking
+
+# first bogofilter
+spamslay_router_bogofilter:
+  debug_print = "R: bogofilter for $local_part@$domain received with protocol $received_protocol with X-Spam-Flag=$h_X-Spam-Flag and X-Bogosity=$h_X-Bogosity"
+  # When to scan a message :
+  #   -   it isn't already flagged as spam 
+  #   -   it has not yet been spamslayed at all
+  #   -   it isn't local ($received_protocol eq "" or local)
+  condition = "${if and{ {!eqi{$h_X-Spam-Flag:}{yes}} {!eq{$received_protocol}{spamslayed-bogofilter}} {!eq{$received_protocol}{spamslayed-spamd}} {!eq{$received_protocol}{local}}  {!eq{$received_protocol}{}} }}"
+  driver = accept 
+  transport = spamslay_bogofilter
+
+# second spamd
+# http://dman13.dyndns.org/~dman/config_docs/exim-spamassassin/node12.html
+spamslay_router_spamd:
+  debug_print = "R: spamd for $local_part@$domain received with protocol $received_protocol with X-Spam-Flag=$h_X-Spam-Flag and X-Bogosity=$h_X-Bogosity" 
+  # When to scan a message :
+  #   -   it isn't already flagged as spam 
+  #   -   it has not yet been spamslayed with SA
+  #   -   it isn't already flagged as ham by bogofilter
+  #   -   it isn't local ($received_protocol eq "" or local)
+  condition = "${if and { {!eqi{$h_X-Spam-Flag:}{yes}} {!match{$h_X-Bogosity:}{^Spam}}  {!match{$h_X-Bogosity:}{^Ham}} {!eq {$received_protocol}{spamslayed-spamd}} {!eq{$received_protocol}{local}} {!eq{$received_protocol}{}} }}"
+  driver = accept
+  transport = spamslay_spamd
+
+# This route will send any mail that got here to the devnull alias, that
+# should be configured in /etc/aliases to be a real link to /dev/null.
+# This route should get only mails that have spam score higher than 14.
+# This will affect users mails!
+spamslay_killit:
+  condition = "${if ge{$h_X-Spam-Level:}{\*\*\*\*\*\*\*\*\*\*\*\*\*\*} {1}{0} }"
+  driver = redirect
+  data = spam
+  file_transport = address_file
+  pipe_transport = address_pipe
