@@ -1,6 +1,6 @@
 ### router/450_spamblock
 #################################
-.ifdef SPAMBLOCK_ENABLE
+.ifdef SPAMBLOCKING_ENABLE
 
 # spam checking
 # first bogofilter

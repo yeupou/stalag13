@@ -1,6 +1,6 @@
 ### acl/01_spamblock
 #################################
-.ifdef SPAMBLOCK_ENABLE
+.ifdef SPAMBLOCKING_ENABLE
 
 # sender host check
 CHECK_RCPT_IP_DNSBLS_NEGATIVE = dnsbl.ahbl.org=127.0.0.9 : dnsbl.ahbl.org=127.0.0.11

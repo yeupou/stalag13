@@ -1,3 +1,7 @@
+### transport/35_spamblock
+#################################
+.ifdef SPAMBLOCKING_ENABLE
+
 spamslay_bogofilter:
     driver = pipe
     command = /usr/sbin/exim4 -oMr spamslayed-bogofilter -bS
@@ -30,3 +34,4 @@ spamslay_spamd:
     message_prefix =
     message_suffix =
 
+.endif
