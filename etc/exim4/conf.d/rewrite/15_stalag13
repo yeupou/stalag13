@@ -20,7 +20,7 @@
 # rules can themselves be replaced as a result of later rules
 # (see also q and R flags).
 
-# specific catchalls that should be keept as they are
+# specific catchalls that should be kept as they are
 ^wtf-(.*)@plow\.attique\.org * frFsbcTtr
 
 # Remove irrelevant subdomains 
