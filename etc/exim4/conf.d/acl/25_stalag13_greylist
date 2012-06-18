@@ -5,7 +5,7 @@
 
 defer  !senders       = :
        !authenticated = *
-       !hosts         = +relay_from_hosts
+       !hosts         = +relay_from_hosts : 78.249.90.43
        !domains	      = plow.attique.org
        set acl_c_grey_host = 1
        condition      = ${perl{check_greylist}GREYLIST_ARGS}
