@@ -90,7 +90,7 @@ while (defined(my $file = readdir(PDFS))) {
 closedir(PDFS);
 # clean up html
 opendir(HTMLS, ".");
-my @htmls;
+my @htmls = ("0001");
 while (defined(my $file = readdir(HTMLS))) {
     # deal only with HTMLs 
     next unless -f $file;
