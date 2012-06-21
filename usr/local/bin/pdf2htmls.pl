@@ -29,7 +29,6 @@ use strict;
 use Getopt::Long;
 use File::Basename;
 use File::Copy;
-use Cwd;
 
 # required binaries
 my $pdftk = "/usr/bin/pdftk";
@@ -84,9 +83,7 @@ opendir(PDFS, ".");
 while (defined(my $file = readdir(PDFS))) {
     # deal only with PDFs 
     next unless -f $file;
-    my $suffix = 0;
-    $suffix = lc($1) if ($file =~ /^.*(\.[^.]*)$/);
-    next unless $suffix eq ".pdf";
+    next unless $file =~ /\.pdf$/i;
     system($pdftohtml, $file, 
 	   "-i", "-s", "-c", "-noframes");
     unlink($file);
@@ -98,8 +95,8 @@ my @htmls = ("0001");
 while (defined(my $file = readdir(HTMLS))) {
     # deal only with HTMLs 
     next unless -f $file;
-    next unless $file =~ /^.*\.html$/i;
-    next if $file =~ /^.*index\.html$/;
+    next unless $file =~ /\.html$/i;
+    next if $file =~ /index\.html$/;
 
     # Study the content
     open(IN, "<$file");
