@@ -29,6 +29,7 @@ use strict;
 use Getopt::Long;
 use File::Basename;
 use File::Copy;
+use Cwd;
 
 # required binaries
 my $pdftk = "/usr/bin/pdftk";
@@ -67,14 +68,17 @@ for ($pdftk, $pdftohtml) {
 }
 # files and dir
 die "Unable to find or read $input" unless -r $input;
+# copy the pdf in pwd if necessary
+copy($input, ".") unless -e basename($input);
 $output = basename(lc($input), ".pdf") unless $output;
+
 
 ## If we get here, everything should be in order, process the PDF
 # create the output file
 mkdir($output) unless -e $output;
 chdir($output);
 # split pdf
-system($pdftk, "../".$input, "burst");
+system($pdftk, "../".basename($input), "burst");
 # convert to ugly html
 opendir(PDFS, ".");
 while (defined(my $file = readdir(PDFS))) {
@@ -94,9 +98,8 @@ my @htmls = ("0001");
 while (defined(my $file = readdir(HTMLS))) {
     # deal only with HTMLs 
     next unless -f $file;
-    my $suffix = 0;
-    $suffix = lc($1) if ($file =~ /^.*(\.[^.]*)$/);
-    next unless $suffix eq ".html";
+    next unless $file =~ /^.*\.html$/i;
+    next if $file =~ /^.*index\.html$/;
 
     # Study the content
     open(IN, "<$file");
