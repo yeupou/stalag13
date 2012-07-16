@@ -135,7 +135,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    # values on the fly. Extract them
 	    # beforehand to avoid any trouble
 	    my @lltag_opts = ();
-	    print ON_CYAN, WHITE, "Extract TITLE and NUMBER tags from $file... ", RESET;
+	    print ON_BLUE, WHITE, "Extract TITLE and NUMBER tags from $file... ", RESET;
 	    open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 	    my ($title, $number);
 	    while(<ALBUMINFO>) {
@@ -144,7 +144,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		last if ($title and $number);
 	    }
 	    close(ALBUMINFO);
-	    print ON_CYAN, WHITE, "$number, $title\n", RESET;
+	    print ON_BLUE, WHITE, "$number, $title\n", RESET;
 	    @lltag_opts = ("--TITLE", $title,
 			   "--NUMBER", $number);
 	    if ($title eq "") {
@@ -160,14 +160,14 @@ while (defined(my $dir = readdir(IMPORT))) {
 		# (yes, not uberclean to call so many times lltag, but let's
 		# keep it stupid/simple)
 		$band = "";
-		print  ON_CYAN, WHITE, "Extract BAND from $file (various artists)... ", RESET;
+		print  ON_BLUE, WHITE, "Extract BAND from $file (various artists)... ", RESET;
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		while(<ALBUMINFO>) {
 		    $band = $1 if /\sARTIST=(.*)$/i;
 		    last if $band;
 		}
 		close(ALBUMINFO);
-		print  ON_CYAN, WHITE, "$band\n", RESET;
+		print  ON_BLUE, WHITE, "$band\n", RESET;
 
 		# add specific tags (try to set the usual ones)
 		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));

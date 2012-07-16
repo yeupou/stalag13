@@ -93,7 +93,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	next unless ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac");
 	
 	# if a music file, extract the tag
-	print ON_CYAN, WHITE, "Extract tags from $file\n", RESET;
+	print ON_BLUE, WHITE, "Extract tags from $file\n", RESET;
 	open(ALBUMINFO, "lltag --id3v2 -S \"$importdir/$dir/$file\" |");
 	while(<ALBUMINFO>) {
 	    $band = $1 if /\sARTIST=(.*)$/i;
