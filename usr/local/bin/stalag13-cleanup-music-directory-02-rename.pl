@@ -24,6 +24,7 @@ use POSIX qw(strftime);
 use File::Basename;
 use File::Copy;
 use Getopt::Long;
+use Term::ANSIColor qw(:constants);
 
 # config:
 my $user = "klink";
@@ -31,6 +32,7 @@ my $maindir = "/storage/abstract/musique";
 my $importdir = "/storage/abstract/musique/.A TRIER";
 my $debug = 0;
 my $getopt;
+my $wentwell = 1;
 
 
 # get standard opts with getopt
@@ -57,11 +59,11 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with no import file within
-    print "No $dir/import (style|band|year|album), skip directory.\n" unless -e "$dir/import";
+    print ON_RED, WHITE, "No $dir/import (style|band|year|album), skip directory.\n", RESET unless -e "$dir/import";
     next unless -e "$dir/import";
 
     # ignores flagged directories
-    print "$dir/ignore exists, skip directory.\n" if -e "$dir/ignore";
+    print ON_RED, WHITE, "$dir/ignore exists, skip directory.\n", RESET if -e "$dir/ignore";
     next if -e "$dir/ignore";
 
 
@@ -80,7 +82,10 @@ while (defined(my $dir = readdir(IMPORT))) {
     close(ALBUMINFO);
 
     # check we have something valid
-    die "style = $style; band = $band ; album = $album, exit working $dir " unless ($style and $band and $album);
+    unless ($style and $band and $album) {
+	print ON_RED, WHITE, "Unable to get any info from the existing $dir/import file. style = $style; band = $band ; album = $album. Skip directory.\n", RESET;
+	next;
+    }
 
     # various artists case
     $is_va = 1 if ($band eq "-----VARIOUS ARTISTS-----");
@@ -93,7 +98,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     $destdir = "$maindir/$style/$album" if $is_va;
  
     if (-d "$destdir") {
-	print "$destdir already exists (check and type enter if ready)!\n";
+	print ON_RED, WHITE, "$destdir already exists (check and type enter if ready)!\n", RESET;
 	<STDIN>;
     } else  {
 	system("/bin/mkdir", "-p", $destdir) unless $debug;
@@ -126,42 +131,43 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    # default name scheme
 	    my $naming = "%a-%d-%A-%n-%t";
 
-	    # lltag is buggy with ogg files, it fails sometimes to find
-	    # out the NUMBER and TITLE tags values on the fly. Extract them
-	    # beforehand
+	    # lltag fails sometimes to find out the NUMBER and TITLE tags
+	    # values on the fly. Extract them
+	    # beforehand to avoid any trouble
 	    my @lltag_opts = ();
-	    #if ($suffix eq ".ogg") { 
-            # actually the problem seems to occurs
-	    # with mp3
-	    if (1) {
-		print "Extract TITLE and NUMBER tags from $file... ";
-		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
-		my ($title, $number);
-		while(<ALBUMINFO>) {
-		    $title = $1 if /\sTITLE=(.*)$/i;
-		    $number = $1 if /\sTRACKNUMBER=(.*)$/i;
-		    last if ($title and $number);
-		}
-		close(ALBUMINFO);
-		print "$number, $title\n";
-		@lltag_opts = ("--TITLE", $title,
-			       "--NUMBER", $number);
+	    print ON_CYAN, WHITE, "Extract TITLE and NUMBER tags from $file... ", RESET;
+	    open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
+	    my ($title, $number);
+	    while(<ALBUMINFO>) {
+		$title = $1 if /\sTITLE=(.*)$/i;
+		$number = $1 if /\sTRACKNUMBER=(.*)$/i;
+		last if ($title and $number);
 	    }
-
+	    close(ALBUMINFO);
+	    print ON_CYAN, WHITE, "$number, $title\n", RESET;
+	    @lltag_opts = ("--TITLE", $title,
+			   "--NUMBER", $number);
+	    if ($title eq "") {
+		# missing title is always a no-go
+		print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the title of the current song. Skip file.\n", RESET;
+		next;
+	    }
+	    
+	
 	    # Various artists
 	    if ($is_va) {
 		# always extract the correct band name
 		# (yes, not uberclean to call so many times lltag, but let's
 		# keep it stupid/simple)
 		$band = "";
-		print "Extract BAND from $file (various artists)... ";
+		print  ON_CYAN, WHITE, "Extract BAND from $file (various artists)... ", RESET;
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		while(<ALBUMINFO>) {
 		    $band = $1 if /\sARTIST=(.*)$/i;
 		    last if $band;
 		}
 		close(ALBUMINFO);
-		print "$band\n";
+		print  ON_CYAN, WHITE, "$band\n", RESET;
 
 		# add specific tags (try to set the usual ones)
 		push(@lltag_opts, ("--tag", "ALBUMARTIST=$album"), ("--tag", "TPE2=$album"));
@@ -169,6 +175,11 @@ while (defined(my $dir = readdir(IMPORT))) {
 		# specific naming scheme
 		$naming = "%A-%d-%n-%a-%t";
 
+		if ($band eq "") {
+		    # missing band is a no-go here
+		    print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the band of the current song while it is VA. Skip file.\n", RESET;
+		    next;
+		}
 	    }
 	    
 	    if ($debug) {		
@@ -212,8 +223,9 @@ while (defined(my $dir = readdir(IMPORT))) {
     system("/bin/chmod", "-R", "a+r", "$maindir/$style/$band/") unless $debug;
     
     # if we get here, everything was moved, we can safely eraze initial dir
-    print "rm -rvf $importdir/$dir\n";
-    system("/bin/rm", "-rf", "$importdir/$dir") unless $debug;
+    print "rm -rvf $importdir/$dir\n" if $wentwell;
+    print ON_RED, WHITE, "$importdir/$dir kept as it is, some files we're not renamed proper!", RESET unless $wentwell;
+    system("/bin/rm", "-rf", "$importdir/$dir") unless ($debug or !$wentwell);
 }
 closedir(IMPORT);
 

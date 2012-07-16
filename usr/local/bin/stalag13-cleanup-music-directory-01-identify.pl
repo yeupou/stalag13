@@ -69,11 +69,11 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with already import file within
-    print "No $dir/import available, skip directory.\n" if -e "$dir/import";
+    print ON_RED, WHITE, "No $dir/import available, skip directory.\n" if -e "$dir/import", RESET;
     next if -e "$dir/import";
 
     # ignores directories flagged
-    print "$dir/ignore exists, skip directory.\n" if -e "$dir/ignore";
+    print ON_RED, WHITE, "$dir/ignore exists, skip directory.\n" if -e "$dir/ignore", RESET;
     next if -e "$dir/ignore";
 
 
@@ -93,7 +93,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	next unless ($suffix eq ".ogg" or $suffix eq ".mp3" or $suffix eq ".flac");
 	
 	# if a music file, extract the tag
-	print "Extract tags from $file\n";
+	print ON_CYAN, WHITE, "Extract tags from $file\n", RESET;
 	open(ALBUMINFO, "lltag --id3v2 -S \"$importdir/$dir/$file\" |");
 	while(<ALBUMINFO>) {
 	    $band = $1 if /\sARTIST=(.*)$/i;
