@@ -152,7 +152,14 @@ while (defined(my $dir = readdir(IMPORT))) {
 		print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the title of the current song. Skip file.\n", RESET;
 		next;
 	    }
-	    
+	    if ($number eq "") {
+		# track number is weird but acceptable, ask the user
+		# after trying some lucky guess
+		$number = $1 if $file =~ /\W(\n.\n?)\W/;
+		print BOLD, "Weird, we have no track number for this one.\nCare to provide some?\n(type enter to use the lucky guess $number)\n";	       
+		chomp($number .= <STDIN>);
+	    }
+
 	
 	    # Various artists
 	    if ($is_va) {
