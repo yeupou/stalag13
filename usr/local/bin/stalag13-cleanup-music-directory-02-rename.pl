@@ -136,7 +136,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    # beforehand to avoid any trouble
 	    my @lltag_opts = ();
 	    print ON_BLUE, WHITE, "Extract TITLE and NUMBER tags from $file... ", RESET;
-	    open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
+	    open(ALBUMINFO, "lltag --id3v2 -S \"$importdir/$dir/$file\" |");
 	    my ($title, $number);
 	    while(<ALBUMINFO>) {
 		$title = $1 if /\sTITLE=(.*)$/i;
@@ -171,7 +171,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		# keep it stupid/simple)
 		$band = "";
 		print  ON_BLUE, WHITE, "Extract BAND from $file (various artists)... ", RESET;
-		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
+		open(ALBUMINFO, "lltag --id3v2 -S \"$importdir/$dir/$file\" |");
 		while(<ALBUMINFO>) {
 		    $band = $1 if /\sARTIST=(.*)$/i;
 		    last if $band;
