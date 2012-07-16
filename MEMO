@@ -20,7 +20,6 @@ Using Git:
   git commit -a
   git push
 
-
 * Keep GitHub up-to-date:
 
   git remote add github git@github.com:$user/$dir.git
@@ -29,3 +28,4 @@ Using Git:
   (then, afterwards)
   git commit -a
   git push github
+

@@ -130,7 +130,10 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    # out the NUMBER and TITLE tags values on the fly. Extract them
 	    # beforehand
 	    my @lltag_opts = ();
-	    if ($suffix eq ".ogg") {
+	    #if ($suffix eq ".ogg") { 
+            # actually the problem seems to occurs
+	    # with mp3
+	    if (1) {
 		print "Extract TITLE and NUMBER tags from $file... ";
 		open(ALBUMINFO, "lltag -S \"$importdir/$dir/$file\" |");
 		my ($title, $number);
