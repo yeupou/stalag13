@@ -159,7 +159,6 @@ while (defined(my $dir = readdir(IMPORT))) {
 		print BOLD, "Weird, we have no track number for this one.\n", RESET, "Care to provide some?\n(type ENTER to use the lucky guess ", BOLD, "$number", RESET, ")\n";	       
 		chomp($number .= <STDIN>);
 	    }
-
 	
 	    # Various artists
 	    if ($is_va) {
