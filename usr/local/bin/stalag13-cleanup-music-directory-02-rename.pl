@@ -148,6 +148,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    if ($title eq "") {
 		# missing title is always a no-go
 		print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the title of the current song. Skip file.\n", RESET;
+		$wentwell = 0;
 		next;
 	    }
 	    if ($number eq "") {
@@ -186,6 +187,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 		if ($band eq "") {
 		    # missing band is a no-go here
 		    print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the band of the current song while it is VA. Skip file.\n", RESET;
+		    $wentwell = 0;
 		    next;
 		}
 	    }
