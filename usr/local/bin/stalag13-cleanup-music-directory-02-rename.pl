@@ -141,6 +141,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    while(<ALBUMINFO>) {
 		$title = $1 if /\sTITLE=(.*)$/i;
 		$number = $1 if /\sTRACKNUMBER=(.*)$/i;
+		$number = $1 if /\sNUMBER=(.*)$/i;
 		last if ($title and $number);
 	    }
 	    close(ALBUMINFO);
