@@ -69,7 +69,7 @@ while (defined(my $dir = readdir(IMPORT))) {
     next if $dir eq "." or $dir eq "..";
 
     # ignores directories with already import file within
-    print ON_RED, WHITE, "No $dir/import available, skip directory.\n", RESET if -e "$dir/import";
+    print ON_RED, WHITE, "$dir/import already available, skip directory.\n", RESET if -e "$dir/import";
     next if -e "$dir/import";
 
     # ignores directories flagged
