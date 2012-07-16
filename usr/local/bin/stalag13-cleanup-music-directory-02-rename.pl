@@ -145,8 +145,6 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    }
 	    close(ALBUMINFO);
 	    print ON_BLUE, WHITE, "$number, $title\n", RESET;
-	    @lltag_opts = ("--TITLE", $title,
-			   "--NUMBER", $number);
 	    if ($title eq "") {
 		# missing title is always a no-go
 		print ON_RED, WHITE, "Something is very wrong with $dir/$file, we failed to extract the title of the current song. Skip file.\n", RESET;
@@ -159,6 +157,8 @@ while (defined(my $dir = readdir(IMPORT))) {
 		print BOLD, "Weird, we have no track number for this one.\n", RESET, "Care to provide some?\n(type ENTER to use the lucky guess ", BOLD, "$number", RESET, ")\n";	       
 		chomp($number .= <STDIN>);
 	    }
+	    @lltag_opts = ("--TITLE", $title,
+			   "--NUMBER", $number);
 	
 	    # Various artists
 	    if ($is_va) {
