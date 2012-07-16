@@ -155,7 +155,7 @@ while (defined(my $dir = readdir(IMPORT))) {
 	    if ($number eq "") {
 		# track number is weird but acceptable, ask the user
 		# after trying some lucky guess
-		$number = $1 if $file =~ /\W(\n.\n?)\W/;
+		$number = $1 if $file =~ /\D(\d\d?)\D/;
 		print BOLD, "Weird, we have no track number for this one.\n", RESET, "Care to provide some?\n(type ENTER to use the lucky guess ", BOLD, "$number", RESET, ")\n";	       
 		chomp($number .= <STDIN>);
 	    }
