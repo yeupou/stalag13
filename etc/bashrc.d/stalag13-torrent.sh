@@ -19,7 +19,6 @@ alias watch='tcdcheck && cd $TORRENT_BASEDIR/watch'
 alias download='tcdcheck && cd $TORRENT_BASEDIR/download'
 alias torrent-log='watch && tail -n 100 log'
 alias torrent-status='watch && cat status'
-alias torrent-current='watch && ls *.trs'
 alias torrent-done='watch && ls *.trs+'
 
 [ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
