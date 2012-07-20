@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011 Mathieu Roy <yeupou@gnu.org>
+# Copyright (c) 2011-2012 Mathieu Roy <yeupou@gnu.org>
+#        http://yeupou.wordpress.com/
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -70,7 +71,8 @@ exit if $count < 1;
 $count = 0;
 while (my ($this_host,) = each(%hosts)) {
     my $packed_ip = gethostbyname($this_host);
-    next unless $packed_ip,
+    next unless $packed_ip;
+    next unless length($packed_ip) > 0;
     my $ip = inet_ntoa($packed_ip);
     next unless $ip =~ /^192\.168\./ or $ip =~ /^10\./;
     print "DBG: $this_host DNS record exists and points to LAN $ip\n" if $debug;
@@ -80,7 +82,7 @@ while (my ($this_host,) = each(%hosts)) {
     $count++;
 }
     
-print "DBG: $count host(s) listed in /etc/fstab available\n" if $debug;
+print "DBG: $count share's host(s) available(s) on the current network\n" if $debug;
 exit if $count < 1;
 
 
