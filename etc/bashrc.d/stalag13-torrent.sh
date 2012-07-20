@@ -1,7 +1,7 @@
 # Wild assumption?
 if [ -d /home/torrent/watch ]; then
     TORRENT_BASEDIR=/home/torrent
-elif [ -d /mnt/lan/gate.stalag13.ici/watch ]; then
+else
     TORRENT_BASEDIR=/mnt/lan/gate.stalag13.ici
 fi
 
@@ -15,12 +15,12 @@ function tcdcheck {
     return 0
 }
 
-alias tcd='tcdcheck && cd $TORRENT_BASEDIR/watch'
-alias tcdd='tcdcheck && cd $TORRENT_BASEDIR/download'
-alias tl='tcd && tail -n 100 log'
-alias ts='tcd && cat status'
-alias t='tcd && ls *.trs'
-alias t+='tcd && ls *.trs+'
+alias watch='tcdcheck && cd $TORRENT_BASEDIR/watch'
+alias download='tcdcheck && cd $TORRENT_BASEDIR/download'
+alias torrent-log='tcd && tail -n 100 log'
+alias torrent-status='tcd && cat status'
+alias torrent-doing='tcd && ls *.trs'
+alias torrent-done='tcd && ls *.trs+'
 
 [ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF

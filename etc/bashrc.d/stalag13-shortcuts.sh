@@ -4,17 +4,11 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# directories
-if [ -d /mnt/lan/gate.stalag13.ici/musique ]; then
-    alias musique='cd /mnt/lan/gate.stalag13.ici/musique'
-fi
-if [ -d /mnt/lan/gate.stalag13.ici/videos ]; then
-    alias videos='cd /mnt/lan/gate.stalag13.ici/videos'
-fi
-if [ -d /mnt/lan/gate.stalag13.ici/suxor ]; then
-    alias suxor='cd /mnt/lan/gate.stalag13.ici/suxor'
-fi
-
+# directories (no test whatsoever; the link to the NFS server is broken, 
+# the process would get stalled) 
+alias musique='cd /mnt/lan/gate.stalag13.ici/musique'
+alias videos='cd /mnt/lan/gate.stalag13.ici/videos'
+alias suxor='cd /mnt/lan/gate.stalag13.ici/suxor'
 
 # cleanup
 function mrclean { 
