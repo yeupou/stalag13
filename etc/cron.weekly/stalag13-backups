@@ -9,7 +9,6 @@ if [ `hostname` != "moe" ]; then exit; fi
 date > /backups/.lastrun
 
 ## system backups
-
 sys=debian64
 swap=swap
 mount=/mnt/sysclone
@@ -40,6 +39,7 @@ destdev=`blkid -L $dest$sys | tr -d [:digit:]`
 
 # easy reminder of the last cloning run
 date > /etc/.lastclone
+echo "$orig > $dest ($sys)" >> /etc/.lastclone
 etckeeper commit "cloning $sys system from $orig ($origdev) to $dest ($destdev)" >/dev/null 2>/dev/null
 
 
