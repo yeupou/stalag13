@@ -61,7 +61,7 @@ deb-release:
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)
-	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\*\ //;`(new release $(MAJORVERSION).$(NEWVERSION))"
+	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\\*\ //;` (new release $(MAJORVERSION).$(NEWVERSION))"
 	@git push
 	@git push github
 	make log
