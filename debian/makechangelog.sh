@@ -14,7 +14,11 @@ fi
 echo "stalag13-utils ($VERSION-`date +%Y%m%d`) unstable; urgency=low" > tmp
 echo " " >> tmp  
 if [ ! $3 ]; then
-    echo "  * Upstream release" >> tmp
+    echo " "
+    echo "What did you do? [Cosmetics/trivial fixes] by default"
+    read THEHECK
+    if [ "$THEHECK" == "" ]; then THEHECK="Cosmetics/trivial fixes"; fi
+    echo "  * $THEHECK" >> tmp
 else 
     echo "  * Upstream prerelease" >> tmp
 fi

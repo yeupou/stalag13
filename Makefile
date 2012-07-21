@@ -44,6 +44,7 @@ install: clean
 log:
 	git log --stat -n100 --pretty=format:"%s of %ad" > ChangeLog
 
+
 deb-prerelease:
 	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"
 	debian/makechangelog.sh $(MAJORVERSION) $(VERSION) $(NEWPREVERSION)
@@ -56,10 +57,11 @@ deb-prerelease:
 
 deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
+	@head -20 ChangeLog
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)
-	@git commit -a -m 'New release $(MAJORVERSION).$(NEWVERSION)'
+	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\*\ //;`(new release $(MAJORVERSION).$(NEWVERSION))"
 	@git push
 	@git push github
 	make log
