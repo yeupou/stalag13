@@ -1,3 +1,9 @@
+stalag13-utils (3.39+1-20120722) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 22 Jul 2012 00:59:19 +0200
+ 
 stalag13-utils (3.39-20120721) unstable; urgency=low
  
   * Shorters aliases, determines automatically orig and dest drives

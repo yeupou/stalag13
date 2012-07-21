@@ -17,9 +17,9 @@ function tcdcheck {
 
 alias torwatch='tcdcheck && cd $TORRENT_BASEDIR/watch'
 alias tordown='tcdcheck && cd $TORRENT_BASEDIR/download'
-alias torlog='torrent-watch && tail -n 100 log'
-alias torstat='torrent-watch && cat status'
-alias torfinished='torrent-watch && ls *.trs+'
+alias torlog='torwatch && tail -n 100 log'
+alias torstat='torwatch && cat status'
+alias torfinished='torwatch && ls *.trs+'
 
 [ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF
