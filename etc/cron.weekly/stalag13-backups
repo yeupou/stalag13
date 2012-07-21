@@ -9,14 +9,34 @@ if [ `hostname` != "moe" ]; then exit; fi
 date > /backups/.lastrun
 
 ## system backups
-orig=wd2T
-dest=sg2T
+
 sys=debian64
 swap=swap
-origdev=`blkid -L $orig$sys | tr -d [:digit:]`
-destdev=`blkid -L $dest$sys | tr -d [:digit:]`
 mount=/mnt/sysclone
 ignore="backups dev lost+found media proc run sys tmp"
+
+# available hard drives
+drive1=wd2T
+drive2=sg2T
+
+# determines which drive is currently / by reading /etc/fstab
+orig=`cat /etc/fstab | grep $sys | cut -f 1 | cut -f 2 -d = | sed s/$sys//g;`
+case $orig in
+    $drive1)
+    dest=$drive2
+    ;;
+    $drive2)
+    dest=$drive1
+    ;;
+    *)
+	echo "Unable to determine whether we are currently using $drive1 or $drive2, we found $orig. Exiting!"
+	exit
+	;;
+esac
+
+# then proceed
+origdev=`blkid -L $orig$sys | tr -d [:digit:]`
+destdev=`blkid -L $dest$sys | tr -d [:digit:]`
 
 # easy reminder of the last cloning run
 date > /etc/.lastclone

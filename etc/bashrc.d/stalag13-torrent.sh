@@ -15,16 +15,11 @@ function tcdcheck {
     return 0
 }
 
-alias torrent-watch='tcdcheck && cd $TORRENT_BASEDIR/watch'
-alias torwatch='torrent-watch'
-alias torrent-download='tcdcheck && cd $TORRENT_BASEDIR/download'
-alias tordown='torrent-download'
-alias torrent-log='torrent-watch && tail -n 100 log'
-alias torlog='torrent-log'
-alias torrent-status='torrent-watch && cat status'
-alias torstat='torrent-status'
-alias torrent-finished='torrent-watch && ls *.trs+'
-alias torfinish='torrent-finished'
+alias torwatch='tcdcheck && cd $TORRENT_BASEDIR/watch'
+alias tordown='tcdcheck && cd $TORRENT_BASEDIR/download'
+alias torlog='torrent-watch && tail -n 100 log'
+alias torstat='torrent-watch && cat status'
+alias torfinished='torrent-watch && ls *.trs+'
 
 [ ! -z "$DEBUG" ] && echo "$BASH_SOURCE sourced"
 # EOF
