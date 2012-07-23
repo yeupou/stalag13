@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
 # Copyright (c) 2012 Mathieu Roy <yeupou--gnu.org>
+#           http://yeupou.wordpress.com/
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -37,11 +38,15 @@ my $pdftohtml = "/usr/bin/pdftohtml";
 # get standard opts with getopt
 my ($help, $getopt, $debug,
     $input,
-    $output);
+    $output,
+    $skip_pdftk, $skip_pdftohtml, $skip_cleanup);
 eval {
     $getopt = GetOptions("help" => \$help,
 			 "input=s" => \$input,
-			 "output=s" => \$output);
+			 "output=s" => \$output,
+			 "skip-pdftk" => \$skip_pdftk,
+			 "skip-pdftohtml" => \$skip_pdftohtml,
+			 "skip-cleanup" => \$skip_cleanup);
 };
 
 ## Show help
@@ -77,7 +82,8 @@ $output = basename(lc($input), ".pdf") unless $output;
 mkdir($output) unless -e $output;
 chdir($output);
 # split pdf
-system($pdftk, "../".basename($input), "burst");
+system($pdftk, "../".basename($input), "burst") 
+    unless $skip_pdftk;
 # convert to ugly html
 opendir(PDFS, ".");
 while (defined(my $file = readdir(PDFS))) {
@@ -85,36 +91,49 @@ while (defined(my $file = readdir(PDFS))) {
     next unless -f $file;
     next unless $file =~ /\.pdf$/i;
     system($pdftohtml, $file, 
-	   "-i", "-s", "-c", "-noframes");
-    unlink($file);
+	   "-i", "-s", "-c", "-noframes") 
+	unless $skip_pdftohtml;
+    unlink($file)
+	unless ($skip_pdftohtml or $skip_pdftk);
 }
 closedir(PDFS);
 # clean up html
 opendir(HTMLS, ".");
-my @htmls = ("0001");
+#my @htmls = ("0001");
+my @htmls;
+my %html_title;
 while (defined(my $file = readdir(HTMLS))) {
     # deal only with HTMLs 
     next unless -f $file;
     next unless $file =~ /\.html$/i;
     next if $file =~ /index\.html$/;
 
+    # remember for later
+    push(@htmls, $file);
+
+    next if $skip_cleanup;
+
     # Study the content
     open(IN, "<$file");
     open(OUT, ">$file~");
+    print "DBG $file\n";
     while (<IN>) {
 	# remove any style, class and bgcolor definition
 	s/\W(style|vlink|class|bgcolor)=\"[^\"]*\"//gi;
 	# remove blank spaces
 	s/\&\#160\;/ /g;
+	# if we find a string in bold and italic, assume it may be a page title
+	# there may be several, we keep the later
+	$html_title{$file} = $1 if /^\<p\>\<i\>\<b\>([^\<\>]*)\<\/b\>\<\/i\>\<\/p\>$/i;
 	# remove closing BODY and HTML because we'll add it just below
 	# after a link to the next page
-	s/\<\/(BODY|HTML)\>//g;     
+	s/\<\/(BODY|HTML)\>//gi;     
 	print OUT $_;
     }
     close(IN);
     # link to the next page (assuming it always a four digits)
     my $number = sprintf("%04d", ($1+1)) if ($file =~ /^\D*(\d*)\D*$/);
-    push(@htmls, $number);
+#    push(@htmls, $number);
     print OUT "<A HREF=\"pg_$number.html\">Go to page $number</A>\n";
     print OUT "</BODY>\n</HTML>\n";
     close(OUT);
@@ -122,11 +141,16 @@ while (defined(my $file = readdir(HTMLS))) {
 }
 closedir(HTMLS);
 # add indexes
-# FIXME: add chapters titles to the index
+my $titles_count;
 open(INDEX, ">index.html");
 print INDEX "<HTML><BODY>\n";
-foreach my $number (sort(@htmls)) {
-    print INDEX "<A HREF=\"pg_$number.html\">$number</A> ";
+foreach my $file (sort(@htmls)) {
+    my $number = sprintf("%04d", $1) if ($file =~ /^\D*(\d*)\D*$/);
+    if ($html_title{$file}) {
+	$titles_count++;
+	print INDEX "\n<br />$titles_count) ".$html_title{$file}.": ";
+    }
+    print INDEX "<A HREF=\"$file\">$number</A> ";
 }
 print INDEX "</BODY></HTML>\n";
 close(INDEX);
