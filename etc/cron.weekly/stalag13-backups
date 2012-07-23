@@ -2,13 +2,19 @@
 
 if [ `hostname` != "moe" ]; then exit; fi
 
-## data backups
+## user data backing up
+# not trying to be smart here, just put stuff in backups, not trying to 
+# understand on which drives we work on
+# (the system clone will mess with /home but not part outside the system 
+# partitions)
+for userhome in  /storage/abstract/home.*; do
+    /usr/bin/rsync -a --delete $userhome /backups/
+done
 /usr/bin/rsync -a --delete /var/lib/wiki /backups/
-/usr/bin/rsync -a --delete /storage/abstract/perso /backups/
 /usr/bin/rsync -a --delete /storage/abstract/musique /backups/
 date > /backups/.lastrun
 
-## system backups
+## system cloning
 sys=debian64
 swap=swap
 mount=/mnt/sysclone
@@ -84,4 +90,4 @@ umount $mount/dev $mount/sys $mount/proc
 umount $mount
 
 
-# EOF
+## EOF

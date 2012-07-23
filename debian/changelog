@@ -1,3 +1,9 @@
+stalag13-utils (3.43+1-20120723) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 23 Jul 2012 16:08:44 +0200
+ 
 stalag13-utils (3.43-20120723) unstable; urgency=low
  
   * Now handle chapters titles in indexes
