@@ -26,7 +26,7 @@ my $active_profile = "output:analog-stereo";
 my $suspend_profile = "off";
 my $pactl = "/usr/bin/pactl";
 die "Unable to run $pactl" unless -x $pactl;
-my $debug;
+my ($debug, $getopt);
 eval { $getopt = GetOptions("debug" => \$debug); };
 
 # list of souncards always off (product name)
