@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
 # Copyright (c) 2012 Mathieu Roy <yeupou--gnu.org>
+#        http://yeupou.wordpress.com/
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -36,6 +37,7 @@ use locale;
 use File::HomeDir;
 use File::Copy;
 use Tumblr;
+use POSIX qw(strftime);
 
 my $debug = 0;
 my $git = "/usr/bin/git";
@@ -92,8 +94,9 @@ print "$image ===> $tumblr_email\n" if $debug;
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
 chdir($content);
-move($queue."/".$image, $over."/") unless $debug;
-print "mv $queue/$image $over/\n" if $debug;
+my $today = strftime("%Y%m%d", localtime);
+move("$queue/$image", "$over/$today-$image") unless $debug;
+print "mv $queue/$image $over/$today-$image\n" if $debug;
 system($git, "add", $over);
 system($git, "commit", "--quiet", "-am", "Posted by post-image-to-tumblr.pl");
 system($git, "push", "--quiet");
