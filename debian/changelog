@@ -1,3 +1,9 @@
+stalag13-utils (3.45-20120730) unstable; urgency=low
+ 
+  * Renamed with timestamp when putting files in over/
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 30 Jul 2012 14:48:00 +0200
+ 
 stalag13-utils (3.44+1-20120730) unstable; urgency=low
  
   * Upstream prerelease
