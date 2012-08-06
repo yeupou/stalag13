@@ -81,7 +81,7 @@ unless ($isup) {
 	open(STATUSFILE, "> $watchdir/status");
 	print STATUSFILE "transmission-daemon appeared to be dead starting ", strftime "%c\n\n", localtime;
 	close(STATUSFILE);
-	# die here, or silently exists if we have reason to believe we are
+	# die here, or silently exits if we have reason to believe we are
 	# just doing the weekly blocklists upgrade
 	exit if (-e "$watchdir/.upgradingblocklists");
 	die "transmission-daemon appears to be dead. Exit";

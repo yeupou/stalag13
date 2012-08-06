@@ -2,4 +2,5 @@
 #* * * * *	debian-transmission   cd ~/watch && /usr/local/bin/torrent-watch.pl
 
 # once per day, clean up
-#35 9 * * * 	debian-transmission   find ~/watch -name "*.trs+" -atime +4 -print0 | xargs -0 rm
+#35 9 * * * 	debian-transmission   find ~/watch -name "*.trs+" -mtime +4 -print0 | xargs -0 rm
+#39 9 * * * 	debian-transmission   find ~/watch -name "*.trs" -mtime +1 -print0 | xargs -0 rm
