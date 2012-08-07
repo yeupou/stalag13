@@ -1,4 +1,22 @@
 #!/bin/bash
+#
+# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
+#                   http://yeupou.wordpress.com
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+#   USA
 
 if [ `hostname` != "moe" ]; then exit; fi
 
@@ -48,7 +66,6 @@ date > /etc/.lastclone
 echo "$orig > $dest ($sys)" >> /etc/.lastclone
 etckeeper commit "cloning $sys system from $orig ($origdev) to $dest ($destdev)" >/dev/null 2>/dev/null
 
-
 # mount clone system
 if [ ! -d $mount ]; then exit; fi
 mount -L $dest$sys $mount
@@ -84,10 +101,12 @@ chroot $mount /usr/sbin/grub-mkdevicemap 2>/dev/null
 chroot $mount /usr/sbin/update-grub 2>/dev/null
 chroot $mount /usr/sbin/grub-install --force $destdev >/dev/null 2>/dev/null
 
-# exit (sleep to avoid weird timeout after rsync)
+# (sleep to avoid weird timeout after rsync)
 sleep 10s
+
+# then cleanup
 umount $mount/dev $mount/sys $mount/proc
 umount $mount
-
+fsck -a LABEL=$dest$sys > /dev/null
 
 ## EOF
