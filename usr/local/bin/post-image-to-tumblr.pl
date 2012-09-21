@@ -92,13 +92,25 @@ for (sort(@images)) { $image = $_; last; }
 #($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
 ## ALTERNATIVE WORKAROUND, WAITING FOR WWW::Tumblr to get
 ## updated http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
+## http://txlab.wordpress.com/2011/09/03/using-tumblr-api-v2-from-perl/
+
+use Net::OAuth;
+$Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
+use HTTP::Request::Common;
+use LWP::UserAgent;
+
 use LWP::Authen::OAuth;
-my $ua = LWP::Authen::OAuth->new(
-    oauth_consumer_key => $tumblr_consumer_key,
-    oauth_consumer_secret => $tumblr_consumer_secret,
-    oauth_token => $tumblr_token,
-    oauth_token_secret => $tumblr_token_secret,
+
+my %oauth_api_params =
+    ('consumer_key' => $tumblr_consumer_key,
+     'consumer_secret' =>$tumblr_consumer_secret,
+     'token' =>  $tumblr_token,
+     'token_secret' => $tumblr_token_secret,
+     'signature_method' =>        'HMAC-SHA1',
+     request_method => 'POST',
     );
+
+
 my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
 my $buffer;
 my $data;
@@ -108,9 +120,42 @@ while (read(FILE, $buffer, 65536)) {
     $data .= $buffer;
 }
 close(FILE);
-print $ua->post( $url, [
-		     type => 'photo',
-		     data => $data])->as_string;
+
+my $request =
+    Net::OAuth->request("protected resource")->new
+        (request_url => $url,
+         %oauth_api_params,
+         timestamp => time(),
+         nonce => rand(1000000),
+         extra_params => {
+             'type' => 'photo',
+             'data' => $data,
+         });
+
+$request->sign;
+my $ua = LWP::UserAgent->new;
+# this is the tricky part which is not documented where it should
+my $response = $ua->request(POST $url, Content => $request->to_post_body);
+
+if ( $response->is_success )
+{
+    my $r = decode_json($response->content);
+    if($r->{'meta'}{'status'} == 201)
+    {
+        my $item_id = $r->{'response'}{'id'};
+        print("Added a Tumblr entry\n");
+    }
+    else
+    {
+        printf("Cannot create Tumblr entry: %s\n",
+                $r->{'meta'}{'msg'});
+    }            
+}
+else
+{
+    printf("Cannot create Tumblr entry: %s\n",
+            $response->as_string);
+}
 ## ALTERNATIVE WORKAROUND END
 
 print "$image ===> $url\n" if $debug;
