@@ -90,6 +90,7 @@ for (sort(@images)) { $image = $_; last; }
 #CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr
 ##my $tumblr = WWW::Tumblr->new;
 #($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
+## ALTERNATIVE TEST http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
 use LWP::Authen::OAuth;
 my $ua = LWP::Authen::OAuth->new(
     oauth_consumer_key => $tumblr_consumer_key,
@@ -97,16 +98,12 @@ my $ua = LWP::Authen::OAuth->new(
     oauth_token => $tumblr_token,
     oauth_token_secret => $tumblr_token_secret,
     );
-print $ua->post( 'http://api.tumblr.com/v2/blog/{base_hostname}/post', [
+print $ua->post( 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post', [
 		     type => 'photo',
-		     link => 'CALLBACK_URL',
-		     source => 'SOURCE_URL',
-		     caption => 'CAPTION',
-		     tags => 'TAG1,TAG2',
-		 ])->as_string;
+		     source => $image])->as_string;
+## ALTERNATIVE TEST END
 
-
-print "$image ===> $tumblr_email\n" if $debug;
+print "$image ===> $tumblr_base_url\n" if $debug;
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
