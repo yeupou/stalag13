@@ -98,12 +98,13 @@ my $ua = LWP::Authen::OAuth->new(
     oauth_token => $tumblr_token,
     oauth_token_secret => $tumblr_token_secret,
     );
-print $ua->post( 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post', [
+my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
+print $ua->post( $url, [
 		     type => 'photo',
 		     source => $image])->as_string;
 ## ALTERNATIVE TEST END
 
-print "$image ===> $tumblr_base_url\n" if $debug;
+print "$image ===> $url\n" if $debug;
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
