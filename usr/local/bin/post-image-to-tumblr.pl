@@ -90,7 +90,8 @@ for (sort(@images)) { $image = $_; last; }
 #CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr
 ##my $tumblr = WWW::Tumblr->new;
 #($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
-## ALTERNATIVE TEST http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
+## ALTERNATIVE WORKAROUND, WAITING FOR WWW::Tumblr to get
+## updated http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
 use LWP::Authen::OAuth;
 my $ua = LWP::Authen::OAuth->new(
     oauth_consumer_key => $tumblr_consumer_key,
@@ -102,7 +103,7 @@ my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
 print $ua->post( $url, [
 		     type => 'photo',
 		     data => "$queue/$image"])->as_string;
-## ALTERNATIVE TEST END
+## ALTERNATIVE WORKAROUND END
 
 print "$image ===> $url\n" if $debug;
 
