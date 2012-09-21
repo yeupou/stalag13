@@ -102,7 +102,7 @@ my $ua = LWP::Authen::OAuth->new(
 my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
 print $ua->post( $url, [
 		     type => 'photo',
-		     data => "$queue/$image"])->as_string;
+		     data => "$image"])->as_string;
 ## ALTERNATIVE WORKAROUND END
 
 print "$image ===> $url\n" if $debug;
