@@ -27,7 +27,8 @@
 #   for i in *; do mv "$i" `mktemp --dry-run --tmpdir=. -t XXXXXXX$i`; done
 #
 #   - content is by default ~/tmp/tumblr
-#   - ~/.tumblrrc must be set containing email= and password= and 
+#   - ~/.tumblrrc must be set containing consumer_key= consumer_secret= 
+#   token= and token_secret=
 #   eventualy content= as path
 #
 # This was designed to be set up as a daily cronjob
@@ -39,7 +40,7 @@ use File::Copy;
 use Tumblr;
 use POSIX qw(strftime);
 
-my $debug = 0;
+my $debug = 1;
 my $git = "/usr/bin/git";
 $git = "/bin/echo" if $debug;
 
@@ -47,17 +48,19 @@ $git = "/bin/echo" if $debug;
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
 my $content = File::HomeDir->my_home()."/tmp/tumblr";
-my ($tumblr_email, $tumblr_password);
+my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
 while(<RCFILE>){
-    $tumblr_email = $1 if /^user\s?=\s?(\S*)\s*$/i;
-    $tumblr_email = $1 if /^email\s?=\s?(\S*)\s*$/i;
-    $tumblr_password = $1 if /^password\s?=\s?(\S*)\s*$/i;
+    $tumblr_base_url = $1 if /^base_url\s?=\s?(\S*)\s*$/i;
+    $tumblr_consumer_key = $1 if /^consumer_key\s?=\s?(\S*)\s*$/i;
+    $tumblr_consumer_secret = $1 if /^consumer_secret\s?=\s?(\S*)\s*$/i;
+    $tumblr_token = $1 if /^token\s?=\s?(\S*)\s*$/i;
+    $tumblr_token_secret = $1 if /^token_secret\s?=\s?(\S*)\s*$/i;
     $content = $1 if /^content\s?=\s?(.*)$/i;
 }
 close(RCFILE);
-die "Unable to determine email (found: $tumblr_email) and/or password (found: $tumblr_password) after reading $rc, exiting" unless $tumblr_email and $tumblr_password;
+die "Unable to determine oauth info required by Tumblr API v2 (found: base_url = $tumblr_base_url ; consumer_key = $tumblr_consumer_key ; consumer_secret = $tumblr_consumer_secret ; token = $tumblr_token ; token_secret = $tumblr_token_secret) after reading $rc, exiting" unless $tumblr_consumer_key and $tumblr_consumer_secret and $tumblr_token and $tumblr_token_secret;
 my $queue = $content."/queue";
 my $over = $content."/over";
 
@@ -84,11 +87,25 @@ closedir(IMAGES);
 exit if scalar(@images) < 1;
 for (sort(@images)) { $image = $_; last; }
 
-# Post to tumblr using https://github.com/damog/www-tumblr
-my $tumblr = WWW::Tumblr->new;
-$tumblr->email($tumblr_email);
-$tumblr->password($tumblr_password);
-($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
+#CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr
+##my $tumblr = WWW::Tumblr->new;
+#($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
+use LWP::Authen::OAuth;
+my $ua = LWP::Authen::OAuth->new(
+    oauth_consumer_key => $tumblr_consumer_key,
+    oauth_consumer_secret => $tumblr_consumer_secret,
+    oauth_token => $tumblr_token,
+    oauth_token_secret => $tumblr_token_secret,
+    );
+print $ua->post( 'http://api.tumblr.com/v2/blog/{base_hostname}/post', [
+		     type => 'photo',
+		     link => 'CALLBACK_URL',
+		     source => 'SOURCE_URL',
+		     caption => 'CAPTION',
+		     tags => 'TAG1,TAG2',
+		 ])->as_string;
+
+
 print "$image ===> $tumblr_email\n" if $debug;
 
 # If we get here, we can assume everything went well. So move the
