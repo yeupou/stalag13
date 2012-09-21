@@ -100,9 +100,17 @@ my $ua = LWP::Authen::OAuth->new(
     oauth_token_secret => $tumblr_token_secret,
     );
 my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
+my $buffer;
+my $data;
+open(FILE, $image);
+binmode FILE;
+while (read(FILE, $buffer, 65536)) {
+    $data .= $buffer;
+}
+close(FILE);
 print $ua->post( $url, [
 		     type => 'photo',
-		     data => "$image"])->as_string;
+		     data => $data])->as_string;
 ## ALTERNATIVE WORKAROUND END
 
 print "$image ===> $url\n" if $debug;
