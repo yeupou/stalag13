@@ -18,7 +18,7 @@ eval {
 };
 die "Set consumer key with --key arg! Exiting" unless $consumer_key;
 die "Set consumer secret with --secret arg! Exiting" unless $consumer_secret;
-
+wd
 my $request_url = 'http://www.tumblr.com/oauth/request_token';
 my $access_url = 'http://www.tumblr.com/oauth/access_token';
 my $authorize_url = 'http://www.tumblr.com/oauth/authorize';

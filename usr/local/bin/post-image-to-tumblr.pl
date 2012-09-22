@@ -128,8 +128,10 @@ my $request =
          timestamp => time(),
          nonce => rand(1000000),
          extra_params => {
-             'type' => 'photo',
-             'data' => $data,
+	     'type' => 'text',
+	     'body' => 'Blabla',
+          #   'type' => 'photo',
+         #    'data' => $data,
          });
 
 $request->sign;
