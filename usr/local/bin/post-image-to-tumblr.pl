@@ -94,12 +94,11 @@ for (sort(@images)) { $image = $_; last; }
 ## updated http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
 ## http://txlab.wordpress.com/2011/09/03/using-tumblr-api-v2-from-perl/
 
+use utf8;
 use Net::OAuth;
 $Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
 use HTTP::Request::Common;
 use LWP::UserAgent;
-
-use LWP::Authen::OAuth;
 
 my %oauth_api_params =
     ('consumer_key' => $tumblr_consumer_key,
@@ -129,11 +128,10 @@ my $request =
          nonce => rand(1000000),
          extra_params => {
 	     'type' => 'text',
-	     'body' => 'Blabla',
+	     'body' => utf8::decode("Faö"),
           #   'type' => 'photo',
          #    'data' => $data,
          });
-
 $request->sign;
 my $ua = LWP::UserAgent->new;
 # this is the tricky part which is not documented where it should
