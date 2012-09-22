@@ -115,7 +115,7 @@ my $buffer;
 my $data;
 open(FILE, $image);
 binmode FILE;
-while (read(FILE, $buffer)) {
+while (read(FILE, $buffer, 65536)) {
     $data .= $buffer;
 }
 close(FILE);
