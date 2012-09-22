@@ -40,7 +40,7 @@ use File::Copy;
 use Tumblr;
 use POSIX qw(strftime);
 
-my $debug = 1;
+my $debug = 0;
 my $git = "/usr/bin/git";
 $git = "/bin/echo" if $debug;
 
@@ -93,70 +93,23 @@ for (sort(@images)) { $image = $_; last; }
 ## ALTERNATIVE WORKAROUND, WAITING FOR WWW::Tumblr to get
 ## updated http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
 ## http://txlab.wordpress.com/2011/09/03/using-tumblr-api-v2-from-perl/
-
-use utf8;
-use Net::OAuth;
-$Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
-use HTTP::Request::Common;
-use LWP::UserAgent;
-
-my %oauth_api_params =
-    ('consumer_key' => $tumblr_consumer_key,
-     'consumer_secret' =>$tumblr_consumer_secret,
-     'token' =>  $tumblr_token,
-     'token_secret' => $tumblr_token_secret,
-     'signature_method' =>        'HMAC-SHA1',
-     request_method => 'POST',
+use LWP::Authen::OAuth;
+my $ua = LWP::Authen::OAuth->new(
+     oauth_consumer_key => $tumblr_consumer_key,
+     oauth_consumer_secret =>$tumblr_consumer_secret,
+     oauth_token =>  $tumblr_token,
+     oauth_token_secret => $tumblr_token_secret,
     );
-
-
 my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
-my $buffer;
-my $data;
-open(FILE, $image);
-binmode FILE;
-while (read(FILE, $buffer, 65536)) {
-    $data .= $buffer;
-}
-close(FILE);
-#$data = utf8::decode($data);
-
-my $request =
-    Net::OAuth->request("protected resource")->new
-        (request_url => $url,
-         %oauth_api_params,
-         timestamp => time(),
-         nonce => rand(1000000),
-         extra_params => {
-#	     'type' => 'text',
-#	     'body' => $data,
-             'type' => 'photo',
-             'data' => $data,
-         });
-$request->sign;
-my $ua = LWP::UserAgent->new;
-# this is the tricky part which is not documented where it should
-my $response = $ua->request(POST $url, Content => $request->to_post_body);
-
-if ( $response->is_success )
-{
-    my $r = decode_json($response->content);
-    if($r->{'meta'}{'status'} == 201)
-    {
-        my $item_id = $r->{'response'}{'id'};
-        print("Added a Tumblr entry\n");
-    }
-    else
-    {
-        printf("Cannot create Tumblr entry: %s\n",
-                $r->{'meta'}{'msg'});
-    }            
-}
-else
-{
-    printf("Cannot create Tumblr entry: %s\n",
-            $response->as_string);
-}
+# not able to use the data post option (numerous errors, about file encoding
+# and other things), temporarily post the image to be imported with the source
+# option
+system("scp", "-q", "$queue/$image", "yeupou\@mx2:/var/www/tada/"); 
+$ua->post($url, [
+	      type => 'photo',
+	      source => 'http://mx2.attique.org/tada/'.$image,
+	  ])->as_string;
+system("ssh", "yeupou\@mx2", "rm -f /var/www/tada/*");
 ## ALTERNATIVE WORKAROUND END
 
 print "$image ===> $url\n" if $debug;
