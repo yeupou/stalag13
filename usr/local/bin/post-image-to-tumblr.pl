@@ -119,6 +119,7 @@ while (read(FILE, $buffer, 65536)) {
     $data .= $buffer;
 }
 close(FILE);
+$data = utf8::decode("Faö");
 
 my $request =
     Net::OAuth->request("protected resource")->new
@@ -128,7 +129,7 @@ my $request =
          nonce => rand(1000000),
          extra_params => {
 	     'type' => 'text',
-	     'body' => utf8::decode("Faö"),
+	     'body' => $data,
           #   'type' => 'photo',
          #    'data' => $data,
          });
