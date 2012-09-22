@@ -119,7 +119,7 @@ while (read(FILE, $buffer, 65536)) {
     $data .= $buffer;
 }
 close(FILE);
-$data = utf8::decode("Faö");
+$data = utf8::decode($data);
 
 my $request =
     Net::OAuth->request("protected resource")->new
@@ -128,10 +128,10 @@ my $request =
          timestamp => time(),
          nonce => rand(1000000),
          extra_params => {
-	     'type' => 'text',
-	     'body' => $data,
-          #   'type' => 'photo',
-         #    'data' => $data,
+#	     'type' => 'text',
+#	     'body' => $data,
+             'type' => 'photo',
+             'data' => $data,
          });
 $request->sign;
 my $ua = LWP::UserAgent->new;
