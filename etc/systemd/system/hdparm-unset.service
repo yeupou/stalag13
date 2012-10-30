@@ -1,0 +1,11 @@
+[Unit]
+Description=unset any settings that hdparm may have set but could not be unset on crappy other operating systems (S0 = standby off)
+Before=shutdown.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=for disk in `ls --color=never -1 /dev/disk/by-path/* | grep -v part`; do hdparm -S 0 $disk; done
+
+[Install]
+WantedBy=shutdown.target

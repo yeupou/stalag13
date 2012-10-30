@@ -1,3 +1,9 @@
+stalag13-utils (3.50+1-20121030) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 30 Oct 2012 12:39:45 +0100
+ 
 stalag13-utils (3.50-20121021) unstable; urgency=low
  
   * Add modified JSpoiler.php to mediawiki (count number of lines within the spoiler
