@@ -279,6 +279,7 @@ while (<LIST>) {
 
     # for any processed file, update the info file, starting with the files
     # list 
+    print "> $file.trs\n" if $debug;
     open(TRSFILE, "> $watchdir/$file.trs");
     open(INFO, "$bin --torrent $id --files |");
     print TRSFILE "FILES\n";
