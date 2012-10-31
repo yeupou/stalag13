@@ -203,8 +203,7 @@ while (<LIST>) {
     }
     close(INFO);
 
-    print "$_ =\n" if $debug;
-    print "ID:$id NAME:$name PERCENT:$percent DATE:$date$_\n" if $debug;
+    print "ID:$id NAME:$name PERCENT:$percent DATE:$date\n" if $debug;
 
     # skip if still missing info
     unless ($name and $date) {
@@ -239,7 +238,7 @@ while (<LIST>) {
 
     # should be paused
     if (-e "$watchdir/$file.trs+") {
-	print "$bin -t $id --stop\n" if $debug;
+	print "$bin -t $id --stop ($watchdir/$file.trs+ exists)\n" if $debug;
 	print LOG strftime "%c - pause $name (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
 	next;
@@ -247,7 +246,7 @@ while (<LIST>) {
     
     # should be removed 
     unless (-e "$watchdir/$file.trs" or $added{$id} or $justwokeup) {
-	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
+	print "$bin -t $id --remove (no $watchdir/$file.trs)\n" if $debug;
 	print LOG strftime "%c - remove $name (#$id)\n", localtime;
 	`$bin --torrent $id --remove >/dev/null`;
 	next;
