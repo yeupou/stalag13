@@ -210,7 +210,11 @@ while (<LIST>) {
     if (/^\s*(\d*)\*?\s*(\d*\%)\s*/) { $id = $1; $percent = $2; }
 
     # skip if missing info
-    next unless $id;     
+    unless ($id) {
+	print "we skipped $_ because we were unable to find the following: id = $id ;\n";
+	print LOG strftime "%c - WARNING: we skipped $_ because we were unable to find the following: id = $id ;\n", localtime;
+	next;
+    }     
     
     # obtain info that cannot be guessed
     open(INFO, "$bin --torrent $id --info |");
@@ -223,7 +227,11 @@ while (<LIST>) {
     print "ID:$id NAME:$name PERCENT:$percent DATE:$date <= $_\n" if $debug;
 
     # skip if still missing info
-    next unless $id and $name and $date;
+    unless ($name and $date) {
+	print "we skipped #$id because we were unable to find the following: name = $name ; date = $date ;\n";
+	print LOG strftime "%c - WARNING: we skipped #$id because we were unable to find the following: name = $name ; date = $date ;\n", localtime;
+	next;
+    }
 
     # convert the date to YMMDD
     my ($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date); 
