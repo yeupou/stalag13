@@ -30,7 +30,7 @@ use Date::Parse;
 my $user = "debian-transmission";
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
-my $debug = 1;
+my $debug = 0;
 
 # ~/watch syntax :
 #    $file.torrent = torrent to be added
@@ -238,7 +238,7 @@ while (<LIST>) {
 
     # should be paused
     if (-e "$watchdir/$file.trs-") {
-	print "$bin -t $id --stop ($watchdir/$file.trs+ exists)\n" if $debug;
+	print "$bin -t $id --stop ($file.trs+ exists)\n" if $debug;
 	print LOG strftime "%c - pause $name (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
 	next;
@@ -246,7 +246,7 @@ while (<LIST>) {
     
     # should be removed 
     unless (-e "$watchdir/$file.trs" or $added{$id} or $justwokeup) {
-	print "$bin -t $id --remove (no $watchdir/$file.trs)\n" if $debug;
+	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
 	print LOG strftime "%c - remove $name (#$id)\n", localtime;
 	`$bin --torrent $id --remove >/dev/null`;
 	next;
