@@ -215,8 +215,8 @@ while (<LIST>) {
     # obtain info that cannot be guessed
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { 
-	if (/\s*Name\:\s*(.*)$/) { $name = $1; last; }
-	if (/\s*Date added\:\s*(.*)$/) { $date = $1; last; }
+	if (/\s*Name\:\s*(.*)$/) { $name = $1; }
+	if (/\s*Date added\:\s*(.*)$/) { $date = $1; }
     }
     close(INFO);
 
@@ -299,7 +299,7 @@ close(STATUSFILE);
 
 unless ($readme_exists) {
     open(README, "> $watchdir/README");
-    print README "watch syntax :\n \$file.torrent = to be added\n \$id-\$realfile.trs =  being processed (delete it to remove the torrent)\n \$id-\$realfile.trs- = to be paused\n \$id-\$realfile.trs+ = (supposedly) completed\n all- = use alt-speed (to slowdown/pause)\n";
+    print README "watch syntax :\n \$file.torrent = to be added\n \$YMMDD-\$id-\$realfile.trs =  being processed (delete it to remove the torrent)\n \$YMMDD-\$id-\$realfile.trs- = to be paused\n \$YMMDD-\$id-\$realfile.trs+ = (supposedly) completed\n all- = use alt-speed (to slowdown/pause)\n";
     close(README);
 }
 
