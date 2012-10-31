@@ -237,7 +237,7 @@ while (<LIST>) {
     }
 
     # should be paused
-    if (-e "$watchdir/$file.trs+") {
+    if (-e "$watchdir/$file.trs-") {
 	print "$bin -t $id --stop ($watchdir/$file.trs+ exists)\n" if $debug;
 	print LOG strftime "%c - pause $name (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
