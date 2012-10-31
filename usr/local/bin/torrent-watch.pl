@@ -209,12 +209,9 @@ while (<LIST>) {
     my ($id, $percent, $name, $date);
     if (/^\s*(\d*)\*?\s*(\d*\%)\s*/) { $id = $1; $percent = $2; }
 
-    # skip if missing info
-    unless ($id) {
-	print "we skipped $_ because we were unable to find the following: id = $id ;\n";
-	print LOG strftime "%c - WARNING: we skipped $_ because we were unable to find the following: id = $id ;\n", localtime;
-	next;
-    }     
+    # silently skip if missing info, 
+    # it means it's an informative/blank line
+    next unless $id;
     
     # obtain info that cannot be guessed
     open(INFO, "$bin --torrent $id --info |");
