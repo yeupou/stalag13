@@ -230,7 +230,7 @@ while (<LIST>) {
     $date = substr((1900+$year),-1,1).($month+1).$day;
 
     # determine the trs filename 
-    my $file = $date-$id-$name;
+    my $file = "$date-$id-$name";
     print "FILE:$file <= $_\n" if $debug;
     
     # finished
