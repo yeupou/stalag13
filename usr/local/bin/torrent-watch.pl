@@ -203,7 +203,8 @@ while (<LIST>) {
     }
     close(INFO);
 
-    print "ID:$id NAME:$name PERCENT:$percent DATE:$date <= $_\n" if $debug;
+    print "$_ =\n" if $debug;
+    print "ID:$id NAME:$name PERCENT:$percent DATE:$date$_\n" if $debug;
 
     # skip if still missing info
     unless ($name and $date) {
@@ -218,7 +219,7 @@ while (<LIST>) {
 
     # determine the trs filename 
     my $file = "$date-$id-$name";
-    print "FILE:$file <= $_\n" if $debug;
+    print "FILE:$file\n" if $debug;
     
     # finished
     if ($percent eq "100%") {
