@@ -108,8 +108,6 @@ if (-e "$watchdir/.down") {
 my $pause_all = 0;
 my $readme_exists = 0;
 my @to_be_added;
-my %to_be_paused;
-my %marked_as_being_processed;
 
 opendir(WATCH, $watchdir);
 while (defined(my $file = readdir(WATCH))) {
@@ -120,11 +118,6 @@ while (defined(my $file = readdir(WATCH))) {
     $readme_exists = 1 if $file eq "README";
     # check whether pause all is required
     $pause_all = 1 if $file eq "all-";
-
-    next if ($file eq "README" or
-	     $file eq "all-" or
-	     $file eq "status" or
-	     $file eq "log");
 
     # find out suffix, ignore file if none found
     my $suffix = 0;
@@ -138,23 +131,12 @@ while (defined(my $file = readdir(WATCH))) {
 	next;
     }
 
-    # if we get here, we have a YMMDD-id-XX.trs file (contains infos about 
-    # the torrent)
-    my $prefix = 0;
-    if ($name =~ /^(\d.*\-\d.*\-)(.*)$/) { $prefix = $1; $name = $2; }
-  
-    next unless $prefix;
-
-    # being processed or should be started
-    if ($suffix eq ".trs") {
-	$marked_as_being_processed{$name} = 1;
-	next;
-    }
-    # to be paused
-    if ($suffix eq ".trs-") {
-	$to_be_paused{$name} = 1;
-	next;
-    }
+    # Note:
+    # Previously, at this point,  we looked for .trs, .trs-, etc here to
+    # determine what  we had to do later with. 
+    # Actually, considering how basic this script is
+    # it's faster to use simple tests below than filling hashes for a single
+    # usage anyway.
 }
 closedir(WATCH);
 
@@ -255,7 +237,7 @@ while (<LIST>) {
     }
 
     # should be paused
-    if (exists($to_be_paused{$name})) {
+    if (-e "$watchdir/$file.trs+") {
 	print "$bin -t $id --stop\n" if $debug;
 	print LOG strftime "%c - pause $name (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
