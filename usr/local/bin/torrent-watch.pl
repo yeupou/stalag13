@@ -227,12 +227,11 @@ while (<LIST>) {
 
     # convert the date to YMMDD
     my ($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date); 
-    $date = ($month+1).$day
+    $date = substr((1900+$year),-1,1).($month+1).$day;
 
     # determine the trs filename 
     my $file = $date-$id-$name;
     print "FILE:$file <= $_\n" if $debug;
-
     
     # finished
     if ($percent eq "100%") {
