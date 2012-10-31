@@ -25,17 +25,18 @@ use strict "vars";
 use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
+use Date::Parse;
 
 my $user = "debian-transmission";
 my $watchdir = "/home/torrent/watch";
 my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
-my $debug = 0;
+my $debug = 1;
 
 # ~/watch syntax :
 #    $file.torrent = torrent to be added
-#    $id-$realfile.trs = being processed (delete it to remove the torrent) 
-#    $id-$realfile.trs- = to be paused
-#    $id-$realfile.trs+ = (supposedly) completed
+#    $YMMDD-$id-$realfile.trs = being processed (delete it to remove the torrent) 
+#    $YMMDD-$id-$realfile.trs- = to be paused
+#    $YMMDD-$id-$realfile.trs+ = (supposedly) completed
 #    all- = use alt-speed (even pause) 
 
 # check if we are running with torrent user (not with getlogin() because
@@ -127,9 +128,9 @@ while (defined(my $file = readdir(WATCH))) {
 
     # find out suffix, ignore file if none found
     my $suffix = 0;
-    my $realfile;
-    if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $realfile = $1; }
-    next unless $suffix && $realfile;
+    my $name;
+    if ($file =~ /^(.*)(\.[^.]*)$/) { $suffix = $2; $name = $1; }
+    next unless $suffix && $name;
     
     # new .torrent file
     if ($suffix eq ".torrent") {
@@ -137,21 +138,21 @@ while (defined(my $file = readdir(WATCH))) {
 	next;
     }
 
-    # if we get here, we have a id-XX.trs file (contains infos about 
+    # if we get here, we have a YMMDD-id-XX.trs file (contains infos about 
     # the torrent)
     my $prefix = 0;
-    if ($realfile =~ /^(\d.*\-)(.*)$/) { $prefix = $1; $realfile = $2; }
+    if ($name =~ /^(\d.*\-\d.*\-)(.*)$/) { $prefix = $1; $name = $2; }
   
     next unless $prefix;
 
     # being processed or should be started
     if ($suffix eq ".trs") {
-	$marked_as_being_processed{$realfile} = 1;
+	$marked_as_being_processed{$name} = 1;
 	next;
     }
     # to be paused
     if ($suffix eq ".trs-") {
-	$to_be_paused{$realfile} = 1;
+	$to_be_paused{$name} = 1;
 	next;
     }
 }
@@ -197,63 +198,70 @@ foreach my $torrent (@to_be_added) {
 }
 unlink(@to_be_added);
 
-# update torrentsbeings processed,
+# update torrents beings processed,
 #  start/pause/remove if need be
-my %being_processed;
 my $count;
 open(LIST, "$bin --list |");
 while (<LIST>) {
 
     # output format: 
     # ID  Done  Have  ETA  Up  Down  Ratio  Status  Name
-    my ($id, $percent, $file);
+    my ($id, $percent, $name, $date);
     if (/^\s*(\d*)\*?\s*(\d*\%)\s*/) { $id = $1; $percent = $2; }
 
     # skip if missing info
     next unless $id;     
     
-
-    # obtain the real file name
+    # obtain info that cannot be guessed
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { 
-	if (/\s*Name\:\s*(.*)$/) { $file = $1; last; }
-	last if /^TRANSFER/; 
+	if (/\s*Name\:\s*(.*)$/) { $name = $1; last; }
+	if (/\s*Date added\:\s*(.*)$/) { $date = $1; last; }
     }
     close(INFO);
 
-    print "ID:$id FILE:$file PERCENT:$percent => $_\n" if $debug;
+    print "ID:$id NAME:$name PERCENT:$percent DATE:$date <= $_\n" if $debug;
 
     # skip if still missing info
-    next unless $id and $file;     
+    next unless $id and $name and $date;
+
+    # convert the date to YMMDD
+    my ($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date); 
+    $date = ($month+1).$day
+
+    # determine the trs filename 
+    my $file = $date-$id-$name;
+    print "FILE:$file <= $_\n" if $debug;
+
     
     # finished
     if ($percent eq "100%") {
 	print "mv $file.hash $file.hash+\n" if $debug;
-	print LOG strftime "%c - completed $file (#$id)\n", localtime;
+	print LOG strftime "%c - completed $name (#$id)\n", localtime;
 	# do not bother removing the torrent, done below
-	rename("$watchdir/$id-$file.trs",
-	       "$watchdir/$id-$file.trs+");
+	rename("$watchdir/$file.trs",
+	       "$watchdir/$file.trs+");
 	
 	# warn (it should send a mail, if cron is properly configured)
 	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
 	    unless $count;
-	print "$file (#$id)\n";
+	print "$name (#$id)\n";
 	$count++;
 
     }
 
     # should be paused
-    if (exists($to_be_paused{$file})) {
+    if (exists($to_be_paused{$name})) {
 	print "$bin -t $id --stop\n" if $debug;
-	print LOG strftime "%c - pause $file (#$id)\n", localtime;
+	print LOG strftime "%c - pause $name (#$id)\n", localtime;
 	`$bin --torrent $id --stop >/dev/null`;
 	next;
     }
     
     # should be removed 
-    unless (-e "$watchdir/$id-$file.trs" or $added{$id} or $justwokeup) {
+    unless (-e "$watchdir/$file.trs" or $added{$id} or $justwokeup) {
 	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
-	print LOG strftime "%c - remove $file (#$id)\n", localtime;
+	print LOG strftime "%c - remove $name (#$id)\n", localtime;
 	`$bin --torrent $id --remove >/dev/null`;
 	next;
     }
@@ -261,11 +269,10 @@ while (<LIST>) {
     # any other case, ask to start it (dont log it, we do it everytime)
     print "$bin -t $id --start\n" if $debug and !$pause_all;
     `$bin --torrent $id --start >/dev/null` unless $pause_all;
-    $being_processed{$file} = 1;
 
     # for any processed file, update the info file, starting with the files
     # list 
-    open(TRSFILE, "> $watchdir/$id-$file.trs");
+    open(TRSFILE, "> $watchdir/$file.trs");
     open(INFO, "$bin --torrent $id --files |");
     print TRSFILE "FILES\n";
     while (<INFO>) { print TRSFILE "  ".$_; }
