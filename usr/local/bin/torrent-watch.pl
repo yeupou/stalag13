@@ -213,7 +213,7 @@ while (<LIST>) {
     next unless $id;     
     
 
-    # obtain the real file nale
+    # obtain the real file name
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { 
 	if (/\s*Name\:\s*(.*)$/) { $file = $1; last; }
@@ -263,8 +263,14 @@ while (<LIST>) {
     `$bin --torrent $id --start >/dev/null` unless $pause_all;
     $being_processed{$file} = 1;
 
-    # for any processed file, update the info file 
+    # for any processed file, update the info file, starting with the files
+    # list 
     open(TRSFILE, "> $watchdir/$id-$file.trs");
+    open(INFO, "$bin --torrent $id --files |");
+    print TRSFILE "FILES\n";
+    while (<INFO>) { print TRSFILE "  ".$_; }
+    print TRSFILE "\n";
+    close(INFO);
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { last if /^PIECES/; print TRSFILE $_; }
     close(INFO);
