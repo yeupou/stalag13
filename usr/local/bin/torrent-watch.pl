@@ -214,7 +214,7 @@ while (<LIST>) {
 
     # convert the date to YMMDD
     my ($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date); 
-    $date = substr((1900+$year),-1,1).($month+1).$day;
+    $date = substr((1900+$year),-1,1).($month+1).sprintf("%02d", $day);
 
     # determine the trs filename 
     my $file = "$date-$id-$name";
