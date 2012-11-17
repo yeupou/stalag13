@@ -1,3 +1,9 @@
+stalag13-utils (3.54-20121117) unstable; urgency=low
+ 
+  * Rename fcgi wrapper for PHP
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 17 Nov 2012 12:25:39 +0100
+ 
 stalag13-utils (3.53-20121101) unstable; urgency=low
  
   * Make sure .trs starts with YMMDD and not YMDD or YMMD or YMD.
