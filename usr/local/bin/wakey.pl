@@ -39,7 +39,7 @@ my $fallback = "/usr/share/sounds/KDE-Sys-Log-In-Long.ogg";
 my $beep = "/usr/share/sounds/KDE-Sys-App-Positive.ogg";
 my $songs = File::HomeDir->my_home()."/.wakey";
 my $player = "/usr/bin/mplayer";
-my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc");
+my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
 my $mixer = "/usr/bin/amixer";
 my $volume_max = "100";
 my $dict = "/usr/share/dict/words";
@@ -90,14 +90,17 @@ if ($help || (!$hours && !$minutes)) {
     print STDERR <<EOF;
 Usage: $0 HHh MMm [OPTIONS] 
        $0 HH:MM [OPTIONS] 
+       $0 HH: [OPTIONS]
     
 Wakes you up at HH hours and MM minutes by playing (at increasing volume)
 a song contained in ~\/.wakey that can be of any format the configured
 player ($player) supports.
 
+For sound volume  consistency, you should run something like:
+   cd ~/.wakey && normalize-audio -b *
+
 To manipulate volume, it expects $mixer to be properly set up, with
-a 'Master' control.
-Note that time cannot exceed 23 hours in the future.
+a 'Master' control. Time cannot exceed 23 hours in the future.
 
   General:
   -t, --timer                Work as a timer (alike \`sleep\`).
@@ -306,8 +309,10 @@ while (<MIXER>) {
 close(MIXER);
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
 
-# Put PCM at 100%, start master volume at volume-max (default: 100%) - 40
-my $mixer_volume = ($volume_max-40);
+# Put PCM at 100%, start master volume at volume-max (default: 100%) - 60,
+# at least 10%
+my $mixer_volume = ($volume_max-60);
+$mixer_volume = 10 if $mixer_volume < 10;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
 system($mixer, "-q", "set", "PCM", "100%");
 
@@ -339,7 +344,6 @@ while ($valid_exit < 300 && $word ne $input) {
 
     # after 5s, increase sound volume of 2% every 2s, until volume-max %
     # avoiding anychange if the user type anything
-    # (by default, it should take 45s total to get to 100%)
     if (($valid_exit > 5) &&
 	($previous_input eq $input) &&
 	($valid_exit%2) && 
@@ -357,30 +361,34 @@ while ($valid_exit < 300 && $word ne $input) {
 	print ON_RED, WHITE, "\tWAKEY", RESET, BOLD, " wakey", RESET "\n\n";
 	print BOLD, "\t\t\twakey ", RESET, ON_RED, WHITE, "WAKEY", RESET "\n\n";
     }
-    
-    # user input
-    print "$word: $input\n";
 
-    # if input >= 5, we should no longer be here. If so, clear input, user
+    # provide the word for the user to type
+    print "$word: ";
+    
+    # if input > 5, we should no longer be here. If so, clear input, user
     # mispelled/miscopied
-    $input = "" if (length($input) >= 5);
+    $input = "" if (length($input) > 5);
 
     # check if the latest char the user type is correct, if not cancel it
     if ((substr($word, (length($input)-1), 1)) ne
 	(substr($input, (length($input)-1), 1))) {
 	chop($input);
 	print (substr($word, (length($input)-1), 1))." (dict) ne ".(substr($input, (length($input)-1), 1))." (input), erase last char of ".length($input)."\n" if $debug;
-    }
+    } 
+
+    # at this point, input is validated:
+    print GREEN, $input, RESET if $input;
+    print "\n"; 
 
     # save for later current input
     $previous_input = $input;
     
     # redraw the window each second or each time the user put some input
-    (($input .= ReadKey(1)) || sleep 1);
+    (($input .= lc(ReadKey(1))) || sleep 1);
 
     # increment counter anyway
     $valid_exit++;
-
+    
     print $clear unless $debug;
 }
 

@@ -1,3 +1,9 @@
+stalag13-utils (3.55-20121122) unstable; urgency=low
+ 
+  * Cosmetics, disable video output, start volume at 40% instead of 60%, disregard case when typing the exit word
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 22 Nov 2012 09:08:51 +0100
+ 
 stalag13-utils (3.54-20121117) unstable; urgency=low
  
   * Rename fcgi wrapper for PHP
