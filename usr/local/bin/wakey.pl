@@ -309,9 +309,9 @@ while (<MIXER>) {
 close(MIXER);
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
 
-# Put PCM at 100%, start master volume at volume-max (default: 100%) - 60,
+# Put PCM at 100%, start master volume at volume-max (default: 100%) - 48,
 # at least 10%
-my $mixer_volume = ($volume_max-60);
+my $mixer_volume = ($volume_max-48);
 $mixer_volume = 10 if $mixer_volume < 10;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
 system($mixer, "-q", "set", "PCM", "100%");

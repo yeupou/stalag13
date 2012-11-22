@@ -1,3 +1,9 @@
+stalag13-utils (3.56-20121122) unstable; urgency=low
+ 
+  * Mixer at 52% by default when starting the alarm
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 22 Nov 2012 12:40:36 +0100
+ 
 stalag13-utils (3.55-20121122) unstable; urgency=low
  
   * Cosmetics, disable video output, start volume at 40% instead of 60%, disregard case when typing the exit word
