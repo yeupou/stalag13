@@ -35,12 +35,16 @@ HAM_DIRS="$MAILDIR/INBOX/cur/ $MAILDIR/INBOX/new/"
 # Bogofilter: keeps no tracks of already learned spams, so we take into account
 # only recent files (last time file status changed)
 for file in `find $SPAM_DIRS -type f -ctime -1`; do 
-    cat $file | grep -v -E "^X-Spam-(Checker|Flag|Level|Report)" | sed s/"^X-Spam-Status.*score.*required.*tests="//g | /usr/bin/bogofilter --register-spam
+    if [ -r $file ]; then
+	cat $file | grep -v -E "^X-Spam-(Checker|Flag|Level|Report)" | sed s/"^X-Spam-Status.*score.*required.*tests="//g | /usr/bin/bogofilter --register-spam
+    fi
 done
 for file in `find $HAM_DIRS -type f -ctime -1`; do 
     # ham may stay for long in the inbox, so we only take into account recent
     # files, as bogofilter keep no tracks of already learned files
-    cat $file | grep -v -E "^X-Spam-(Checker|Flag|Level|Report)" | sed s/"^X-Spam-Status.*score.*required.*tests="//g | /usr/bin/bogofilter --register-ham
+    if [ -r $file ]; then
+	cat $file | grep -v -E "^X-Spam-(Checker|Flag|Level|Report)" | sed s/"^X-Spam-Status.*score.*required.*tests="//g | /usr/bin/bogofilter --register-ham
+    fi
 done
 
 
