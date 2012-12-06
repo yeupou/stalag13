@@ -23,7 +23,7 @@ if [ ! $3 ]; then
     if [ "$THEHECK" == "" ]; then THEHECK="Cosmetics/trivial fixes"; fi
     echo "  * $THEHECK" >> tmp
     # files changed since latest major update
-    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog$ | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq >> tmp
+    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog$ | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/    \1 /g" | sort | uniq >> tmp
 else 
     echo "  * Upstream prerelease" >> tmp
 fi
