@@ -14,6 +14,7 @@ fi
 echo "stalag13-utils ($VERSION-`date +%Y%m%d`) unstable; urgency=low" > tmp
 echo " " >> tmp  
 if [ ! $3 ]; then
+    git log --stat --name-status -n `cat ../LATESTIS` | grep -vE LATESTIS\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq
     echo " "
     echo "What did you do? [Cosmetics/trivial fixes] by default"
     # changes description
@@ -21,7 +22,7 @@ if [ ! $3 ]; then
     if [ "$THEHECK" == "" ]; then THEHECK="Cosmetics/trivial fixes"; fi
     echo "  * $THEHECK" >> tmp
     # files changed since latest major update
-    git log --stat --name-status -n 1 | grep -vE LATESTIS\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq >> tmp
+    git log --stat --name-status -n `cat ../LATESTIS` | grep -vE LATESTIS\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq >> tmp
 else 
     echo "  * Upstream prerelease" >> tmp
 fi
