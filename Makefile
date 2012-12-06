@@ -58,7 +58,6 @@ deb-prerelease:
 
 deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
-	@head -20 ChangeLog
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)

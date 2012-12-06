@@ -1,3 +1,11 @@
+stalag13-utils (3.58-20121206) unstable; urgency=low
+ 
+  * Avoid (harmless) race condition, list changed files in ChangeLog
+M debian/makechangelog.sh
+M usr/local/bin/stalag13-spamslayer-learn.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 06 Dec 2012 13:07:59 +0100
+ 
 stalag13-utils (3.57+3-20121206) unstable; urgency=low
  
   * Upstream prerelease

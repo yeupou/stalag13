@@ -7,6 +7,7 @@ if [ ! $1 ]; then echo "No major version (\$1), exit." && exit ; fi
 if [ ! $2 ]; then echo "No version (\$2), exit." && exit ; fi
 if [ ! $3 ]; then
     VERSION=$1.$2
+    COMMITS=`cat ../LATESTIS | tail -1`
 else 
     VERSION=$1.$2+$3
 fi
@@ -14,7 +15,7 @@ fi
 echo "stalag13-utils ($VERSION-`date +%Y%m%d`) unstable; urgency=low" > tmp
 echo " " >> tmp  
 if [ ! $3 ]; then
-    git log --stat --name-status -n `cat ../LATESTIS` | grep -vE LATESTIS\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq
+    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog$ | grep -E ^\(M\|A\|R\)"\s" | sort | uniq
     echo " "
     echo "What did you do? [Cosmetics/trivial fixes] by default"
     # changes description
@@ -22,7 +23,7 @@ if [ ! $3 ]; then
     if [ "$THEHECK" == "" ]; then THEHECK="Cosmetics/trivial fixes"; fi
     echo "  * $THEHECK" >> tmp
     # files changed since latest major update
-    git log --stat --name-status -n `cat ../LATESTIS` | grep -vE LATESTIS\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq >> tmp
+    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog$ | grep -E ^\(M\|A\|R\)"\s" | sed  "s/^\(.\)\s/\1 /g" | sort | uniq >> tmp
 else 
     echo "  * Upstream prerelease" >> tmp
 fi
