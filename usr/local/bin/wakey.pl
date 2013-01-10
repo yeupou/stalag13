@@ -106,7 +106,7 @@ a 'Master' control. Time cannot exceed 23 hours in the future.
   -t, --timer                Work as a timer (alike \`sleep\`).
       --ignore-powersave     Do not test whether the computer is using 
                              a powersave plan that may cause it to sleep
-			     or hibernate.
+			     or hibernate (NB: currently broken anyway).
       --volume-max=nn        Set maximum volume in percent, in case
                              $volume_max% is really too loud on your setup.
 
@@ -228,22 +228,28 @@ while ($requested > $elapsed) {
     print BOLD, "\tWakey Wakey (not yet)", RESET "\n\n";
 
     # determine if we ll count the remaining time in s, m or h, set 
-    # a color
+    # a color:
+    # by default in seconds and yellow
     print YELLOW;
     my $still = ($requested - $elapsed);
     my $still_unit = "s";
     if ($still  > 180 && $still < 10800) {
-	# more than 3m and less than 3h
+	# more than 3m and less than 3h:
+	# in cyan if superior to 30 min
       	print CYAN if $still > 1800;
+	# in minutes 
 	$still = int(($still / 60));
 	$still_unit = "m";
     }
     if ($still > 10799) {
-	# more than 3h
+	# more than 3h:
+	# in green unless superior to 9h30, otherwise in red
+	unless ($still > 34200) { print GREEN; } else { print RED; }
+	# in hours	
 	$still = int(($still / 3600));
 	$still_unit = "h";
-	print GREEN;
     }
+
 
     # show ~ remaining time 
     print "\t\t... ~ ".$still.$still_unit, RESET " \n\n";
