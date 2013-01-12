@@ -227,6 +227,20 @@ while ($requested > $elapsed) {
     # while the clear() is made below)
     print BOLD, "\tWakey Wakey (not yet)", RESET "\n\n";
 
+
+    # show ~ elapsed time 
+    print BRIGHT_BLACK, "\t~ ";
+    my $really_elapsed = int((($wait_count * $wait) / 60));
+    if ($really_elapsed < 60) {
+	# at least in minutes
+	print $really_elapsed."m";
+    } else {
+	# or in hours
+	print int(($really_elapsed / 60))."h";
+    }
+    print RESET "\n";
+
+
     # determine if we ll count the remaining time in s, m or h, set 
     # a color:
     # by default in seconds and yellow
@@ -252,7 +266,7 @@ while ($requested > $elapsed) {
 
 
     # show ~ remaining time 
-    print "\t\t... ~ ".$still.$still_unit, RESET " \n\n";
+    print "\t\t... ~ ".$still.$still_unit, RESET "\n\n";
 
     # show progression bar
     # available chars = width - 4 chars
