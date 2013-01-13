@@ -1,3 +1,10 @@
+stalag13-utils (3.61-20130113) unstable; urgency=low
+ 
+  * Add elapsed time too; show in red when ask to be woke up after more than 9h30
+    M usr/local/bin/wakey.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 13 Jan 2013 16:36:13 +0100
+ 
 stalag13-utils (3.60+3-20130112) unstable; urgency=low
  
   * Upstream prerelease
