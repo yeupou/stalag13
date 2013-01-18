@@ -101,7 +101,7 @@ sub Urlize {
     $ret =~ s/\?//g;
     $ret =~ s/\"//g;
     $ret =~ s/\%//g;
-    $ret =~ s/[^[:ascii:]]//g
+    $ret =~ s/[^[:ascii:]]//g;
     return $ret;
 }
 
