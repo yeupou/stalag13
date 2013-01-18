@@ -99,6 +99,7 @@ sub Urlize {
     $ret =~ s/\&//g;
     $ret =~ s/\!//g;
     $ret =~ s/\'//g;
+    $ret =~ s/\?//g;
     $ret =~ s/\"//g;
     $ret =~ s/\%//g;
     return $ret;

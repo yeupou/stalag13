@@ -1,3 +1,9 @@
+stalag13-utils (3.61+1-20130118) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 18 Jan 2013 15:38:05 +0100
+ 
 stalag13-utils (3.61-20130113) unstable; urgency=low
  
   * Add elapsed time too; show in red when ask to be woke up after more than 9h30
