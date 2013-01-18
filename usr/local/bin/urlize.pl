@@ -95,13 +95,13 @@ sub Urlize {
     $ret =~ tr/à-é/a-e/;
     $ret =~ tr/+/_/;
     $ret =~ tr/=/_/;
-    $ret =~ tr/ù/u/;
     $ret =~ s/\&//g;
     $ret =~ s/\!//g;
     $ret =~ s/\'//g;
     $ret =~ s/\?//g;
     $ret =~ s/\"//g;
     $ret =~ s/\%//g;
+    $ret =~ s/[^[:ascii:]]//g
     return $ret;
 }
 
