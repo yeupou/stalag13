@@ -32,7 +32,7 @@ use Term::ANSIColor qw(:constants);
 my $debug = 0;
 my $month = (localtime)[4] + 1;
 my $year  = (localtime)[5] + 1900;
-my $group  = 2;
+my $group  = 1;
 my $full_year = 0;
 my $html = 0;
 
