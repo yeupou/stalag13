@@ -1,3 +1,12 @@
+stalag13-utils (3.63-20130127) unstable; urgency=low
+ 
+  * Enable html/web output. Add perl fcgi init script.
+    A etc/init.d/perl-fcgi
+    M etc/init.d/perl-fcgi
+    M usr/local/bin/4-2cal.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 27 Jan 2013 14:03:02 +0100
+ 
 stalag13-utils (3.62+5-20130127) unstable; urgency=low
  
   * Upstream prerelease
