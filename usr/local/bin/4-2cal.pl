@@ -112,7 +112,7 @@ if ($html) {
 
 
     # Immediately create the HTML layout
-    print header();
+    print header(-charset => 'UTF-8');
     print start_html(-title => '4-2cal');
 }
 
