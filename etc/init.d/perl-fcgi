@@ -22,9 +22,9 @@ test -x $SPAWN_FCGI || exit 0
 test -x $DAEMON || exit 0
 
 # FCGI_APP Variables
+FCGI_ADDR="127.0.0.1"
 FCGI_PORT="8999"
 FCGI_CHILDREN="5"
-FCGI_SOCKET="/var/run/$NAME.socket"
 FCGI_USER="www-data"
 FCGI_GROUP="www-data"
 # Socket owner/group (will default to FCGI_USER/FCGI_GROUP if not defined)
