@@ -41,45 +41,12 @@ unless (isatty(*STDOUT)) {
     $html = 1;
 }
 
-## set up output: HTML or terminal?
-my $out_linebreak = "\n";
-my ($out_startrow, $out_starttable, $out_endtable, $out_startcolumn, $out_endcolumn);
-my $out_endrow = $out_linebreak;
-my $out_style_reset = RESET;
-my $out_style_startbold = BOLD;
-my $out_style_endbold = $out_style_reset;
-my $out_style_color_blue = WHITE ON_BLUE;
-my $out_style_color_magenta = WHITE ON_MAGENTA;
-
-if ($html) {
-    # if not a TTY, assume we want HTML
-    use CGI qw(:standard Link);
-    $out_linebreak = br();
-    $out_starttable = '<table>';
-    $out_endtable = '</table>';    
-    $out_startrow = '<tr>';
-    $out_endrow = '</tr>';
-    $out_startcolumn = '<td>';
-    $out_endcolumn = '</td>';
-    $out_style_reset = $out_endcolumn;
-    $out_style_startbold = '<span style="font-weight: bold">';
-    $out_style_endbold = '</span>';
-    $out_style_color_blue = '<td style="background-color: blue; color: white">';
-    $out_style_color_magenta = '<td style="background-color: red; color: white">';
-
-
-
-        
-    # Immediately create the HTML layout
-    print start_html(-title => '4-2cal');
-}
-
-
 ## get tty input with standard opts.
 my $getopt;
 unless ($html) {
     eval {
 	$getopt = GetOptions("debug" => \$debug,
+			     "html" => \$html,
 			     "full-year" => \$full_year,
 			     "group=s" => \$group,
 			     "year=s" => \$year,
@@ -113,6 +80,40 @@ unless ($html) {
     }
 }
 
+
+
+
+
+## set up output: HTML or terminal?
+my $out_linebreak = "\n";
+my ($out_startrow, $out_starttable, $out_endtable, $out_startcolumn, $out_endcolumn);
+my $out_endrow = $out_linebreak;
+my $out_style_reset = RESET;
+my $out_style_startbold = BOLD;
+my $out_style_endbold = $out_style_reset;
+my $out_style_color_blue = WHITE ON_BLUE;
+my $out_style_color_magenta = WHITE ON_MAGENTA;
+
+if ($html) {
+    # if not a TTY, assume we want HTML
+    use CGI qw(:standard Link);
+    $out_linebreak = br();
+    $out_starttable = '<table>';
+    $out_endtable = '</table>';    
+    $out_startrow = '<tr>';
+    $out_endrow = '</tr>';
+    $out_startcolumn = '<td>';
+    $out_endcolumn = '</td>';
+    $out_style_reset = $out_endcolumn;
+    $out_style_startbold = '<span style="font-weight: bold">';
+    $out_style_endbold = '</span>';
+    $out_style_color_blue = '<td style="background-color: blue; color: white">';
+    $out_style_color_magenta = '<td style="background-color: red; color: white">';
+
+
+    # Immediately create the HTML layout
+    print start_html(-title => '4-2cal');
+}
 
 
 ## prepare data
