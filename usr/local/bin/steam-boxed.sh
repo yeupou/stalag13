@@ -45,7 +45,7 @@ fi
 SESSIONS_DIR=/tmp/steam-boxed-sessions
 if [ ! -d $SESSIONS_DIR ]; then
     mkdir -v $SESSIONS_DIR
-done
+fi
 
 # SET UP SESSION
 if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
