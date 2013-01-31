@@ -63,11 +63,11 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
     # another dirty hack required by steam
     chmod 1777 $STEAM_ROOT/dev/shm
-    # mark that we have an active session already
-    touch $SESSIONS_DIR/$BASHPID
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
+# register this session
+touch $SESSIONS_DIR/$BASHPID
 
 
 # GET IN AND START STEAM/SHELL
