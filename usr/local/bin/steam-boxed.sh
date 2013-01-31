@@ -42,11 +42,13 @@ if [ "`id -u`" != 0 ]; then
     echo -e $RED "Exit" $NC
     exit
 fi
-
+SESSIONS_DIR=/tmp/steam-boxed-sessions
+if [ ! -d $SESSIONS_DIR ]; then
+    mkdir -v $SESSIONS_DIR
+done
 
 # SET UP SESSION
-SESSION_IS_MY_DOING=1
-if [  ! -e $STEAM_ROOT/is-session-up ]; then
+if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     echo -e $GREEN ==== SETTING UP SESSION ==== $NC
     mount -v $STEAM_ROOT
     for bind in $BINDS; do
@@ -62,11 +64,9 @@ if [  ! -e $STEAM_ROOT/is-session-up ]; then
     # another dirty hack required by steam
     chmod 1777 $STEAM_ROOT/dev/shm
     # mark that we have an active session already
-    touch $STEAM_ROOT/is-session-up
+    touch $SESSIONS_DIR/$BASHPID
 else 
-    echo -e $RED ==== SKIP SETTING UP SESSION, ONE ALREADY EXISTS ==== $NC
-    SESSION_IS_MY_DOING=0
-    
+    echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
 
 
@@ -88,20 +88,23 @@ esac
 
 
 # CLEAN UP SESSION
-if [ $SESSION_IS_MY_DOING == 0 ]; then
-    1=nocleanup
-fi
+rm -fv $SESSIONS_DIR/$BASHPID
 case $1 in
     nocleanup) 
-	echo -e $RED ==== SKIP CLEANING UP SESSION ==== $NC
+	echo -e $RED ==== SKIP CLEANING UP SESSION AS ASKED TO ==== $NC
 	;;
-    *) echo -e $GREEN ==== CLEANING UP SESSION ==== $NC
-	# run twice umount in case of race conditions
-	for bind in $BINDS $BINDS; do
-	    umount -v $STEAM_ROOT$bind;
-	done
-	rm -fv $STEAM_ROOT/is-session-up
-	umount -v $STEAM_ROOT
+    *) 
+	if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
+	    echo -e $GREEN ==== CLEANING UP SESSION ==== $NC
+            # run twice umount in case of race conditions
+	    for bind in $BINDS $BINDS; do
+		umount -v $STEAM_ROOT$bind;
+	    done
+	    rm -fv $STEAM_ROOT/is-session-up
+	    umount -v $STEAM_ROOT
+	else 
+	    echo -e $YELLOW ==== SKIP CLEANING UP SESSION, AT LEAST ONE STILL EXISTS ==== $NC
+	fi
 	;;
 esac
 
