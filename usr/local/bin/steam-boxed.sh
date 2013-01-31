@@ -1,4 +1,23 @@
 #!/bin/bash
+#
+# Copyright (c) 2013 Mathieu Roy <yeupou--gnu.org>
+#      http://yeupou.wordpress.com
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+#   USA
+
 
 # 1. proprietary
 # 2. wtf wrapping stuff already supposed to work?
@@ -24,21 +43,31 @@ if [ "`id -u`" != 0 ]; then
     exit
 fi
 
+
 # SET UP SESSION
-echo -e $GREEN ==== SETTING UP SESSION ==== $NC
-mount -v $STEAM_ROOT
-for bind in $BINDS; do
-    if [ ! -d $STEAM_ROOT$bind ]; then mkdir -v $STEAM_ROOT$bind; fi
-    mount -v --bind $bind $STEAM_ROOT$bind;
-done
-for file in $FILES; do
-    rm -f $STEAM_ROOT$file
-    cp -v $file $STEAM_ROOT$file
-done
-# dirty hack specific to flash
-if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
-# another dirty hack required by steam
-chmod 1777 $STEAM_ROOT/dev/shm
+SESSION_IS_MY_DOING=1
+if [  ! -e $STEAM_ROOT/is-session-up ]; then
+    echo -e $GREEN ==== SETTING UP SESSION ==== $NC
+    mount -v $STEAM_ROOT
+    for bind in $BINDS; do
+	if [ ! -d $STEAM_ROOT$bind ]; then mkdir -v $STEAM_ROOT$bind; fi
+	mount -v --bind $bind $STEAM_ROOT$bind;
+    done
+    for file in $FILES; do
+	rm -f $STEAM_ROOT$file
+	cp -v $file $STEAM_ROOT$file
+    done
+    # dirty hack specific to flash
+    if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
+    # another dirty hack required by steam
+    chmod 1777 $STEAM_ROOT/dev/shm
+    # mark that we have an active session already
+    touch $STEAM_ROOT/is-session-up
+else 
+    echo -e $RED ==== SKIP SETTING UP SESSION, ONE ALREADY EXISTS ==== $NC
+    SESSION_IS_MY_DOING=0
+    
+fi
 
 
 # GET IN AND START STEAM/SHELL
@@ -59,6 +88,9 @@ esac
 
 
 # CLEAN UP SESSION
+if [ $SESSION_IS_MY_DOING == 0 ]; then
+    1=nocleanup
+fi
 case $1 in
     nocleanup) 
 	echo -e $RED ==== SKIP CLEANING UP SESSION ==== $NC
@@ -68,6 +100,7 @@ case $1 in
 	for bind in $BINDS $BINDS; do
 	    umount -v $STEAM_ROOT$bind;
 	done
+	rm -fv $STEAM_ROOT/is-session-up
 	umount -v $STEAM_ROOT
 	;;
 esac
