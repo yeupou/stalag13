@@ -18,9 +18,9 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 
-
-# 1. proprietary
-# 2. wtf wrapping stuff already supposed to work?
+# ISSUES
+#   1. proprietary
+#   2. wtf wrapping stuff already supposed to work?
 
 # CONFIG
 STEAM_USER="pllx"
@@ -110,7 +110,7 @@ esac
 
 
 echo -e $YELLOW ==== OVER/EOF ==== $NC
-echo "For the record, valids args are: nocleanup root shell"
+echo "For the record, valids args are: shell root nocleanup"
 # EOF
 
 

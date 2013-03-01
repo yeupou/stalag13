@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2012-2013 Mathieu Roy <yeupou--gnu.org>
 #        http://yeupou.wordpress.com/
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -21,8 +21,11 @@
 # Will go into $CONTENT where two subdirs exists: queue and over
 # It will take the first file in queue (pulled with git) and post it to
 # tumblr using WWW::Mechanize 
+# It will always keep a pool of 10 files in the queue, so if you had several
+# files from one same source at once, you'll still have enough files to
+# randomize it.
 #
-# If you want it to be absolutely random, you may just run, in queue/ the
+# To randomize feels, you may just run, in queue/ the
 # following:
 #   for i in *; do mv "$i" `mktemp --dry-run --tmpdir=. -t XXXXXXX$i`; done
 #
@@ -84,7 +87,7 @@ while (defined(my $image = readdir(IMAGES))) {
     push(@images, $image);
 }
 closedir(IMAGES);
-exit if scalar(@images) < 1;
+exit if scalar(@images) < 10;
 for (sort(@images)) { $image = $_; last; }
 
 #CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr
