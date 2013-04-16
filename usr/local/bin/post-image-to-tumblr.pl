@@ -21,7 +21,7 @@
 # Will go into $CONTENT where two subdirs exists: queue and over
 # It will take the first file in queue (pulled with git) and post it to
 # tumblr using WWW::Mechanize 
-# It will always keep a pool of 10 files in the queue, so if you had several
+# It will always keep a pool of 5 files in the queue, so if you had several
 # files from one same source at once, you'll still have enough files to
 # randomize it.
 #
@@ -87,7 +87,7 @@ while (defined(my $image = readdir(IMAGES))) {
     push(@images, $image);
 }
 closedir(IMAGES);
-exit if scalar(@images) < 10;
+exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
 #CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr

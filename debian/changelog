@@ -1,3 +1,9 @@
+stalag13-utils (3.65-20130416) unstable; urgency=low
+ 
+  * 5 max in queue
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 16 Apr 2013 20:22:45 +0200
+ 
 stalag13-utils (3.64-20130301) unstable; urgency=low
  
   * Keep a pool of 10 files before posting to tumblr.  No details about steam, this is still proprietary software so no advertisement.
