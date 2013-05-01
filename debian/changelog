@@ -1,3 +1,10 @@
+stalag13-utils (3.66-20130501) unstable; urgency=low
+ 
+  * 12 months for the HTML output ; add --help
+    M usr/local/bin/4-2cal.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 01 May 2013 10:28:00 +0200
+ 
 stalag13-utils (3.65+2-20130501) unstable; urgency=low
  
   * Upstream prerelease
