@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2011-2013 Mathieu Roy <yeupou--gnu.org>
 #   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,7 @@ my $year  = (localtime)[5] + 1900;
 my $group  = 1;
 my $full_year = 0;
 my $html = 0;
+my $help;
 
 # do HTML is not started by a terminal
 unless (isatty(*STDOUT)) {
@@ -47,6 +48,7 @@ unless ($html) {
     eval {
 	$getopt = GetOptions("debug" => \$debug,
 			     "html" => \$html,
+			     "help" => \$help,
 			     "full-year" => \$full_year,
 			     "group=s" => \$group,
 			     "year=s" => \$year,
@@ -81,6 +83,24 @@ unless ($html) {
 }
 
 
+if ($help) {
+    print STDERR <<EOF;
+Usage: $0 MM/YYYY [OPTIONS]
+       $0 MM YYYY [OPTIONS]
+       $0 --month=MM --year=YYYY [OPTIONS]
+    
+  General:
+      --group=n              Group (default: $group)
+      --html                 xHTML output (default if not running from a 
+			     term).
+      --full-year            Show 12 months instead of 3 (default for xHTML
+                             output).
+
+Author: yeupou\@gnu.org
+        http://yeupou.wordpress.com/
+EOF
+exit(1);
+}
 
 
 
@@ -110,10 +130,12 @@ if ($html) {
     $out_style_color_blue = '<td style="background-color: blue; color: white">';
     $out_style_color_magenta = '<td style="background-color: red; color: white">';
 
-
     # Immediately create the HTML layout
     print header(-charset => 'UTF-8');
     print start_html(-title => '4-2cal');
+
+    # For a full year
+    $full_year = 1;
 }
 
 
