@@ -22,6 +22,10 @@
 #    queue and over
 # It will take the first file in queue (pulled with git) and post it to
 # tumblr using WWW::Tumblr from  https://github.com/damog/www-tumblr
+# 
+# If the image metadata (XMP) contain a legend (Description) with strings
+# beginning with # then it will assume these are tags for tumblr.
+#
 # It will always keep a pool of 5 files in the queue, so if you had several
 # files from one same source at once, you'll still have enough files to
 # randomize it.
@@ -58,6 +62,7 @@ use File::HomeDir;
 use File::Copy;
 use POSIX qw(strftime);
 use URI::Encode qw(uri_encode);
+use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
 my $debug = 0;
@@ -113,6 +118,24 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
+# Extract Description tag from image metadata (XMP because applies to
+# PNG, GIF, etc)
+# Assume it's a comma separated list.
+my @image_tags;
+my $image_info = ImageInfo($image);
+foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n" if $debug; }
+foreach (split(",",$$image_info{"Description"})) {
+    # ignore blank before and after
+    s/^\s+//;
+    s/\s+$//;
+    # ignore this entry if not beginning with # 
+    next unless s/^#//;
+    # otherwise register it
+    print "Register tag $_\n" if $debug;
+    push(@image_tags, $_);
+
+}
+
 # Now set up API contact
 my $tumblr = WWW::Tumblr->new(
     consumer_key => $tumblr_consumer_key,
@@ -133,11 +156,12 @@ my $blog = $tumblr->blog($tumblr_base_url);
 die "Post image require a workaround, see the script code, you need to add more variables to your tumblrrc" unless $workaround_login and $workaround_dir and $workaround_url;
 
 system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir"); 
-($blog->post(type => 'photo', source => "$workaround_url/$image") or die $blog->error->code) unless $debug;
+($blog->post(type => 'photo', 
+	     tags => join(',', @image_tags),
+	     source => "$workaround_url/$image") 
+ or die $blog->error->code)
+    unless $debug;
 system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
-
-
-exit;
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
@@ -148,6 +172,5 @@ print "mv $queue/$image $over/$today-$image\n" if $debug;
 system($git, "add", $over);
 system($git, "commit", "--quiet", "-am", "Posted by post-image-to-tumblr.pl");
 system($git, "push", "--quiet");
-
 
 # EOF
