@@ -110,7 +110,7 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
-($blog->write(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
+($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
 #($blog->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
 
 #print "$image ===> $url\n" if $debug;
