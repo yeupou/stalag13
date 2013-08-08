@@ -113,7 +113,7 @@ my $blog = $tumblr->blog($tumblr_base_url);
 ($blog->write(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
 #($blog->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
 
-print "$image ===> $url\n" if $debug;
+#print "$image ===> $url\n" if $debug;
 
 exit;
 
