@@ -118,8 +118,7 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
-# Extract Description tag from image metadata (XMP because applies to
-# PNG, GIF, etc)
+# Extract Description tag from image metadata (XMP)
 # Assume it's a comma separated list.
 my @image_tags;
 my $image_info = ImageInfo($image);
@@ -133,7 +132,19 @@ foreach (split(",",$$image_info{"Description"})) {
     # otherwise register it
     print "Register tag $_\n" if $debug;
     push(@image_tags, $_);
-
+}
+if (scalar(@image_tags) < 1) {
+    # no tag yet? Maybe it is a GIF with tag stored in Comment field
+    foreach (split(",",$$image_info{"Comment"})) {
+	# ignore blank before and after
+	s/^\s+//;
+	s/\s+$//;
+	# ignore this entry if not beginning with # 
+	next unless s/^#//;
+	# otherwise register it
+	print "Register tag $_\n" if $debug;
+	push(@image_tags, $_);
+    }
 }
 
 # Now set up API contact
