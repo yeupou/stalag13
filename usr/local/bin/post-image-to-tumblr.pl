@@ -55,7 +55,7 @@ use File::HomeDir;
 use File::Copy;
 use WWW::Tumblr;
 use POSIX qw(strftime);
-use CGI::Utils;
+use CGI::Util;
 
 my $debug = 0;
 my $git = "/usr/bin/git";
