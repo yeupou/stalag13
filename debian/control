@@ -6,7 +6,7 @@ Standards-Version: 3.5.9.0
 
 Package: stalag13-utils
 Architecture: all
-Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, lltag, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libdate-calc-perl, libcalendar-simple-perl, libtimedate-perl, debfoster, localepurge, etckeeper, ntp, mutt, liblwp-authen-oauth-perl
+Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, lltag, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libdate-calc-perl, libcalendar-simple-perl, libtimedate-perl, debfoster, localepurge, etckeeper, ntp, liblwp-authen-oauth-perl, libmoose-perl
 Conflicts: ntpdate, darius-admin, darius-misc, darius-sound, darius-text
 Description: Stuff useful on stalag13 computers.
  .
