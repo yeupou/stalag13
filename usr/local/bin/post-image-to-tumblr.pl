@@ -41,6 +41,9 @@
 #
 # This script was designed to run as a daily cronjob.
 #
+# WORKAROUND: please check in the code below, the usual post with data is
+# broken at this point.
+#
 # FACULTATIVE:
 # 
 # To randomize feed, you may just run, in queue/ the following:
@@ -54,7 +57,7 @@ use locale;
 use File::HomeDir;
 use File::Copy;
 use POSIX qw(strftime);
-use URI::Escape;
+use URI::Encode qw(uri_encode);
 use WWW::Tumblr;
 
 my $debug = 0;
@@ -66,6 +69,7 @@ $git = "/bin/echo" if $debug;
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
 my $content = File::HomeDir->my_home()."/tmp/tumblr";
 my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
+my ($workaround_login, $workaround_dir, $workaround_url);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
 while(<RCFILE>){
@@ -75,6 +79,11 @@ while(<RCFILE>){
     $tumblr_token = $1 if /^token\s?=\s?(\S*)\s*$/i;
     $tumblr_token_secret = $1 if /^token_secret\s?=\s?(\S*)\s*$/i;
     $content = $1 if /^content\s?=\s?(.*)$/i;
+
+    # workaround, see below
+    $workaround_login = $1 if /^workaround_login\s?=\s?(.*)$/i;
+    $workaround_dir = $1 if /^workaround_dir\s?=\s?(.*)$/i;
+    $workaround_url = $1 if /^workaround_url\s?=\s?(.*)$/i;
 }
 close(RCFILE);
 die "Unable to determine oauth info required by Tumblr API v2 (found: base_url = $tumblr_base_url ; consumer_key = $tumblr_consumer_key ; consumer_secret = $tumblr_consumer_secret ; token = $tumblr_token ; token_secret = $tumblr_token_secret) after reading $rc, exiting" unless $tumblr_consumer_key and $tumblr_consumer_secret and $tumblr_token and $tumblr_token_secret;
@@ -104,10 +113,7 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
-open(IMAGE, "< $image");
-my $image_data = do { local $/; <IMAGE> };
-close(IMAGE);
-
+# Now set up API contact
 my $tumblr = WWW::Tumblr->new(
     consumer_key => $tumblr_consumer_key,
     secret_key =>$tumblr_consumer_secret,
@@ -115,9 +121,21 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
+
+# And post the image
 #BASIC POST TEST#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
-#($blog->post(type => 'photo', source =>  'http://mx2.attique.org/tada/'.$image) or die $blog->error->code) unless $debug;
-($blog->post(type => 'photo', tags => 'debug', data => uri_escape($image_data)) or die $blog->error->code) unless $debug;
+# So far, sending image data fails. Not sure why. WORKAROUND: 
+#  we send the image to a secondary server, use "source" instead of "data"
+#  and cleanup. This require more configuration variables in ~/.tumblrrc
+#     workaround_login=user\@server
+#     workaround_dir=/path/to/www
+#     workaround_url=http://server/public
+die "Post image require a workaround, see the script code, you need to add more variables to your tumblrrc" unless $workaround_login and $workaround_dir and $workaround_url;
+
+system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir"); 
+($blog->post(type => 'photo', source => "$workaround_url/$image") or die $blog->error->code) unless $debug;
+system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
+
 
 exit;
 
