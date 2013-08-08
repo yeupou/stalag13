@@ -1,11 +1,8 @@
-stalag13-utils (3.67-20130808) unstable; urgency=low
+stalag13-utils (3.68-20130808) unstable; urgency=low
  
-  * Update to WWW::Tumblr that now support API v2. Now also extract XMP metadata from image to set up #tags.
-    M debian/control
-    M Makefile
-    M usr/local/bin/post-image-to-tumblr.pl
+  * Update to WWW::Tumblr that now support API v2. Now also extract XMP metadata from image to set up #tags
  
- -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 08 Aug 2013 16:55:47 +0200
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 08 Aug 2013 16:57:19 +0200
  
 stalag13-utils (3.66+36-20130808) unstable; urgency=low
  

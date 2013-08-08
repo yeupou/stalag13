@@ -65,7 +65,7 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
-my $debug = 1;
+my $debug = 0;
 my $git = "/usr/bin/git";
 $git = "/bin/echo" if $debug;
 
