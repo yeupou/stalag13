@@ -103,6 +103,12 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
+open(IMAGE, "< $image");
+my $image_data = do { local $/; <IMAGE> };
+close(IMAGE);
+
+print $image_data;
+
 my $tumblr = WWW::Tumblr->new(
     consumer_key => $tumblr_consumer_key,
     secret_key =>$tumblr_consumer_secret,
