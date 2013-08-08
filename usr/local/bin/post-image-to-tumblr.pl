@@ -118,7 +118,7 @@ my $blog = $tumblr->blog($tumblr_base_url);
 #SIMPLE TEST#($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
 #($blog->post(type => 'photo', source =>  'http://mx2.attique.org/tada/'.$image) or die $blog->error->code) unless $debug;
 ($blog->post(type => 'photo', tags => 'debug', 'data[]' => uri_encode($image_data)) or die $blog->error->code) unless $debug;
-
+($blog->post(type => 'photo', tags => 'debug', 'data[]' => uri_encode($image_data)) && print $blog->error->code;
 
 exit;
 
