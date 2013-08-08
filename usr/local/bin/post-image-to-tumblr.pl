@@ -18,29 +18,42 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 # 
-# Will go into $CONTENT where two subdirs exists: queue and over
+# Will go into $CONTENT (default: ~/tmp/tumblr) where two subdirs exists: 
+#    queue and over
 # It will take the first file in queue (pulled with git) and post it to
-# tumblr using WWW::Mechanize 
+# tumblr using WWW::Tumblr from  https://github.com/damog/www-tumblr
 # It will always keep a pool of 5 files in the queue, so if you had several
 # files from one same source at once, you'll still have enough files to
 # randomize it.
 #
-# To randomize feels, you may just run, in queue/ the
-# following:
+# It requires your tumblr OAuth to be setup, for instance as described
+# in http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl using
+# the counterpart script post-image-to-tumblr-init-auth.pl
+#
+# ~/.tumblrrc MUST be created containing:
+#     base_url = BLOGNAME.tumblr.com
+#     consumer_key=
+#     consumer_secret= 
+#     token=
+#     token_secret=
+# Optionally content= may be set, default being ~/tmp/tumblr.
+# All these settings are defined in the previous step.
+#
+# This script was designed to run as a daily cronjob.
+#
+# FACULTATIVE:
+# 
+# To randomize feed, you may just run, in queue/ the following:
 #   for i in *; do mv "$i" `mktemp --dry-run --tmpdir=. -t XXXXXXX$i`; done
 #
-#   - content is by default ~/tmp/tumblr
-#   - ~/.tumblrrc must be set containing consumer_key= consumer_secret= 
-#   token= and token_secret=
-#   eventualy content= as path
-#
-# This was designed to be set up as a daily cronjob
+# To clean up alphabetically order stuff, you may also run the following: 
+#   count=0 && for i in *; do count=`expr $count + 1` && case $count in [0-5]) prefix=A;; [6-9]) prefix=C;; 1[0-5]) prefix=E;; 1[5-9]) prefix=G;; 2[0-9]) prefix=I;; 3[0-9]) prefix=K;; 4[0-9]) prefix=M;; 5[0-9]) prefix=O;; *) prefix=Q;; esac && mv $i $prefix`echo $i | tr A-Z a-z`; done 
 
 use strict;
 use locale;
 use File::HomeDir;
 use File::Copy;
-use Tumblr;
+use WWW::Tumblr;
 use POSIX qw(strftime);
 
 my $debug = 0;
@@ -90,32 +103,19 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
-#CURRENTLY BROKEN# Post to tumblr using https://github.com/damog/www-tumblr
-##my $tumblr = WWW::Tumblr->new;
-#($tumblr->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
-## ALTERNATIVE WORKAROUND, WAITING FOR WWW::Tumblr to get
-## updated http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
-## http://txlab.wordpress.com/2011/09/03/using-tumblr-api-v2-from-perl/
-use LWP::Authen::OAuth;
-my $ua = LWP::Authen::OAuth->new(
-     oauth_consumer_key => $tumblr_consumer_key,
-     oauth_consumer_secret =>$tumblr_consumer_secret,
-     oauth_token =>  $tumblr_token,
-     oauth_token_secret => $tumblr_token_secret,
+my $tumblr = WWW::Tumblr->new(
+    consumer_key => $tumblr_consumer_key,
+    secret_key =>$tumblr_consumer_secret,
+    token =>  $tumblr_token,
+    token_secret => $tumblr_token_secret,
     );
-my $url = 'http://api.tumblr.com/v2/blog/'.$tumblr_base_url.'/post';
-# not able to use the data post option (numerous errors, about file encoding
-# and other things), temporarily post the image to be imported with the source
-# option
-system("scp", "-q", "$queue/$image", "yeupou\@mx2:/var/www/tada/"); 
-$ua->post($url, [
-	      type => 'photo',
-	      source => 'http://mx2.attique.org/tada/'.$image,
-	  ])->as_string;
-system("ssh", "yeupou\@mx2", "rm -f /var/www/tada/*");
-## ALTERNATIVE WORKAROUND END
+my $blog = $tumblr->blog($tumblr_base_url);
+($blog->write(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
+#($blog->write(type => 'photo', data => $image) or die $tumblr->errstr) unless $debug;
 
 print "$image ===> $url\n" if $debug;
+
+exit;
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
