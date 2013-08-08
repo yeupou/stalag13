@@ -117,7 +117,7 @@ my $tumblr = WWW::Tumblr->new(
 my $blog = $tumblr->blog($tumblr_base_url);
 ($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code) if $debug;
 #($blog->post(type => 'photo', source =>  'http://mx2.attique.org/tada/'.$image) or die $blog->error->code) unless $debug;
-($blog->post(type => 'photo', tags => 'debug', uri_encode('data[0]' => $image_data)) or die $blog->error->code) unless $debug;
+($blog->post(type => 'photo', tags => 'debug', data => uri_encode('data[0]' => $image_data)) or die $blog->error->code) unless $debug;
 
 exit;
 
