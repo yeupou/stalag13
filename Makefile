@@ -10,31 +10,40 @@ WHOAMI = $(shell whoami)
 
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
-	for content in etc/* usr/* var/* ; do \
-		if [ -d $$content ]; then \
-			for subcontent in $$content/* ; do \
-				if [ -d $$subcontent ]; then \
-					for subsubcontent in $$subcontent/* ; do \
-						if [ -d $$subsubcontent ]; then \
-							for subsubsubcontent in $$subsubcontent/* ; do \
-								mkdir -p $(PREFIX)`dirname $$subsubsubcontent` ; \
-								install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
-							done \
-						elif [ -e $$subsubcontent ]; then \
-							mkdir -p $(PREFIX)`dirname $$subsubcontent` ; \
-							install $$subsubcontent $(PREFIX)$$subsubcontent ; \
-						fi \
-					done \
-				elif [ -e $$subcontent ]; then \
-					mkdir -p $(PREFIX)`dirname $$subcontent` ; \
-					install $$subcontent $(PREFIX)$$subcontent; \
-				fi \
-			done \
-		elif [ -e $$content ]; then \
-			mkdir -p $(PREFIX)`dirname $$content` ; \
-			install $$content $(PREFIX)$$content; \
-		fi \
+	@echo "  create directories"
+	for content in  `find etc/* usr/* -type d -print`; do \
+		mkdir -p $(PREFIX)$$content ; \
 	done
+	@echo "  install files"	
+	for content in  `find etc/* usr/* ! -type d -print`; do \
+		install $$content $(PREFIX)$$content ; \
+	done
+	# for content in etc/* usr/* var/* ; do \
+	# 	if [ -d $$content ]; then \
+	# 		for subcontent in $$content/* ; do \
+	# 			if [ -d $$subcontent ]; then \
+	# 				for subsubcontent in $$subcontent/* ; do \
+	# 					if [ -d $$subsubcontent ]; then \
+	# 						for subsubsubcontent in $$subsubcontent/* ; do \
+	# 							mkdir -p $(PREFIX)`dirname $$subsubsubcontent` ; \
+	# 							install $$subsubsubcontent $(PREFIX)$$subsubsubcontent ; \
+	# 						done \
+	# 					elif [ -e $$subsubcontent ]; then \
+	# 						mkdir -p $(PREFIX)`dirname $$subsubcontent` ; \
+	# 						install $$subsubcontent $(PREFIX)$$subsubcontent ; \
+	# 					fi \
+	# 				done \
+	# 			elif [ -e $$subcontent ]; then \
+	# 				mkdir -p $(PREFIX)`dirname $$subcontent` ; \
+	# 				install $$subcontent $(PREFIX)$$subcontent; \
+	# 			fi \
+	# 		done \
+	# 	elif [ -e $$content ]; then \
+	# 		mkdir -p $(PREFIX)`dirname $$content` ; \
+	# 		install $$content $(PREFIX)$$content; \
+	# 	fi \
+	# done
+	@echo "  adding useful symlinks"	
 	for content in $(PREFIX)usr/local/bin/* ; do \
 		cd $(PREFIX)usr/local/bin/ && if [ `basename $$content | grep -vc stalag13` == 1 ]; then ln -fs /usr/local/bin/`basename $$content` $(PREFIX)usr/local/bin/`basename $$content | sed s/\\.[^.]*$$//g`; fi ; \
 	done
