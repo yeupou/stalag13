@@ -110,8 +110,10 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
-#TEST TEXT($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
-($blog->post(type => 'photo', data => $image) or die $blog->error->code) unless $debug;
+#SIMPLE TEST#($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
+system("scp", "-q", "$queue/$image", "yeupou\@mx2:/var/www/tada/"); 
+($blog->post(type => 'photo', source =>  'http://mx2.attique.org/tada/'.$image) or die $blog->error->code) unless $debug;
+system("ssh", "yeupou\@mx2", "rm -f /var/www/tada/*");
 
 exit;
 
