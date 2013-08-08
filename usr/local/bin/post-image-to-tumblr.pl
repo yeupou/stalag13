@@ -111,7 +111,7 @@ my $tumblr = WWW::Tumblr->new(
     );
 my $blog = $tumblr->blog($tumblr_base_url);
 #TEST TEXT($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
-($blog->post(type => 'photo', source => $image) or die $blog->error->code) unless $debug;
+($blog->post(type => 'photo', data => $image) or die $blog->error->code) unless $debug;
 
 exit;
 
