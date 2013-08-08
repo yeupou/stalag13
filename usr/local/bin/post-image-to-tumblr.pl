@@ -65,7 +65,7 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
-my $debug = 0;
+my $debug = 1;
 my $git = "/usr/bin/git";
 $git = "/bin/echo" if $debug;
 
@@ -150,7 +150,7 @@ my $blog = $tumblr->blog($tumblr_base_url);
 # So far, sending image data fails. Not sure why. WORKAROUND: 
 #  we send the image to a secondary server, use "source" instead of "data"
 #  and cleanup. This require more configuration variables in ~/.tumblrrc
-#     workaround_login=user\@server
+#     workaround_login=user@server
 #     workaround_dir=/path/to/www
 #     workaround_url=http://server/public
 die "Post image require a workaround, see the script code, you need to add more variables to your tumblrrc" unless $workaround_login and $workaround_dir and $workaround_url;
