@@ -103,7 +103,6 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
-system("scp", "-q", "$queue/$image", "yeupou\@mx2:/var/www/tada/"); 
 my $tumblr = WWW::Tumblr->new(
     consumer_key => $tumblr_consumer_key,
     secret_key =>$tumblr_consumer_secret,
@@ -111,10 +110,8 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
-#SIMPLE TEST#
-($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
+#SIMPLE TEST#($blog->post(type => 'text', body => 'test', title => 'test') or die $blog->error->code) unless $debug;
 ($blog->post(type => 'photo', source =>  'http://mx2.attique.org/tada/'.$image) or die $blog->error->code) unless $debug;
-system("ssh", "yeupou\@mx2", "rm -f /var/www/tada/*");
 
 exit;
 
