@@ -1,3 +1,9 @@
+stalag13-utils (3.71-20130809) unstable; urgency=low
+ 
+  * Handle unlimited list of metadata fields (but take only into account one as
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 09 Aug 2013 11:46:05 +0200
+ 
 stalag13-utils (3.70-20130809) unstable; urgency=low
  
   * Handle unlimited list of metadata fields (but take only into account one as soon as #tags are found)
