@@ -65,10 +65,10 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
-my $debug = 0;
+my $debug = 1;
 my $git = "/usr/bin/git";
 $git = "/bin/echo" if $debug;
-
+my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserComment");
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
@@ -123,26 +123,19 @@ for (sort(@images)) { $image = $_; last; }
 my @image_tags;
 my $image_info = ImageInfo($image);
 foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n" if $debug; }
-foreach (split(",",$$image_info{"Description"})) {
-    # ignore blank before and after
-    s/^\s+//;
-    s/\s+$//;
-    # ignore this entry if not beginning with # 
-    next unless s/^#//;
-    # otherwise register it
-    print "Register tag $_\n" if $debug;
-    push(@image_tags, $_);
-}
-if (scalar(@image_tags) < 1) {
-    # no tag yet? Maybe it is a GIF with tag stored in Comment field
-    foreach (split(",",$$image_info{"Comment"})) {
+foreach my $field (@metadata_fields) {
+    # Only tag into account one field, the first found with #tags
+    # because they are likely to be duplicates
+    last if (scalar(@image_tags) > 0);
+
+    foreach (split(",",$$image_info{$field})) {
 	# ignore blank before and after
 	s/^\s+//;
 	s/\s+$//;
 	# ignore this entry if not beginning with # 
 	next unless s/^#//;
 	# otherwise register it
-	print "Register tag $_\n" if $debug;
+	print "Register ($field) tag: $_\n" if $debug;
 	push(@image_tags, $_);
     }
 }
@@ -170,7 +163,7 @@ system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir");
 ($blog->post(type => 'photo', 
 	     tags => join(',', @image_tags),
 	     source => "$workaround_url/$image") 
- or die $blog->error->code)
+ or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags))
     unless $debug;
 system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
 
