@@ -65,9 +65,8 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
-my $debug = 1;
+my $debug = 0;
 my $git = "/usr/bin/git";
-$git = "/bin/echo" if $debug;
 my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserComment");
 
 # First thing first, user read config
@@ -85,6 +84,9 @@ while(<RCFILE>){
     $tumblr_token_secret = $1 if /^token_secret\s?=\s?(\S*)\s*$/i;
     $content = $1 if /^content\s?=\s?(.*)$/i;
 
+    # handle debug
+    $debug = 1 if /^debug$/i;
+
     # workaround, see below
     $workaround_login = $1 if /^workaround_login\s?=\s?(.*)$/i;
     $workaround_dir = $1 if /^workaround_dir\s?=\s?(.*)$/i;
@@ -94,6 +96,7 @@ close(RCFILE);
 die "Unable to determine oauth info required by Tumblr API v2 (found: base_url = $tumblr_base_url ; consumer_key = $tumblr_consumer_key ; consumer_secret = $tumblr_consumer_secret ; token = $tumblr_token ; token_secret = $tumblr_token_secret) after reading $rc, exiting" unless $tumblr_consumer_key and $tumblr_consumer_secret and $tumblr_token and $tumblr_token_secret;
 my $queue = $content."/queue";
 my $over = $content."/over";
+$git = "/bin/echo" if $debug;
 
 # Enter working directory
 chdir($content) or die "Unable to enter $content, exiting";
