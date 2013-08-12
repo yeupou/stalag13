@@ -165,15 +165,13 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
     ($blog->post(type => 'photo', 
 		 tags => join(',', @image_tags),
 		 source => "$workaround_url/$image") 
-     or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags))
-	unless $debug;
+     or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags));
     system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
 } else {
     ($blog->post(type => 'photo', 
 		 tags => join(',', @image_tags),
 		 data => ["/home/klink/tmp/tumblr/queue/$image"]) 
-     or die $blog->error->code." while posting $image with tags ".join(',', @image_tags))
-	unless $debug;
+     or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
 }
 
 # If we get here, we can assume everything went well. So move the
