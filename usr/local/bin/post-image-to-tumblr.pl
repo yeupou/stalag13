@@ -62,7 +62,7 @@ use File::HomeDir;
 use File::Copy;
 use POSIX qw(strftime);
 use URI::Encode qw(uri_encode);
-use Image::ExifTool qw(:Public);
+use Image::ExifTool;
 use WWW::Tumblr;
 
 my $git = "/usr/bin/git";
@@ -124,13 +124,15 @@ for (sort(@images)) { $image = $_; last; }
 # Extract Description tag from image metadata (XMP)
 # Assume it's a comma separated list.
 my @image_tags;
-my $image_info = ImageInfo($image);
+my $exifTool = new Image::ExifTool;
+my $image_info = $exifTool->ImageInfo($image);
+my $image_info_kept;
 foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n" if $debug; }
 foreach my $field (@metadata_fields) {
-    # Only tag into account one field, the first found with #tags
-    # because they are likely to be duplicates
-    last if (scalar(@image_tags) > 0);
+    # Remember which metadata field was useful
+    $image_info_kept = $field;
 
+    # Assume this line is a comma-separated list
     foreach (split(",",$$image_info{$field})) {
 	# ignore blank before and after
 	s/^\s+//;
@@ -141,7 +143,22 @@ foreach my $field (@metadata_fields) {
 	print "Register ($field) tag: $_\n" if $debug;
 	push(@image_tags, $_);
     }
+    
+    # if we found some valid #tags, dont check any other field
+    last if (scalar(@image_tags) > 0);
 }
+
+# Reset image tags: tumblr gives out meaningless error 400 for some image
+# depending on it's meta data. So we're forced to remove metadata
+print "Reset $image metada except field $image_info_kept set to ".$$image_info{$image_info_kept}."\n" if $debug;
+$exifTool->SetNewValue('*');
+$exifTool->SetNewValue($image_info_kept, $$image_info{$image_info_kept});
+$exifTool->WriteInfo($image);
+if ($debug) {
+    $image_info = $exifTool->ImageInfo($image);
+    foreach (sort keys %$image_info) { print "Kept tag $_ => $$image_info{$_}\n" if $debug; }
+}
+
 
 # Now set up API contact
 my $tumblr = WWW::Tumblr->new(
@@ -151,7 +168,6 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
-
 # And post the image
 #BASIC POST TEST#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
 # So far, sending image data fails. Not sure why. WORKAROUND: 
@@ -170,7 +186,7 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
 } else {
     ($blog->post(type => 'photo', 
 		 tags => join(',', @image_tags),
-		 data => ["/home/klink/tmp/tumblr/queue/$image"]) 
+		 data => ["$image"]) 
      or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
 }
 
