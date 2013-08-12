@@ -1,3 +1,9 @@
+stalag13-utils (3.75-20130812) unstable; urgency=low
+ 
+  * Cleanup/update comments
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 12 Aug 2013 15:06:45 +0200
+ 
 stalag13-utils (3.74-20130812) unstable; urgency=low
  
   * Now reset image metadata, to avoid odd 400 errors from Tumblr in some cases.

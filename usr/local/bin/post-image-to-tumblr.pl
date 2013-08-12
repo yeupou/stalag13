@@ -45,8 +45,8 @@
 #
 # This script was designed to run as a daily cronjob.
 #
-# WORKAROUND: please check in the code below, the usual post with data is
-# broken at this point.
+# If you get error 400 while posting, please check in the code below for
+# the workaround using "source" and an intermediate webserver to post image.
 #
 # FACULTATIVE:
 # 
@@ -170,9 +170,11 @@ my $tumblr = WWW::Tumblr->new(
 my $blog = $tumblr->blog($tumblr_base_url);
 # And post the image
 #BASIC POST TEST#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
-# So far, sending image data fails. Not sure why. WORKAROUND: 
-#  we send the image to a secondary server, use "source" instead of "data"
+# 
+#  If sending image data fails with error 400, here's a WORKAROUND: 
+#  we scp the image to a secondary server, use "source" instead of "data"
 #  and cleanup. This require more configuration variables in ~/.tumblrrc
+#  and, obviously, a webserver accessible via SSH.
 #     workaround_login=user@server
 #     workaround_dir=/path/to/www
 #     workaround_url=http://server/public
