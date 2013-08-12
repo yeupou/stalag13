@@ -65,9 +65,9 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool qw(:Public);
 use WWW::Tumblr;
 
-my $debug = 0;
 my $git = "/usr/bin/git";
 my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserComment");
+my $debug = 0;
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
@@ -160,15 +160,21 @@ my $blog = $tumblr->blog($tumblr_base_url);
 #     workaround_login=user@server
 #     workaround_dir=/path/to/www
 #     workaround_url=http://server/public
-die "Post image require a workaround, see the script code, you need to add more variables to your tumblrrc" unless $workaround_login and $workaround_dir and $workaround_url;
-
-system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir"); 
-($blog->post(type => 'photo', 
-	     tags => join(',', @image_tags),
-	     source => "$workaround_url/$image") 
- or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags))
-    unless $debug;
-system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
+if ($workaround_login and $workaround_dir and $workaround_url) {
+    system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir");
+    ($blog->post(type => 'photo', 
+		 tags => join(',', @image_tags),
+		 source => "$workaround_url/$image") 
+     or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags))
+	unless $debug;
+    system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
+} else {
+    ($blog->post(type => 'photo', 
+		 tags => join(',', @image_tags),
+		 data => ["/home/klink/tmp/tumblr/queue/$image"]) 
+     or die $blog->error->code." while posting $image with tags ".join(',', @image_tags))
+	unless $debug;
+}
 
 # If we get here, we can assume everything went well. So move the
 # file in the over directory and commit to git
