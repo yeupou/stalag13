@@ -92,7 +92,7 @@ while(<RCFILE>){
     # handle options
     $content = $1 if /^content\s?=\s?(.*)$/i;
     $debug = 1 if /^debug$/i;
-    $tags_required = 1 if /^tags_required$/i;
+    $tags_required = 1 if /^tags?_required$/i;
 
     # workaround, see below
     $workaround_login = $1 if /^workaround_login\s?=\s?(.*)$/i;
