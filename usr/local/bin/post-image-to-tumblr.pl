@@ -18,15 +18,16 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 # 
-# Will go into $CONTENT (default: ~/tmp/tumblr) where two subdirs exists: 
-#    queue and over
-# It will take the first file in queue (pulled with git) and post it to
-# tumblr using WWW::Tumblr from  https://github.com/damog/www-tumblr
+# Will go into $content (default: ~/tmp/tumblr) where two subdirs exists: 
+#    queue/ and over/
+# It will take the first file in queue/ (pulled with git) and post it to
+# tumblr using WWW::Tumblr from https://github.com/damog/www-tumblr
 # 
-# If the image metadata (XMP) contain a legend (Description) with strings
-# beginning with # then it will assume these are tags for tumblr.
+# If the image metadata contains a legend field (Description, Comment, etc)
+# with strings beginning with # then it will assume these are tags for tumblr.
+# The image metadata will be rewritten and only this specific field kept.
 #
-# It will always keep a pool of 5 files in the queue, so if you had several
+# It will always keep a pool of 5 files in queue/, so if you had several
 # files from one same source at once, you'll still have enough files to
 # randomize it.
 #
@@ -34,19 +35,21 @@
 # in http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl using
 # the counterpart script post-image-to-tumblr-init-auth.pl
 #
-# ~/.tumblrrc MUST be created containing:
+# ~/.tumblrrc MUST be created containing at least:
 #     base_url = BLOGNAME.tumblr.com
 #     consumer_key=
 #     consumer_secret= 
 #     token=
 #     token_secret=
-# Optionally content= may be set, default being ~/tmp/tumblr.
-# All these settings are defined in the previous step.
+# It could also take the following options:
+#     content= (default being ~/tmp/tumblr)
+#     debug
+#     tags_required
 #
 # This script was designed to run as a daily cronjob.
 #
-# If you get error 400 while posting, please check in the code below for
-# the workaround using "source" and an intermediate webserver to post image.
+# (If you get error 400 while posting, please check in the code below for
+# the workaround using "source" and an intermediate webserver to post image)
 #
 # FACULTATIVE:
 # 
@@ -68,6 +71,8 @@ use WWW::Tumblr;
 my $git = "/usr/bin/git";
 my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserComment");
 my $debug = 0;
+my $tags_required = 0;
+
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
@@ -77,15 +82,17 @@ my ($workaround_login, $workaround_dir, $workaround_url);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
 while(<RCFILE>){
+    # required oauth
     $tumblr_base_url = $1 if /^base_url\s?=\s?(\S*)\s*$/i;
     $tumblr_consumer_key = $1 if /^consumer_key\s?=\s?(\S*)\s*$/i;
     $tumblr_consumer_secret = $1 if /^consumer_secret\s?=\s?(\S*)\s*$/i;
     $tumblr_token = $1 if /^token\s?=\s?(\S*)\s*$/i;
     $tumblr_token_secret = $1 if /^token_secret\s?=\s?(\S*)\s*$/i;
-    $content = $1 if /^content\s?=\s?(.*)$/i;
 
-    # handle debug
+    # handle options
+    $content = $1 if /^content\s?=\s?(.*)$/i;
     $debug = 1 if /^debug$/i;
+    $tags_required = 1 if /^tags_required$/i;
 
     # workaround, see below
     $workaround_login = $1 if /^workaround_login\s?=\s?(.*)$/i;
@@ -108,7 +115,7 @@ system($git, "pull", "--quiet");
 chdir($queue) or die "Unable to enter $queue, exiting";
 
 # Select an image
-# If none found, silently exit
+# If none found, silently exit, as an empty queue/ is not an issue.
 opendir(IMAGES, $queue);
 my (@images, $image);
 while (defined(my $image = readdir(IMAGES))) {
@@ -121,13 +128,12 @@ closedir(IMAGES);
 exit if scalar(@images) < 6;
 for (sort(@images)) { $image = $_; last; }
 
-# Extract Description tag from image metadata (XMP)
-# Assume it's a comma separated list.
+# Extract tumblr tag from the selected image metadata
 my @image_tags;
 my $exifTool = new Image::ExifTool;
 my $image_info = $exifTool->ImageInfo($image);
 my $image_info_kept;
-foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n" if $debug; }
+if ($debug) { foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n"; }} 
 foreach my $field (@metadata_fields) {
     # Remember which metadata field was useful
     $image_info_kept = $field;
@@ -148,6 +154,9 @@ foreach my $field (@metadata_fields) {
     last if (scalar(@image_tags) > 0);
 }
 
+# Exit if no tag found and nonetheless required
+die "No tag found for $image, exiting" if (scalar(@image_tags) < 1) and $tags_required;
+
 # Reset image tags: tumblr gives out meaningless error 400 for some image
 # depending on it's meta data. So we're forced to remove metadata
 print "Reset $image metada except field $image_info_kept set to ".$$image_info{$image_info_kept}."\n" if $debug;
@@ -156,9 +165,8 @@ $exifTool->SetNewValue($image_info_kept, $$image_info{$image_info_kept});
 $exifTool->WriteInfo($image);
 if ($debug) {
     $image_info = $exifTool->ImageInfo($image);
-    foreach (sort keys %$image_info) { print "Kept tag $_ => $$image_info{$_}\n" if $debug; }
+    foreach (sort keys %$image_info) { print "Kept tag $_ => $$image_info{$_}\n"; }
 }
-
 
 # Now set up API contact
 my $tumblr = WWW::Tumblr->new(
@@ -168,17 +176,22 @@ my $tumblr = WWW::Tumblr->new(
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
+
 # And post the image
-#BASIC POST TEST#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
+#
+# BASIC POST TEST
+#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
 # 
 #  If sending image data fails with error 400, here's a WORKAROUND: 
-#  we scp the image to a secondary server, use "source" instead of "data"
-#  and cleanup. This require more configuration variables in ~/.tumblrrc
+#  we scp the image to a secondary/middleman http+ssh server and then post 
+#  using "source" (url) instead of "data" (encoded content).
+#  This require more configuration variables in ~/.tumblrrc
 #  and, obviously, a webserver accessible via SSH.
 #     workaround_login=user@server
 #     workaround_dir=/path/to/www
 #     workaround_url=http://server/public
 if ($workaround_login and $workaround_dir and $workaround_url) {
+    # Post with middleman server workaround
     system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir");
     ($blog->post(type => 'photo', 
 		 tags => join(',', @image_tags),
@@ -186,14 +199,15 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
      or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags));
     system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
 } else {
+    # Direct post 
     ($blog->post(type => 'photo', 
 		 tags => join(',', @image_tags),
 		 data => ["$image"]) 
      or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
 }
 
-# If we get here, we can assume everything went well. So move the
-# file in the over directory and commit to git
+# If we get here, we can assume everything went well. 
+# Move the file in over/ and commit to git
 chdir($content);
 my $today = strftime("%Y%m%d", localtime);
 move("$queue/$image", "$over/$today-$image") unless $debug;
