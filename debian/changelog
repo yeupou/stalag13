@@ -1,3 +1,9 @@
+stalag13-utils (3.76+1-20130911) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Wed, 11 Sep 2013 17:03:56 +0200
+ 
 stalag13-utils (3.76-20130821) unstable; urgency=low
  
   * Cleanup comments, add required_tags option
