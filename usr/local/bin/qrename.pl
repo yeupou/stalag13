@@ -29,6 +29,10 @@
 # practical in the end
 # The idea is to have order like CCC,CCG,CCK,CCN,CCP,CCS,CCW,CGC,CGG,...
 # with an extra 5 as conveniency at the end of the string.
+#
+# It will add --- after the prefix so it can be easily removed/updated
+# For example, you can remove it by running
+#    for file in *; do mv $file `echo $file | sed s/.*---//g`; done
 
 use strict;
 use Getopt::Long;
@@ -116,7 +120,7 @@ while(defined(my $file = glob('*'))){
     if ($file =~ /^(\d*|\w*)---(.*)$/) { $file_cleaned = $2; }
 
     print "$count $file -> $prefix$file_cleaned\n" if !$please_do or $verbose;
-    move($file, $prefix.$file) if $please_do;
+    move($file, $prefix.$file_cleaned) if $please_do;
 }
 
 print "(did nothing since --please-do was not set)\n" unless $please_do;
