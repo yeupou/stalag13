@@ -35,9 +35,10 @@ use strict;
 use Getopt::Long;
 use File::Copy qw(move);
 
+## Determines possible prefixes
 # List of chars valid to use in the prefix:
 # - avoid confusing Q/O I/l
-# - with 6 chars, we can go up to 200 entries  (and the rest will be
+# - with 6 chars, we can go up to ~200 entries  (and the rest will be
 #    like WWWdigits), you can add more chars if you want to handle much bigger
 #    queues
 my %chars = (1 => 'C',
@@ -47,6 +48,13 @@ my %chars = (1 => 'C',
 	     5 => 'T',
 	     6 => 'W');	
 my $chars_max = scalar keys %chars;
+my $queue_max_nondigits = ($chars_max * $chars_max * $chars_max);
+
+# If the queue is bigger than the max digits can provide, your queue will
+# get inconsistent with numbers like 998 along with 2998, instead of 0998
+# along with 2998. You need to increase the max digits limit for big queues
+# (yeah, so far, this script wont give you any warnings and will not compute
+# before hand the proper max digits - it can be improved)
 my $queue_max_digits = 3;
 
 
@@ -97,7 +105,7 @@ while(defined(my $file = glob('*'))){
 	$char3++;
     } else {
 	# otherwise add a three digit counter (or more, according to opts)
-	$char4 = sprintf("%0".$queue_max_digits."d",$count)."5";
+	$char4 = sprintf("%0".$queue_max_digits."d",($count-$queue_max_nondigits))."5";
 	$char3 = $chars_max;
     }
 
