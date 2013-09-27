@@ -35,13 +35,17 @@ use strict;
 use Getopt::Long;
 use File::Copy qw(move);
 
+# List of chars valid to use in the prefix:
+# - avoid confusing Q/O I/l
+# - with 6 chars, we can go up to 200 entries  (and the rest will be
+#    like WWWdigits), you can add more chars if you want to handle much bigger
+#    queues
 my %chars = (1 => 'C',
 	     2 => 'G',
 	     3 => 'K',
-	     4 => 'N',
-	     5 => 'P',
-	     6 => 'T',
-	     7 => 'W');	
+	     4 => 'P',
+	     5 => 'T',
+	     6 => 'W');	
 my $chars_max = scalar keys %chars;
 my $queue_max_digits = 3;
 
@@ -116,8 +120,6 @@ while(defined(my $file = glob('*'))){
     my $newfile = $prefix.lc($file);
     if (length($file) >= length($prefix.".ext")) {
 	$newfile = $prefix.lc(substr($file, length($prefix)));
-    } else {
-	print "damn! $file ".length($file)." >= ".length($prefix.".ext")." $prefix .ext\n";
     }
 
     print "$count $file -> $newfile\n" if !$please_do or $verbose;
