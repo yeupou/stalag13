@@ -69,7 +69,7 @@ eval {
 
 if ($help) {
     print STDERR <<EOF;
-Usage: $0 -d .
+Usage: $0
 
 Prefix files in the current directory with alphabetical characters
 to ease queue management.

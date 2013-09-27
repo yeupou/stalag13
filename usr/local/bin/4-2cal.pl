@@ -89,7 +89,6 @@ Usage: $0 MM/YYYY [OPTIONS]
        $0 MM YYYY [OPTIONS]
        $0 --month=MM --year=YYYY [OPTIONS]
     
-  General:
       --group=n              Group (default: $group)
       --html                 xHTML output (default if not running from a 
 			     term).
