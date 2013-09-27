@@ -37,13 +37,13 @@ use File::Copy qw(move);
 
 ## Determines possible prefixes
 # List of chars valid to use in the prefix:
-# - avoid confusing Q/O I/l
+# - avoid confusing Q/O I/l or K*3
 # - with 6 chars, we can go up to ~200 entries  (and the rest will be
 #    like WWWdigits), you can add more chars if you want to handle much bigger
 #    queues
 my %chars = (1 => 'C',
 	     2 => 'G',
-	     3 => 'K',
+	     3 => 'L',
 	     4 => 'P',
 	     5 => 'T',
 	     6 => 'W');	
