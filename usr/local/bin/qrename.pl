@@ -24,15 +24,12 @@
 # Problem is if you just order like 1,2,3,4,... it's trouble when you want to
 # insert files in the middle.
 # If you purposely skip num and order like 1,4,8,... you are forced to deal
-# with possible very very big number if there are many files in the queue
+# with possible very very big numbers if there are many files in the queue
 # and then it would be like 20001,20010,20020,... which may not be so 
 # practical in the end
 # The idea is to have order like CCC,CCG,CCK,CCN,CCP,CCS,CCW,CGC,CGG,...
-# with an extra 5 as conveniency at the end of the string.
-#
-# It will add --- after the prefix so it can be easily removed/updated
-# For example, you can remove it by running
-#    for file in *; do mv $file `echo $file | sed s/.*---//g`; done
+# with an extra 5 as conveniency at the end of the string so you can easily
+# add strings like CD or CCD as prefix to newfiles.
 
 use strict;
 use Getopt::Long;
@@ -62,14 +59,14 @@ if ($help) {
     print STDERR <<EOF;
 Usage: $0 -d .
 
-Prefix files files in the current directory with alphabetical characters
-to easily maintain a queue.
+Prefix files in the current directory with alphabetical characters
+to ease queue management.
 
   -h, --help                 display this help and exit
       --max-queue-digits N   defines how many digits to use for the numerical
                              counter used when out of alphabetical chars
 			     (default: $queue_max_digits)
-  -p, --please-do            Mandatory: the script will only print what it
+  -p, --please-do            MANDATORY: the script will only print what it
                              would do unless you use this option
   -v, --verbose              Self-explanatory.
 
@@ -112,15 +109,19 @@ while(defined(my $file = glob('*'))){
     }
 
 
-    # Now rename the file, removing prefix previously added, being not very
-    # strict about it to allow the user to mess with it. We ll assume that
-    # prefix is anything before ---.
-    my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4."---";
-    my $file_cleaned = $file;
-    if ($file =~ /^(\d*|\w*)---(.*)$/) { $file_cleaned = $2; }
+    # Now rename the file, either simply adding the prefix (if the full name
+    # is smaller than the prefix) or replacing the current prefix.
+    # Prefix will be upper case while the rest of the line will be lower case.
+    my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4;
+    my $newfile = $prefix.lc($file);
+    if (length($file) >= length($prefix.".ext")) {
+	$newfile = $prefix.lc(substr($file, length($prefix)));
+    } else {
+	print "damn! $file ".length($file)." >= ".length($prefix.".ext")." $prefix .ext\n";
+    }
 
-    print "$count $file -> $prefix$file_cleaned\n" if !$please_do or $verbose;
-    move($file, $prefix.$file_cleaned) if $please_do;
+    print "$count $file -> $newfile\n" if !$please_do or $verbose;
+    move($file, $newfile) if $please_do;
 }
 
 print "(did nothing since --please-do was not set)\n" unless $please_do;
