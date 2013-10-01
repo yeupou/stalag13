@@ -39,12 +39,12 @@ use Socket;
 
 my ($getopt, $save, $help);
 my $rcfile = "/etc/switch-accessrc";
-my $debuglog = 1;
 my $dev_main = "eth0";
 my $dev_backup = "wlan0";
 my @hosts = ("free.fr", "wikipedia.org", "gnu.org");
 my @hosts_override;
 my $delay = 4;
+my $debug = 0;               # internal
 my $multiplier = 60;         # internal
 my $acceptable_failures = 2; # internal
 
@@ -56,7 +56,7 @@ if (-r $rcfile) {
 	$dev_main = $1 if /^main-device\s?=\s?(\S*)\s*$/i;
 	$dev_backup = $1 if /^backup-device\s?=\s?(\S*)\s*$/i;
 	$delay = $1 if /^max-delay\s?=\s?(\S*)\s*$/i;
-	$debuglog = 1 if /^debuglog\s*/i;
+	$debug = 1 if /^debug\s*/i;
 	$multiplier = $1 if /^multiplier\s?=\s?(\S*)\s*/i;
 	@hosts_override = $1 if /^hosts\s?=\s?(\S*)\s*$/i;
     }
@@ -68,6 +68,7 @@ if (-r $rcfile) {
 eval {
     $getopt = GetOptions("help" => \$help,
 			 "multiplier=n" => \$multiplier,
+			 "debug" => \$debug,
 			 "delay=n" => \$delay,
 			 "hosts=s" => \@hosts_override,
 			 "main-device=s" => \$dev_main,
@@ -125,21 +126,21 @@ my $dev_backup_on :shared = 0;
 # exactly on delay
 async { 
     while (sleep(($delay * $multiplier))) {
-	syslog("info","DBG main $dev_main_linkon   back $dev_backup_on");
+	syslog("info","main-device: $dev_main_linkon, backup-device: $dev_backup_on") if $debug;
 	if ($dev_main_linkon) {
 	    # Main device on:
 	    # nothing to if backup is not up
 	    next unless $dev_backup_on;
 	    ####SHUTOOWN BACKUP
 	    syslog("info", "$dev_main is back on line, shutting down $dev_backup");
-	    $dev_backup = 0;
+	    $dev_backup_on = 0;
 	} else {
 	    # Main device off:
 	    # nothing to do if we already activated backup device
 	    next if $dev_backup_on;
 	    ###BRING UP BACKUP 
 	    syslog("info", "$dev_main is offline, bringing up $dev_backup");
-	    $dev_backup = 1;
+	    $dev_backup_on = 1;
 	}
     }
 };
@@ -174,7 +175,7 @@ while (sleep($multiplier)) {
 	    $hosts_ip{$target} = inet_ntoa(inet_aton($target)) 
 		unless exists($hosts_ip{$target});	    
 	    # log 
-	    syslog("info", "ping ok for $target_ip (".$hosts_linkon{$target}.")") if $debuglog;
+	    syslog("info", "ping ok for $target_ip (".$hosts_linkon{$target}.")") if $debug;
 	    # end the loop
 	    last;
 	} else {
