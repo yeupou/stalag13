@@ -132,12 +132,14 @@ async {
 	    next unless $dev_backup_on;
 	    ####SHUTOOWN BACKUP
 	    syslog("info", "$dev_main is back on line, shutting down $dev_backup");
+	    $dev_backup = 0;
 	} else {
 	    # Main device off:
 	    # nothing to do if we already activated backup device
 	    next if $dev_backup_on;
 	    ###BRING UP BACKUP 
 	    syslog("info", "$dev_main is offline, bringing up $dev_backup");
+	    $dev_backup = 1;
 	}
     }
 };
