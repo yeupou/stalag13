@@ -117,6 +117,7 @@ flock(LOCK, LOCK_EX | LOCK_NB) or die "Unable to lock. This daemon is already al
 # start logging activity from now on
 openlog("switch-access", "pid", "LOG_DAEMON");
 syslog("info", "started with $dev_main as main and $dev_backup as backup");
+syslog("info", "with additional debug info") if $debug;
 
 # assume the network is on when started
 my $dev_main_linkon :shared = 1;
@@ -158,6 +159,7 @@ my %hosts_linkon;
 
 # check every n seconds if we can connect
 while (sleep($multiplier)) {
+    syslog("info", "pinging hosts...") if $debug;
     # Ping domains one by one.
     foreach my $target (@hosts) {
 	# Try to access by IP if registered
@@ -191,9 +193,10 @@ while (sleep($multiplier)) {
 	}
 	
     }
-    
+   
     # One host up is enough.
     $dev_main_linkon = scalar(values %hosts_linkon);
+    syslog("info", "update main-device status to $dev_main_linkon") if $debug;
 }
 
 # EOF
