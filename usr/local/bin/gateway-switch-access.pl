@@ -45,7 +45,8 @@ my $dev_backup = "wlan0";
 my @hosts = ("free.fr", "wikipedia.org", "gnu.org");
 my @hosts_override;
 my $delay = 4;
-my $acceptable_failures = 2;
+my $multiplier = 60;         # internal
+my $acceptable_failures = 2; # internal
 
 # rcfile if existing
 if (-r $rcfile) {
@@ -56,6 +57,7 @@ if (-r $rcfile) {
 	$dev_backup = $1 if /^backup-device\s?=\s?(\S*)\s*$/i;
 	$delay = $1 if /^max-delay\s?=\s?(\S*)\s*$/i;
 	$debuglog = 1 if /^debuglog\s*/i;
+	$multiplier = $1 if /^multiplier\s?=\s?(\S*)\s*/i;
 	@hosts_override = $1 if /^hosts\s?=\s?(\S*)\s*$/i;
     }
     close(RCFILE);
@@ -65,6 +67,7 @@ if (-r $rcfile) {
 # Command line option (override rcfile)
 eval {
     $getopt = GetOptions("help" => \$help,
+			 "multiplier=n" => \$multiplier,
 			 "delay=n" => \$delay,
 			 "hosts=s" => \@hosts_override,
 			 "main-device=s" => \$dev_main,
@@ -121,7 +124,7 @@ my $dev_backup_on :shared = 0;
 ### Autonomous thread to activate the backup device or to deactivate
 # exactly on delay
 async { 
-    while (sleep(($delay * 1))) { # DBG ($delay * 60)
+    while (sleep(($delay * $multiplier))) {
 	syslog("info","DBG main $dev_main_linkon   back $dev_backup_on");
 	if ($dev_main_linkon) {
 	    # Main device on:
@@ -151,7 +154,7 @@ my %hosts_ip;
 my %hosts_linkon;
 
 # check every n seconds if we can connect
-while (sleep(60)) {
+while (sleep($multiplier)) {
     # Ping domains one by one.
     foreach my $target (@hosts) {
 	# Try to access by IP if registered
@@ -188,12 +191,6 @@ while (sleep(60)) {
     
     # One host up is enough.
     $dev_main_linkon = scalar(values %hosts_linkon);
-    syslog("info", "DBG linkon $dev_main_linkon");
 }
-
-
-
-
-
 
 # EOF
