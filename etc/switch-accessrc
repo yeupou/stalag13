@@ -1,0 +1,4 @@
+# SAMPLE CONFIGURATION
+#main-device=eth0
+#backup-device=wlan0
+#hosts=free.fr,wikipedia.org,gnu.org
