@@ -24,7 +24,7 @@
 # It is a daemon and should be started by an appropriate init script.
 
 
-# update /var/www/netinfo
+# update /var/www/netinfo  with current availability and stats
 
 use strict;
 use Sys::Syslog;
@@ -194,8 +194,16 @@ while (sleep($multiplier)) {
 	
     }
    
-    # One host up is enough.
-    $dev_main_linkon = scalar(values %hosts_linkon);
+    # One host up is enough. Check for any positive value.
+    my $at_least_on_linkon = 0;
+    while (my ($target,$linkon) = each(%hosts_linkon)) {
+	# skip fast fails
+	continue unless $linkon;
+	# record the first valid entry
+	$at_least_on_linkon = 1;
+	last;
+    }
+    $dev_main_linkon = $at_least_on_linkon;
     syslog("info", "update main-device status to $dev_main_linkon") if $debug;
 }
 
