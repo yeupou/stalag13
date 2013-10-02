@@ -22,7 +22,8 @@
 # start another device and keep it up until the main device is back for
 # at least the defined time.
 # It is a daemon and should be started by an appropriate init script.
-
+#
+# It assumes that devices are properly configured already.
 
 # update /var/www/netinfo  with current availability and stats
 
@@ -41,12 +42,16 @@ my ($getopt, $save, $help);
 my $rcfile = "/etc/switch-accessrc";
 my $dev_main = "eth0";
 my $dev_backup = "wlan0";
+my $dev_intranet;
 my @hosts = ("free.fr", "wikipedia.org", "gnu.org");
 my @hosts_override;
 my $delay = 4;
 my $debug = 0;               # internal
 my $multiplier = 60;         # internal
 my $acceptable_failures = 2; # internal
+my $bin_ifup = "/sbin/ifup";
+my $bin_ifdown = "/sbin/ifdown";
+my $bin_coupefeu = "/usr/local/bin/gateway-coupefeu.pl";
 
 # rcfile if existing
 if (-r $rcfile) {
@@ -55,6 +60,7 @@ if (-r $rcfile) {
 	next if /^#/;
 	$dev_main = $1 if /^main-device\s?=\s?(\S*)\s*$/i;
 	$dev_backup = $1 if /^backup-device\s?=\s?(\S*)\s*$/i;
+	$dev_intranet = $1 if /^intranet-device\s?=\s?(\S*)\s*$/i;
 	$delay = $1 if /^max-delay\s?=\s?(\S*)\s*$/i;
 	$debug = 1 if /^debug\s*/i;
 	$multiplier = $1 if /^multiplier\s?=\s?(\S*)\s*/i;
@@ -72,7 +78,8 @@ eval {
 			 "delay=n" => \$delay,
 			 "hosts=s" => \@hosts_override,
 			 "main-device=s" => \$dev_main,
-			 "backup-device=s" => \$dev_backup);
+			 "backup-device=s" => \$dev_backup,
+	                 "intranet-device=s" => \$dev_intranet);
 };
 
 # accept a coma-separated list of hosts
@@ -90,6 +97,7 @@ to the backup device $dev_backup.
    
       --main-device=ethX     Main internet access device
       --backup-device=wlanX  Backup internet access device
+      --intranet-device=ethX Intranet device, to update NAT
       --delay=N              Max delay in minute without connectivity
       --hosts=domain,domain,...  hosts to be checked against
                              (comma separated list with no spaces)
@@ -134,6 +142,10 @@ async {
 	    next unless $dev_backup_on;
 	    ####SHUTOOWN BACKUP
 	    syslog("info", "$dev_main is back on line, shutting down $dev_backup");
+	    # bring down
+	    system($bin_ifdown, $dev_backup);
+	    # update firewall/NAT
+	    system($bin_coupefeu, "--intranet", $dev_intranet, "--internet", $dev_main) if $dev_intranet;
 	    $dev_backup_on = 0;
 	} else {
 	    # Main device off:
@@ -141,6 +153,13 @@ async {
 	    next if $dev_backup_on;
 	    ###BRING UP BACKUP 
 	    syslog("info", "$dev_main is offline, bringing up $dev_backup");
+	    # cleanup
+	    system($bin_ifdown, $dev_backup);
+	    # bring up
+	    system($bin_ifup, $dev_backup);
+	    # update firewall/NAT
+	    system($bin_coupefeu, "--intranet", $dev_intranet, "--internet", $dev_backup) if $dev_intranet;
+            # extra script? or autonomous thread to keep connectivity up
 	    $dev_backup_on = 1;
 	}
     }
@@ -196,8 +215,8 @@ while (sleep($multiplier)) {
    
     # One host up is enough. Check for any positive value.
     my $at_least_on_linkon = 0;
-    while (my ($target,$linkon) = each(%hosts_linkon)) {
-	# skip fast fails
+    foreach my $linkon (values %hosts_linkon) {
+	# skip fails
 	next unless $linkon;
 	# record the first valid entry
 	$at_least_on_linkon = 1;
