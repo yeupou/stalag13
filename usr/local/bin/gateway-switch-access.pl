@@ -198,7 +198,7 @@ while (sleep($multiplier)) {
     my $at_least_on_linkon = 0;
     while (my ($target,$linkon) = each(%hosts_linkon)) {
 	# skip fast fails
-	continue unless $linkon;
+	next unless $linkon;
 	# record the first valid entry
 	$at_least_on_linkon = 1;
 	last;
