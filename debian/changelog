@@ -1,3 +1,9 @@
+stalag13-utils (3.80-20131108) unstable; urgency=low
+ 
+  * Temporary crappy dnsspoof init
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 08 Nov 2013 13:39:43 +0100
+ 
 stalag13-utils (3.79-20131108) unstable; urgency=low
  
   * Switch access in progress, add dnsspoof init

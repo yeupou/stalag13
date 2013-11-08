@@ -9,6 +9,7 @@
 # Description:       Start dnsspoof over bind9
 ### END INIT INFO
 
-/usr/sbin/dnsspoof -i eth2 -f /etc/dnsspoof.conf
+# shitty version for testing purpose
+/usr/sbin/dnsspoof -i eth2 -f /etc/dnsspoof.conf 2> /dev/null > /dev/null &
 
 # EOF
