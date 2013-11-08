@@ -1,3 +1,12 @@
+stalag13-utils (3.79-20131108) unstable; urgency=low
+ 
+  * Switch access in progress, add dnsspoof init
+    A etc/switch-accessrc
+    A usr/local/bin/gateway-switch-access.pl
+    M usr/local/bin/gateway-switch-access.pl
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 08 Nov 2013 13:33:09 +0100
+ 
 stalag13-utils (3.78+11-20131002) unstable; urgency=low
  
   * Upstream prerelease
