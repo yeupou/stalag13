@@ -25,33 +25,20 @@ if [ -e /etc/default/$NAME ]; then
   . /etc/default/$NAME
 fi
 
-start() {
-    log_daemon_msg "Starting $DESC" "$NAME"
-    start_daemon $DAEMON -f /etc/dnsspoof.conf $DNSSPOOF_OPTS
-    log_end_msg $?
-}
-
-stop() { 
-    log_daemon_msg "Stopping $DESC" "$NAME"
-    killall -q -w $DAEMON
-    log_end_msg $?
-}
-stop_nowait() {
-    log_daemon_msg "Stopping $DESC" "$NAME"
-    killall -q $DAEMON
-    log_end_msg $?
-}
-
 case "$1" in
     start)
-      start
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start-stop-daemon --background --start --exec $DAEMON -- -f /etc/dnsspoof.conf $DNSSPOOF_OPTS 
+	log_end_msg $?
   ;;
     stop)
-      stop
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --exec $DAEMON
+	log_end_msg $?
   ;;
     restart)
-      stop_nowait
-      start
+	$0 stop
+        $0 start
   ;;
     *)
       echo "Usage: $NAME {start|stop|restart}"
