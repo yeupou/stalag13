@@ -9,7 +9,55 @@
 # Description:       Start dnsspoof over bind9
 ### END INIT INFO
 
-# shitty version for testing purpose
-/usr/sbin/dnsspoof -i eth2 -f /etc/dnsspoof.conf 2> /dev/null > /dev/null &
+set -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/dnsspoof
+NAME=dnsspoof
+DESC="DNS spoofer"
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+DNSSPOOF_OPTS=""
+if [ -e /etc/default/$NAME ]; then
+  . /etc/default/$NAME
+fi
+
+start() {
+    log_daemon_msg "Starting $DESC" "$NAME"
+    start_daemon $DAEMON -f /etc/dnsspoof.conf $DNSSPOOF_OPTS
+    log_end_msg $?
+}
+
+stop() { 
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    killall -q -w $DAEMON
+    log_end_msg $?
+}
+stop_nowait() {
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    killall -q $DAEMON
+    log_end_msg $?
+}
+
+case "$1" in
+    start)
+      start
+  ;;
+    stop)
+      stop
+  ;;
+    restart)
+      stop_nowait
+      start
+  ;;
+    *)
+      echo "Usage: $NAME {start|stop|restart}"
+      exit 1
+  ;;
+esac
+exit 0
 
 # EOF
