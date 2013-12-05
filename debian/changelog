@@ -1,3 +1,13 @@
+stalag13-utils (3.81-20131205) unstable; urgency=low
+ 
+  * Init script LSB compliance cleanups
+    A etc/default/dnsspoof
+    M etc/init.d/dnsspoof
+    M etc/init.d/perl-fcgi
+    M etc/init.d/php-fcgi
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 05 Dec 2013 13:09:49 +0100
+ 
 stalag13-utils (3.80+4-20131205) unstable; urgency=low
  
   * Upstream prerelease
