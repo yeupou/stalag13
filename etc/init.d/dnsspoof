@@ -28,12 +28,12 @@ fi
 case "$1" in
     start)
 	log_daemon_msg "Starting $DESC" "$NAME"
-	start-stop-daemon --background --start --exec $DAEMON -- -f /etc/dnsspoof.conf $DNSSPOOF_OPTS 
+	start-stop-daemon --quiet --background --start --exec $DAEMON -- -f /etc/dnsspoof.conf $DNSSPOOF_OPTS 
 	log_end_msg $?
   ;;
     stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-	start-stop-daemon --stop --exec $DAEMON
+	start-stop-daemon --quiet --stop --exec $DAEMON
 	log_end_msg $?
   ;;
     restart)
