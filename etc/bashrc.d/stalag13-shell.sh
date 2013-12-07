@@ -22,9 +22,10 @@ NC='\[\033[0m\]'
 showuser=''
 promptcolor=$yellow
 if [ "`id -u`" != 0 ]; then
-    # root = no need to print username
+    # print username only if not root
     showuser="\u@"
-    # but also use a different prompt color
+else 
+    # use a different prompt color for root
     promptcolor=$red
 fi
 PS1="${promptcolor}\! ${magenta}\$(date +%H:%M) ${cyan}${showuser}\h: ${green}\w${NC}\n  ${promptcolor}"'\$'"${NC} "
