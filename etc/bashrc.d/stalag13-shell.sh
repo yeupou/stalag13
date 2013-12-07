@@ -20,8 +20,14 @@ NC='\[\033[0m\]'
 
 # Nice colored prompt (with a space before the pwd, to ease copy/paste)
 showuser=''
-if [ "`id -u`" != 0 ]; then showuser="\u@"; fi
-PS1="${yellow}\! ${magenta}\$(date +%H:%M) ${cyan}${showuser}\h: ${green}\w${NC}\n  ${yellow}"'\$'"${NC} "
+promptcolor=$yellow
+if [ "`id -u`" != 0 ]; then
+    # root = no need to print username
+    showuser="\u@"
+    # but also use a different prompt color
+    promptcolor=$red
+fi
+PS1="${promptcolor}\! ${magenta}\$(date +%H:%M) ${cyan}${showuser}\h: ${green}\w${NC}\n  ${promptcolor}"'\$'"${NC} "
 
 # update window title only if we have an X terminal
 case $TERM in
