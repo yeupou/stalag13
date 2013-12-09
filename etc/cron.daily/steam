@@ -58,10 +58,10 @@ for depot in *; do
 
     # if it is a unknow/deleted package, add some visual info
     class=""
-    [ "$title" == "$STEAMDB_UNKNOWN" ] && class=" bgcolor=\"red\""
+    [ "$title" == "$STEAMDB_UNKNOWN" ] && class=" style=\"color: #a9000; font-style: italic;\""
 
     # finally add the relevant line
-    echo -e "<a href=\"$STEAMDB/$depot/\"$class>$depot\t\t$title</a>\n" >> $INDEX
+    echo -e "<a href=\"$STEAMDB/$depot/\">$depot</a>\t\t<a href=\"$STEAMDB/$depot/\"$class>$title</a>" >> $INDEX
 done
 
 # close INDEX
