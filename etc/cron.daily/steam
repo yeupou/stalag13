@@ -56,7 +56,7 @@ for depot in *; do
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
 
     # obtain directory size
-    size=`du -sh $depot`
+    size=`du -sh $depot | cut -f 1`
 
     # if it is a unknow/deleted package, add some visual info
     style=""
