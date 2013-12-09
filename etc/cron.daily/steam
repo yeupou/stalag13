@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Copyright (c) 2013 Mathieu Roy <yeupou--gnu.org>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+#   USA
+
+# REQUIRES: wget
+
+# http user
+USER="www-data"
+
+# steamdb.info base url
+STEAMDB="http://steamdb.info/app"
+
+# dont do anything without a nginx config for steam
+[ ! -e /etc/nginx/sites-available/steam ] && exit 0
+
+# location of the steam depots
+STORE="/srv/www/depot"
+[ ! -d $STORE ] && exit 0
+
+# go through the list of steam depots
+cd $STORE
+for depot in *; do
+    ## checks
+    # depot are directories
+    [ ! -d "$depot" ] && continue
+    # depot ids are integers
+    case "$depot" in *[!0-9]*) continue;; esac
+    # we dont know yet what it contains
+    [ -e "$depot contains "*.html ] && continue
+
+    ## updates - work with http user
+    # get the html webpage
+    html=`wget --quiet $STEAMDB/$depot/ -O - `
+    # try to extract a header to get a short title
+    title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<h1 class=\"header-title\">|</h1>";RS=EOF} {print $2}'`
+    # if it fails, then just take the html title
+    [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
+  
+    # transform / into - (otherwise things like Unknown / Deleted would get
+    # confusing
+    title=${title/\//\-//}
+    # keep only white spaces, alphanumeric and -
+    title=${title//[^a-zA-Z0-9 \-]/}
+
+    # create the contains file, with the httpd user
+    su $USER -c "echo \"$html\" > \"$depot contains $title\".html"
+done
+
+
+
+
+# EOF
