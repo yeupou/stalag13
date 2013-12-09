@@ -18,7 +18,6 @@
 #   USA
 
 # REQUIRES: wget
-
 # http user
 USER="www-data"
 
@@ -57,11 +56,11 @@ for depot in *; do
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
 
     # if it is a unknow/deleted package, add some visual info
-    class=""
-    [ "$title" == "$STEAMDB_UNKNOWN" ] && class=" style=\"font-style: italic;\""
+    style=""
+    [ "$title" == "$STEAMDB_UNKNOWN" ] && style=" style=\"font-style: italic;\""
 
     # finally add the relevant line
-    echo -e "<a href=\"$STEAMDB/$depot/\"$style>$depot</a>\t\t<a href=\"$STEAMDB/$depot/\"$class>$title</a>" >> $INDEX
+    echo -e "<a href=\"$STEAMDB/$depot/\"$style>$depot</a>\t\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
 done
 
 # close INDEX
