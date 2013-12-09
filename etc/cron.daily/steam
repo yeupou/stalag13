@@ -41,7 +41,8 @@ for depot in *; do
     # depot ids are integers
     case "$depot" in *[!0-9]*) continue;; esac
     # we dont know yet what it contains
-    [ -e "$depot contains "*.html ] && continue
+    #ACTUALLY UPDATE THE WHOLE DB EACH RUN, SO COMMENT OUT THIS
+    #[ -e "$depot contains "*.html ] && continue
 
     ## updates - work with http user
     # get the html webpage
@@ -59,7 +60,8 @@ for depot in *; do
 
     # create the contains file: redownload it to get the internal links
     # update by wget (-O - and -k are incompatible)
-    wget --quiet --no-clobber --convert-links  "$STEAMDB/$depot" -O "$depot contains $title".html
+    # with httpd user
+    su $USER -c "wget --quiet --timestamping --convert-links \"$STEAMDB/$depot\" -O \"$depot contains $title\".html"
 done
 
 
