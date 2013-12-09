@@ -63,7 +63,7 @@ for depot in *; do
     [ "$title" == "$STEAMDB_UNKNOWN" ] && style=" style=\"font-style: italic;\""
 
     # finally add the relevant line
-    echo -e "<a href=\"$STEAMDB/$depot/\">$depot</a>\t\t$size\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
+    echo -e "<a href=\"$depot/\">$depot</a>\t\t$size\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
 done
 
 # close INDEX
