@@ -26,45 +26,43 @@ USER="www-data"
 STEAMDB="http://steamdb.info/app"
 
 # dont do anything without a nginx config for steam
-[ ! -e /etc/nginx/sites-available/steam ] && exit 0
+#[ ! -e /etc/nginx/sites-available/steam ] && exit 0
 
 # location of the steam depots
 STORE="/srv/www/depot"
+STORE="/mnt/lan/stalag13.ici/suxor.steam"
 [ ! -d $STORE ] && exit 0
+
+# init index 
+INDEX=$STORE/depots.html
+INDEX=~/tmprm/index.html
+echo "<html><head><title>Index of /`basename $STORE`/</title></head>
+<body><h1>Index of /`basename $STORE`/</h1><hr><pre><a href=\"../\">../</a>" > $INDEX
+echo $INDEX
 
 # go through the list of steam depots
 cd $STORE
+
 for depot in *; do
     ## checks
     # depot are directories
     [ ! -d "$depot" ] && continue
     # depot ids are integers
     case "$depot" in *[!0-9]*) continue;; esac
-    # we dont know yet what it contains
-    #ACTUALLY UPDATE THE WHOLE DB EACH RUN, SO COMMENT OUT THIS
-    #[ -e "$depot contains "*.html ] && continue
 
-    ## updates - work with http user
+    ## updates
     # get the html webpage
     html=`wget --quiet $STEAMDB/$depot/ -O - `
     # try to extract a header to get a short title
     title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<h1 class=\"header-title\">|</h1>";RS=EOF} {print $2}'`
     # if it fails, then just take the html title
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
-  
-    # transform / into - (otherwise things like Unknown / Deleted would get
-    # confusing
-    title=${title/\//\-//}
-    # keep only white spaces, alphanumeric and -
-    title=${title//[^a-zA-Z0-9 \-]/}
-
-    # create the contains file: redownload it to get the internal links
-    # update by wget (-O - and -k are incompatible)
-    # with httpd user
-    su $USER -c "wget --quiet --timestamping --convert-links \"$STEAMDB/$depot\" -O \"$depot contains $title\".html"
+    # finally add the relevant line
+    echo "<a href=\"$depot/\">$depot\t\t$title</a>\n" >> $INDEX
 done
 
-
-
+# close INDEX
+echo "$INDEX</pre><hr></body>
+</html>" >> $INDEX
 
 # EOF
