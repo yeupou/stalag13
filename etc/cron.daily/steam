@@ -55,12 +55,15 @@ for depot in *; do
     # if it fails, then just take the html title
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
 
+    # obtain directory size
+    size=`du -sh $depot`
+
     # if it is a unknow/deleted package, add some visual info
     style=""
     [ "$title" == "$STEAMDB_UNKNOWN" ] && style=" style=\"font-style: italic;\""
 
     # finally add the relevant line
-    echo -e "<a href=\"$STEAMDB/$depot/\"$style>$depot</a>\t\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
+    echo -e "<a href=\"$STEAMDB/$depot/\">$depot</a>\t\t$size\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
 done
 
 # close INDEX
