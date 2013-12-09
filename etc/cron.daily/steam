@@ -57,8 +57,8 @@ for depot in *; do
     # keep only white spaces, alphanumeric and -
     title=${title//[^a-zA-Z0-9 \-]/}
 
-    # create the contains file, with the httpd user
-    su $USER -c "echo \"$html\" > \"$depot contains $title\".html"
+    # create the contains file
+    echo "$html" > "$depot contains $title".html
 done
 
 
