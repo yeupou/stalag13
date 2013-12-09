@@ -30,12 +30,10 @@ STEAMDB="http://steamdb.info/app"
 
 # location of the steam depots
 STORE="/srv/www/depot"
-STORE="/mnt/lan/stalag13.ici/suxor.steam"
 [ ! -d $STORE ] && exit 0
 
 # init index 
 INDEX=$STORE/depots.html
-INDEX=~/tmprm/index.html
 echo "<html><head><title>Index of /`basename $STORE`/</title></head>
 <body><h1>Index of /`basename $STORE`/</h1><hr><pre><a href=\"../\">../</a>" > $INDEX
 echo $INDEX
