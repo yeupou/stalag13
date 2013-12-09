@@ -24,9 +24,10 @@ USER="www-data"
 
 # steamdb.info base url
 STEAMDB="http://steamdb.info/app"
+STEAMDB_UNKNOWN="Unknown / Deleted App"
 
 # dont do anything without a nginx config for steam
-#[ ! -e /etc/nginx/sites-available/steam ] && exit 0
+[ ! -e /etc/nginx/sites-available/steam ] && exit 0
 
 # location of the steam depots
 STORE="/srv/www/depot"
@@ -34,9 +35,7 @@ STORE="/srv/www/depot"
 
 # init index 
 INDEX=$STORE/depots.html
-echo "<html><head><title>Index of /`basename $STORE`/</title></head>
-<body><h1>Index of /`basename $STORE`/</h1><hr><pre><a href=\"../\">../</a>" > $INDEX
-echo $INDEX
+echo -e "<html><head><title>Index of /`basename $STORE`/</title></head><body><h1>Index of /`basename $STORE`/</h1><hr><pre><a href=\"../\">../</a>" > $INDEX
 
 # go through the list of steam depots
 cd $STORE
@@ -51,16 +50,21 @@ for depot in *; do
     ## updates
     # get the html webpage
     html=`wget --quiet $STEAMDB/$depot/ -O - `
+
     # try to extract a header to get a short title
     title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<h1 class=\"header-title\">|</h1>";RS=EOF} {print $2}'`
     # if it fails, then just take the html title
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
+
+    # if it is a unknow/deleted package, add some visual info
+    class=""
+    [ "$title" == "$STEAMDB_UNKNOWN" ] && class=" bgcolor=\"red\""
+
     # finally add the relevant line
-    echo "<a href=\"$depot/\">$depot\t\t$title</a>\n" >> $INDEX
+    echo -e "<a href=\"$STEAMDB/$depot/\"$class>$depot\t\t$title</a>\n" >> $INDEX
 done
 
 # close INDEX
-echo "$INDEX</pre><hr></body>
-</html>" >> $INDEX
+echo -e "</pre><hr></body></html>" >> $INDEX
 
 # EOF
