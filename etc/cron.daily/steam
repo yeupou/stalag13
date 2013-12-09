@@ -45,7 +45,7 @@ for depot in *; do
 
     ## updates - work with http user
     # get the html webpage
-    html=`wget --quiet --convert-links $STEAMDB/$depot/ -O - `
+    html=`wget --quiet $STEAMDB/$depot/ -O - `
     # try to extract a header to get a short title
     title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<h1 class=\"header-title\">|</h1>";RS=EOF} {print $2}'`
     # if it fails, then just take the html title
@@ -57,8 +57,9 @@ for depot in *; do
     # keep only white spaces, alphanumeric and -
     title=${title//[^a-zA-Z0-9 \-]/}
 
-    # create the contains file
-    echo "$html" > "$depot contains $title".html
+    # create the contains file: redownload it to get the internal links
+    # update by wget (-O - and -k are incompatible)
+    wget --quiet --no-clobber --convert-links  "$STEAMDB/$depot" -O "$depot contains $title".html
 done
 
 
