@@ -55,10 +55,19 @@ for depot in *; do
     # if it fails, then just take the html title
     [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
 
+    # if unknown try to get something more specific 
+    if [ "$title" == "$STEAMDB_UNKNOWN" ]; then
+	title_from_history=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="App was deleted, previous name: <b>|</b>";RS=EOF} {print $2}'`
+	[ "$title_from_history" ] && title="$title_from_history"
+    fi
+
     # obtain directory size
     size=`du -sh $depot | cut -f 1`
+    # if unit is G or T, put in bold
+    size_unit=${size//[^a-zA-Z]/}
+    case "$size_unit" in G|T) size="<b>$size</b>";; esac
 
-    # if it is a unknow/deleted package, add some visual info
+    # put in italic unidentified
     style=""
     [ "$title" == "$STEAMDB_UNKNOWN" ] && style=" style=\"font-style: italic;\""
 
