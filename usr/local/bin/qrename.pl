@@ -123,16 +123,22 @@ while(defined(my $file = glob('*'))){
 	$char2 = 1;
     }
 
-    # Now rename the file, either simply adding the prefix (if the full name
-    # is smaller than the prefix) or replacing the current prefix - point being
-    # to keep a filename with a reasonable length.
+    # Determine the new filename, either simply adding the prefix
+    # (if the full name is smaller than the prefix)
+    # or replacing the current prefix - point being to keep a filename
+    # with a reasonable length.
     # (Prefix will be upper case while the rest of the line will be lower case)
     my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4;
     my $newfile = $prefix.lc($file);
     if (length($file) >= length($prefix.".ext")) {
 	$newfile = $prefix.lc(substr($file, length($prefix)));
     }
-    
+
+    # If the filename is not changed, skip this one
+    print "$count $file == $newfile\n" if $verbose; 
+    next if $file eq $newfile;
+
+    # Actually move the file
     print "$count $file -> $newfile\n" if !$please_do or $verbose;
     move($file, $newfile) if $please_do;
 }
