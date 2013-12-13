@@ -47,6 +47,7 @@ my %chars = (1 => 'C',
 	     4 => 'P',
 	     5 => 'T',
 	     6 => 'W');	
+my $char_extra = '5';
 my $chars_max = scalar keys %chars;
 my $queue_max_nondigits = ($chars_max * $chars_max * $chars_max);
 
@@ -90,7 +91,7 @@ exit(1);
 
 # go through list of files (with glob, to get them ordered)
 my $count;
-my ($char1, $char2, $char3, $char4) = (1, 1, 0, 5);
+my ($char1, $char2, $char3, $char4) = (1, 1, 0, $char_extra);
 while(defined(my $file = glob('*'))){ 
     # only deal with regular files
     next unless -f $file;
@@ -105,7 +106,9 @@ while(defined(my $file = glob('*'))){
 	$char3++;
     } else {
 	# otherwise add a three digit counter (or more, according to opts)
-	$char4 = sprintf("%0".$queue_max_digits."d",($count-$queue_max_nondigits))."5";
+	# with an ending _ to avoid any confusion with a filename that
+	# would beforehand be numeric
+	$char4 = sprintf("%0".$queue_max_digits."d",($count-$queue_max_nondigits)).$char_extra."_";
 	$char3 = $chars_max;
     }
 
@@ -123,13 +126,14 @@ while(defined(my $file = glob('*'))){
 
     # Now rename the file, either simply adding the prefix (if the full name
     # is smaller than the prefix) or replacing the current prefix.
-    # Prefix will be upper case while the rest of the line will be lower case.
+    # Obviously
+    # (Prefix will be upper case while the rest of the line will be lower case)
     my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4;
     my $newfile = $prefix.lc($file);
     if (length($file) >= length($prefix.".ext")) {
 	$newfile = $prefix.lc(substr($file, length($prefix)));
     }
-
+    
     print "$count $file -> $newfile\n" if !$please_do or $verbose;
     move($file, $newfile) if $please_do;
 }
