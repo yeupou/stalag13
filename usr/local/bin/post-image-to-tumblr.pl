@@ -26,6 +26,10 @@
 # If the image metadata contains a legend field (Description, Comment, etc)
 # with strings beginning with # then it will assume these are tags for tumblr.
 # The image metadata will be rewritten and only this specific field kept.
+# If tagrequired is included in your .tumblrrc, images without proper tag
+# wont be posted.
+#   (run with --check-images argument just to check whether all images
+#   about to be posted contains a proper tag)
 #
 # It will always keep a pool of 5 files in queue/, so if you had several
 # files from one same source at once, you'll still have enough files to
@@ -58,9 +62,12 @@
 #
 # To clean up alphabetically order stuff, you may also run the following: 
 #   count=0 && for i in *; do count=`expr $count + 1` && case $count in [0-5]) prefix=A;; [6-9]) prefix=C;; 1[0-5]) prefix=E;; 1[5-9]) prefix=G;; 2[0-9]) prefix=I;; 3[0-9]) prefix=K;; 4[0-9]) prefix=M;; 5[0-9]) prefix=O;; *) prefix=Q;; esac && mv $i $prefix`echo $i | tr A-Z a-z`; done 
+#   or, better, use qrename.pl provided also on the same git repository
+#   as this.
 
 use strict;
 use locale;
+use Getopt::Long;
 use File::HomeDir;
 use File::Copy;
 use POSIX qw(strftime);
@@ -68,16 +75,17 @@ use URI::Encode qw(uri_encode);
 use Image::ExifTool;
 use WWW::Tumblr;
 
+### INIT
 my $git = "/usr/bin/git";
 my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserComment");
+my $images_types = "png|gif|jpg|jpeg";
+my %images_max_size = ("gif" => "1048576");
 my $debug = 0;
 my $tags_required = 0;
 
-
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
-my $content = File::HomeDir->my_home()."/tmp/tumblr";
-my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
+my $content = File::HomeDir->my_home()."/tmp/tumblr";my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
 my ($workaround_login, $workaround_dir, $workaround_url);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
@@ -103,8 +111,44 @@ close(RCFILE);
 die "Unable to determine oauth info required by Tumblr API v2 (found: base_url = $tumblr_base_url ; consumer_key = $tumblr_consumer_key ; consumer_secret = $tumblr_consumer_secret ; token = $tumblr_token ; token_secret = $tumblr_token_secret) after reading $rc, exiting" unless $tumblr_consumer_key and $tumblr_consumer_secret and $tumblr_token and $tumblr_token_secret;
 my $queue = $content."/queue";
 my $over = $content."/over";
+
+# command line args
+my ($getopt,$help,$check);
+eval {
+    $getopt = GetOptions("debug" => \$debug,
+			 "help" => \$help,
+			 "check-images" => \$check);
+};
 $git = "/bin/echo" if $debug;
 
+# help if asked
+if ($help) {
+    print STDERR <<EOF;
+Usage: $0 [OPTIONS]
+
+      --check-images   Go through the queue and check whether images
+                       are ready to be posted (with proper #Tag and
+		       not exceding certain size depending on the
+		       file type).
+      --debug          Not doing any git commit or moving files.
+
+This script will go through $images_types files found 
+in $content 
+and post to Tumblr the first one found, using auth info 
+from $rc.
+
+It is designed to run as a cronjob. You could also use qrename.pl
+to keep a big queue clean.
+     
+Author: yeupou\@gnu.org
+       http://yeupou.wordpress.com/
+
+EOF
+exit(1);
+    
+}
+
+### RUN
 # Enter working directory
 chdir($content) or die "Unable to enter $content, exiting";
 
@@ -114,45 +158,83 @@ system($git, "pull", "--quiet");
 # Enter the queue
 chdir($queue) or die "Unable to enter $queue, exiting";
 
-# Select an image
+# List images
 # If none found, silently exit, as an empty queue/ is not an issue.
 opendir(IMAGES, $queue);
 my (@images, $image);
 while (defined(my $image = readdir(IMAGES))) {
     next if -d $image;
     next unless -r $image;
-    next unless $image =~ /\.(jpg|png|gif)$/i;
+    next unless lc($image) =~ /\.($images_types)$/i;
     push(@images, $image);
 }
 closedir(IMAGES);
-exit if scalar(@images) < 6;
-for (sort(@images)) { $image = $_; last; }
+# end here if no image found at all
+exit if scalar(@images) < 1;
+# end here if we only have the pool we want to keep, unless we're just 
+# checking files
+exit if scalar(@images) < 6 and ! $check;
 
-# Extract tumblr tag from the selected image metadata
-my @image_tags;
-my $exifTool = new Image::ExifTool;
-my $image_info = $exifTool->ImageInfo($image);
-my $image_info_kept;
-if ($debug) { foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n"; }} 
-foreach my $field (@metadata_fields) {
-    # Remember which metadata field was useful
-    $image_info_kept = $field;
+# Now go through the list of images in sorted order.
+# (vars set in this loop are necessary below, so init them outside the 
+# loop)
+my ($image_info, $image_info_kept, @image_tags, $exifTool);
+for (sort(@images)) { 
+    # This var has been init before and we'll be used until the
+    # end
+    $image = $_;
+    # Clean vars that we need outside of this loop but should actually
+    # be empty for each new image we re looking at
+    $image_info = "";
+    $image_info_kept = "";
+    @image_tags = ();
 
-    # Assume this line is a comma-separated list
-    foreach (split(",",$$image_info{$field})) {
-	# ignore blank before and after
-	s/^\s+//;
-	s/\s+$//;
-	# ignore this entry if not beginning with # 
-	next unless s/^#//;
-	# otherwise register it
-	print "Register ($field) tag: $_\n" if $debug;
-	push(@image_tags, $_);
+    # Extract tumblr tag from the selected image metadata
+    $exifTool = new Image::ExifTool;
+    $image_info = $exifTool->ImageInfo($image);
+    if ($debug) { foreach (sort keys %$image_info) { print "Found tag $_ => $$image_info{$_}\n"; }} 
+    foreach my $field (@metadata_fields) {
+	# Remember which metadata field was useful
+	$image_info_kept = $field;
+	
+	# Assume this line is a comma-separated list
+	foreach (split(",",$$image_info{$field})) {
+	    # ignore blank before and after
+	    s/^\s+//;
+	    s/\s+$//;
+	    # ignore this entry if not beginning with # 
+	    next unless s/^#//;
+	    # otherwise register it
+	    print "Register ($field) tag: $_\n" if $debug;
+	    push(@image_tags, $_);
+	}
+	
+	# if we found some valid #tags, dont check any other field
+	last if (scalar(@image_tags) > 0);
     }
-    
-    # if we found some valid #tags, dont check any other field
-    last if (scalar(@image_tags) > 0);
+
+    # Check for file size, if there are limit on this type
+    # (this test wont prevent the script to attempt to post the file)
+    my $image_type;
+    $image_type = lc($1) if $image =~ /([^\.]*)$/;
+    if (exists($images_max_size{$image_type})) {
+	my $image_size = -s $image;
+	print "$image is bigger ($image_size) than expected for $image_type.\n"
+	    if $image_size > $images_max_size{$image_type};
+    }
+
+    # Unless we are checking files, we want to deal only with the 
+    # first image found
+    last unless $check;
+
+    # Otherwise, print results
+    if ((scalar(@image_tags) < 1 and $tags_required)) { print "$image has no valid tag.\n"; } 
+    elsif ($debug) { print "$image '$image_info_kept' field is ".$$image_info{$image_info_kept}."\n"; }
 }
+
+# Exit here if we are just checking files, everything beyond has to do
+# with actual posting
+exit(1) if $check;
 
 # Exit if no tag found and nonetheless required
 die "No tag found for $image, exiting" if (scalar(@image_tags) < 1) and $tags_required;
