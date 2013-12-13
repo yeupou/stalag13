@@ -123,10 +123,9 @@ while(defined(my $file = glob('*'))){
 	$char2 = 1;
     }
 
-
     # Now rename the file, either simply adding the prefix (if the full name
-    # is smaller than the prefix) or replacing the current prefix.
-    # Obviously
+    # is smaller than the prefix) or replacing the current prefix - point being
+    # to keep a filename with a reasonable length.
     # (Prefix will be upper case while the rest of the line will be lower case)
     my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4;
     my $newfile = $prefix.lc($file);
