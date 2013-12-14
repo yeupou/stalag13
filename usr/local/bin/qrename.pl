@@ -83,7 +83,7 @@ to ease queue management.
 			     (default: $queue_max_digits)
   -p, --please-do            MANDATORY: the script will only print what it
                              would do unless you use this option
-  -v, --verbose              Self-explanatory.
+  -v, --verbose              Print extra info, with colors.
 
 EOF
 exit(1);
@@ -91,8 +91,10 @@ exit(1);
 
 ## Run baby, run
 
-# if no started by cronjob/..., add nice colors and stuff
+# if no started by cronjob/...  add nice colors and stuff
 my $is_interactive = is_interactive();
+# or also if started with --verbose command line arg
+$is_interactive = 1 if $verbose;
 
 # go through list of files (with glob, to get them ordered)
 my $count;
@@ -143,9 +145,9 @@ while(defined(my $file = glob('*'))){
     if ($file eq $newfile) { 
 	if ($verbose) {
 	    print "$count $file ";
-	    print color 'green' if $is_interactive;
+	    print color 'green';
 	    print "==";
-	    print color 'reset' if $is_interactive;
+	    print color 'reset';
 	    print " $newfile\n";
 	}
 	next;
