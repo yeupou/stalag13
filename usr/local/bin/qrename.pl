@@ -36,7 +36,6 @@ use Getopt::Long;
 use File::Copy qw(move);
 use IO::Interactive qw(is_interactive);
 use Term::ANSIColor;
-no warnings 'experimental'; # we're using smartmatch for cosmetics
 
 ## Determines possible prefixes
 # List of chars valid to use in the prefix:
@@ -51,6 +50,8 @@ my %chars = (1 => 'C',
 	     5 => 'T',
 	     6 => 'W');	
 my $char_extra = '5';
+my %chars_planned = reverse %chars;
+$chars_planned{$char_extra} = 1;
 my $chars_max = scalar keys %chars;
 my $queue_max_nondigits = ($chars_max * $chars_max * $chars_max);
 
@@ -164,11 +165,9 @@ while(defined(my $file = glob('*'))){
 	    # session, so the user know these were likely a recent
 	    # addition to the queue
 	    foreach my $char (split("", substr($file, 0,length($prefix)))) {
-		print color 'red' unless $char eq $char_extra
-		    or $char ~~ [values %chars];
+		print color 'red' unless exists($chars_planned{$char});
 		print $char;
-		print color 'reset' unless $char eq $char_extra
-		    or $char ~~ [values %chars];
+		print color 'reset' unless exists($chars_planned{$char});
 	    }
 	    # and print the end of the filename
 	    print substr($file, length($prefix))." ";
