@@ -135,8 +135,10 @@ while(defined(my $file = glob('*'))){
     }
 
     # If the filename is not changed, skip this one
-    print "$count $file == $newfile\n" if $verbose; 
-    next if $file eq $newfile;
+    if ($file eq $newfile) { 
+	print "$count $file == $newfile\n" if $verbose; 
+	next;
+    }
 
     # Actually move the file
     print "$count $file -> $newfile\n" if !$please_do or $verbose;
