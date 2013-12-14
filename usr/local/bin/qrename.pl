@@ -34,6 +34,9 @@
 use strict;
 use Getopt::Long;
 use File::Copy qw(move);
+use IO::Interactive qw(is_interactive);
+use Term::ANSIColor;
+no warnings 'experimental'; # we're using smartmatch for cosmetics
 
 ## Determines possible prefixes
 # List of chars valid to use in the prefix:
@@ -57,7 +60,6 @@ my $queue_max_nondigits = ($chars_max * $chars_max * $chars_max);
 # (yeah, so far, this script wont give you any warnings and will not compute
 # before hand the proper max digits - it can be improved)
 my $queue_max_digits = 3;
-
 
 ## Get options and provide help
 my ($help,$getopt,$please_do,$verbose);
@@ -88,6 +90,9 @@ exit(1);
 }
 
 ## Run baby, run
+
+# if no started by cronjob/..., add nice colors and stuff
+my $is_interactive = is_interactive();
 
 # go through list of files (with glob, to get them ordered)
 my $count;
@@ -136,12 +141,43 @@ while(defined(my $file = glob('*'))){
 
     # If the filename is not changed, skip this one
     if ($file eq $newfile) { 
-	print "$count $file == $newfile\n" if $verbose; 
+	if ($verbose) {
+	    print "$count $file ";
+	    print color 'green' if $is_interactive;
+	    print "==";
+	    print color 'reset' if $is_interactive;
+	    print " $newfile\n";
+	}
 	next;
     }
 
     # Actually move the file
-    print "$count $file -> $newfile\n" if !$please_do or $verbose;
+    if (!$please_do or $verbose) {
+	print "$count ";
+	if ($is_interactive) {
+	    # when moving a file, check if the  original prefix
+	    # was likely given by this script or if they were 
+	    # manufactured, in later
+	    # case where we would print them in color in interactive
+	    # session, so the user know these were likely a recent
+	    # addition to the queue
+	    foreach my $char (split("", substr($file, 0,length($prefix)))) {
+		print color 'red' unless $char eq $char_extra
+		    or $char ~~ [values %chars];
+		print $char;
+		print color 'reset' unless $char eq $char_extra
+		    or $char ~~ [values %chars];
+	    }
+	    # and print the end of the filename
+	    print substr($file, length($prefix))." ";
+	    print color 'yellow';
+	} else { 
+	    print "$file ";
+	}
+	print "->";
+	print color 'reset' if $is_interactive;
+	print " $newfile\n";
+    }
     move($file, $newfile) if $please_do;
 }
 
