@@ -31,7 +31,6 @@ use CGI qw(:standard Link);
 my $debug = 0;
 my $debug_sample = 0;
 my $dir = "/srv/www/depots";
-$dir = "/mnt/lan/stalag13.ici/suxor.steam";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/steam";
 $nginx_conf = "/etc/debian_version";
