@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/perl
 #
 # Copyright (c) 2013 Mathieu Roy <yeupou--gnu.org>
+#      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,65 +18,132 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 
-# REQUIRES: wget
-# http user
-USER="www-data"
+use strict;
+use LWP::UserAgent;
+use HTTP::Request;
+use HTTP::Response;
+use HTML::TableExtract;
+use File::Find;
+use Number::Bytes::Human;
+use CGI qw(:standard Link);
 
-# steamdb.info base url
-STEAMDB="http://steamdb.info/app"
-STEAMDB_UNKNOWN="Unknown / Deleted App"
+## SETUP 
+my $debug = 0;
+my $debug_sample = 0;
+my $dir = "/srv/www/depots";
+$dir = "/mnt/lan/stalag13.ici/suxor.steam";
+my $list = "$dir/depots.html";
+my $nginx_conf = "/etc/nginx/sites-enabled/steam";
+$nginx_conf = "/etc/debian_version";
+my $steamdb_baseurl="http://steamdb.info/app";
+my $steamdb_unknown_string="Unknown / Deleted App";
 
-# dont do anything without a nginx config for steam
-[ ! -e /etc/nginx/sites-available/steam ] && exit 0
+# no point to run if no depots directory available
+exit unless chdir($dir);
+# no point to run if steam not enabled in nginx
+exit unless -e $nginx_conf;
 
-# location of the steam depots
-STORE="/srv/www/depot"
-[ ! -d $STORE ] && exit 0
+## SLURP INFO
+my (%depots, %depot_size, %depot_name);
+while (defined(my $depot = glob('*'))) {
+    # only deal with directories
+    next unless -d $depot;
+    # with only numeric names
+    next if $depot =~ /\D/;
+    # assume that's a valid depot to work with proceed
+    print "$depot:\n" if $debug;
 
-# init index 
-INDEX=$STORE/depots.html
-echo -e "<html><head><title>Index of /`basename $STORE`/</title></head><body><h1>Index of /`basename $STORE`/</h1><hr><pre><a href=\"../\">../</a>" > $INDEX
+    ## register the depot
+    $depots{$depot} = $depot;
+    
+    ## get local file info: du size (answer unit = K)
+    ($depot_size{$depot},) = split(/\W/, `du -s $dir/$depot`);
+    print " size: ".$depot_size{$depot}."\n" if $debug;
 
-# go through the list of steam depots
-cd $STORE
+    ## get distant (steamdb webpages) info to obtain a proper name
+    my $url = "$steamdb_baseurl/$depot/";
+    my $useragent = LWP::UserAgent->new();
+    $useragent->agent("Mozilla 5.0 (Debian, kFreeBSD) Iceweasel 10.1");
+    $useragent->show_progress(1) if $debug;
+    $useragent->timeout(25);
+    my $request = HTTP::Request->new(GET => $url);
+    $request->referer("http://yeupou.wordpress.com/");
+    my $result = $useragent->request($request);
+    
+    # skip on failure
+    next if $result->is_error();
+    
+    # otherwise go through the content to find something nice to use
+    # as name. As soon as we do, go to the next entry.
+    for ($result->decoded_content()) {
+	# (yeah, this is ugly, wish to find some raw data)
 
-for depot in *; do
-    ## checks
-    # depot are directories
-    [ ! -d "$depot" ] && continue
-    # depot ids are integers
-    case "$depot" in *[!0-9]*) continue;; esac
+	# look for h1 header-title
+	$depot_name{$depot} = $1 if /<h1 class="header-title">([^<>]*)<\/h1>/;
+	print " h1:\t\t".$depot_name{$depot}."\n" if $debug;
+	last unless $depot_name{$depot} eq $steamdb_unknown_string;
 
-    ## updates
-    # get the html webpage
-    html=`wget --quiet $STEAMDB/$depot/ -O - `
+	# look for the next clever spot, that is the history
+	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>([^<>]*)<\/b>/;
+	print " history:\t".$depot_name{$depot}."\n" if $debug;
+	last unless $depot_name{$depot} eq $steamdb_unknown_string;
+	
+	# worse, the list of Packages that include the app. Take the 
+	# latest of the list because the first ones are often kind of
+	# vague (ie: sub NN, etc)
+	# This is really really vague.
+	my $tableextract = HTML::TableExtract->new(headers => [("SubID", "Name", "Last Updated")]);
+	$tableextract->parse($_);
+	foreach my $table ($tableextract->tables()) { 
+	    foreach my $row ($table->rows()) {
+		# field were as follow: id, name, last update
+		# we care only for the second
+		my ($id,$name,$timestamp) = (@$row);
+		# first skip meaningless names or collections like
+		# Sub / ValveTest / Comp
+		next if $name =~ /Sub |ValveTest|Comp|Collection|Bundle| Sale| Retail|Weekend/;
+		# save the name if we have none so far
+		$depot_name{$depot} = $name." ~" 
+		    unless exists($depot_name{$depot});
+		# look further if we can find a clean name with more extra
+		# arbitrary regepx rules
+		next if $name =~ / OSX | \(?(RU|PL)\)?| Demo| Franchise| Gift|(2|4) Pack/;
+		# if we get here, overwrite what we had before
+		$depot_name{$depot} = $name." ~";
+	    }
+	}
+	print " subs:\t\t".$depot_name{$depot}."\n" if $debug;
+	
+    }
+        
+    # no name found? worse case scenario, use the page title
+    $depot_name{$depot} = $result->title()
+	unless exists($depot_name{$depot});
+    print " head:\t\t".$depot_name{$depot}."\n" if $debug;
 
-    # try to extract a header to get a short title
-    title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<h1 class=\"header-title\">|</h1>";RS=EOF} {print $2}'`
-    # if it fails, then just take the html title
-    [ ! "$title" ] && title=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="<title>|</title>";RS=EOF} {print $2}'`
+    print "\n" if $debug;
 
-    # if unknown try to get something more specific 
-    if [ "$title" == "$STEAMDB_UNKNOWN" ]; then
-	title_from_history=`echo "$html" | awk 'BEGIN{IGNORECASE=1;FS="App was deleted, previous name: <b>|</b>";RS=EOF} {print $2}'`
-	[ "$title_from_history" ] && title="$title_from_history"
-    fi
+    last if $debug_sample > 2;
+    $debug_sample++ if $debug_sample;
+}
 
-    # obtain directory size
-    size=`du -sh $depot | cut -f 1`
-    # if unit is G or T, put in bold
-    size_unit=${size//[^a-zA-Z]/}
-    case "$size_unit" in G|T) size="<b>$size</b>";; esac
 
-    # put in italic unidentified
-    style=""
-    [ "$title" == "$STEAMDB_UNKNOWN" ] && style=" style=\"font-style: italic;\""
+## PRINT INFO
+open(OUTPUT, "> $list")
+    or die "Unable to write to $list, died";
+print OUTPUT start_html(-encoding => 'UTF-8',
+			-title => 'Local Steam Depots Cache').
+    h1("Local Steam Depots Cache").
+    "<pre>";
+# print order by name
+foreach (sort{$depot_name{$a} cmp $depot_name{$b}} keys(%depots)) {
+    print "$_ -> $list\n" if $debug;
+    my $human = Number::Bytes::Human->new(bs => 1000, round_style => 'round', precision => 2);
+    print OUTPUT a({-href=>$_}, $_)."\t\t".$human->format($depot_size{$_})."\t".a({-href=>"$steamdb_baseurl/$_"}, $depot_name{$_})."\n";  
+}
 
-    # finally add the relevant line
-    echo -e "<a href=\"$depot/\">$depot</a>\t\t$size\t<a href=\"$STEAMDB/$depot/\"$style>$title</a>" >> $INDEX
-done
-
-# close INDEX
-echo -e "</pre><hr></body></html>" >> $INDEX
+print OUTPUT "</pre>".
+    end_html();
+close(OUTPUT);
 
 # EOF
