@@ -55,8 +55,8 @@ while (defined(my $depot = glob('*'))) {
     ## register the depot
     $depots{$depot} = $depot;
     
-    ## get local file info: du size (answer unit = K)
-    ($depot_size{$depot},) = split(/\W/, `du -s $dir/$depot`);
+    ## get local file info: du size
+    ($depot_size{$depot},) = split(/\W/, `du --summarize --block-size=1 $dir/$depot`);
     print " size: ".$depot_size{$depot}."\n" if $debug;
 
     ## get distant (steamdb webpages) info to obtain a proper name
@@ -106,7 +106,7 @@ while (defined(my $depot = glob('*'))) {
 		    unless exists($depot_name{$depot});
 		# look further if we can find a clean name with more extra
 		# arbitrary regepx rules
-		next if $name =~ / OSX | \(?(RU|PL)\)?| BAFTA| Demo| Franchise| Gift|(2|4) Pack/;
+		next if $name =~ / OSX | \(?(RU|PL)\)?|BAFTA 20| Demo| Franchise| Gift|(2|4) Pack/;
 		# if we get here, overwrite what we had before
 		$depot_name{$depot} = $name." ~";
 	    }
