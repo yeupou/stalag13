@@ -110,7 +110,7 @@ while (defined(my $depot = glob('*'))) {
 
 		# then look further entries 
 		# if we can find a recent and clean name 
-		next if $name =~ / OSX |BAFTA 20| Demo| Franchise| Gift|(2|4) Pack/;
+		next if $name =~ / OSX |BAFTA 20| Demo| Franchise| Gift|(2|4|Two|Four) Pack/;
 
 		# if we get here, overwrite what we had before
 		$depot_name{$depot} = $name." ~";
