@@ -104,6 +104,9 @@ while (defined(my $depot = glob('*'))) {
 		next if $name =~ /Sub |ValveTest|Comp|Collection|Bundle| Sale| Retail|Weekend/;
 		# remove parenthesis if any
 		$name =~ s/ \(\w*\)//g;
+		# remove simple ending LANG info
+		$name =~ s/ (RU|PL|JP)$//g;
+
 		# save the name if we have none so far
 		$depot_name{$depot} = $name." ~" 
 		    unless exists($depot_name{$depot});
