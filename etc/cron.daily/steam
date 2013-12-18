@@ -84,7 +84,7 @@ while (defined(my $depot = glob('*'))) {
 
 	# look for the next clever spot, that is the history
 	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>([^<>]*)<\/b>/;
-	print " history:\t".$depot_name{$depot}."\n" if $debug;
+	print " deleted was:\t".$depot_name{$depot}."\n" if $debug;
 	last unless $depot_name{$depot} eq $steamdb_unknown_string;
 	
 	# worse, the list of Packages that include the app. Take the 
@@ -98,6 +98,7 @@ while (defined(my $depot = glob('*'))) {
 		# field were as follow: id, name, last update
 		# we care only for the second
 		my ($id,$name,$timestamp) = (@$row);
+		print "\tsub$i $name\n" if $debug;
 
 		# first skip meaningless names or collections like
 		# Sub / ValveTest / Comp
