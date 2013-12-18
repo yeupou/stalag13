@@ -137,7 +137,7 @@ print OUTPUT start_html(-encoding => 'UTF-8',
 # print order by name
 foreach (sort{$depot_name{$a} cmp $depot_name{$b}} keys(%depots)) {
     print "$_ -> $list\n" if $debug;
-    my $human = Number::Bytes::Human->new(bs => 1000, round_style => 'round', precision => 2);
+    my $human = Number::Bytes::Human->new(bs => 1024);
     print OUTPUT a({-href=>$_}, $_)."\t\t".$human->format($depot_size{$_})."\t".a({-href=>"$steamdb_baseurl/$_"}, $depot_name{$_})."\n";  
 }
 
