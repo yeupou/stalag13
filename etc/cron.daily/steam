@@ -36,7 +36,7 @@ my $steamdb_unknown_string="Unknown / Deleted App";
 
 my $debug = 0;
 my $debug_sample = 0;
-$debug = 1 if -f $dir/debug;
+$debug = 1 if -e "$dir/debug";
 
 # no point to run if no depots directory available
 exit unless chdir($dir);
@@ -99,7 +99,7 @@ while (defined(my $depot = glob('*'))) {
 		# field were as follow: id, name, last update
 		# we care only for the second
 		my ($id,$name,$timestamp) = (@$row);
-		print "\tsub$i $name\n" if $debug;
+		print "\tsub$id: $name\n" if $debug;
 
 		# first skip meaningless names or collections like
 		# Sub / ValveTest / Comp
