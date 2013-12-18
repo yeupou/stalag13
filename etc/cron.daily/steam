@@ -99,7 +99,7 @@ while (defined(my $depot = glob('*'))) {
 		# field were as follow: id, name, last update
 		# we care only for the second
 		my ($id,$name,$timestamp) = (@$row);
-		print "\tsub$id: $name\n" if $debug;
+		print "\tsub$id: $name...\n" if $debug;
 
 		# first skip meaningless names or collections like
 		# Sub / ValveTest / Comp
@@ -110,6 +110,7 @@ while (defined(my $depot = glob('*'))) {
 		# save the name if we have none so far
 		$depot_name{$depot} = $name." ~" 
 		    unless exists($depot_name{$depot});
+		print "\t\tok\n" if $debug;
 
 		# then look further entries 
 		# if we can find a recent and clean name
@@ -120,6 +121,7 @@ while (defined(my $depot = glob('*'))) {
 
 		# if we get here, overwrite what we had before
 		$depot_name{$depot} = $name." ~";
+		print "\t\tok+\n" if $debug;
 	    }
 	}
 	print " subs:\t\t".$depot_name{$depot}."\n" if $debug;
