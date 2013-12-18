@@ -28,14 +28,15 @@ use Number::Bytes::Human;
 use CGI qw(:standard Link);
 
 ## SETUP 
-my $debug = 0;
-my $debug_sample = 0;
 my $dir = "/srv/www/depot";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/steam";
-$nginx_conf = "/etc/debian_version";
 my $steamdb_baseurl="http://steamdb.info/app";
 my $steamdb_unknown_string="Unknown / Deleted App";
+
+my $debug = 0;
+my $debug_sample = 0;
+$debug = 1 if -f $dir/debug;
 
 # no point to run if no depots directory available
 exit unless chdir($dir);
