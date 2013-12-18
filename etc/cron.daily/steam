@@ -23,7 +23,6 @@ use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
 use HTML::TableExtract;
-use File::Find;
 use Number::Bytes::Human;
 use CGI qw(:standard Link);
 
