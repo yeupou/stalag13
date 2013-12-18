@@ -106,7 +106,7 @@ while (defined(my $depot = glob('*'))) {
 		    unless exists($depot_name{$depot});
 		# look further if we can find a clean name with more extra
 		# arbitrary regepx rules
-		next if $name =~ / OSX | \(?(RU|PL)\)?| Demo| Franchise| Gift|(2|4) Pack/;
+		next if $name =~ / OSX | \(?(RU|PL)\)?| BAFTA| Demo| Franchise| Gift|(2|4) Pack/;
 		# if we get here, overwrite what we had before
 		$depot_name{$depot} = $name." ~";
 	    }
