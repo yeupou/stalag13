@@ -103,7 +103,7 @@ while (defined(my $depot = glob('*'))) {
 
 		# first skip meaningless names or collections like
 		# Sub / ValveTest / Comp
-		next if $name =~ /Sub |ValveTest|Comp|Collection|Bundle| Sale| Retail|Weekend/;
+		next if $name =~ /Sub |ValveTest|Comp(\s|$)|Collection|Bundle| Sale| Retail|Weekend/;
 		# remove parenthesis if any
 		$name =~ s/ \(\w*\)//g;
 
