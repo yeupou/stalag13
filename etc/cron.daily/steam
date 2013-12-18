@@ -98,15 +98,20 @@ while (defined(my $depot = glob('*'))) {
 		# field were as follow: id, name, last update
 		# we care only for the second
 		my ($id,$name,$timestamp) = (@$row);
+
 		# first skip meaningless names or collections like
 		# Sub / ValveTest / Comp
 		next if $name =~ /Sub |ValveTest|Comp|Collection|Bundle| Sale| Retail|Weekend/;
+		# remove parenthesis if any
+		$name =~ s/ \(\w*\)//g;
 		# save the name if we have none so far
 		$depot_name{$depot} = $name." ~" 
 		    unless exists($depot_name{$depot});
-		# look further if we can find a clean name with more extra
-		# arbitrary regepx rules
-		next if $name =~ / OSX | \(?(RU|PL)\)?|BAFTA 20| Demo| Franchise| Gift|(2|4) Pack/;
+
+		# then look further entries 
+		# if we can find a recent and clean name 
+		next if $name =~ / OSX |BAFTA 20| Demo| Franchise| Gift|(2|4) Pack/;
+
 		# if we get here, overwrite what we had before
 		$depot_name{$depot} = $name." ~";
 	    }
