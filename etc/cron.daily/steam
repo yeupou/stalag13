@@ -83,7 +83,7 @@ while (defined(my $depot = glob('*'))) {
 	last unless $depot_name{$depot} eq $steamdb_unknown_string;
 
 	# look for the next clever spot, that is the history
-	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>([^<>]*)<\/b>/;
+	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>((?!SteamApp)[^<>]*)<\/b>/;
 	print " deleted was:\t".$depot_name{$depot}."\n" if $debug;
 	last unless $depot_name{$depot} eq $steamdb_unknown_string;
 	
