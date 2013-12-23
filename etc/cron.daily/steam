@@ -145,9 +145,9 @@ while (defined(my $depot = glob('*'))) {
 ## PRINT INFO
 open(OUTPUT, "> $list")
     or die "Unable to write to $list, died";
+my $human = Number::Bytes::Human->new(bs => 1024);
 print OUTPUT start_html(-encoding => 'UTF-8',
 			-title => 'Local Steam Depots Cache').
-    my $human = Number::Bytes::Human->new(bs => 1024);
     h1("Local Steam Depots ".$human->format($depots_size)." Cache").
     "<pre>";
 # print order by name
