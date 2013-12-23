@@ -43,7 +43,9 @@ exit unless chdir($dir);
 exit unless -e $nginx_conf;
 
 ## SLURP INFO
-my (%depots, %depot_size, %depot_name);
+my (%depots, $depots_size,
+    %depot_size, 
+    %depot_name);
 while (defined(my $depot = glob('*'))) {
     # only deal with directories
     next unless -d $depot;
@@ -57,6 +59,7 @@ while (defined(my $depot = glob('*'))) {
     
     ## get local file info: du size
     ($depot_size{$depot},) = split(/\W/, `du --summarize --block-size=1 $dir/$depot`);
+    $depots_size += $depot_size{$depot};
     print " size: ".$depot_size{$depot}."\n" if $debug;
 
     ## get distant (steamdb webpages) info to obtain a proper name
@@ -144,17 +147,17 @@ open(OUTPUT, "> $list")
     or die "Unable to write to $list, died";
 print OUTPUT start_html(-encoding => 'UTF-8',
 			-title => 'Local Steam Depots Cache').
-    h1("Local Steam Depots Cache").
+    my $human = Number::Bytes::Human->new(bs => 1024);
+    h1("Local Steam Depots ".$human->format($depots_size)." Cache").
     "<pre>";
 # print order by name
 foreach (sort{lc($depot_name{$a}) cmp lc($depot_name{$b})} keys(%depots)) {
     print "$_ -> $list\n" if $debug;
-    my $human = Number::Bytes::Human->new(bs => 1024);
     my $size = $human->format($depot_size{$_});
     $size = b($size) if $depot_size{$_} > 999999999;
     print OUTPUT a({-href=>$_}, $_)."\t\t".$size."\t".a({-href=>"$steamdb_baseurl/$_"}, $depot_name{$_})."\n";  
 }
-
+print "\t\t\t".i($human->format($depots_size))."\n";
 print OUTPUT "</pre>".
     end_html();
 close(OUTPUT);
