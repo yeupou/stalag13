@@ -157,7 +157,7 @@ foreach (sort{lc($depot_name{$a}) cmp lc($depot_name{$b})} keys(%depots)) {
     $size = b($size) if $depot_size{$_} > 999999999;
     print OUTPUT a({-href=>$_}, $_)."\t\t".$size."\t".a({-href=>"$steamdb_baseurl/$_"}, $depot_name{$_})."\n";  
 }
-print OUTPUT "\t\t\t".i($human->format($depots_size))."\n".
+print OUTPUT "\t\t".i($human->format($depots_size))."\n".
     "</pre>".
     end_html();
 close(OUTPUT);
