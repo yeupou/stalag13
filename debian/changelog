@@ -1,3 +1,9 @@
+stalag13-utils (3.103-20140105) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Sun, 05 Jan 2014 21:10:22 +0100
+ 
 stalag13-utils (3.102-20140105) unstable; urgency=low
  
   * Cosmetics, ignore warmup/prep in main timer, handle minus chars of azerty keyboards under 1,2,3,4,etc when selecting program, make cursor less visible, use Time::HiRes

@@ -285,17 +285,14 @@ while (my $sleep = int(sleep(1))) {
     print "\n";
 
     # numeric (centered) countdown
+    print BOLD if $countdown < 6;
     if ($status eq "rest") { print BRIGHT_GREEN; }
     if ($status eq "exercice") { print BRIGHT_RED; }
     for (my $i = 0; $i < (($columns/2)-3); $i++) { print " "; }
     print "$countdown\n";
 
     # countdown progress bar
-    print BOLD if $countdown < 6;
     #     (countdown * 100 / def countdown) 
-    if ($status eq "rest") { print BRIGHT_GREEN; }
-    if ($status eq "exercice") { print BRIGHT_RED; }
-    
     my $percent = (($countdown*100)/$hundred);
     my $chars = int(($columns/100)*$percent);
     for (my $i = 0; $i < $columns; $i++) {
