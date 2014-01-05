@@ -20,9 +20,12 @@
 # requires debian packages libfile-homedir-perl libterm-readkey-perl
 
 use strict;
-
 use feature "switch";
+
 use Getopt::Long;
+
+use Time::HiRes qw(sleep);
+
 use Term::ANSIColor qw(:constants);
 use Term::ReadKey;
 my $clear = `clear`; 
@@ -49,7 +52,7 @@ my %programs = (
     gibala => '12,60,75,180',
     '30/30' => '5,30,30',
     timmons => '3,20,120,120',
-    debug => '3,2,10,3',
+    debug => '2,2,8,3',
     );
 my $default_program = "tabata 20";
 my $default_warmup = 10;
@@ -111,13 +114,23 @@ ReadMode("cbreak"); # use cbreak to read each char, but keeping ctrl-c working
 # loop every second until forcefully quit 
 # (user interface will be one sec delayed, this an acceptable drawback)
 $|++;
-while (sleep(1)) {
+while (my $sleep = int(sleep(1))) {
     ## USER INPUT
     # get update
     $input .= uc(ReadKey(-1));
     # but only ever keep the one latest char
     $input = substr($input, -1);
-    
+    # if using azerty without caps lock, may be confusing
+    $input = 1 if $input eq "&";
+    $input = 2 if $input eq "é";
+    $input = 3 if $input eq "\"";
+    $input = 4 if $input eq "'";
+    $input = 5 if $input eq "(";
+    $input = 6 if $input eq "-";
+    $input = 7 if $input eq "è";
+    $input = 8 if $input eq "_";
+    $input = 9 if $input eq "ç";
+ 
     # user requested exit
     if ($input eq "Q" or $input eq "E") { ReadMode(0); 	exit; }
     # user request an ided program
@@ -153,12 +166,14 @@ while (sleep(1)) {
 	$program_need_update = 0;
     }
 
-    # Update general timers
-    $counter_main_s++;
+    # Update general timers (warmup is not counted)
+    # Use time returned by sleep() just in case there was unexpected gap
+    $counter_main_s += $sleep
+	unless $status eq "warmup";
     if ($counter_main_s > 59) { $counter_main_s = 0; $counter_main_m++; }
     if ($counter_main_m > 59) { $counter_main_m = 0; $counter_main_h++; }
 
-    $counter_sub_s++;
+    $counter_sub_s += $sleep;
     if ($counter_sub_s > 59) { $counter_sub_s = 0; $counter_sub_m++; }
     if ($counter_sub_m > 59) { $counter_sub_m = 0; $counter_sub_h++; }
 
@@ -235,33 +250,48 @@ while (sleep(1)) {
 	}
 	
 	# Back if we are not at offset null
-	print " ", RESET BOLD, "B", RESET BRIGHT_BLACK, "ack" if $input_offset > 0;
+	print " ", RESET BOLD, "b", RESET BRIGHT_BLACK, "ack" if $input_offset > 0;
 	# Next if the offset wont be higher than the list
-	print " ", RESET BOLD, "N", RESET BRIGHT_BLACK, "ext" if ($input_offset + $lines_max) < (scalar(keys %programs));
-	print " ", RESET BOLD, "Q", RESET BRIGHT_BLACK, "uit", RESET, "\n"; 
+	print " ", RESET BOLD, "n", RESET BRIGHT_BLACK, "ext" if ($input_offset + $lines_max) < (scalar(keys %programs));
+	print " ", RESET BOLD, "q", RESET BRIGHT_BLACK, "uit", RESET, "\n"; 
 	next;
     }
 
 
     ## PRINT INFO
 
-    # timers on a first line: exercise  total
-    print BOLD sprintf("%02d:%02d:%02d", $counter_sub_h,$counter_sub_m,$counter_sub_s), RESET;
+    # exercise  total
+    print BOLD;
+    # print hour counter only if bigger than 1
+    printf("%02d:", $counter_sub_h) if $counter_sub_h > 0;
+    print sprintf("%02d:%02d", $counter_sub_m,$counter_sub_s), RESET;
     print "   ";
-    print BRIGHT_BLACK BOLD sprintf("%02d:%02d:%02d", $counter_main_h,$counter_main_m,$counter_main_s), RESET;
+
+    # total
+    print BRIGHT_BLACK BOLD;
+    # print hour counter only if bigger than 1
+    printf("%02d:", $counter_main_h) if $counter_main_h > 0;
+    print sprintf("%02d:%02d", $counter_main_m,$counter_main_s), RESET;
     print "\n";
     
     # exercice name , cycle count or and if doing warmup)
     print "$program "; 
     unless ($status eq "warmup") { 
-	print RED if $cycle > $cycles;
+	print BRIGHT_YELLOW if $cycle > $cycles;
 	print "$cycle", RESET, "/$cycles";
     } else {
-	print GREEN, uc($status), RESET;
+	print GREEN, "WARMUP/PREP", BRIGHT_YELLOW;
     }
     print "\n";
 
+    # numeric (centered) countdown
+    if ($status eq "rest") { print BRIGHT_GREEN; }
+    if ($status eq "exercice") { print BRIGHT_RED; }
+    for (my $i = 0; $i < (($columns/2)-3); $i++) { print " "; }
+    print "$countdown\n";
+
     # countdown progress bar
+    print BOLD if $countdown < 6;
     #     (countdown * 100 / def countdown) 
     if ($status eq "rest") { print BRIGHT_GREEN; }
     if ($status eq "exercice") { print BRIGHT_RED; }
@@ -272,11 +302,9 @@ while (sleep(1)) {
 	if ($i < $chars) { print "#"; } 
 	else { print " "; }
     }
-    print "\n";
+    print RESET;
  
-    # numeric countdown 
-    print "        ", BOLD, $countdown, RESET "\n";
-
+    print "\n" if $debug;
 }
 
 ReadMode(0);
