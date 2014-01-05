@@ -23,8 +23,6 @@ use strict;
 
 use feature "switch";
 use Getopt::Long;
-use Time::Local;
-use File::HomeDir;
 use Term::ANSIColor qw(:constants);
 use Term::ReadKey;
 my $clear = `clear`; 
