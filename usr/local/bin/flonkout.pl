@@ -55,7 +55,7 @@ my $program_default = "tabata";
 my $lines_max = 4;
 
 ## SETUP
-my ($help, $getopt, $debug);
+my ($help, $getopt, $debug, $mute);
 
 
 # get standard opts with getopt
@@ -71,14 +71,17 @@ for (@ARGV) {
 
 if ($help) {
     print STDERR <<EOF;
-Usage: $0 [OPTIONS] 
+Usage: $0 [OPTIONS]
 
 Provides a workout timer (to be run in a term with a big font size).
 
+  -m, --mute                With or without sound.
+
 When running, type:
      E or Q to exit/quit.
-     M for menu/change program.
+     P to change program.
      R to restart current program.
+     M to (un)mute.
 
 Author: yeupou\@gnu.org
         http://yeupou.wordpress.com/
@@ -125,9 +128,11 @@ while (sleep(1)) {
     # user requested restart current program
     if ($input eq "R") { $program_need_update = 1; $input = ""; }
     # user requested to show next programs, bump offset and set to menu
-    if ($input eq "N") { $input_offset += $lines_max; $input = "M"; }
+    if ($input eq "N") { $input_offset += $lines_max; $input = "P"; }
     # idem reverse, bump back offset and set to menu
-    if ($input eq "B") { $input_offset = 0; $input = "M"; }
+    if ($input eq "B") { $input_offset = 0; $input = "P"; }
+    # user want to mute/unmute TODO
+    if ($input eq "M") { $input = ""; }
 
     ## UPDATES
     
@@ -193,8 +198,7 @@ while (sleep(1)) {
     print $clear unless $debug;
 
     ## PRINT MENU
-    if ($input eq "M" or 
-	$input eq "H" or 
+    if ($input eq "H" or 
 	$input eq "P" or
 	$input eq "N" or
 	$input eq "B") {
