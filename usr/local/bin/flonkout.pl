@@ -44,14 +44,15 @@ use Text::Wrap qw(&wrap $columns);
 # far limited to 9 (debug being excluded). I may implement .flonkoutrc 
 # support to enable to set the 9 to something more specific
 my %programs = (
-    tabata => '8,20,10',
-    tabata2 => '4,40,20',
+    'tabata 20' => '8,20,10',
+    'tabata 40' => '4,40,20',
     gibala => '12,60,75,180',
-    nada => '5,30,30',
+    '30/30' => '5,30,30',
     timmons => '3,20,120,120',
     debug => '3,2,10,3',
     );
-my $program_default = "tabata";
+my $default_program = "tabata 20";
+my $default_warmup = 10;
 my $lines_max = 4;
 
 ## SETUP
@@ -90,7 +91,7 @@ exit(1);
 }
 
 if ($debug) {
-    $program_default = "debug";
+    $default_program = "debug";
 }
 
 ## CHECK UP
@@ -142,7 +143,7 @@ while (sleep(1)) {
     # Update program
     if (!$program or $program_need_update) {
 	# no program set? take default
-	$program = $program_default unless $program;
+	$program = $default_program unless $program;
 
 	# get parameters
 	($cycles, $exercice, $rest, $warmup) = split(",", $programs{$program});
@@ -188,7 +189,7 @@ while (sleep(1)) {
 		# status unset mean we just started
 		# go for warmup. if warmup is null, then set it to 15s
 		$status = "warmup";
-		$warmup = 15 unless $warmup;
+		$warmup = $default_warmup unless $warmup;
 		$countdown = $hundred = ($warmup-1);
 	    }
 	}
