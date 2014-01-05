@@ -1,3 +1,10 @@
+stalag13-utils (3.100-20140105) unstable; urgency=low
+ 
+  * Add tabata workout script. Visual only for now.
+    A usr/local/bin/flonkout.pl
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Sun, 05 Jan 2014 17:05:47 +0100
+ 
 stalag13-utils (3.99+1-20140105) unstable; urgency=low
  
   * Upstream prerelease
