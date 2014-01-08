@@ -25,6 +25,7 @@ use feature "switch";
 use Getopt::Long;
 
 use Time::HiRes qw(sleep);
+use POSIX;
 
 use Term::ANSIColor qw(:constants);
 use Term::ReadKey;
@@ -107,7 +108,7 @@ if ($debug) {
 my ($counter_main_h, $counter_main_m, $counter_main_s);
 my ($counter_sub_h, $counter_sub_m, $counter_sub_s);
 my ($program, $cycles, $exercice, $rest, $warmup);
-my ($status, $countdown, $cycle, $hundred);
+my ($status, $countdown, $cycle, $hundred, $pause);
 my ($input, $input_offset, %program_id, $program_need_update);
 ReadMode("cbreak"); # use cbreak to read each char, but keeping ctrl-c working 
 
@@ -118,6 +119,8 @@ while (my $sleep = int(sleep(1))) {
     ## USER INPUT
     # get update
     $input .= uc(ReadKey(-1));
+
+    print "input: $input\n" if $debug;
     # but only ever keep the one latest char
     $input = substr($input, -1);
     # if using azerty without caps lock, may be confusing
@@ -130,6 +133,7 @@ while (my $sleep = int(sleep(1))) {
     $input = 7 if $input eq "è";
     $input = 8 if $input eq "_";
     $input = 9 if $input eq "ç";
+    print "input: $input\n" if $debug;
  
     # user requested exit
     if ($input eq "Q" or $input eq "E") { ReadMode(0); 	exit; }
@@ -140,11 +144,19 @@ while (my $sleep = int(sleep(1))) {
 	$input = ""; 
     }
     # user requested restart current program
-    if ($input eq "R") { $program_need_update = 1; $input = ""; }
+    if ($input eq "S") { $program_need_update = 1; $input = ""; }
+    # user requested reset script
+    if ($input eq "R") { $program_need_update = 1; $counter_main_h = $counter_main_m = $counter_main_s = 0; $input = ""; }
     # user requested to show next programs, bump offset and set to menu
     if ($input eq "N") { $input_offset += $lines_max; $input = "P"; }
     # idem reverse, bump back offset and set to menu
     if ($input eq "B") { $input_offset = 0; $input = "P"; }
+    # user want to pause
+    if ($input eq " ") { 
+	if ($pause) { $pause = 0; }
+	else { $pause = 1; }
+	$input = "";
+    }
     # user want to mute/unmute TODO
     if ($input eq "M") { $input = ""; }
 
@@ -169,16 +181,20 @@ while (my $sleep = int(sleep(1))) {
     # Update general timers (warmup is not counted)
     # Use time returned by sleep() just in case there was unexpected gap
     $counter_main_s += $sleep
-	unless $status eq "warmup";
+	unless ($status eq "warmup" 
+		or $status eq ""
+		or $pause);
     if ($counter_main_s > 59) { $counter_main_s = 0; $counter_main_m++; }
     if ($counter_main_m > 59) { $counter_main_m = 0; $counter_main_h++; }
 
-    $counter_sub_s += $sleep;
+    $counter_sub_s += $sleep
+	unless $pause;
     if ($counter_sub_s > 59) { $counter_sub_s = 0; $counter_sub_m++; }
     if ($counter_sub_m > 59) { $counter_sub_m = 0; $counter_sub_h++; }
 
     # Update countdown
-    $countdown--;
+    $countdown--
+	unless $pause;
     
     if ($countdown < 1) {
 	# change status
@@ -253,6 +269,10 @@ while (my $sleep = int(sleep(1))) {
 	print " ", RESET BOLD, "b", RESET BRIGHT_BLACK, "ack" if $input_offset > 0;
 	# Next if the offset wont be higher than the list
 	print " ", RESET BOLD, "n", RESET BRIGHT_BLACK, "ext" if ($input_offset + $lines_max) < (scalar(keys %programs));
+	# Allow to restart current program / everything
+       	print " re", RESET BOLD, "s", RESET BRIGHT_BLACK, "tart", RESET;
+	print " ", RESET BOLD, "r", RESET BRIGHT_BLACK, "eset", RESET; 
+	# quit
 	print " ", RESET BOLD, "q", RESET BRIGHT_BLACK, "uit", RESET, "\n"; 
 	next;
     }
@@ -260,34 +280,50 @@ while (my $sleep = int(sleep(1))) {
 
     ## PRINT INFO
 
-    # exercise  total
+    # exercise  total   time
     print BOLD;
     # print hour counter only if bigger than 1
     printf("%02d:", $counter_sub_h) if $counter_sub_h > 0;
-    print sprintf("%02d:%02d", $counter_sub_m,$counter_sub_s), RESET;
+    printf("%02d:%02d", $counter_sub_m,$counter_sub_s);
     print "   ";
 
     # total
-    print BRIGHT_BLACK BOLD;
+    print BRIGHT_BLACK;
     # print hour counter only if bigger than 1
     printf("%02d:", $counter_main_h) if $counter_main_h > 0;
-    print sprintf("%02d:%02d", $counter_main_m,$counter_main_s), RESET;
-    print "\n";
+    printf("%02d:%02d", $counter_main_m,$counter_main_s);
+    print "   ";
+
+    # current time
+    print strftime("%Hh%M", localtime());
+    print RESET, "\n";
+
+    # current time
     
-    # exercice name , cycle count or and if doing warmup)
-    print "$program "; 
-    unless ($status eq "warmup") { 
-	print BRIGHT_YELLOW if $cycle > $cycles;
-	print "$cycle", RESET, "/$cycles";
-    } else {
-	print GREEN, "WARMUP/PREP", BRIGHT_YELLOW;
+    # exercice name , cycle count or and if doing warmup or paused
+    print "\"$program\" "; 
+    if ($pause) {
+	# simple warn when in pause
+	print BRIGHT_CYAN, "PAUSE";
+    } else { 
+	if ($status eq "warmup") {
+	    # specific colors for WARMUP
+	    print BRIGHT_CYAN "WARMUP/PREP"; 
+	} else {
+	    # otherwise print cycle count
+	    print BRIGHT_YELLOW if $cycle > $cycles;
+	    print "$cycle", RESET, "/$cycles";
+	}
     }
     print "\n";
 
     # numeric (centered) countdown
     print BOLD if $countdown < 6;
-    if ($status eq "rest") { print BRIGHT_GREEN; }
-    if ($status eq "exercice") { print BRIGHT_RED; }
+    given ($status) {
+	when ("rest") { print BRIGHT_GREEN; }
+	when ("exercice") { print BRIGHT_RED; }
+	when ("warmup") { print BRIGHT_YELLOW; }
+    }
     for (my $i = 0; $i < (($columns/2)-3); $i++) { print " "; }
     print "$countdown\n";
 
