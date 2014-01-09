@@ -164,7 +164,7 @@ if (scalar(@valid_songs) > 0) {
 unless ($song) {
     $song = $fallback;
     print "No valid file in $songs, use $fallback\n" if $debug;
-    die "Fallback $fallback not readable, unable to find an appropriate song to play, dying" unless -r $fallback;
+    die "Fallback $fallback not readable, unable to find an appropriate song to play. Exiting" unless -r $fallback;
 }
 
 # same idea here, check if we can find a short word in $dict, if not, exit
@@ -311,8 +311,9 @@ system($mixer, "-q", "set", "Master", "unmute");
 system($mixer, "-q", "set", "PCM", "unmute");
 
 # save current volume setup, yes, this is über ugly, please FIXME
-my $mixer_volume_before = "50";
-my $mixer_volume_pcm_before = "50";
+my $mixer_not_found = "NOT FOUND";
+my $mixer_volume_before = $mixer_not_found;
+my $mixer_volume_pcm_before = $mixer_not_found;
 open(MIXER, "$mixer get Master |");
 while (<MIXER>) {
     next unless /.*\[(\d*)%\].*/;
@@ -328,13 +329,15 @@ while (<MIXER>) {
 }
 close(MIXER);
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
+die "Not able to find Master mixer. Exiting" if $mixer_volume_before eq $mixer_not_found; 
 
 # Put PCM at 100%, start master volume at volume-max (default: 100%) - 48,
 # at least 10%
 my $mixer_volume = ($volume_max-48);
 $mixer_volume = 10 if $mixer_volume < 10;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
-system($mixer, "-q", "set", "PCM", "100%");
+system($mixer, "-q", "set", "PCM", "100%")
+    unless $mixer_volume_pcm_before eq $mixer_not_found;
 
 ## ACTUALLY SOUND THE ALARM
 # start (silently) the song player in a child so we can keep control
@@ -423,7 +426,8 @@ print "Killing $pid\n" if $debug;
 
 # Reset the volume to previous values
 system($mixer, "-q", "set", "Master", $mixer_volume_before."%");
-system($mixer, "-q", "set", "PCM", $mixer_volume_pcm_before."%");
+system($mixer, "-q", "set", "PCM", $mixer_volume_pcm_before."%")
+    unless $mixer_volume_pcm_before eq $mixer_not_found;
 
 print "Hum, well done. You may now drink a coffee.\n";
 

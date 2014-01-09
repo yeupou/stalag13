@@ -1,3 +1,9 @@
+stalag13-utils (3.105+1-20140109) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 09 Jan 2014 13:10:36 +0100
+ 
 stalag13-utils (3.105-20140109) unstable; urgency=low
  
   * Cosmetics. Use ESC/DEL/PAGEUP/PAGEDOWN to get user input. Output on only 3 lines instead of 4. Warning if window not large enough
