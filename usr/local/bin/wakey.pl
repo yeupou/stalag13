@@ -332,7 +332,7 @@ system($mixer, "-q", "set", "PCM", "unmute")
 # Put PCM at 100%, start master volume at current - 50,
 # at least 20%
 my $mixer_volume = ($mixer_volume_before-60);
-$mixer_volume = 20 if $mixer_volume < 20;
+$mixer_volume = 25 if $mixer_volume < 25;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
 system($mixer, "-q", "set", "PCM", "100%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
