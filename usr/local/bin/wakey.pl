@@ -398,7 +398,6 @@ while ($valid_exit < 300 && $word ne $input) {
 
     # at this point, input is validated:
     print GREEN, $input, RESET if $input;
-    print "\n"; 
 
     # save for later current input
     $previous_input = $input;
