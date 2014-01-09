@@ -58,6 +58,7 @@ my %programs = (
 my $default_program = "tabata 20";
 my $default_warmup = 10;
 my $lines_max = 4;
+my $refresh_delay = 0.4;
 
 ## SETUP
 my ($help, $getopt, $debug, $mute);
@@ -118,7 +119,7 @@ ReadMode("cbreak"); # use cbreak to read each char, but keeping ctrl-c working
 # loop every second until forcefully quit 
 # (user interface will be one sec delayed, this an acceptable drawback)
 $|++;
-while (my $sleep = int(sleep(1))) {
+while (my $sleep = sleep($refresh_delay)) {
     ## USER INPUT
 
     # get keystrokes. try to get a full sequence to enable access to
@@ -212,7 +213,7 @@ while (my $sleep = int(sleep(1))) {
     if ($counter_sub_m > 59) { $counter_sub_m = 0; $counter_sub_h++; }
 
     # Update countdown
-    $countdown--
+    $countdown -= $sleep
 	unless $pause;
     
     if ($countdown < 1) {
@@ -340,7 +341,7 @@ while (my $sleep = int(sleep(1))) {
 	when ("exercice") { print BRIGHT_RED; }
 	when ("warmup") { print BRIGHT_YELLOW; }
     }
-    print $countdown." ";
+    print int($countdown)." ";
 
     # countdown progress bar
     #   main bar from 100% to 0%:
@@ -361,10 +362,17 @@ while (my $sleep = int(sleep(1))) {
     }
     
     # loop for the lenght of term size
-    for (my $i = (length($countdown)+1); $i < $columns; $i++) {
-	if ($i < $progressbar_main) { print "|"; } 
-	elsif ($i < $progressbar_sub) { print "_"; }
-	else { print " "; }
+    for (my $i = (length(int($countdown))+1); $i < $columns; $i++) {
+	if ($i < $progressbar_main) { 
+	    print "|"; 
+	    next;
+	} 
+	if ($i < $progressbar_sub) { 
+	    print "_"; 
+	    next;
+	}
+	# unlikely to get here
+	print " "; 
     }   
     print RESET;
  
