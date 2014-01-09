@@ -26,10 +26,11 @@ use strict;
 
 use Getopt::Long;
 use Time::Local;
+use POSIX;
 use File::HomeDir;
 use Term::ANSIColor qw(:constants);
 use Term::ReadKey;
-my ($columns) = GetTerminalSize();;
+my ($columns) = GetTerminalSize();
 my $clear = `clear`;
 use Text::Wrap qw(&wrap $columns);
 
@@ -40,7 +41,8 @@ my $beep = "/usr/share/sounds/KDE-Sys-App-Positive.ogg";
 my $songs = File::HomeDir->my_home()."/.wakey";
 my $player = "/usr/bin/mplayer";
 my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
-my $mixer = "/usr/bin/amixer";
+my $mixer_alsa = "/usr/bin/amixer";
+my $mixer_oss = 0;
 my $volume_max = "80";
 my $dict = "/usr/share/dict/words";
 
@@ -99,8 +101,10 @@ player ($player) supports.
 For sound volume  consistency, you should run something like:
    cd ~/.wakey && normalize-audio -b *
 
-To manipulate volume, it expects $mixer to be properly set up, with
-a 'Master' control. Time cannot exceed 23 hours in the future.
+To manipulate volume, it expects $mixer_alsa to be properly set up, with
+a 'Master' control. It it fails, it will try to fallback on OSS Audio::Mixer.
+
+Time cannot exceed 23 hours in the future.
 
   General:
   -t, --timer                Work as a timer (alike \`sleep\`).
@@ -117,24 +121,18 @@ exit(1);
 # make sure we will able to do expected job when the time will be up
 # (and doing so, select the song about to be played later)
 
-# check if we are not using a powersave plan that may cause the box to 
-# sleep or hibernate
-# # check if we are not using a powersave plan that may cause the box to 
-# # sleep or hibernate: FIXME, is there any really portable way to do so?
-# http://lists.freedesktop.org/archives/xdg/2010-February/011309.html
-# system("qdbus",
-#        "org.freedesktop.PowerManagement.Inhibit",
-#        "/org/freedesktop/PowerManagement/Inhibit",
-#        "org.freedesktop.PowerManagement.Inhibit.Inhibit",
-#        "wakey.pl",
-#        "Would kill me") unless $ignore_powersave;
-
 
 # check if we can run the player
 die "Unable to execute $player. Exiting" unless -x $player; 
 
 # check if we can run the mixer
-die "Unable to execute $mixer. Exiting" unless -x $mixer; 
+unless (-x $mixer_alsa) {
+    # If we cannot, use basic perl module. FIXME: this is not great
+    # since I dont even understand how to unmute some channel with this
+    $mixer_alsa = "/bin/false";
+    $mixer_oss = 1;
+    use Audio::Mixer;
+}
 
 # lists songs in ~/.wakey
 my $song;
@@ -174,7 +172,8 @@ while (<DICT>) {
 }
 close(DICT);
 die "Unable to find words in $dict, dying" if scalar(@words) < 1;
-my $word = $words[rand @words];
+# take one random, lowercase
+my $word = lc($words[rand @words]);
 chomp($word);
 
 # now play a sound (without bothering changing volume or anything else,
@@ -219,35 +218,45 @@ print "initial delta $delta\n" if $debug;
 
 # loop until elapsed time reached what was requested
 while ($requested > $elapsed) {
+    # keep up to date win size
+    ($columns) = GetTerminalSize();
 
-    # provide nice info (before any computation so it is brought immediatly,
+    # clean minimalistic layout
+    # (before any computation so it is brought immediatly,
     # while the clear() is made below)
-    print BOLD, "\tWakey Wakey (not yet)", RESET "\n\n";
+    
+    # current time centered
+    print DARK sprintf("%*s", int(($columns-5)/2), "")." ".
+	strftime("%Hh%M", localtime())."\n", RESET;
 
+    # line break
+    print "\n";
 
-    # show ~ elapsed time 
-    print BRIGHT_BLACK, "\t~ ";
+    # elapsed justified left
+    my $already = " ";
+    my $already_color = CYAN;
     my $really_elapsed = int((($wait_count * $wait) / 60));
     if ($really_elapsed < 60) {
 	# at least in minutes
-	print $really_elapsed."m";
+	$already .= $really_elapsed."m";
     } else {
 	# or in hours
-	print int(($really_elapsed / 60))."h";
+	$already .= int(($really_elapsed / 60))."h";
     }
-    print RESET "\n";
+    $already .= " already";
 
-
+    # remaining time justified right
     # determine if we ll count the remaining time in s, m or h, set 
     # a color:
     # by default in seconds and yellow
-    print YELLOW;
+    my $left;
+    my $left_color = BRIGHT_YELLOW;
     my $still = ($requested - $elapsed);
     my $still_unit = "s";
     if ($still  > 180 && $still < 10800) {
 	# more than 3m and less than 3h:
-	# in cyan if superior to 30 min
-      	print CYAN if $still > 1800;
+	# in green if superior to 30 min
+      	$left_color = BRIGHT_GREEN if $still > 1800;
 	# in minutes 
 	$still = int(($still / 60));
 	$still_unit = "m";
@@ -255,15 +264,17 @@ while ($requested > $elapsed) {
     if ($still > 10799) {
 	# more than 3h:
 	# in green unless superior to 9h30, otherwise in red
-	unless ($still > 34200) { print GREEN; } else { print RED; }
+	unless ($still > 34200) { $left_color = GREEN; } else { $left_color = RED; }
 	# in hours	
 	$still = int(($still / 3600));
 	$still_unit = "h";
     }
+    $left = $still.$still_unit." left ";
+    
+    print $already_color, "$already", RESET
+	sprintf("%-*s", int($columns-(length($already)+length($left))), "")
+	, $left_color, "$left", RESET "\n\n";
 
-
-    # show ~ remaining time 
-    print "\t\t... ~ ".$still.$still_unit, RESET "\n\n";
 
     # show progression bar
     # available chars = width - 4 chars
@@ -273,14 +284,14 @@ while ($requested > $elapsed) {
     print int($percent)."% = ".$chars." chars while ".($columns-4)." chars = 100%\n" if $debug;
 
     print BOLD, " [";
-    for (my $i = 0; $i <= ($columns-4); $i++) {
+    for (my $i = 1; $i <= ($columns-4); $i++) {
 	if ($i < $chars) {
-	    print "#";
+	    print "|";
 	} else {
-	    print ".";
+	    print "_";
 	}
     }
-    print "]", RESET "\n";
+    print "] ", RESET "\n";
 
     # now update
     sleep $wait;
@@ -307,35 +318,49 @@ while ($requested > $elapsed) {
 my $mixer_not_found = "NOT FOUND";
 my $mixer_volume_before = $mixer_not_found;
 my $mixer_volume_pcm_before = $mixer_not_found;
-open(MIXER, "$mixer get Master |");
+# alsa
+open(MIXER, "$mixer_alsa get Master |");
 while (<MIXER>) {
     next unless /.*\[(\d*)%\].*/;
     $mixer_volume_before = $1;
     last;
 }
 close(MIXER);
-open(MIXER, "$mixer get PCM |");
+# oss
+($mixer_volume_before,) = Audio::Mixer::get_cval('vol')
+    if $mixer_oss;
+
+open(MIXER, "$mixer_alsa get PCM |");
 while (<MIXER>) {
     next unless /.*\[(\d*)%\].*/;
     $mixer_volume_pcm_before = $1;
     last;
 }
 close(MIXER);
+
+# fallback
+($mixer_volume_pcm_before,) = Audio::Mixer::get_cval('pcm')
+    if $mixer_oss;
+
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
-die "Not able to find Master mixer. Exiting" if $mixer_volume_before eq $mixer_not_found; 
+die "Not able to find Master mixer volume. Exiting" if $mixer_volume_before eq $mixer_not_found; 
 
 # make sure Master and PCM mixers are not mute
-system($mixer, "-q", "set", "Master", "unmute");
-system($mixer, "-q", "set", "PCM", "unmute")
+# alsa
+system($mixer_alsa, "-q", "set", "Master", "unmute");
+system($mixer_alsa, "-q", "set", "PCM", "unmute")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
+# oss = no way found to do this with Audio::Mixer
 
 # Put PCM at 100%, start master volume at current - 25,
 # at least 40%
 my $mixer_volume = ($mixer_volume_before-25);
 $mixer_volume = 40 if $mixer_volume < 40;
-system($mixer, "-q", "set", "Master", $mixer_volume."%");
-system($mixer, "-q", "set", "PCM", "100%")
+system($mixer_alsa, "-q", "set", "Master", $mixer_volume."%");
+system($mixer_alsa, "-q", "set", "PCM", "100%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
+Audio::Mixer::set_cval("vol", $mixer_volume) if $mixer_oss;
+Audio::Mixer::set_cval("pcm", 100) if $mixer_oss;
 
 ## ACTUALLY SOUND THE ALARM
 # start (silently) the song player in a child so we can keep control
@@ -369,7 +394,8 @@ while ($valid_exit < 300 && $word ne $input) {
 	($valid_exit%2) && 
 	($mixer_volume < $volume_max)) {
 	$mixer_volume += 2;
-	system($mixer, "-q", "set", "Master", $mixer_volume."%");
+	system($mixer_alsa, "-q", "set", "Master", $mixer_volume."%");
+	Audio::Mixer::set_cval('vol', $mixer_volume);
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
 
@@ -422,9 +448,13 @@ kill('KILL', $pid);
 print "Killing $pid\n" if $debug;
 
 # Reset the volume to previous values
-system($mixer, "-q", "set", "Master", $mixer_volume_before."%");
-system($mixer, "-q", "set", "PCM", $mixer_volume_pcm_before."%")
+# alsa
+system($mixer_alsa, "-q", "set", "Master", $mixer_volume_before."%");
+system($mixer_alsa, "-q", "set", "PCM", $mixer_volume_pcm_before."%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
+# oss
+Audio::Mixer::set_cval('vol', $mixer_volume_before);
+Audio::Mixer::set_cval('pcm', $mixer_volume_pcm_before);
 
 print "Hum, well done. You may now drink a coffee.\n";
 
