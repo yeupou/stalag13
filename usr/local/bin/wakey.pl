@@ -41,7 +41,7 @@ my $songs = File::HomeDir->my_home()."/.wakey";
 my $player = "/usr/bin/mplayer";
 my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
 my $mixer = "/usr/bin/amixer";
-my $volume_max = "100";
+my $volume_max = "80";
 my $dict = "/usr/share/dict/words";
 
 my ($help, $getopt, $debug,
@@ -104,11 +104,9 @@ a 'Master' control. Time cannot exceed 23 hours in the future.
 
   General:
   -t, --timer                Work as a timer (alike \`sleep\`).
-      --ignore-powersave     Do not test whether the computer is using 
-                             a powersave plan that may cause it to sleep
-			     or hibernate (NB: currently broken anyway).
       --volume-max=nn        Set maximum volume in percent, in case
-                             $volume_max% is really too loud on your setup.
+                             $volume_max% is too loud or silen on 
+                             your setup.
 
 Author: yeupou\@gnu.org
         http://yeupou.wordpress.com/
@@ -306,10 +304,6 @@ while ($requested > $elapsed) {
 ## PREPARE SOUNDING THE ALARM
 # Adjust sound volumes
 
-# make sure Master and PCM mixers are not mute
-system($mixer, "-q", "set", "Master", "unmute");
-system($mixer, "-q", "set", "PCM", "unmute");
-
 # save current volume setup, yes, this is über ugly, please FIXME
 my $mixer_not_found = "NOT FOUND";
 my $mixer_volume_before = $mixer_not_found;
@@ -331,9 +325,14 @@ close(MIXER);
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
 die "Not able to find Master mixer. Exiting" if $mixer_volume_before eq $mixer_not_found; 
 
-# Put PCM at 100%, start master volume at volume-max (default: 100%) - 48,
+# make sure Master and PCM mixers are not mute
+system($mixer, "-q", "set", "Master", "unmute");
+system($mixer, "-q", "set", "PCM", "unmute")
+    unless $mixer_volume_pcm_before eq $mixer_not_found;
+
+# Put PCM at 100%, start master volume at volume-max (default: 80%) - 60,
 # at least 10%
-my $mixer_volume = ($volume_max-48);
+my $mixer_volume = ($volume_max-60);
 $mixer_volume = 10 if $mixer_volume < 10;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
 system($mixer, "-q", "set", "PCM", "100%")
