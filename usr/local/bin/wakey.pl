@@ -105,8 +105,7 @@ a 'Master' control. Time cannot exceed 23 hours in the future.
   General:
   -t, --timer                Work as a timer (alike \`sleep\`).
       --volume-max=nn        Set maximum volume in percent, in case
-                             $volume_max% is too loud or silen on 
-                             your setup.
+                             $volume_max% is too loud/silent on your setup.
 
 Author: yeupou\@gnu.org
         http://yeupou.wordpress.com/
@@ -330,10 +329,10 @@ system($mixer, "-q", "set", "Master", "unmute");
 system($mixer, "-q", "set", "PCM", "unmute")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
 
-# Put PCM at 100%, start master volume at volume-max (default: 80%) - 60,
-# at least 10%
-my $mixer_volume = ($volume_max-60);
-$mixer_volume = 10 if $mixer_volume < 10;
+# Put PCM at 100%, start master volume at current - 50,
+# at least 20%
+my $mixer_volume = ($mixer_volume_before-60);
+$mixer_volume = 20 if $mixer_volume < 20;
 system($mixer, "-q", "set", "Master", $mixer_volume."%");
 system($mixer, "-q", "set", "PCM", "100%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
@@ -362,7 +361,7 @@ my $input;
 my $previous_input;
 
 while ($valid_exit < 300 && $word ne $input) {
-    print "Run $valid_exit\n" if $debug;
+    print "Run $valid_exit (mixer: $mixer_volume)\n" if $debug;
 
     # after 5s, increase sound volume of 2% every 2s, until volume-max %
     # avoiding anychange if the user type anything
