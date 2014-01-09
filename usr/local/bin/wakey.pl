@@ -363,13 +363,12 @@ my $previous_input;
 while ($valid_exit < 300 && $word ne $input) {
     print "Run $valid_exit (mixer: $mixer_volume)\n" if $debug;
 
-    # after 5s, increase sound volume of 2% every 2s, until volume-max %
+    # increase sound volume of 2% every 2s, until volume-max %
     # avoiding anychange if the user type anything
-    if (($valid_exit > 5) &&
-	($previous_input eq $input) &&
+    if (($previous_input eq $input) &&
 	($valid_exit%2) && 
 	($mixer_volume < $volume_max)) {
-	$mixer_volume = ($mixer_volume+2);
+	$mixer_volume += 2;
 	system($mixer, "-q", "set", "Master", $mixer_volume."%");
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
