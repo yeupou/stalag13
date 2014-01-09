@@ -83,10 +83,13 @@ Provides a workout timer (to be run in a term with a big font size).
   -m, --mute                With or without sound.
 
 When running, type:
-     E or Q to exit/quit.
-     P to change program.
-     R to restart current program.
-     M to (un)mute.
+  Escape to exit/quit.
+       P to change program, with PageUp and PageDown to navigate
+         in the list
+       R to restart current program.
+  Delete to reset everthing
+Spacebar to (un)pause
+       M to (un)mute.
 
 Author: yeupou\@gnu.org
         http://yeupou.wordpress.com/
@@ -117,54 +120,70 @@ ReadMode("cbreak"); # use cbreak to read each char, but keeping ctrl-c working
 $|++;
 while (my $sleep = int(sleep(1))) {
     ## USER INPUT
-    # get update
-    $input .= uc(ReadKey(-1));
 
-    print "input: $input\n" if $debug;
-    # but only ever keep the one latest char
-    $input = substr($input, -1);
-    # if using azerty without caps lock, may be confusing
-    $input = 1 if $input eq "&";
-    $input = 2 if $input eq "é";
-    $input = 3 if $input eq "\"";
-    $input = 4 if $input eq "'";
-    $input = 5 if $input eq "(";
-    $input = 6 if $input eq "-";
-    $input = 7 if $input eq "è";
-    $input = 8 if $input eq "_";
-    $input = 9 if $input eq "ç";
-    print "input: $input\n" if $debug;
- 
-    # user requested exit
-    if ($input eq "Q" or $input eq "E") { ReadMode(0); 	exit; }
-    # user request an ided program
+    # get keystrokes. try to get a full sequence to enable access to
+    # keys like DEL, etc
+    my $new_input;
+    while (my $key = ReadKey(-1)) { $new_input .= $key; }
+    # $input will only be touched on change and will not accumulate data
+    $input = $new_input if $new_input;
+    
+    print "input: '$input'   as typed: '$new_input'\n" if $debug;
+
+    # deal with complex chars coming from keys like ESC
+    given ($input) {
+	# FIXME: this is probably not portable.
+	# user requested exit with ESC
+	when ("\e") { ReadMode(0); exit(1); }
+	# user want to reset whole with DEL
+	when ("\e[3~") { $program_need_update = 1; $counter_main_h = $counter_main_m = $counter_main_s = 0; $input = ""; }  
+	# user requested to show next programs, bump offset and set to menu
+	# with PageDown
+	when ("\e[6~") { $input_offset += $lines_max; $input = "p"; }
+	# idem reverse, bump back offset and set to menu with PageUp
+	when ("\e[5~") { $input_offset = 0; $input = "p"; }
+    }
+    
+    # then deal with single chars, keeping only the latest, in lowerclass
+    $input = lc(substr($input, -1));
+
+    # accept counterpart without caps lock for the AZERTY layout
+    given ($input) {
+	when ("&") { $input = 1; }
+	when ("é") { $input = 2; }
+	when ("\"") { $input = 3; }
+	when ("'") { $input = 4; }
+	when ("(") { $input = 5; }
+	when ("-") { $input = 6; }
+	when ("è") { $input = 7; }
+	when ("_") { $input = 8; }
+	when ("ç") { $input = 9; }
+    }
+    # only numeric means a specific ided program.
     if ($input =~ /^\d$/ and exists($program_id{$input})) { 
 	$program = $program_id{$input};
 	$program_need_update = 1; 
 	$input = ""; 
     }
-    # user requested restart current program
-    if ($input eq "S") { $program_need_update = 1; $input = ""; }
-    # user requested reset script
-    if ($input eq "R") { $program_need_update = 1; $counter_main_h = $counter_main_m = $counter_main_s = 0; $input = ""; }
-    # user requested to show next programs, bump offset and set to menu
-    if ($input eq "N") { $input_offset += $lines_max; $input = "P"; }
-    # idem reverse, bump back offset and set to menu
-    if ($input eq "B") { $input_offset = 0; $input = "P"; }
-    # user want to pause
-    if ($input eq " ") { 
-	if ($pause) { $pause = 0; }
-	else { $pause = 1; }
-	$input = "";
+    
+    # otherwise that a regular menu option
+    given ($input) {
+	# user requested to quit with q
+	when ("q") { ReadMode(0); exit(1); }
+	# user requested restart current program
+	when ("r") { $program_need_update = 1; $input = ""; }
+	# user want to pause
+	when (" ") { 
+	    if ($pause) { $pause = 0; }
+	    else { $pause = 1; }
+	    $input = "";
+	}
+	# user want to mute/unmute TODO
+	when ("m") { $input = ""; }
     }
-    # user want to mute/unmute TODO
-    if ($input eq "M") { $input = ""; }
-
+	
     ## UPDATES
     
-    # Check term size each run
-    my ($columns) = GetTerminalSize();;
-
     # Update program
     if (!$program or $program_need_update) {
 	# no program set? take default
@@ -229,11 +248,16 @@ while (my $sleep = int(sleep(1))) {
     ## CLEAR
     print $clear unless $debug;
 
+    # Check term size each run
+    my ($columns) = GetTerminalSize();
+    # we need at least 28 chars (circa first line's max)
+    if ($columns < 28) {
+	print BRIGHT_RED BOLD, "Reduce font-size or\nenlarge window!\n", RESET;
+	next;
+    }
+
     ## PRINT MENU
-    if ($input eq "H" or 
-	$input eq "P" or
-	$input eq "N" or
-	$input eq "B") {
+    if ($input eq "p") {
 	# any keep pressed that are not these will make thb e user return
 	# to regular printout
 	
@@ -257,23 +281,15 @@ while (my $sleep = int(sleep(1))) {
 		unless exists($program_id{$list});
 
 	    # list it
-	    print BOLD, $list, RESET ") ",BRIGHT_RED,"${this_exercice}",RESET,"-",BRIGHT_GREEN,"${this_rest}",RESET,"\t$this_program\n";
+	    print BOLD, $list, RESET ") ",BRIGHT_RED,"${this_exercice}",RESET,"-",BRIGHT_GREEN,"${this_rest}",RESET," $this_program";
 
 	    # list only 3 at once
 	    last if ($list - $input_offset) >= ($lines_max - 1);
 
-
+	    # start newline only if more data is to be printed
+	    print "\n";
 	}
 	
-	# Back if we are not at offset null
-	print " ", RESET BOLD, "b", RESET BRIGHT_BLACK, "ack" if $input_offset > 0;
-	# Next if the offset wont be higher than the list
-	print " ", RESET BOLD, "n", RESET BRIGHT_BLACK, "ext" if ($input_offset + $lines_max) < (scalar(keys %programs));
-	# Allow to restart current program / everything
-       	print " re", RESET BOLD, "s", RESET BRIGHT_BLACK, "tart", RESET;
-	print " ", RESET BOLD, "r", RESET BRIGHT_BLACK, "eset", RESET; 
-	# quit
-	print " ", RESET BOLD, "q", RESET BRIGHT_BLACK, "uit", RESET, "\n"; 
 	next;
     }
 
@@ -317,23 +333,22 @@ while (my $sleep = int(sleep(1))) {
     }
     print "\n";
 
-    # numeric (centered) countdown
+    # numeric countdown
     print BOLD if $countdown < 6;
     given ($status) {
 	when ("rest") { print BRIGHT_GREEN; }
 	when ("exercice") { print BRIGHT_RED; }
 	when ("warmup") { print BRIGHT_YELLOW; }
     }
-    for (my $i = 0; $i < (($columns/2)-3); $i++) { print " "; }
-    print "$countdown\n";
+    print $countdown." ";
 
     # countdown progress bar
     #     (countdown * 100 / def countdown) 
     my $percent = (($countdown*100)/$hundred);
     my $chars = int(($columns/100)*$percent);
-    for (my $i = 0; $i < $columns; $i++) {
-	if ($i < $chars) { print "#"; } 
-	else { print " "; }
+    for (my $i = (length($countdown)+1); $i < $columns; $i++) {
+	if ($i < $chars) { print "|"; } 
+	else { print "_"; }
     }
     print RESET;
  
