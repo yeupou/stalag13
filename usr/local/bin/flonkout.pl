@@ -17,7 +17,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 #
-# requires debian packages libfile-homedir-perl libterm-readkey-perl
+# requires debian packages libterm-readkey-perl
 
 use strict;
 use feature "switch";
@@ -53,7 +53,7 @@ my %programs = (
     gibala => '12,60,75,180',
     '30/30' => '5,30,30',
     timmons => '3,20,120,120',
-    debug => '2,2,8,3',
+    debug => '2,5,20,3',
     );
 my $default_program = "tabata 20";
 my $default_warmup = 10;
@@ -343,13 +343,29 @@ while (my $sleep = int(sleep(1))) {
     print $countdown." ";
 
     # countdown progress bar
-    #     (countdown * 100 / def countdown) 
-    my $percent = (($countdown*100)/$hundred);
-    my $chars = int(($columns/100)*$percent);
-    for (my $i = (length($countdown)+1); $i < $columns; $i++) {
-	if ($i < $chars) { print "|"; } 
-	else { print "_"; }
+    #   main bar from 100% to 0%:
+    #     1% = (current countdown * 100 / total countdown) 
+    my $percent = (($countdown * 100) / $hundred);
+    #     length = term size / 100 * 1%
+    my $progressbar_main = int(($columns / 100) * $percent);
+    #   sub bar from 10/5s to 0s, for countdown at least bigger than 9
+    #     by default at least size of the term
+    my $progressbar_sub = $columns;
+    if ($hundred > 9) { 
+	my $this_hundred = 10;
+	$this_hundred = 5 if $hundred < 40;
+	# same as before but on one line
+	$progressbar_sub = int($columns / 100 * 
+			       (($countdown * 100) / $this_hundred))
+	    if $countdown <= $this_hundred;
     }
+    
+    # loop for the lenght of term size
+    for (my $i = (length($countdown)+1); $i < $columns; $i++) {
+	if ($i < $progressbar_main) { print "|"; } 
+	elsif ($i < $progressbar_sub) { print "_"; }
+	else { print " "; }
+    }   
     print RESET;
  
     print "\n" if $debug;
