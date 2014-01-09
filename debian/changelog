@@ -1,3 +1,12 @@
+stalag13-utils (3.106-20140109) unstable; urgency=low
+ 
+  * Cosmetics. Ignore PCM mixer if unable to find it. Start volume at min 40%, set default max volume to 80% (safer than 100).
+    M Makefile
+    M usr/local/bin/flonkout.pl
+    M usr/local/bin/wakey.pl
+ 
+ -- Mathieu Roy <klink@kparcell.stalag13.ici>  Thu, 09 Jan 2014 14:25:53 +0100
+ 
 stalag13-utils (3.105+18-20140109) unstable; urgency=low
  
   * Upstream prerelease
