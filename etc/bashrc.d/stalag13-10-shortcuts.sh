@@ -52,7 +52,7 @@ pluck() {
         esac
 
         if [[ ! `which $c` ]]; then
-            echo "$0: command not found: \`$c'" >&2
+            echo "$0: command not found: \``basename $c`'" >&2
             continue
         fi
 	
