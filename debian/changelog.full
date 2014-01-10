@@ -1,3 +1,15 @@
+stalag13-utils (3.111+3-20140110) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 10 Jan 2014 17:09:01 +0100
+ 
+stalag13-utils (3.111+3-20140110) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 10 Jan 2014 17:08:52 +0100
+ 
 stalag13-utils (3.111-20140110) unstable; urgency=low
  
   * Support of OSS conditional to absence of ALSA

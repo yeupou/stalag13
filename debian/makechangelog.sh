@@ -39,9 +39,10 @@ echo " " >> tmp
 
 # release
 if [ ! $3 ]; then
-    cat tmp changelog.full > tmp2 && mv tmp2 changelog.full
+    cat tmp changelog.releases > tmp2 && mv tmp2 changelog.releases
 fi
-cat tmp changelog.prereleases > tmp3 && mv tmp3 changelog.prereleases
+# prerelease
+cat tmp changelog.full > tmp3 && mv tmp3 changelog.full
 
 rm -f tmp*
 
