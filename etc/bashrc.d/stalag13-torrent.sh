@@ -1,8 +1,8 @@
 # Wild assumption?
 if [ -d /home/torrent/watch ]; then
     TORRENT_BASEDIR=/home/torrent
-else
-    TORRENT_BASEDIR=/mnt/lan/gate.stalag13.ici
+else if 
+    TORRENT_BASEDIR=$LAN
 fi
 
 # Run

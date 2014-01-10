@@ -7,10 +7,11 @@ alias l='ls -CF'
 # directories (no test whatsoever; the link to the NFS server is broken, 
 # the process would get stalled) 
 LAN=/mnt/lan/stalag13.ici
-if [[ ! -e /mnt/lan/gate.stalag13.ici ]]; then LAN=/mnt/lan/gate.stalag13.ici fi;
+if [[ ! -e /mnt/lan/gate.stalag13.ici ]]; then LAN=/mnt/lan/gate.stalag13.ici; fi
 alias musique='cd $LAN/musique'
 alias videos='cd $LAN/videos'
 alias suxor='cd $LAN/suxor'
+
 
 # cleanup
 function mrclean { 
