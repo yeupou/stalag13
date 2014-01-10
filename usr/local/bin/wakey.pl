@@ -398,14 +398,29 @@ while ($valid_exit < 300 && $word ne $input) {
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
 
-    # print colored title
-    if ($valid_exit%2) {
-	print ON_RED, WHITE, "\t\t\tWAKEY", RESET, BOLD, " wakey", RESET "\n\n";
-	print BOLD, "\twakey ", RESET, ON_RED, WHITE, "WAKEY", RESET "\n\n";
-    } else {
-	print ON_RED, WHITE, "\tWAKEY", RESET, BOLD, " wakey", RESET "\n\n";
-	print BOLD, "\t\t\twakey ", RESET, ON_RED, WHITE, "WAKEY", RESET "\n\n";
+    # print colored warning string 
+    my @colors = (BRIGHT_RED, BRIGHT_CYAN, BRIGHT_MAGENTA,
+		  BRIGHT_YELLOW, BRIGHT_BLUE, WHITE);
+    my $text = "wakey";
+
+    for (my $h = 1; $h < 5; $h++) {
+	# random color for each string
+	print BOLD, $colors[rand @colors];
+	# find random number being term size max - twice the string printed
+	my $random = int(rand($columns-((length($text)*2)+1)));
+	# randomize upper case/lower case
+	$text = uc($text) if ($random%2);
+	if ($h%2) {
+	    # first one out of two can be justified with random number
+	    printf("%*s", $random, $text);
+	    print RESET;
+	} else {
+	    # second will be attached to the first one and go for a two
+	    # lines break
+	    print " ".$text, RESET "\n\n";
+	}
     }
+#    print RESET "\n\n";
 
     # provide the word for the user to type
     print "$word: ";
@@ -422,7 +437,7 @@ while ($valid_exit < 300 && $word ne $input) {
     } 
 
     # at this point, input is validated:
-    print GREEN, $input, RESET if $input;
+    print BOLD BRIGHT_GREEN, $input, RESET if $input;
     print "\n";
 
     # save for later current input
