@@ -45,11 +45,12 @@ pluck() {
             *.rar) c='unrar x' ;;
             *.xz)  c='unxz' ;;
             *.zip) c='unzip' ;;
-            *)     echo "$0: unrecognized file extension: \`$i'" >&2
+            *)    
+	    echo "$0: unrecognized file extension: \`$i'" >&2
             continue ;;
         esac
 
-        if [[ ! `$c` ]]; then
+        if [[ ! `which $c` ]]; then
             echo "$0: command not found: \`$c'" >&2
             continue
         fi
