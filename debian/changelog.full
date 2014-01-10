@@ -1,3 +1,15 @@
+stalag13-utils (3.112-20140110) unstable; urgency=low
+ 
+  * Cleanups
+    A debian/changelog.full
+    A debian/changelog.releases
+    M debian/changelog.full
+    M debian/.gitignore
+    M debian/makechangelog.sh
+    M Makefile
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 10 Jan 2014 17:10:01 +0100
+ 
 stalag13-utils (3.111+3-20140110) unstable; urgency=low
  
   * Upstream prerelease
