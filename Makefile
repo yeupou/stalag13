@@ -33,6 +33,7 @@ log:
 deb-prerelease:
 	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"
 	debian/makechangelog.sh $(MAJORVERSION) $(VERSION) $(NEWPREVERSION)
+	cd debian && rm -f changelog && ln -s changelog.full changelog
 	echo $(VERSION) > $(LATESTIS)
 	echo $(NEWPREVERSION) >> $(LATESTIS)
 	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(MAJORVERSION).$(VERSION))'
@@ -44,6 +45,7 @@ deb-prerelease:
 deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
+	cd debian && rm -f changelog && ln -s changelog.releases changelog
 	echo $(NEWVERSION) > $(LATESTIS)
 	echo 0 >> $(LATESTIS)
 	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\\*\ //;` (new release $(MAJORVERSION).$(NEWVERSION))"
