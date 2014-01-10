@@ -133,7 +133,8 @@ unless (-x $mixer_alsa) {
     # since I dont even understand how to unmute some channel with this
     $mixer_alsa = "/bin/false";
     $mixer_oss = 1;
-    use Audio::Mixer;
+    require Audio::Mixer;
+    import Audio::Mixer;
 }
 
 # lists songs in ~/.wakey
