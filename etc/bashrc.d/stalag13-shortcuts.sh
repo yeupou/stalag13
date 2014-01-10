@@ -6,9 +6,11 @@ alias l='ls -CF'
 
 # directories (no test whatsoever; the link to the NFS server is broken, 
 # the process would get stalled) 
-alias musique='cd /mnt/lan/gate.stalag13.ici/musique'
-alias videos='cd /mnt/lan/gate.stalag13.ici/videos'
-alias suxor='cd /mnt/lan/gate.stalag13.ici/suxor'
+LAN=/mnt/lan/stalag13.ici
+if [[ ! -e /mnt/lan/gate.stalag13.ici ]]; then LAN=/mnt/lan/gate.stalag13.ici fi;
+alias musique='cd $LAN/musique'
+alias videos='cd $LAN/videos'
+alias suxor='cd $LAN/suxor'
 
 # cleanup
 function mrclean { 
@@ -47,6 +49,11 @@ pluck() {
             continue ;;
         esac
 
+        if [[ ! `$c` ]]; then
+            echo "$0: command not found: \`$c'" >&2
+            continue
+        fi
+	
         command $c "$i"
     done
 }

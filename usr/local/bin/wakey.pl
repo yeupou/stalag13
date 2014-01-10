@@ -18,6 +18,7 @@
 #   USA
 #
 # requires debian packages libfile-homedir-perl libterm-readkey-perl
+#   libaudio-mixer-perl (for OSS)
 # 
 # for sound volume  consistency, you should run 
 #       cd ~/.wakey && normalize-audio -b *
@@ -101,8 +102,9 @@ player ($player) supports.
 For sound volume  consistency, you should run something like:
    cd ~/.wakey && normalize-audio -b *
 
-To manipulate volume, it expects $mixer_alsa to be properly set up, with
-a 'Master' control. It it fails, it will try to fallback on OSS Audio::Mixer.
+To manipulate volume, it expects ALSA $mixer_alsa to be properly set up, 
+with a 'Master' control. It it fails, it will try to fallback on 
+OSS-compatible Audio::Mixer.
 
 Time cannot exceed 23 hours in the future.
 
@@ -327,8 +329,7 @@ while (<MIXER>) {
 }
 close(MIXER);
 # oss
-($mixer_volume_before,) = Audio::Mixer::get_cval('vol')
-    if $mixer_oss;
+($mixer_volume_before,) = Audio::Mixer::get_cval('vol') if $mixer_oss;
 
 open(MIXER, "$mixer_alsa get PCM |");
 while (<MIXER>) {
@@ -337,10 +338,8 @@ while (<MIXER>) {
     last;
 }
 close(MIXER);
-
-# fallback
-($mixer_volume_pcm_before,) = Audio::Mixer::get_cval('pcm')
-    if $mixer_oss;
+# oss
+($mixer_volume_pcm_before,) = Audio::Mixer::get_cval('pcm') if $mixer_oss;
 
 print "Volume before: Master ".$mixer_volume_before."%, PCM ".$mixer_volume_pcm_before."%\n" if $debug;
 die "Not able to find Master mixer volume. Exiting" if $mixer_volume_before eq $mixer_not_found; 
@@ -395,7 +394,7 @@ while ($valid_exit < 300 && $word ne $input) {
 	($mixer_volume < $volume_max)) {
 	$mixer_volume += 2;
 	system($mixer_alsa, "-q", "set", "Master", $mixer_volume."%");
-	Audio::Mixer::set_cval('vol', $mixer_volume);
+	Audio::Mixer::set_cval('vol', $mixer_volume) if $mixer_oss;
 	print "Set mixer to ".$mixer_volume."%\n" if $debug;
     }
 
@@ -453,8 +452,8 @@ system($mixer_alsa, "-q", "set", "Master", $mixer_volume_before."%");
 system($mixer_alsa, "-q", "set", "PCM", $mixer_volume_pcm_before."%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
 # oss
-Audio::Mixer::set_cval('vol', $mixer_volume_before);
-Audio::Mixer::set_cval('pcm', $mixer_volume_pcm_before);
+Audio::Mixer::set_cval('vol', $mixer_volume_before) if $mixer_oss;
+Audio::Mixer::set_cval('pcm', $mixer_volume_pcm_before) if $mixer_oss;
 
 print "Hum, well done. You may now drink a coffee.\n";
 

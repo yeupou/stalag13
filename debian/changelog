@@ -1,3 +1,9 @@
+stalag13-utils (3.109+1-20140110) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Fri, 10 Jan 2014 10:17:15 +0100
+ 
 stalag13-utils (3.109-20140109) unstable; urgency=low
  
   * force lowercase of words picked out of dict, support OSS if ALSA is not available (hence, support kFreeBSD), cosmetics
