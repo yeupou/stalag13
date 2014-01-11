@@ -21,7 +21,7 @@
 #   libaudio-mixer-perl (for OSS)
 # 
 # for sound volume  consistency, you should run 
-#       cd ~/.wakey && normalize-audio -b *
+#       cd ~/.wakey && normalize-ogg -b *
 
 use strict;
 
