@@ -142,7 +142,8 @@ while (defined(my $file = readdir(WATCH))) {
 	    print "skip $file: not readable\n" if $debug;
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
 	    move("$watchdir/$file", 
-		   "$watchdir/[ERROR: $0 cannot read this]$file");
+		 "$watchdir/[ERROR:cannot read this, chmod please]$file")
+		unless $file =~ /^\[ERROR\: cannot read this/;
 	    next;
 	}
 	
@@ -202,7 +203,7 @@ foreach my $torrent (@to_be_added) {
     # for now)
     unlink("$watchdir/.$id.torrent~") if -e "$watchdir/.$id.torrent~";
     move("$watchdir/$torrent",
-	   "$watchdir/.$id.torrent~");
+	 "$watchdir/.$id.torrent~");
 }
 
 
@@ -252,7 +253,7 @@ while (<LIST>) {
 	print LOG strftime "%c - completed $name (#$id)\n", localtime;
 	# do not bother removing the torrent, done below
 	move("$watchdir/$file.trs",
-	       "$watchdir/$file.trs+");
+	     "$watchdir/$file.trs+");
 	
 	# warn (it should send a mail, if cron is properly configured)
 	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
