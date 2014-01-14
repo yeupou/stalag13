@@ -133,7 +133,7 @@ while (defined(my $file = readdir(WATCH))) {
     
     # new .torrent file
     if ($suffix eq ".torrent") {
-	if (-r "$watchdir/$file") {
+	unless (-r "$watchdir/$file") {
 	    # if we cannot read the file, rename the file so the user
 	    # know looking at watch dir what is going on. 
 	    # Do not print warning, this is not crucial error requiring
@@ -199,6 +199,7 @@ foreach my $torrent (@to_be_added) {
     # safekeep .torrent in case the user still wants 
     # (we dont know yet the name of the trs, just name it with the id
     # for now)
+    unlink("$watchdir/.$id.torrent~") if -e "$watchdir/.$id.torrent~";
     rename("$watchdir/$torrent",
 	   "$watchdir/.$id.torrent~");
 }
