@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2010-2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2010-2014 Mathieu Roy <yeupou--gnu.org>
 #                   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -113,6 +113,12 @@ opendir(WATCH, $watchdir);
 while (defined(my $file = readdir(WATCH))) {
     next if ($file eq "." or
 	     $file eq "..");
+
+    # ignore hidden files
+    next if $file =~ /^\..*/;
+
+    # ignore backup files
+    next if $file =~ /.*\~$/;
     
     # check whether README explaining watch syntax exists
     $readme_exists = 1 if $file eq "README";
@@ -127,13 +133,25 @@ while (defined(my $file = readdir(WATCH))) {
     
     # new .torrent file
     if ($suffix eq ".torrent") {
+	if (-r "$watchdir/$file") {
+	    # if we cannot read the file, rename the file so the user
+	    # know looking at watch dir what is going on. 
+	    # Do not print warning, this is not crucial error requiring
+	    # immediate attention (and mail sent by cron)
+	    print "skip $file: not readable\n" if $debug;
+	    print LOG strftime "%c - WARNING: we skipped $file but we cannot read it\n", localtime;
+	    mv("$watchdir/$file", 
+	       "$watchdir/[ERROR: ".$0." cannot read this]$file");
+	    next;
+	}
+	
 	push(@to_be_added, $file);
 	next;
     }
 
     # Note:
-    # Previously, at this point,  we looked for .trs, .trs-, etc here to
-    # determine what  we had to do later with. 
+    # we look for .trs, .trs-, etc here to
+    # determine what  we have to do later with. 
     # Actually, considering how basic this script is
     # it's faster to use simple tests below than filling hashes for a single
     # usage anyway.
@@ -177,8 +195,14 @@ foreach my $torrent (@to_be_added) {
     }
     $added{$id} = 1;
     print LOG strftime "%c - add $torrent (#$id)\n", localtime; 
+
+    # safekeep .torrent in case the user still wants 
+    # (we dont know yet the name of the trs, just name it with the id
+    # for now)
+    rename("$watchdir/$torrent",
+	   "$watchdir/.$id.torrent~");
 }
-unlink(@to_be_added);
+
 
 # update torrents beings processed,
 #  start/pause/remove if need be
@@ -268,7 +292,14 @@ while (<LIST>) {
     open(INFO, "$bin --torrent $id --info |");
     while (<INFO>) { last if /^PIECES/; print TRSFILE $_; }
     close(INFO);
-    close(TRSFILE); 
+    close(TRSFILE);
+
+    # safekeep .torrent: if only named by the id, give it the full name
+    rename("$watchdir/.$id.torrent~", "$watchdir/.$file.torrent~")
+	if (-e "$watchdir/.$id.torrent~" and
+	    ! -e "$watchdir/.$file.torrent~");
+    # safekeep .torrent: update mtime
+    utime(undef,undef, "$watchdir/.$file.torrent~");
 
 }
 close(LIST);
