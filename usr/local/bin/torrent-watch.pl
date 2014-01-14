@@ -140,8 +140,8 @@ while (defined(my $file = readdir(WATCH))) {
 	    # immediate attention (and mail sent by cron)
 	    print "skip $file: not readable\n" if $debug;
 	    print LOG strftime "%c - WARNING: we skipped $file but we cannot read it\n", localtime;
-	    mv("$watchdir/$file", 
-	       "$watchdir/[ERROR: ".$0." cannot read this]$file");
+	    rename("$watchdir/$file", 
+		   "$watchdir/[ERROR: ".$0." cannot read this]$file");
 	    next;
 	}
 	
