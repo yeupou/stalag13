@@ -25,6 +25,7 @@ use strict "vars";
 use Fcntl ':flock';
 use POSIX qw(strftime);
 use File::Basename;
+use File::Copy;
 use Date::Parse;
 
 my $user = "debian-transmission";
@@ -139,9 +140,9 @@ while (defined(my $file = readdir(WATCH))) {
 	    # Do not print warning, this is not crucial error requiring
 	    # immediate attention (and mail sent by cron)
 	    print "skip $file: not readable\n" if $debug;
-	    print LOG strftime "%c - WARNING: we skipped $file but we cannot read it\n", localtime;
-	    rename("$watchdir/$file", 
-		   "$watchdir/[ERROR: ".$0." cannot read this]$file");
+	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
+	    move("$watchdir/$file", 
+		   "$watchdir/[ERROR: $0 cannot read this]$file");
 	    next;
 	}
 	
@@ -200,7 +201,7 @@ foreach my $torrent (@to_be_added) {
     # (we dont know yet the name of the trs, just name it with the id
     # for now)
     unlink("$watchdir/.$id.torrent~") if -e "$watchdir/.$id.torrent~";
-    rename("$watchdir/$torrent",
+    move("$watchdir/$torrent",
 	   "$watchdir/.$id.torrent~");
 }
 
@@ -250,7 +251,7 @@ while (<LIST>) {
 	print "mv $file.hash $file.hash+\n" if $debug;
 	print LOG strftime "%c - completed $name (#$id)\n", localtime;
 	# do not bother removing the torrent, done below
-	rename("$watchdir/$file.trs",
+	move("$watchdir/$file.trs",
 	       "$watchdir/$file.trs+");
 	
 	# warn (it should send a mail, if cron is properly configured)
@@ -296,7 +297,7 @@ while (<LIST>) {
     close(TRSFILE);
 
     # safekeep .torrent: if only named by the id, give it the full name
-    rename("$watchdir/.$id.torrent~", "$watchdir/.$file.torrent~")
+    move("$watchdir/.$id.torrent~", "$watchdir/.$file.torrent~")
 	if (-e "$watchdir/.$id.torrent~" and
 	    ! -e "$watchdir/.$file.torrent~");
     # safekeep .torrent: update mtime
