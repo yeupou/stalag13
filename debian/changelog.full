@@ -1,3 +1,14 @@
+stalag13-utils (3.113-20140114) unstable; urgency=low
+ 
+  * Handle non-readable files in the queue by renaming them meaningfully instead of letting debian-transmission giving out error messages. Safekeep a copy of inserted .torrent. Trivials fixes.
+    M debian/changelog.full
+    M debian/.gitignore
+    M etc/cron.d/torrent
+    M usr/local/bin/torrent-watch.pl
+    M usr/local/bin/wakey.pl
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Tue, 14 Jan 2014 17:12:43 +0100
+ 
 stalag13-utils (3.112+11-20140114) unstable; urgency=low
  
   * Upstream prerelease
