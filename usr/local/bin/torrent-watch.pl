@@ -140,10 +140,10 @@ while (defined(my $file = readdir(WATCH))) {
 	    # Do not print warning, this is not crucial error requiring
 	    # immediate attention (and mail sent by cron)
 	    print "skip $file: not readable\n" if $debug;
+	    next if $file =~ /^\[ERROR\: cannot read this/;
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
 	    move("$watchdir/$file", 
-		 "$watchdir/[ERROR:cannot read this, chmod please]$file")
-		unless $file =~ /^\[ERROR\: cannot read this/;
+		 "$watchdir/[ERROR: cannot read this, chmod please]$file");
 	    next;
 	}
 	
