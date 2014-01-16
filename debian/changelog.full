@@ -1,3 +1,9 @@
+stalag13-utils (3.113+1-20140116) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 16 Jan 2014 13:14:03 +0100
+ 
 stalag13-utils (3.113-20140114) unstable; urgency=low
  
   * Handle non-readable files in the queue by renaming them meaningfully instead of letting debian-transmission giving out error messages. Safekeep a copy of inserted .torrent. Trivials fixes.
