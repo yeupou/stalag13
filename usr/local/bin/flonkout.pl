@@ -116,6 +116,7 @@ if ($debug) {
 
 ## SOUND CHECKS
 # print something when no sound
+# EXPERIMENTAL. Wonder whether it is worth using SDL for better timings
 my $player = "/usr/bin/mplayer";
 my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
 
@@ -141,7 +142,6 @@ sub Play {
 	     @player_opts);
     }
 }
-
 
 ## RUN
 my ($counter_main_h, $counter_main_m, $counter_main_s);
