@@ -63,8 +63,10 @@ install: build
 	rm -rf $(CURDIR)/debian/stalag13-utils-extra/
 	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils/
 	# create -extra
-	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/wallpapers
+	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/wallpapers 
+	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/sounds
 	mv -f $(CURDIR)/debian/stalag13-utils/usr/share/wallpapers/ $(CURDIR)/debian/stalag13-utils-extra/usr/share/
+	mv -f $(CURDIR)/debian/stalag13-utils/usr/share/sounds/ $(CURDIR)/debian/stalag13-utils-extra/usr/share/
 
 
 # Build architecture-independent files here.

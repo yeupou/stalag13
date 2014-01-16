@@ -37,8 +37,8 @@ use Text::Wrap qw(&wrap $columns);
 
 ## SETUP
 # take into account user input
-my $fallback = "/usr/share/sounds/KDE-Sys-Log-In-Long.ogg";
-my $beep = "/usr/share/sounds/KDE-Sys-App-Positive.ogg";
+my $fallback = "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga";
+my $beep = "/usr/share/sounds/freedesktop/stereo/dialog-information.oga";
 my $songs = File::HomeDir->my_home()."/.wakey";
 my $player = "/usr/bin/mplayer";
 my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
@@ -162,7 +162,7 @@ if (scalar(@valid_songs) > 0) {
 unless ($song) {
     $song = $fallback;
     print "No valid file in $songs, use $fallback\n" if $debug;
-    die "Fallback $fallback not readable, unable to find an appropriate song to play. Exiting" unless -r $fallback;
+    die "Fallback $fallback not readable, unable to find an appropriate song to play. You should at least install freedesktop.org sounds package. Exiting" unless -r $fallback;
 }
 
 # same idea here, check if we can find a short word in $dict, if not, exit

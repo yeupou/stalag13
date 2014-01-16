@@ -57,12 +57,28 @@ my %programs = (
     );
 my $default_program = "tabata 20";
 my $default_warmup = 10;
+
+## USER INTERFACE
 my $lines_max = 4;
 my $refresh_delay = 0.4;
 
+## SOUNDS
+
+# by default use sounds from freedesktop
+my $sounds_path = "/usr/share/sounds/freedesktop/stereo/";
+# but use my updated version (no useless blank space, normalized) if possible
+$sounds_path = "/usr/share/sounds/flonkout/" 
+    if -e "/usr/share/sounds/flonkout/message.oga";
+my %sounds = (
+    # ordered by perceptibility
+    0 => $sounds_path.'message.oga',
+    1 => $sounds_path.'message-new-instant.oga',
+    1 => $sounds_path.'bell.oga',
+    3 => $sounds_path.'complete.oga',
+    );
+
 ## SETUP
 my ($help, $getopt, $debug, $mute);
-
 
 # get standard opts with getopt
 eval {
@@ -70,10 +86,6 @@ eval {
 			 "debug" => \$debug);
 };
 
-# get hour/minute (others options should no longer be in ARGV thanks to
-# getopt
-for (@ARGV) { 
-}
 
 if ($help) {
     print STDERR <<EOF;
@@ -102,11 +114,34 @@ if ($debug) {
     $default_program = "debug";
 }
 
-## CHECK UP
-# make sure we will able to do expected job when the time will be up
-# (and doing so, select the song about to be played later)
+## SOUND CHECKS
+# print something when no sound
+my $player = "/usr/bin/mplayer";
+my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
 
-# check if we can run the player
+# specific fonction to play sound
+sub Play {
+    my @sounds_selected = ($sounds{0});
+
+    given ($_[0]) {
+	# go from 0 to 3 by order of noticeability
+	when ("endprogram") { @sounds_selected = ($sounds{3}, $sounds{3}, $sounds{3}); }
+	when ("startstop") { @sounds_selected = ($sounds{3}); }
+	when ("tenminutesmore") {@sounds_selected = ($sounds{2}); }
+	when ("tensecondsmore") { @sounds_selected = ($sounds{0}); }
+    }
+
+    # fork so we dont interrupt timers and all
+    my $pid = fork();
+    if (defined $pid && $pid == 0) {
+	print "play '".join(", ", @sounds_selected)."' with $player\n" if $debug;
+	# child
+	exec($player, 
+	     @sounds_selected,
+	     @player_opts);
+    }
+}
+
 
 ## RUN
 my ($counter_main_h, $counter_main_m, $counter_main_s);
@@ -221,18 +256,27 @@ while (my $sleep = sleep($refresh_delay)) {
 	given ($status) {
 	    when ("warmup") {
 		# real start
+		Play("startstop");
 		$counter_sub_h = $counter_sub_m = $counter_sub_s = 0;
 		$cycle = 1;
 		$status = "exercice";
 		$countdown = $hundred = $exercice;
 	    }
-	    when ("exercice") {     
+	    when ("exercice") {
+		Play("startstop"); 
 		$status = "rest";
 		$countdown = $hundred = $rest;
 	    }
 	    when ("rest") {
 		# increment cycles if we finished a rest
 		$cycle++;
+		# play specific sound if we just finished the amount
+		# of cycles for this program
+		if ($cycle eq $cycles) {
+		    Play("endprogram");
+		} else {
+		    Play("startstop"); 
+		}
 		$status = "exercice";
 		$countdown = $hundred = $exercice;
 	    }
