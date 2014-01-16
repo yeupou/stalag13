@@ -37,7 +37,6 @@ deb-prerelease:
 	echo $(VERSION) > $(LATESTIS)
 	echo $(NEWPREVERSION) >> $(LATESTIS)
 	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(MAJORVERSION).$(VERSION))'
-	@git push
 	make log
 	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
