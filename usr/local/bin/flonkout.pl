@@ -72,8 +72,8 @@ $sounds_path = "/usr/share/sounds/flonkout/"
 my %sounds = (
     # ordered by perceptibility
     0 => $sounds_path.'message.oga',
-    1 => $sounds_path.'message-new-instant.oga',
-    1 => $sounds_path.'bell.oga',
+    1 => $sounds_path.'device-added.oga',
+    2 => $sounds_path.'bell.oga',
     3 => $sounds_path.'complete.oga',
     );
 
@@ -117,8 +117,8 @@ if ($debug) {
 ## SOUND CHECKS
 # print something when no sound
 # EXPERIMENTAL. Wonder whether it is worth using SDL for better timings
-my $player = "/usr/bin/mplayer";
-my @player_opts = ("-really-quiet", "-noconsolecontrols", "-nomouseinput", "-nolirc", "-vo", "null");
+my $player = "/usr/bin/ogg123";
+my @player_opts = ("--quiet", "--end=1");
 
 # specific fonction to play sound
 sub Play {
@@ -127,15 +127,15 @@ sub Play {
     given ($_[0]) {
 	# go from 0 to 3 by order of noticeability
 	when ("endprogram") { @sounds_selected = ($sounds{3}, $sounds{3}, $sounds{3}); }
-	when ("startstop") { @sounds_selected = ($sounds{3}); }
+	when ("rest") { @sounds_selected = ($sounds{3}); }
+	when ("exercise") { @sounds_selected = ($sounds{3}); }
 	when ("tenminutesmore") {@sounds_selected = ($sounds{2}); }
-	when ("tensecondsmore") { @sounds_selected = ($sounds{0}); }
     }
 
     # fork so we dont interrupt timers and all
     my $pid = fork();
     if (defined $pid && $pid == 0) {
-	print "play '".join(", ", @sounds_selected)."' with $player\n" if $debug;
+	print "play '".join(", ", @sounds_selected)."' ($_[0]) with $player\n" if $debug;
 	# child
 	exec($player, 
 	     @sounds_selected,
@@ -146,7 +146,7 @@ sub Play {
 ## RUN
 my ($counter_main_h, $counter_main_m, $counter_main_s);
 my ($counter_sub_h, $counter_sub_m, $counter_sub_s);
-my ($program, $cycles, $exercice, $rest, $warmup);
+my ($program, $cycles, $exercise, $rest, $warmup);
 my ($status, $countdown, $cycle, $hundred, $pause);
 my ($input, $input_offset, %program_id, $program_need_update);
 ReadMode("cbreak"); # use cbreak to read each char, but keeping ctrl-c working 
@@ -226,7 +226,7 @@ while (my $sleep = sleep($refresh_delay)) {
 	$program = $default_program unless $program;
 
 	# get parameters
-	($cycles, $exercice, $rest, $warmup) = split(",", $programs{$program});
+	($cycles, $exercise, $rest, $warmup) = split(",", $programs{$program});
 	# reset anything else
 	$counter_sub_h = $counter_sub_m = $counter_sub_s = 0;
 	$cycle = $countdown = $status = 0;
@@ -239,7 +239,12 @@ while (my $sleep = sleep($refresh_delay)) {
 	unless ($status eq "warmup" 
 		or $status eq ""
 		or $pause);
-    if ($counter_main_s > 59) { $counter_main_s = 0; $counter_main_m++; }
+    if ($counter_main_s > 59) { 
+	$counter_main_s = 0; 
+	$counter_main_m++;
+	# play a sound every ten minutes
+	Play("tenminutesmore") if $counter_main_m%10;
+    }
     if ($counter_main_m > 59) { $counter_main_m = 0; $counter_main_h++; }
 
     $counter_sub_s += $sleep
@@ -256,29 +261,26 @@ while (my $sleep = sleep($refresh_delay)) {
 	given ($status) {
 	    when ("warmup") {
 		# real start
-		Play("startstop");
 		$counter_sub_h = $counter_sub_m = $counter_sub_s = 0;
 		$cycle = 1;
-		$status = "exercice";
-		$countdown = $hundred = $exercice;
+		$status = "exercise";
+		Play($status);
+		$countdown = $hundred = $exercise;
 	    }
-	    when ("exercice") {
-		Play("startstop"); 
+	    when ("exercise") {
 		$status = "rest";
+		Play($status);
 		$countdown = $hundred = $rest;
 	    }
 	    when ("rest") {
 		# increment cycles if we finished a rest
 		$cycle++;
+		$status = "exercise";
 		# play specific sound if we just finished the amount
 		# of cycles for this program
-		if ($cycle eq $cycles) {
-		    Play("endprogram");
-		} else {
-		    Play("startstop"); 
-		}
-		$status = "exercice";
-		$countdown = $hundred = $exercice;
+		if ($cycle eq $cycles) { Play("endprogram"); } 
+		else { Play($status); }
+		$countdown = $hundred = $exercise;
 	    }
 	    default {
 		# status unset mean we just started
@@ -321,12 +323,12 @@ while (my $sleep = sleep($refresh_delay)) {
 	    next if $list < $input_offset;
 
 	    # get and register programs
-	    my ($this_cycles, $this_exercice, $this_rest, $this_warmup) = split(",", $programs{$this_program});
+	    my ($this_cycles, $this_exercise, $this_rest, $this_warmup) = split(",", $programs{$this_program});
 	    $program_id{$list} = $this_program 
 		unless exists($program_id{$list});
 
 	    # list it
-	    print BOLD, $list, RESET ") ",BRIGHT_RED,"${this_exercice}",RESET,"-",BRIGHT_GREEN,"${this_rest}",RESET," $this_program";
+	    print BOLD, $list, RESET ") ",BRIGHT_RED,"${this_exercise}",RESET,"-",BRIGHT_GREEN,"${this_rest}",RESET," $this_program";
 
 	    # list only 3 at once
 	    last if ($list - $input_offset) >= ($lines_max - 1);
@@ -361,7 +363,7 @@ while (my $sleep = sleep($refresh_delay)) {
 
     # current time
     
-    # exercice name , cycle count or and if doing warmup or paused
+    # exercise name , cycle count or and if doing warmup or paused
     print "\"$program\" "; 
     if ($pause) {
 	# simple warn when in pause
@@ -382,7 +384,7 @@ while (my $sleep = sleep($refresh_delay)) {
     print BOLD if $countdown < 6;
     given ($status) {
 	when ("rest") { print BRIGHT_GREEN; }
-	when ("exercice") { print BRIGHT_RED; }
+	when ("exercise") { print BRIGHT_RED; }
 	when ("warmup") { print BRIGHT_YELLOW; }
     }
     print int($countdown)." ";
