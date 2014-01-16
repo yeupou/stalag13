@@ -66,9 +66,10 @@ my $refresh_delay = 0.4;
 
 # by default use sounds from freedesktop
 my $sounds_path = "/usr/share/sounds/freedesktop/stereo/";
-# but use my updated version (no useless blank space, normalized) if possible
-$sounds_path = "/usr/share/sounds/flonkout/" 
-    if -e "/usr/share/sounds/flonkout/message.oga";
+## DROPPED, useless
+## but use my updated version (no useless blank space, normalized) if possible
+##$sounds_path = "/usr/share/sounds/flonkout/" 
+##    if -e "/usr/share/sounds/flonkout/message.oga";
 my %sounds = (
     # ordered by perceptibility
     0 => $sounds_path.'message.oga',
