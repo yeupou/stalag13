@@ -1,3 +1,24 @@
+stalag13-utils (3.115-20140116) unstable; urgency=low
+ 
+  * Add sound support.
+    A usr/share/sounds/flonkout/bell.oga
+    A usr/share/sounds/flonkout/complete.oga
+    A usr/share/sounds/flonkout/device-added.ogg
+    A usr/share/sounds/flonkout/message-new-instant.oga
+    A usr/share/sounds/flonkout/message.oga
+    M debian/changelog.full
+    M debian/changelog.releases
+    M debian/control
+    M debian/rules
+    M Makefile
+    M usr/local/bin/flonkout.pl
+    M usr/local/bin/wakey.pl
+    M usr/share/sounds/flonkout/bell.oga
+    M usr/share/sounds/flonkout/complete.oga
+    M usr/share/sounds/flonkout/message.oga
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 16 Jan 2014 22:06:18 +0100
+ 
 stalag13-utils (3.114-20140116) unstable; urgency=low
  
   * Cosmetics/trivial fixes

@@ -53,7 +53,7 @@ my %programs = (
     gibala => '12,60,75,180',
     '30/30' => '5,30,30',
     timmons => '3,20,120,120',
-    debug => '2,5,20,3',
+    debug => '2,10,20,3',
     );
 my $default_program = "tabata 20";
 my $default_warmup = 10;
@@ -235,6 +235,10 @@ while (my $sleep = sleep($refresh_delay)) {
     }
 
     # Update general timers (warmup is not counted)
+    
+    # debug mode go faster
+    $sleep = 1 if $debug;
+
     # Use time returned by sleep() just in case there was unexpected gap
     $counter_main_s += $sleep
 	unless ($status eq "warmup" 
@@ -243,8 +247,8 @@ while (my $sleep = sleep($refresh_delay)) {
     if ($counter_main_s > 59) { 
 	$counter_main_s = 0; 
 	$counter_main_m++;
-	# play a sound every ten minutes
-	Play("tenminutesmore") if $counter_main_m%10;
+	# play a sound every ten minutes FIXME
+	Play("tenminutesmore") if ($counter_main_m%10);
     }
     if ($counter_main_m > 59) { $counter_main_m = 0; $counter_main_h++; }
 
@@ -279,7 +283,7 @@ while (my $sleep = sleep($refresh_delay)) {
 		$status = "exercise";
 		# play specific sound if we just finished the amount
 		# of cycles for this program
-		if ($cycle eq $cycles) { Play("endprogram"); } 
+		if ($cycle eq ($cycles+1)) { Play("endprogram"); } 
 		else { Play($status); }
 		$countdown = $hundred = $exercise;
 	    }
@@ -375,8 +379,9 @@ while (my $sleep = sleep($refresh_delay)) {
 	    print BRIGHT_CYAN "WARMUP/PREP"; 
 	} else {
 	    # otherwise print cycle count
+	    print BOLD;
 	    print BRIGHT_YELLOW if $cycle > $cycles;
-	    print "$cycle", RESET, "/$cycles";
+	    print "$cycle", RESET BOLD, "/$cycles";
 	}
     }
     print "\n";

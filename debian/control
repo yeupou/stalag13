@@ -8,9 +8,9 @@ Package: stalag13-utils
 Architecture: all
 Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libdate-calc-perl, libcalendar-simple-perl, libtimedate-perl, debfoster, localepurge, etckeeper, ntp, lltag, liblwp-authen-oauth-perl, libmoose-perl, libnet-oauth-perl, liburi-encode-perl, libimage-exiftool-perl, libjson-perl, libio-interactive-perl, libhtml-tableextract-perl, libnumber-bytes-human-perl
 Conflicts: ntpdate, darius-admin, darius-misc, darius-sound, darius-text
-Recommends: bash-completion, stalag13-utils-extra
-Suggests: libaudio-mixer-perl, sound-theme-freedesktop
-Description: Stuff useful on stalag13 computers.
+Recommends: bash-completion, sound-theme-freedesktop
+Suggests: libaudio-mixer-perl, stalag13-utils-extra
+Description: Stuff useful on stalag13 computers
  .
  Homepage: https://gate.stalag13.ici
 
