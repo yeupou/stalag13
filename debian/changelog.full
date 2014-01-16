@@ -1,3 +1,11 @@
+stalag13-utils (3.114-20140116) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M debian/changelog.full
+    M etc/cron.d/torrent
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Thu, 16 Jan 2014 13:45:20 +0100
+ 
 stalag13-utils (3.113+1-20140116) unstable; urgency=low
  
   * Upstream prerelease
