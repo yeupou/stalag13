@@ -248,7 +248,7 @@ while (my $sleep = sleep($refresh_delay)) {
 	$counter_main_s = 0; 
 	$counter_main_m++;
 	# play a sound every ten minutes FIXME
-	Play("tenminutesmore") if ($counter_main_m%10);
+	Play("tenminutesmore") if ($counter_main_m % 10);
     }
     if ($counter_main_m > 59) { $counter_main_m = 0; $counter_main_h++; }
 
@@ -274,17 +274,17 @@ while (my $sleep = sleep($refresh_delay)) {
 	    }
 	    when ("exercise") {
 		$status = "rest";
-		Play($status);
+		# play specific sound if we just finished the amount
+		# of cycles for this program
+		if ($cycle eq $cycles) { Play("endprogram"); } 
+		else { Play($status); }
 		$countdown = $hundred = $rest;
 	    }
 	    when ("rest") {
 		# increment cycles if we finished a rest
 		$cycle++;
 		$status = "exercise";
-		# play specific sound if we just finished the amount
-		# of cycles for this program
-		if ($cycle eq ($cycles+1)) { Play("endprogram"); } 
-		else { Play($status); }
+		Play($status);
 		$countdown = $hundred = $exercise;
 	    }
 	    default {
