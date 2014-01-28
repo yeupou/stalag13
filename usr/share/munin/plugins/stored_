@@ -7,7 +7,7 @@ if [ "$1" = "autoconf" ]; then
     exit 0
 fi
 if [ "$1" = "config" ]; then
-    echo "graph_title Storage
+    echo "graph_title Storage in $DIR
 graph_args -l 0
 graph_category disk
 graph_info This graph shows the amount of data stored"
