@@ -1,20 +1,22 @@
 #!/bin/sh
 
-DIR="/storage/abstract/videos"
+DIR="/storage/abstract/"$(basename $0 | sed 's/^stored_//g')
 
 if [ "$1" = "autoconf" ]; then
     echo yes
     exit 0
 fi
 if [ "$1" = "config" ]; then
-    echo "graph_title Videos per genre
+    echo "graph_title Storage
 graph_args -l 0
 graph_category disk
-graph_info This graph shows the amount of videos stored per genre"
+graph_info This graph shows the amount of data stored"
 
     cd $DIR
     for dir in *; do 
 	if [ -d $dir ]; then
+	    # cannot have dots within the name
+	    dir=`echo $dir | tr . _`
 	    echo "$dir.label `basename $dir`"
 	    echo "$dir.draw AREASTACK"
 	fi
@@ -26,6 +28,6 @@ fi
 cd $DIR
 for dir in *; do 
     if [ -d $dir ]; then
-	echo "$dir.value `du -s $dir | cut -f 1`000"
+	echo "`echo $dir | tr . _`.value `du -s $dir | cut -f 1`000"
     fi
 done
