@@ -24,6 +24,8 @@
 [sec_*]
 group adm
 
+[stored_*]
+user root
 
 # EOF
 
