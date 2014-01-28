@@ -44,7 +44,7 @@ if [ "$1" = "config" ]; then
         exit 0
 fi
 
-awk 'BEGIN{c["IPBanned"]=0;c["AccessDenied"]=0;c["AccessRequested"]=0;c["AccessIMAP"]=0;c["AccessSSH"]=0;c["AccessTelnet"]=0;c["AccessFTP"]=0;c["AccessIrc"]=0;c["AccessSamba"]=0; }
+awk 'BEGIN{c["IPBanned"]=0;c["AccessDenied"]=0;c["AccessRequested"]=0;c["AccessIMAP"]=0;c["AccessSSH"]=0;c["AccessTelnet"]=0;c["AccessFTP"]=0;c["AccessIRC"]=0;c["AccessSamba"]=0; }
      /xinetd\[.* {process_sensor} Adding /{c["IPBanned"]++}
      /xinetd\[.* FAIL: /{c["AccessDenied"]++}
      /xinetd\[.* START: /{c["AccessRequested"]++}
