@@ -24,7 +24,6 @@ graph_info This graph shows the amount of data stored"
     exit 0
 fi
 
-
 cd $DIR
 for dir in *; do 
     if [ -d $dir ]; then
