@@ -21,13 +21,9 @@
     env.warning 92
     env.critical 98
 
-# exim requires specific user/group
-[exim_mailqueue]
-group adm, mail, (Debian-exim)
+[sec_*]
+group adm
 
-[exim_mailstats]
-user root
-group adm, mail, (Debian-exim)
-env.logdir /var/log/exim4/
-env.logname mainlog
+
+# EOF
 
