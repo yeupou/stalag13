@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$1" = "autoconf" ]; then
     echo yes
@@ -8,10 +8,12 @@ if [ "$1" = "config" ]; then
     echo "graph_title Torrents
 graph_args --base 1000 -l 0
 graph_vlabel number of torrents
-graph_category Storage
+graph_category network
 graph_info This graph shows how many torrents are active
-active.label Active
+active.label Downloading full speed
 active.draw AREA
+active_slow.label Downloading slow speed
+active_slow.draw AREA
 paused.label Paused
 paused.draw STACK
 completed.label Completed
@@ -24,9 +26,11 @@ cd /home/torrent/watch
 
 if [ ! -e "all-" ]; then 
     echo active.value `ls *.trs -1 2>/dev/null | wc -l`
+    echo active_slow.value 0
     echo paused.value `ls *.trs- -1 2>/dev/null | wc -l`
 else
     echo active.value 0
-    echo paused.value `ls *.trs *.trs- -1 2>/dev/null | wc -l`
+    echo active_slow.value `ls *.trs -1 2>/dev/null | wc -l`
+    echo paused.value `ls *.trs- -1 2>/dev/null | wc -l`
 fi
 echo completed.value `ls *.trs+ -1 2>/dev/null | wc -l`

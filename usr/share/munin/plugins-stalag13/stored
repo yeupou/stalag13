@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 DIR="/storage/abstract"
 
@@ -14,8 +14,10 @@ graph_info This graph shows the amount of data stored"
 
     cd $DIR
     for dir in *; do 
-	if [ `echo $dir | cut -b 1-5` != "perso" ]; then
+	if [ `echo $dir | cut -b 1-5` != "home." ]; then
 	    if [ -d $dir ]; then
+		# remove dots
+		dir=`echo $dir | tr . _`
 		echo "$dir.label `basename $dir`"
 		echo "$dir.draw AREASTACK"
 	    fi
@@ -27,8 +29,10 @@ fi
 
 cd $DIR
 for dir in *; do 
-    if [ `echo $dir| cut -b 1-5` != "perso" ]; then
+    if [ `echo $dir| cut -b 1-5` != "home." ]; then
 	if [ -d $dir ]; then
+	    # remove dots
+	    dir=`echo $dir | tr . _`
 	    echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`000"
 	fi
     fi
