@@ -1,3 +1,26 @@
+stalag13-utils (3.117-20140128) unstable; urgency=low
+ 
+  * Cleanup munin related stuff
+    A usr/share/munin/plugins/exim_seeyoulater
+    A usr/share/munin/plugins/sec_sshd
+    A usr/share/munin/plugins/sec_xinetd
+    A usr/share/munin/plugins/spamsstored
+    A usr/share/munin/plugins/stored_
+    A usr/share/munin/plugins/torrent_watch
+    M debian/changelog.full
+    M etc/munin/plugin-conf.d/stalag13-defaults
+    M usr/share/munin/plugins/sec_sshd
+    M usr/share/munin/plugins/sec_xinetd
+    M usr/share/munin/plugins-stalag13/exim-memcachedseeyoulater
+    M usr/share/munin/plugins-stalag13/musicstored
+    M usr/share/munin/plugins-stalag13/spamsstored
+    M usr/share/munin/plugins-stalag13/stored
+    M usr/share/munin/plugins-stalag13/torrent
+    M usr/share/munin/plugins-stalag13/vidsstored
+    M usr/share/munin/plugins/stored_
+ 
+ -- Mathieu Roy <klink@nibbler.stalag13.ici>  Tue, 28 Jan 2014 12:03:59 +0100
+ 
 stalag13-utils (3.116+11-20140128) unstable; urgency=low
  
   * Upstream prerelease
