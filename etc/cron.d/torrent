@@ -5,11 +5,11 @@
 
 ### once per day, clean up
 ## remove properly done job info file after four days
-35 9 * * * 	debian-transmission   find ~/watch -name "*.trs+" -mtime +4 -print0 | xargs -0 --no-run-if-empty rm
-32 9 * * * 	debian-transmission   find ~/watch -name "*.torrent~" -mtime +4 -print0 | xargs -0 --no-run-if-empty rm
+35 9 * * * 	debian-transmission   find ~/watch -type f -name "*.trs+" -mtime +4 -print0 | xargs -0 --no-run-if-empty rm
+32 9 * * * 	debian-transmission   find ~/watch -type f -name "*.torrent~" -mtime +4 -print0 | xargs -0 --no-run-if-empty rm
 
 ## remove info file that havent been updated within a day, it means that
 ## the current running daemon have no notion of then any longer
-39 9 * * * 	debian-transmission   find ~/watch -name "*.trs" -mtime +1 -print0 | xargs -0 --no-run-if-empty rm
+39 9 * * * 	debian-transmission   find ~/watch -type f -name "*.trs" -mtime +1 -print0 | xargs -0 --no-run-if-empty rm
 
 # EOF

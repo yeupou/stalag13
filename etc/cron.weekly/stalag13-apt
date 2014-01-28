@@ -1,0 +1,10 @@
+#!/bin/sh
+# cleanup apt mirrors:
+
+# remove any file that has not been accessed in the last 30 days 
+find /storage/abstract/apt -type f -atime +30 -print0 | xargs -0 --no-run-if-empty rm
+
+# remove any empty dir (except the main ones)
+find /storage/abstract/apt -mindepth 2 -type d -empty -print0 | xargs -0  --no-run-if-empty rm -r
+
+# EOF
