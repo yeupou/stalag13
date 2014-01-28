@@ -31,7 +31,7 @@ cd $DIR
 for dir in *; do 
     if [ `echo $dir| cut -b 1-5` != "home." ]; then
 	if [ -d $dir ]; then
-	    echo "`echo $dir | tr . _`.value `du -s $dir | tr -d [:alpha:][:blank:]`000"
+	    echo "`echo $dir | tr . _`.value `du -s $dir | cut -f 1`"
 	fi
     fi
 done

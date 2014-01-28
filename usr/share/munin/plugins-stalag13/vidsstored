@@ -26,6 +26,6 @@ fi
 cd $DIR
 for dir in *; do 
     if [ -d $dir ]; then
-	echo "$dir.value `du -s $dir | tr -d [:alpha:][:blank:]`000"
+	echo "$dir.value `du -s $dir | cut -f 1`000"
     fi
 done
