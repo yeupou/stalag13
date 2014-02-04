@@ -1,6 +1,6 @@
 ### transport/35_spamblock
 #################################
-.ifdef SPAMBLOCKING_ENABLE
+.ifdef SPAMBLOCKING_HEAVY_ENABLE
 
 spamslay_bogofilter:
     driver = pipe

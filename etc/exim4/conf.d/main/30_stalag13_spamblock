@@ -1,2 +1,5 @@
-# Uncomment the following line to activate spamblocking:
+# Uncomment the following lines to activate spamblocking:
+# should be working out of the box
 ##SPAMBLOCKING_ENABLE = 1
+# require daemons 
+##SPAMBLOCKING_HEAVY_ENABLE = 1
