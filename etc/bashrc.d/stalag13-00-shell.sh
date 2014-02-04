@@ -19,6 +19,10 @@ GREY='\[\033[1;37m\]'
 NC='\[\033[0m\]'
 
 # Nice colored prompt (with a space before the pwd, to ease copy/paste)
+#
+# THIS MUST BE COMMENTED OUT IN /etc/bash.bashrc
+#   # set a fancy prompt (non-color, overwrite the one in /etc/profile)
+#   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 showuser=''
 promptcolor=$yellow
 if [ "`id -u`" != 0 ]; then
