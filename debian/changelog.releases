@@ -1,3 +1,16 @@
+stalag13-utils (3.120-20140204) unstable; urgency=low
+ 
+  * General cleanups
+    A etc/apt/apt.conf.d/stalag13
+    A etc/apt/sources.list.d/stalag13.list
+    M debian/changelog.full
+    M debian/control
+    M debian/postinst
+    M debian/rules
+    M etc/bashrc.d/stalag13-00-shell.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 04 Feb 2014 20:57:32 +0100
+ 
 stalag13-utils (3.119-20140203) unstable; urgency=low
  
   * Cosmetics/trivial fixes
