@@ -1,0 +1,123 @@
+# Keep as it is because bogofilter would not learn properly otherwise,
+# as it cannot distinguish report from the spam.
+report_safe 0
+
+
+#   Set which networks or hosts are considered 'trusted' by your mail
+#   server (i.e. not spammers)
+#
+trusted_networks 192.168.1.
+
+# Locales 
+ok_locales en fr pl
+
+
+#   Set the threshold at which a message is considered spam (default: 5.0)
+#
+required_score 3.3
+
+
+#   Use Bayesian classifier (default: 1)
+#
+use_bayes 1
+bayes_file_mode 0777
+bayes_path /var/lib/spamassassin-bayes/bayes
+score BAYES_20 0.3
+score BAYES_40 0.5
+score BAYES_50 0.8
+score BAYES_60 1
+score BAYES_80 2
+score BAYES_95 2.5
+score BAYES_99 6
+
+
+#   Bayesian classifier auto-learning (default: 1)
+#
+bayes_auto_learn 1
+
+
+#   Set headers which may provide inappropriate cues to the Bayesian
+#   classifier
+#
+bayes_ignore_header X-Bogosity
+bayes_ignore_header X-Spam-Flag
+bayes_ignore_header X-Spam-Status
+
+
+# use razor
+use_razor2 1
+score RAZOR2_CF_RANGE_51_100 3.2
+
+
+# some rbl checks are made by exim, at RCPT time, not all.
+skip_rbl_checks 0
+rbl_timeout 30
+
+score RCVD_IN_SBL 15
+score RCVD_IN_XBL 15
+score RCVD_IN_SORBS_HTTP 15
+score RCVD_IN_SORBS_SOCKS 15
+score RCVD_IN_SORBS_MISC 15
+score RCVD_IN_SORBS_SMTP 15
+score RCVD_IN_SORBS_ZOMBIE 15
+
+# adjust some tests scores: lower DUL test
+score FROM_ENDS_IN_NUMS 0.2
+score FROM_HAS_MIXED_NUMS 0.2
+score FROM_HAS_MIXED_NUMS3 0.2
+score RCVD_IN_NJABL_DUL 0.1
+score RCVD_IN_SORBS_DUL 0.1
+# lower stupid test
+score DNS_FROM_SECURITYSAGE 0.0
+
+# adjust some tests scores
+score FAKE_HELO_HOTMAIL 3
+score FORGED_HOTMAIL_RCVD 3
+score HTML_FONT_BIG 2.4
+score NO_REAL_NAME 2
+score RCVD_IN_BL_SPAMCOP_NET 3
+score SUBJ_ILLEGAL_CHARS 4.8
+score EXTRA_MPART_TYPE 2.8
+score SUBJ_ALL_CAPS 2.6
+
+# increase all scores related to drugs
+score DRUGS_ANXIETY 5
+score DRUGS_ANXIETY_EREC 5
+score DRUGS_ANXIETY_OBFU 5
+score DRUGS_DIET 5
+score DRUGS_DIET_OBFU 5
+score DRUGS_ERECTILE 5
+score DRUGS_ERECTILE_OBFU 5
+score DRUGS_MANYKINDS 10
+score DRUGS_MUSCLE 5
+score DRUGS_PAIN 5
+score DRUGS_PAIN_OBFU 5
+score DRUGS_SLEEP 5
+score DRUGS_SLEEP_EREC 5
+score DRUGS_SMEAR1 5
+
+# same goes for porn
+score AMATEUR_PORN 5
+score BEST_PORN 5
+score DISGUISE_PORN 5
+score DISGUISE_PORN_MUNDANE 5
+score FREE_PORN 5
+score HARDCORE_PORN 5
+score LIVE_PORN 5
+score PORN_15 5
+score PORN_16 5
+score PORN_URL_MISC 5
+score PORN_URL_SEX 5
+score PORN_URL_SLUT 5
+
+#   Some shortcircuiting, if the plugin is enabled
+ifplugin Mail::SpamAssassin::Plugin::Shortcircuit
+
+shortcircuit ALL_TRUSTED             on
+shortcircuit BAYES_99                spam
+shortcircuit BAYES_00                ham
+
+endif # Mail::SpamAssassin::Plugin::Shortcircuit
+
+
+# EOF
