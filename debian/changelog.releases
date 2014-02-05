@@ -1,3 +1,20 @@
+stalag13-utils (3.122-20140205) unstable; urgency=low
+ 
+  * Always set proper modes for files in /etc on install. Cleanup mail related conf to almost reach zeroconf. Trivials fixes.
+    A etc/spamassassin/stalag13.cf
+    M debian/changelog.full
+    M etc/cron.weekly/stalag13-apt
+    M etc/cron.weekly/stalag13-backups
+    M etc/cron.weekly/torrent
+    M etc/exim4/conf.d/main/30_stalag13_greylist
+    M etc/exim4/conf.d/main/30_stalag13_spamblock
+    M etc/exim4/conf.d/router/450_stalag13_spamblock
+    M etc/exim4/conf.d/transport/35_stalag13_spamblock
+    M Makefile
+    M usr/share/munin/plugins/exim_seeyoulater
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 05 Feb 2014 21:19:02 +0100
+ 
 stalag13-utils (3.121-20140204) unstable; urgency=low
  
   * Add zeroconf sample nginx bits
