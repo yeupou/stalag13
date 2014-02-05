@@ -1,3 +1,9 @@
+stalag13-utils (3.123-20140205) unstable; urgency=low
+ 
+  * Fix modes
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 05 Feb 2014 21:47:47 +0100
+ 
 stalag13-utils (3.122-20140205) unstable; urgency=low
  
   * Always set proper modes for files in /etc on install. Cleanup mail related conf to almost reach zeroconf. Trivials fixes.
