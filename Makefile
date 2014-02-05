@@ -12,11 +12,12 @@ install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
 	@echo "  create directories"
 	for content in  `find etc/* usr/* -type d -print`; do \
-		mkdir -p $(PREFIX)$$content ; \
+		mkdir --mode=755 -p $(PREFIX)$$content ; \
 	done
 	@echo "  install files"	
 	for content in  `find etc/* usr/* ! -type d -print`; do \
-		install $$content $(PREFIX)$$content ; \
+		if [ -x $$content ]; then mode=755; else mode=644; fi ; \
+		install --mode=$$mode $$content $(PREFIX)$$content ; \
 	done
 	@echo "  adding useful symlinks"	
 	for content in $(PREFIX)usr/local/bin/* ; do \
@@ -33,6 +34,7 @@ log:
 deb-prerelease:
 	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"
 	debian/makechangelog.sh $(MAJORVERSION) $(VERSION) $(NEWPREVERSION)
+
 	cd debian && rm -f changelog && ln -s changelog.full changelog
 	echo $(VERSION) > $(LATESTIS)
 	echo $(NEWPREVERSION) >> $(LATESTIS)
