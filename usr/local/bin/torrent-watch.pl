@@ -22,7 +22,7 @@
 # (for 1.x, the first version of the script is still available on my blog)
 
 use strict "vars";
-use Fcntl ':flock';
+use Fcntl qw(:flock);
 use POSIX qw(strftime);
 use File::Basename;
 use File::Copy;

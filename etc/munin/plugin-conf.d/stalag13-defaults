@@ -14,6 +14,8 @@
 #                       individual plugins to find out which variables they
 #                       care about.
 
+[exim_exim_seeyoulater]
+user root
 
 # show only real file systems
 [df]
