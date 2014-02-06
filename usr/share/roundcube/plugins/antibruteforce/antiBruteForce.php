@@ -112,6 +112,8 @@ class antiBruteForce extends rcube_plugin
     $ip=trim($ip[0]);
     if ($this->blocked()) 
       $args['content']=$this->gettext('blocked')." ".$this->blocked()."<br />".$this->getTrackIP();
+    // ypou: no message at all
+    $args['content']='';
     return $args;
   }
 
@@ -125,7 +127,7 @@ class antiBruteForce extends rcube_plugin
     
     error_log($this->getTrackIP().':'.time().':'.$args['user'].":[".date('d-M-Y H:i:s O')."]:$log_entry:"."\n", 3, $this->registers);
     
-  }
+  }ca
 
 }
 
