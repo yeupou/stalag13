@@ -112,8 +112,10 @@ class antiBruteForce extends rcube_plugin
     $ip=trim($ip[0]);
     if ($this->blocked()) 
       $args['content']=$this->gettext('blocked')." ".$this->blocked()."<br />".$this->getTrackIP();
-    // ypou: no message at all
-    $args['content']='';
+    // hack ypou: no message at all instead
+    if ($this->blocked()) 
+      $args['content']='';
+    // oehack 
     return $args;
   }
 
