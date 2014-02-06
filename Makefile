@@ -15,7 +15,7 @@ install: clean
 		mkdir --mode=755 -p $(PREFIX)$$content ; \
 	done
 	@echo "  install files"	
-	for content in  `find etc/* usr/* var/* ! -type d -print`; do \
+	for content in  `find etc/* usr/* ! -type d -print`; do \
 		if [ -x $$content ]; then mode=755; else mode=644; fi ; \
 		install --mode=$$mode $$content $(PREFIX)$$content ; \
 	done
