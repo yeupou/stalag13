@@ -129,7 +129,7 @@ class antiBruteForce extends rcube_plugin
     
     error_log($this->getTrackIP().':'.time().':'.$args['user'].":[".date('d-M-Y H:i:s O')."]:$log_entry:"."\n", 3, $this->registers);
     
-  }ca
+  }
 
 }
 
