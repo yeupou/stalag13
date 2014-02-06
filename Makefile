@@ -14,16 +14,14 @@ install: clean
 	for content in  `find etc/* usr/* var/* -type d -print`; do \
 		mkdir --mode=755 -p $(PREFIX)$$content ; \
 	done
-	# install files.
+	# install files. 755 mode per debian policy for executable
+	#                644 otherwise
+	# for symlinks, use cp as install would not keep it as a link
 	for content in  `find etc/* usr/* var/* ! -type d -print`; do \
 		if [ ! -L $$content ]; then \
-			# regular file, use install
-			#   755 mode per debian policy for executable
-			#    644 otherwise
 			if [ -x $$content ]; then mode=755; else mode=644; fi ; \
 			install --mode=$$mode $$content $(PREFIX)$$content ; \
 		else \
-			# symlink, do a copy
 			cp -a $$content $(PREFIX)$$content ; \
 		fi ; \
 	done
