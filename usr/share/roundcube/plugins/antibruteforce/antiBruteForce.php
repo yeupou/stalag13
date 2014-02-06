@@ -10,11 +10,11 @@ class antiBruteForce extends rcube_plugin
 {
 
 	private $registers="logs/userlogins"; // arquivo de registro de tentativas
-	private $attempts=3; // o numero de tentativas antes de bloquear o acesso;
+	private $attempts=2; // o numero de tentativas antes de bloquear o acesso;
 	private $registeredAttemptsInTime=0; // variavel que mantem o numero de tentativas registradas dentro do tempo determinado
-	private $time=600; // tempo entre tentativas
+	private $time=86400; // tempo entre tentativas
 	private $blockedTime=null; // mantem o tempo restante de bloqueio em segundos
-        private $whiteList = array( "10.165.252.128/25" , "10.165.252.124/30" , "127.0.0.1" );
+        private $whiteList = array();
 
   function init()
   {
