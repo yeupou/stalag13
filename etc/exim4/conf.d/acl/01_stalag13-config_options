@@ -1,4 +1,4 @@
-### acl/01_spamblock
+### acl/01_stalag13-config_options
 #################################
 .ifdef SPAMBLOCKING_ENABLE
 

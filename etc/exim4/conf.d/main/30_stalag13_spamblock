@@ -1,8 +1,0 @@
-# Uncomment the following lines to activate spamblocking:
-
-# should be working out of the box
-##SPAMBLOCKING_ENABLE = 1
-
-# require daemons and following instructions at
-# http://yeupou.wordpress.com/2010/08/13/slaying-spams-with-both-bogofilter-and-spamassassin-embedded-in-exim/
-##SPAMBLOCKING_HEAVY_ENABLE = 1

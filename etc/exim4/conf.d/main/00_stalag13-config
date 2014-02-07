@@ -1,0 +1,37 @@
+####### GREYLISTING
+
+# requires memcached to be installed
+#GREYLISTING_ENABLE = 1
+
+# wait time, time to live
+GREY_MINUTES  = 5
+GREY_TTL_DAYS = 7
+
+# strict: greylist per user, dest and hostname
+GREYLIST_ARGS = {$sender_host_name}{${quote:$sender_address}}{${quote:$local_part}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
+# laxist: greylist only sending host
+#GREYLIST_ARGS = {$sender_host_name}{${quote:x}}{${quote:y}}{${quote:$domain}}{GREY_MINUTES}{GREY_TTL_DAYS}
+
+
+###### SPAM BLOCKING
+
+# should be working out of the box
+SPAMBLOCKING_ENABLE = 1
+
+# require bogofiler/spamd etc
+# (following instructions at
+# http://yeupou.wordpress.com/2010/08/13/slaying-spams-with-both-bogofilter-and-spamassassin-embedded-in-exim/ )
+#SPAMBLOCKING_HEAVY_ENABLE = 1
+
+
+### INTERNAL
+
+.ifdef GREYLISTING_ENABLE
+perl_startup = do '/usr/local/bin/memcached-exim.pl'
+perl_at_start
+.endif
+
+.ifdef SPAMBLOCKING_ENABLE
+MAIN_ACL_CHECK_MAIL= acl_check_mail_stalag13
+.endif
+
