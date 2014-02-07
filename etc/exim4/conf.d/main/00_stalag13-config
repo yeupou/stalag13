@@ -32,6 +32,6 @@ perl_at_start
 .endif
 
 .ifdef SPAMBLOCKING_ENABLE
-MAIN_ACL_CHECK_MAIL= acl_check_mail_stalag13
+MAIN_ACL_CHECK_RCPT= acl_check_rcpt_stalag13
 .endif
 
