@@ -1,4 +1,6 @@
-#!/bin/sh;
+#!/bin/sh
+
+if [ ! -d /home/klink/.Maildir/ ]; then exit; fi
 
 if [ "$1" = "autoconf" ]; then
     echo yes
