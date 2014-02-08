@@ -1,0 +1,59 @@
+v1.3.1: 2013-12-21
+    * Database sortindex column fix
+    * Fix last sync date on personal page
+    * Updated translations
+
+v1.3: 2013-12-17
+    * LDAP authentication works now
+    * Show same usage/quota as Firefox browser
+    * Feedback for changes in admin panel
+    * Show installed app version in admin panel
+    * DB backend updates and fixes
+    * Updated Readme
+
+v1.2.4: 2013-12-14
+    * Workaround for ownCloud database bug
+    * Better debug output for invalid storage requests
+    * Updated translations
+
+v1.2.3: 2013-12-13
+    * Fix not null contraint in database
+    * Updated translations
+
+v1.2.2: 2013-12-09
+    * Fix quota bug in ownCloud 6
+    * Change settings and admin page for ownCloud 6
+
+v1.2.1: 2013-12-08
+    * Fix quota display in admin panel
+    * Improved error logging
+    * Updated translations
+
+v1.2: 2013-12-05
+    * Restrict to group feature added to Admin Page
+    * Quota feature added to Admin Page
+    * Sync status added to Personal Page
+    * Delete server storage added to Personal Page
+    * Extended README, added manuals and documentation
+    * Add debug output to ownCloud log
+    * Remove PHP warnings from ownCloud log
+    * Check for duplicate email addresses
+    * Fix SQLite incompatability
+    * Updated translations
+
+v1.1.1: 2013-11-17
+    * Added support for LDAP user backend (issue #23)
+    * Remove not-null constraint from ttl DB column
+    * Updated README and INSTALL files
+    * Updated translations
+
+v1.1: 2013-11-14
+    * Added working support for Firefox on Android
+    * ownCloud 6.0 compatible
+    * Added support for quota and size queries
+    * Added missing output formats
+    * Omit unnecessary fields in response
+    * Other bug fixes
+
+v1.0: 2013-03-16
+    * Initial version developed by Michal Jaskurzynski

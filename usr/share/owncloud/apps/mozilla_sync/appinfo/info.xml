@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<info>
+	<id>mozilla_sync</id>
+	<name>Mozilla Sync</name>
+	<description>Use your ownCloud server to synchronize your Firefox bookmarks, history, passwords, settings between multiple devices. Works for Firefox on Desktop and Firefox on Android.</description>
+	<licence>AGPL</licence>
+	<author>Michal Jaskurzynski, Oliver Gasser</author>
+	<require>4.93</require>
+	<remote>
+	   <mozilla_sync>appinfo/remote.php</mozilla_sync>
+	</remote>
+</info>
