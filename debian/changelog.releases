@@ -1,3 +1,12 @@
+stalag13-utils (3.135-20140208) unstable; urgency=low
+ 
+  * Add basic default owncloud config
+    A etc/nginx/sites-available/cloud
+    M debian/changelog.full
+    M debian/control
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 08 Feb 2014 21:47:26 +0100
+ 
 stalag13-utils (3.134-20140208) unstable; urgency=low
  
   * Cosmetics/trivial fixes
