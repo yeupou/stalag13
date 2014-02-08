@@ -81,7 +81,11 @@ clean-prev-dir:
 	rm -f ../stalag13-utils_* ../stalag13-utils-depends_* ../stalag13-utils-extra_*
 
 move:
-	ssh gate "rm -f stalag13-utils_$(MAJORVERSION).*.deb stalag13-utils-extra_$(MAJORVERSION).*.deb"
-	scp ../stalag13-utils*_$(MAJORVERSION).*.deb moe:~/
-	ssh root@gate "cd /var/www/apt && rm -f stalag13-utils_$(MAJORVERSION).*.deb stalag13-utils-extra_$(MAJORVERSION).*.deb && cp /home/klink/stalag13-utils*_$(MAJORVERSION).*.deb . && apt-ftparchive packages . > Packages && gzip -f Packages && dpkg -i stalag13-utils_$(MAJORVERSION).*.deb"
-
+	# can be done only within stalag13 network
+	$(eval TEMPDIR := $(shell mktemp --directory))
+	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
+	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages*
+	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
+	cd $(TEMPDIR) && apt-ftparchive packages . > Packages && gpg --detach Packages
+	cd $(TEMPDIR) && rsync -rl --delete * root@gate:/srv/www/apt/
+	rm -r $(TEMPDIR)
