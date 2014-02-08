@@ -87,5 +87,5 @@ move:
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	cd $(TEMPDIR) && apt-ftparchive packages . > Packages && gpg --detach Packages
-	cd $(TEMPDIR) && rsync -rl --delete * root@gate:/srv/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=r --delete . root@gate:/srv/www/apt/
 	rm -r $(TEMPDIR)
