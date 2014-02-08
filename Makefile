@@ -82,7 +82,7 @@ clean-prev-dir:
 
 move:
 	# can be done only within stalag13 network
-	$(eval TEMPDIR := $(shell mktemp --directory))
+	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
