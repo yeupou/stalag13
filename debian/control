@@ -24,7 +24,7 @@ Description: Stuff maybe useful on stalag13 computers.
 Package: stalag13-keyring
 Architecture: all
 Depends: apt-transport-https
-Conflicts: stalag13-utils (<3.133)
+Conflicts: stalag13-utils (<<3.133)
 Description: Keys used to sign stalag13 packages (and apt source list).
  .
  Homepage: https://yeupou.wordpress.com/
