@@ -7,6 +7,7 @@ PREVERSION = $(shell cat $(LATESTIS) | tail -1)
 NEWVERSION = $(shell expr $(VERSION) \+ 1)
 NEWPREVERSION = $(shell expr $(PREVERSION) \+ 1)
 WHOAMI = $(shell whoami)
+KEYS = 0
 
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
@@ -71,6 +72,10 @@ rel: release
 
 release: clean-prev-dir deb-release clean move
 
+keys:
+	$(eval KEYS = 1)
+	@echo Will update the keyring package
+
 clean:
 	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -f backup*
@@ -86,6 +91,7 @@ move:
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages* Release* InRelease*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
+	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring*_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
 	cd $(TEMPDIR) && apt-ftparchive packages . > Packages 
 	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/srv/www/apt/
