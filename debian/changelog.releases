@@ -1,3 +1,13 @@
+stalag13-utils (3.132-20140208) unstable; urgency=low
+ 
+  * GPG signature and local apt repository set up all moved in independant -keyring package, that will be updated only when required.
+    M Makefile
+    M debian/changelog.full
+    M debian/control
+    M debian/rules
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 08 Feb 2014 14:08:29 +0100
+ 
 stalag13-utils (3.131-20140208) unstable; urgency=low
  
   * Do proper GPG signature for local apt repository.
