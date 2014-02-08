@@ -84,8 +84,9 @@ move:
 	# can be done only within stalag13 network
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
-	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages*
+	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages* Release* InRelease*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
-	cd $(TEMPDIR) && apt-ftparchive packages . > Packages && gpg --detach Packages
+	cd $(TEMPDIR) && apt-ftparchive packages . > Packages 
+	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/srv/www/apt/
 	rm -r $(TEMPDIR)

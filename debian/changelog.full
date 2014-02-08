@@ -1,3 +1,9 @@
+stalag13-utils (3.130-20140208) unstable; urgency=low
+ 
+  * Use proprer InRelease for local apt repository.
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 08 Feb 2014 02:36:36 +0100
+ 
 stalag13-utils (3.129-20140208) unstable; urgency=low
  
   * Revamp exim4 config setup, should be working out of the box for most. Cleanups.
