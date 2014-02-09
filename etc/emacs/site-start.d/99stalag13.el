@@ -42,8 +42,6 @@
  '(display-time-24hr-format t)
  '(global-font-lock-mode t nil (font-lock))
  '(message-directory "~/.Mail/")
- '(mouse-sel-mode nil nil (mouse-sel) "When Mouse Sel mode is enabled, mouse s
-ection is enhanced in various ways.")
  '(mouse-wheel-mode t nil (mwheel))
  '(pc-select-meta-moves-sexps t)
  '(pc-selection-mode t nil (pc-select))
@@ -118,6 +116,8 @@ ection is enhanced in various ways.")
 (setq auto-mode-alist
       '( 
         ("\\ChangeLog$" . change-log-mode)
+        ("\\changelog$" . debian-changelog-mode)
+        ("\\control$" . debian-control-mode)
         ("\\Makefile.*$" . makefile-mode)
         ("\\.css$"  . css-mode) 
         ("\\.c$"  . c-mode) 
