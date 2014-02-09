@@ -1,3 +1,9 @@
+stalag13-utils (3.136+1-20140209) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 09 Feb 2014 02:28:40 +0100
+ 
 stalag13-utils (3.136-20140209) unstable; urgency=low
  
   * Add mozilla_sync for owncloud setup, add carddav for roundcube to communicate with owncloud
