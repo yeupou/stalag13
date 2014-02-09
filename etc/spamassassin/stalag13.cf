@@ -1,7 +1,9 @@
+# All rules are described in
+#   http://wiki.apache.org/spamassassin/Rules/RULE_NAME
+
 # Keep as it is because bogofilter would not learn properly otherwise,
 # as it cannot distinguish report from the spam.
 report_safe 0
-
 
 #   Set which networks or hosts are considered 'trusted' by your mail
 #   server (i.e. not spammers)
@@ -11,11 +13,9 @@ trusted_networks 192.168.1.
 # Locales 
 ok_locales en fr pl
 
-
 #   Set the threshold at which a message is considered spam (default: 5.0)
 #
 required_score 3.3
-
 
 #   Use Bayesian classifier (default: 1)
 #
@@ -110,6 +110,17 @@ score PORN_URL_MISC 5
 score PORN_URL_SEX 5
 score PORN_URL_SLUT 5
 
+# DKIM Signature header exists but is not valid is overly suspicious
+# but has not default score. Up this 
+ifplugin Mail::SpamAssassin::Plugin::DKIM
+T_DKIM_INVALID 5
+endif
+
+# SPF fail is serious; pass/neutral or softfail are not really meaningful
+ifplugin Mail::SpamAssassin::Plugin::SPF
+score SPF_FAIL 3.4
+endif
+
 #   Some shortcircuiting, if the plugin is enabled
 ifplugin Mail::SpamAssassin::Plugin::Shortcircuit
 
@@ -118,6 +129,7 @@ shortcircuit BAYES_99                spam
 shortcircuit BAYES_00                ham
 
 endif # Mail::SpamAssassin::Plugin::Shortcircuit
+
 
 
 # EOF
