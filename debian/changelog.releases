@@ -1,3 +1,13 @@
+stalag13-utils (3.138-20140209) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M debian/changelog.full
+    M etc/cron.weekly/stalag13-apt
+    M etc/emacs/site-start.d/99stalag13.el
+    M etc/spamassassin/stalag13.cf
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 09 Feb 2014 12:55:59 +0100
+ 
 stalag13-utils (3.137-20140209) unstable; urgency=low
  
   * Add carddav from https://github.com/blind-coder/rcmcarddav
