@@ -21,9 +21,9 @@ spamslay_router_spamd:
   # When to scan a message :
   #   -   it isn't already flagged as spam 
   #   -   it has not yet been spamslayed with SA
-  #   -   it isn't already flagged as ham by bogofilter
+  #   -   ---COMMENTED--- it isn't already flagged as ham by bogofilter
   #   -   it isn't local ($received_protocol eq "" or local)
-  condition = "${if and { {!eqi{$h_X-Spam-Flag:}{yes}} {!match{$h_X-Bogosity:}{^Spam}}  {!match{$h_X-Bogosity:}{^Ham}} {!eq {$received_protocol}{spamslayed-spamd}} {!eq{$received_protocol}{local}} {!eq{$received_protocol}{}} }}"
+  condition = "${if and { {!eqi{$h_X-Spam-Flag:}{yes}} {!match{$h_X-Bogosity:}{^Spam}}  {!eq {$received_protocol}{spamslayed-spamd}} {!eq{$received_protocol}{local}} {!eq{$received_protocol}{}} }}"
   driver = accept
   transport = spamslay_spamd
 
