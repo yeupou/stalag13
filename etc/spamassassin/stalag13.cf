@@ -61,6 +61,14 @@ score RCVD_IN_SORBS_MISC 15
 score RCVD_IN_SORBS_SMTP 15
 score RCVD_IN_SORBS_ZOMBIE 15
 
+# whitelisting hosts by rules is bound to create troubles
+# I already got spam from these whitelists
+score RCVD_IN_DNSWL_NONE 0
+score RCVD_IN_DNSWL_LOW 0
+score RCVD_IN_DNSWL_ME 0
+score RCVD_IN_DNSWL_HI 0
+
+
 # adjust some tests scores: lower DUL test
 score FROM_ENDS_IN_NUMS 0.2
 score FROM_HAS_MIXED_NUMS 0.2
