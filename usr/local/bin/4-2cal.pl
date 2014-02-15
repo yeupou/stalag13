@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2011-2013 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2011-2014 Mathieu Roy <yeupou--gnu.org>
 #   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -37,8 +37,8 @@ my $full_year = 0;
 my $html = 0;
 my $help;
 
-# do HTML is not started by a terminal
-unless (isatty(*STDOUT)) {
+# do HTML if not started by a term
+unless (isatty(*STDIN)) {
     $html = 1;
 }
 
@@ -90,8 +90,8 @@ Usage: $0 MM/YYYY [OPTIONS]
        $0 --month=MM --year=YYYY [OPTIONS]
     
       --group=n              Group (default: $group)
-      --html                 xHTML output (default if not running from a 
-			     term).
+      --html                 xHTML output (default if not started by a
+			     terminal).
       --full-year            Show 12 months instead of 3 (default for xHTML
                              output).
 
@@ -129,9 +129,10 @@ if ($html) {
     $out_style_color_blue = '<td style="background-color: blue; color: white">';
     $out_style_color_magenta = '<td style="background-color: red; color: white">';
 
+    # Init http header if not from standard input
+    print header(-charset => 'UTF-8') unless (isatty(*STDIN));
     # Immediately create the HTML layout
-    print header(-charset => 'UTF-8');
-    print start_html(-title => '4-2cal');
+    print start_html(-title => '4-2cal', -encoding => 'UTF-8');
 
     # For a full year
     $full_year = 1;
