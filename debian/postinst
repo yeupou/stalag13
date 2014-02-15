@@ -104,7 +104,8 @@ my @outdated_2014 = ("/etc/bashrc.d/stalag13-shell.sh",
 		     "/etc/exim4/conf.d/router/450_stalag13-spamblock",
 		     "/etc/exim4/conf.d/router/350_stalag13-system_aliases_banned",
 		     "/etc/exim4/conf.d/router/395_stalag13-shopping_catchall",
-		     "/etc/exim4/conf.d/router/399_stalag13-system_aliases_per_domain");
+		     "/etc/exim4/conf.d/router/399_stalag13-system_aliases_per_domain",
+		     "/etc/cron.daily/steam");
 
 my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011, @outdated_2012, @outdated_2014);
 

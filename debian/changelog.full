@@ -1,3 +1,9 @@
+stalag13-utils (3.140+1-20140215) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 15 Feb 2014 14:07:13 +0100
+ 
 stalag13-utils (3.140-20140211) unstable; urgency=low
  
   * Update spamassassin rules: 0 score for RCVD_IN_DNSWL_HI as it helps spam to get to me. Ex http://www.dnswl.org/s?s=84.14.192.187
