@@ -30,7 +30,7 @@ FILES="/etc/resolv.conf /etc/hosts"
 # RCFILE: STEAM_USER must be set
 RC=~/.steam-boxedrc
 if [ -f "$RC" ]; then . $RC; fi
-[ -z "$STEAM_USER" ] && echo "STEAM_USER unset, please add it to $RC"
+[ -z "$STEAM_USER" ] && echo "STEAM_USER unset, please add it to $RC" && exit
 
 # VARS
 RED='\033[1;31m'
