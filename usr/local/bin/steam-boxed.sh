@@ -65,8 +65,8 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     done
     # dirty hack specific to flash: seems HTML5 now
     #if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
-    # another dirty hack required by steam: STILL NEEDED?
-    #chmod 1777 $STEAM_ROOT/dev/shm
+    # another dirty hack required by steam
+    chmod 1777 $STEAM_ROOT/dev/shm
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
