@@ -23,10 +23,14 @@
 #   2. wtf wrapping stuff already supposed to work?
 
 # CONFIG
-STEAM_USER="pllx"
 STEAM_ROOT="/mnt/steam"
 BINDS="/proc /dev /sys /var/lib/dbus /run"
 FILES="/etc/resolv.conf /etc/hosts"
+
+# RCFILE: STEAM_USER must be set
+RC=~/.steam-boxedrc
+if [ -f "$RC" ]; then . $RC; fi
+[ -z "$STEAM_USER" ] && echo "STEAM_USER unset, please add it to $RC"
 
 # VARS
 RED='\033[1;31m'
@@ -59,10 +63,10 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
 	rm -f $STEAM_ROOT$file
 	cp -v $file $STEAM_ROOT$file
     done
-    # dirty hack specific to flash
-    if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
-    # another dirty hack required by steam
-    chmod 1777 $STEAM_ROOT/dev/shm
+    # dirty hack specific to flash: seems HTML5 now
+    #if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
+    # another dirty hack required by steam: STILL NEEDED?
+    #chmod 1777 $STEAM_ROOT/dev/shm
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
@@ -81,7 +85,7 @@ case $1 in
 	chroot $STEAM_ROOT su $STEAM_USER
 	;;
     *) echo -e $GREEN ==== STEAMING ==== $NC
-	chroot $STEAM_ROOT su $STEAM_USER -c "steam"
+	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam"
 	;;
 esac
 
