@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2013 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2013-2014 Mathieu Roy <yeupou--gnu.org>
 #      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     mount -v $STEAM_ROOT
     for bind in $BINDS; do
 	if [ ! -d $STEAM_ROOT$bind ]; then mkdir -v $STEAM_ROOT$bind; fi
-	mount -v --bind $bind $STEAM_ROOT$bind;
+	mount -v --rbind $bind $STEAM_ROOT$bind;
     done
     for file in $FILES; do
 	rm -f $STEAM_ROOT$file
