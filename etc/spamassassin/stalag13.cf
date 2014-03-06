@@ -118,10 +118,11 @@ score PORN_URL_MISC 5
 score PORN_URL_SEX 5
 score PORN_URL_SLUT 5
 
-# DKIM Signature header exists but is not valid is overly suspicious
+# DKIM Signature header exists but is not valid is suspicious
 # but has not default score. Up this 
+# Not too much because looks this is often misconfigured
 ifplugin Mail::SpamAssassin::Plugin::DKIM
-score T_DKIM_INVALID 15
+score T_DKIM_INVALID 5
 endif
 
 # SPF fail is serious; pass/neutral or softfail are not really meaningful
