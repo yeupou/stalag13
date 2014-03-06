@@ -1,3 +1,9 @@
+stalag13-utils (3.143-20140306) unstable; urgency=low
+ 
+  * Deactivate DKIM based test. Unreliable.
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 06 Mar 2014 16:39:18 +0100
+ 
 stalag13-utils (3.142-20140306) unstable; urgency=low
  
   * Add oplop. Reduce score for T_DKIM_INVALID since it generates often false positives

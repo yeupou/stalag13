@@ -12,8 +12,9 @@ CHECK_RCPT_DOMAIN_DNSBLS = dsn.rfc-ignorant.org/$sender_address_domain
 # SPF
 CHECK_RCPT_SPF = 1
 
-# DKIM
-CHECK_RCPT_DKIM = 1
+# DKIM 
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=689414
+CHECK_RCPT_DKIM = 0
 
 .endif
 
