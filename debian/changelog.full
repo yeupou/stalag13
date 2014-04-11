@@ -1,3 +1,9 @@
+stalag13-utils (3.143+1-20140411) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 11 Apr 2014 14:48:12 +0200
+ 
 stalag13-utils (3.143-20140306) unstable; urgency=low
  
   * Deactivate DKIM based test. Unreliable.

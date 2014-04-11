@@ -328,11 +328,7 @@ class carddav_backend extends rcube_addressbook
 			' (' . implode(',',$xcol) . ') VALUES (?' . str_repeat(',?', count($xcol)-1) .')',
 				$xval);
 
-		// XXX the parameter is the sequence name for postgres; it doesn't work
-		// when using the name of the table. For some reason it still provides
-		// the correct ID for MySQL...
-		$seqname = preg_replace('/s$/', '', $table);
-		$dbid = $dbh->insert_id("carddav_$seqname"."_ids");
+		$dbid = $dbh->insert_id("carddav_$table");
 	}
 
 	if($dbh->is_error()) {
@@ -1797,7 +1793,7 @@ EOF
 	if(!$this->dbstore_group($etag,$group['uri'],$vcfstr,$group,$group_id))
 		return false;
 
-	self::delete_dbrecord($ids,'group_user','contact_id');
+	self::delete_dbrecord($ids,'group_user','contact_id', array('group_id' => $group_id));
 	return $deleted;
 	}}}
 
@@ -1832,8 +1828,12 @@ EOF
 	{{{
 	$this->group_id = $gid;
 	$this->total_cards = -1;
-	$this->filter = "EXISTS(SELECT * FROM ".get_table_name("carddav_group_user")."
-		WHERE group_id = '{$gid}' AND contact_id = ".get_table_name("carddav_contacts").".id)";
+	if ($gid) {
+		$this->filter = "EXISTS(SELECT * FROM ".get_table_name("carddav_group_user")."
+			WHERE group_id = '{$gid}' AND contact_id = ".get_table_name("carddav_contacts").".id)";
+	} else {
+		$this->filter = '';
+	}
 	}}}
 
 	/**
@@ -1974,7 +1974,7 @@ EOF
 	return $ret;
 	}}}
 
-	public static function delete_dbrecord($ids, $table='contacts', $idfield='id')
+	public static function delete_dbrecord($ids, $table='contacts', $idfield='id', $other_conditions = array())
 	{{{
 	$dbh = rcmail::get_instance()->db;
 
@@ -1988,9 +1988,14 @@ EOF
 	}
 
 	$idfield = $dbh->quoteIdentifier($idfield);
-	$sql_result = $dbh->query("DELETE FROM " .
-		get_table_name("carddav_$table") .
-		" WHERE $idfield $dspec" );
+	$sql = "DELETE FROM " . get_table_name("carddav_$table") . " WHERE $idfield $dspec";
+
+	// Append additional conditions
+	foreach ($other_conditions as $field => $value) {
+		$sql .= ' AND ' . $dbh->quoteIdentifier($field) . ' = ' . $dbh->quote($value);
+	}
+
+	$sql_result = $dbh->query($sql);
 	return $dbh->affected_rows($sql_result);
 	}}}
 

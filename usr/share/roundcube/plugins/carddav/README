@@ -1,10 +1,3 @@
-FROM
-https://github.com/blind-coder/rcmcarddav
-
-
-
-
-
 This is a simple CardDAV client implementation.
 
 The configuration is done in the Settings Dialogue in the webfrontend, thanks to Dirk who submitted a patch to FS#3
