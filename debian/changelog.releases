@@ -1,3 +1,18 @@
+stalag13-utils (3.144-20140414) unstable; urgency=low
+ 
+  * Update carddav, update ssl cert creation
+    A usr/share/roundcube/plugins/carddav/dbinit/sqlite3.sql
+    M debian/changelog.full
+    M usr/share/roundcube/plugins/carddav/carddav_backend.php
+    M usr/share/roundcube/plugins/carddav/carddav_common.php
+    M usr/share/roundcube/plugins/carddav/config.inc.php.dist
+    M usr/share/roundcube/plugins/carddav/dbinit/postgres.sql
+    M usr/share/roundcube/plugins/carddav/INSTALL
+    M usr/share/roundcube/plugins/carddav/package.xml
+    M usr/share/roundcube/plugins/carddav/README
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 14 Apr 2014 15:30:26 +0200
+ 
 stalag13-utils (3.143-20140306) unstable; urgency=low
  
   * Deactivate DKIM based test. Unreliable.
