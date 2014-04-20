@@ -149,6 +149,7 @@ while (defined(my $file = readdir(WATCH))) {
 	    # log whenever we affect a rename
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
 	    # actually rnename if possible
+	    unlink("$watchdir/[ERROR: cannot read this, chmod please]$file") if -e "$watchdir/[ERROR: cannot read this, chmod please]$file";
 	    move("$watchdir/$file", 
 		 "$watchdir/[ERROR: cannot read this, chmod please]$file")
 		unless -e "$watchdir/[ERROR: cannot read this, chmod please]$file";
@@ -167,6 +168,7 @@ while (defined(my $file = readdir(WATCH))) {
 	    # log whenever we affect a rename
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot parse it\n", localtime;
 	    # actually rnename if possible
+	    unlink("$watchdir/[ERROR: cannot parse this, do something]$file") if -e "$watchdir/[ERROR: cannot parse this, do something]$file";
 	    move("$watchdir/$file", 
 		 "$watchdir/[ERROR: cannot parse this, do something]$file")
 		unless -e "$watchdir/[ERROR: cannot parse this, do something]$file";
@@ -279,7 +281,8 @@ while (<LIST>) {
 	print LOG strftime "%c - completed $name (#$id)\n", localtime;
 	# do not bother removing the torrent, done below
 	move("$watchdir/$file.trs",
-	     "$watchdir/$file.trs+");
+	     "$watchdir/$file.trs+")
+	    unless -e "$watchdir/$file.trs+";
 	
 	# warn (it should send a mail, if cron is properly configured)
 	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
