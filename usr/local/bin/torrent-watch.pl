@@ -148,16 +148,17 @@ while (defined(my $file = readdir(WATCH))) {
 	    next if $file =~ /^\[ERROR\: cannot read this/;
 	    # log whenever we affect a rename
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
-	    # actually rnename
+	    # actually rnename if possible
 	    move("$watchdir/$file", 
-		 "$watchdir/[ERROR: cannot read this, chmod please]$file");
+		 "$watchdir/[ERROR: cannot read this, chmod please]$file")
+		unless -e "$watchdir/[ERROR: cannot read this, chmod please]$file";
 	    next;
 	}
 
 	# Check if parsable
 	# (only if not marked as such already)
 	next if $file =~ /^\[ERROR\: cannot parse this/;
-	`"$bininfo" "$watchdir/$file" >/dev/null`;
+	`"$bininfo" "$watchdir/$file" >/dev/null 2>/dev/null`;
 	if ($?) {
 	    print "skip $file: not parsable\n" if $debug;
 
@@ -165,9 +166,10 @@ while (defined(my $file = readdir(WATCH))) {
 	    next if $file =~ /^\[ERROR\: cannot parse this/;
 	    # log whenever we affect a rename
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot parse it\n", localtime;
-	    # actually rnename
+	    # actually rnename if possible
 	    move("$watchdir/$file", 
-		 "$watchdir/[ERROR: cannot parse this, do something]$file");
+		 "$watchdir/[ERROR: cannot parse this, do something]$file")
+		unless -e "$watchdir/[ERROR: cannot parse this, do something]$file";
 	    next;
 	}
 	
