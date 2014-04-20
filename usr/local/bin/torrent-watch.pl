@@ -30,7 +30,8 @@ use Date::Parse;
 
 my $user = "debian-transmission";
 my $watchdir = "/home/torrent/watch";
-my $bin = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
+my $binwork = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
+my $bininfo = "/usr/bin/transmission-show";
 my $debug = 0;
 
 # ~/watch syntax :
@@ -134,16 +135,39 @@ while (defined(my $file = readdir(WATCH))) {
     
     # new .torrent file
     if ($suffix eq ".torrent") {
+
+	# Check if readable
 	unless (-r "$watchdir/$file") {
 	    # if we cannot read the file, rename the file so the user
 	    # know looking at watch dir what is going on. 
 	    # Do not print warning, this is not crucial error requiring
 	    # immediate attention (and mail sent by cron)
 	    print "skip $file: not readable\n" if $debug;
+
+	    # proceed to rename only if it has not been renamed yet
 	    next if $file =~ /^\[ERROR\: cannot read this/;
+	    # log whenever we affect a rename
 	    print LOG strftime "%c - WARNING: we skipped $file because we cannot read it\n", localtime;
+	    # actually rnename
 	    move("$watchdir/$file", 
 		 "$watchdir/[ERROR: cannot read this, chmod please]$file");
+	    next;
+	}
+
+	# Check if parsable
+	# (only if not marked as such already)
+	next if $file =~ /^\[ERROR\: cannot parse this/;
+	my $parsecheck = `"$bininfo $watchdir/$file"`;
+	if ($parsecheck =~ /^Error parsing/) {
+	    print "skip $file: not parsable\n" if $debug;
+
+	    # proceed to rename only if it has not been renamed yet
+	    next if $file =~ /^\[ERROR\: cannot parse this/;
+	    # log whenever we affect a rename
+	    print LOG strftime "%c - WARNING: we skipped $file because we cannot parse it\n", localtime;
+	    # actually rnename
+	    move("$watchdir/$file", 
+		 "$watchdir/[ERROR: cannot parse this, do something]$file");
 	    next;
 	}
 	
@@ -165,16 +189,16 @@ closedir(WATCH);
 if ($pause_all) {
     # set only once
     unless (-e "$watchdir/.slow") {
-	print "$bin --alt-speed\n" if $debug;
+	print "$binwork --alt-speed\n" if $debug;
 	print LOG strftime "%c - use turtle speed from now on\n", localtime; 
-	`$bin --alt-speed >/dev/null`;
+	`$binwork --alt-speed >/dev/null`;
 	system("/usr/bin/touch", "$watchdir/.slow");
     }
 } else {
     # reset only once
     if (-e "$watchdir/.slow") {
-	print "$bin --no-alt-speed\n" if $debug;
-	`$bin --no-alt-speed >/dev/null`;
+	print "$binwork --no-alt-speed\n" if $debug;
+	`$binwork --no-alt-speed >/dev/null`;
 	print LOG strftime "%c - back to normal speed from now on\n", localtime;
 	unlink("$watchdir/.slow");
     }
@@ -184,12 +208,12 @@ if ($pause_all) {
 # add new torrents
 my %added;
 foreach my $torrent (@to_be_added) {
-    print "$bin --add $watchdir/$torrent --start\n" if $debug;
-    `$bin --add "$watchdir/$torrent" --start >/dev/null`;
+    print "$binwork --add $watchdir/$torrent --start\n" if $debug;
+    `$binwork --add "$watchdir/$torrent" --start >/dev/null`;
 
     # get the ID (should be the latest)
     my $id;
-    open(LIST, "$bin --list |");
+    open(LIST, "$binwork --list |");
     while (<LIST>) {
 	if (/^\s*(\d*)\*?\s*/) {
 	    $id = $1 if $id < $1;
@@ -210,7 +234,7 @@ foreach my $torrent (@to_be_added) {
 # update torrents beings processed,
 #  start/pause/remove if need be
 my $count;
-open(LIST, "$bin --list |");
+open(LIST, "$binwork --list |");
 while (<LIST>) {
 
     # output format: 
@@ -223,7 +247,7 @@ while (<LIST>) {
     next unless $id;
     
     # obtain info that cannot be guessed
-    open(INFO, "$bin --torrent $id --info |");
+    open(INFO, "$binwork --torrent $id --info |");
     while (<INFO>) { 
 	if (/\s*Name\:\s*(.*)$/) { $name = $1; }
 	if (/\s*Date added\:\s*(.*)$/) { $date = $1; }
@@ -265,34 +289,34 @@ while (<LIST>) {
 
     # should be paused
     if (-e "$watchdir/$file.trs-") {
-	print "$bin -t $id --stop ($file.trs+ exists)\n" if $debug;
+	print "$binwork -t $id --stop ($file.trs+ exists)\n" if $debug;
 	print LOG strftime "%c - pause $name (#$id)\n", localtime;
-	`$bin --torrent $id --stop >/dev/null`;
+	`$binwork --torrent $id --stop >/dev/null`;
 	next;
     }
     
     # should be removed 
     unless (-e "$watchdir/$file.trs" or $added{$id} or $justwokeup) {
-	print "$bin -t $id --remove (no $file.trs)\n" if $debug;
+	print "$binwork -t $id --remove (no $file.trs)\n" if $debug;
 	print LOG strftime "%c - remove $name (#$id)\n", localtime;
-	`$bin --torrent $id --remove >/dev/null`;
+	`$binwork --torrent $id --remove >/dev/null`;
 	next;
     }
 
     # any other case, ask to start it (dont log it, we do it everytime)
-    print "$bin -t $id --start\n" if $debug and !$pause_all;
-    `$bin --torrent $id --start >/dev/null` unless $pause_all;
+    print "$binwork -t $id --start\n" if $debug and !$pause_all;
+    `$binwork --torrent $id --start >/dev/null` unless $pause_all;
 
     # for any processed file, update the info file, starting with the files
     # list 
     print "> $file.trs\n" if $debug;
     open(TRSFILE, "> $watchdir/$file.trs");
-    open(INFO, "$bin --torrent $id --files |");
+    open(INFO, "$binwork --torrent $id --files |");
     print TRSFILE "FILES\n";
     while (<INFO>) { print TRSFILE "  ".$_; }
     print TRSFILE "\n";
     close(INFO);
-    open(INFO, "$bin --torrent $id --info |");
+    open(INFO, "$binwork --torrent $id --info |");
     while (<INFO>) { last if /^PIECES/; print TRSFILE $_; }
     close(INFO);
     close(TRSFILE);
@@ -311,10 +335,10 @@ close(LIST);
 # update status info after everything was done
 open(STATUSFILE, "> $watchdir/status");
 print STATUSFILE "Last run: ", strftime "%c\n\n", localtime;
-open(LIST, "$bin --list |");
+open(LIST, "$binwork --list |");
 while (<LIST>) { print STATUSFILE $_; }
 close(LIST);
-open(STATS, "$bin --session-stats |");
+open(STATS, "$binwork --session-stats |");
 while (<STATS>) { last if /^TOTAL/; print STATUSFILE $_; }
 close(STATS);
 close(STATUSFILE);
