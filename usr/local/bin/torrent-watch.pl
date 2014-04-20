@@ -157,7 +157,7 @@ while (defined(my $file = readdir(WATCH))) {
 	# Check if parsable
 	# (only if not marked as such already)
 	next if $file =~ /^\[ERROR\: cannot parse this/;
-	`"$bininfo" "$watchdir/$file"`;
+	`"$bininfo" "$watchdir/$file" >/dev/null`;
 	if ($?) {
 	    print "skip $file: not parsable\n" if $debug;
 
