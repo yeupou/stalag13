@@ -103,7 +103,7 @@ case $1 in
             # run twice umount in case of race conditions
 	    #  with force and lazy 
 	    for bind in $BINDS $BINDS; do
-		umount -vlf $STEAM_ROOT$bind;
+#TEST		umount -vlf $STEAM_ROOT$bind;
 	    done
 	    rm -fv $STEAM_ROOT/is-session-up
 	    umount -vlf $STEAM_ROOT
