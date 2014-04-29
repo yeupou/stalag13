@@ -72,7 +72,7 @@ else
 fi
 # register this session
 touch $SESSIONS_DIR/$BASHPID
-rm $SESSIONS_DIR/was-up
+rm -f $SESSIONS_DIR/was-up
 
 
 # GET IN AND START STEAM/SHELL
@@ -99,7 +99,6 @@ case $1 in
 	echo -e $RED ==== SKIP CLEANING UP SESSION AS ASKED TO ==== $NC
 	;;
     *) 
-	rm -v $SESSIONS_DIR/$BASHPID
 	if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
 	    echo -e $GREEN ==== CLEANING UP SESSION ==== $NC
 	    ### FIXME It seems that this umounting stuff creates more trouble than not doing anything
