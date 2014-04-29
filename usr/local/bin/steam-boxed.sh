@@ -72,6 +72,7 @@ else
 fi
 # register this session
 touch $SESSIONS_DIR/$BASHPID
+rm $SESSIONS_DIR/was-up
 
 
 # GET IN AND START STEAM/SHELL
@@ -98,14 +99,18 @@ case $1 in
 	echo -e $RED ==== SKIP CLEANING UP SESSION AS ASKED TO ==== $NC
 	;;
     *) 
+	rm -v $SESSIONS_DIR/$BASHPID
 	if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
 	    echo -e $GREEN ==== CLEANING UP SESSION ==== $NC
-            # run twice umount in case of race conditions
-#	    for bind in $BINDS $BINDS; do
-#		umount -vlf $STEAM_ROOT$bind;
-#	    done
-	    rm -fv $STEAM_ROOT/is-session-up
-	    umount -vlf $STEAM_ROOT
+	    ### FIXME It seems that this umounting stuff creates more trouble than not doing anything
+##          # run twice umount in case of race conditions
+##	    for bind in $BINDS $BINDS; do
+##		umount -vlf $STEAM_ROOT$bind;
+##	    done
+##	    umount -vlf $STEAM_ROOT
+	    ### FIXME So for now, just make sure we wont mount stuff more than once by recording that
+	    ### it was up once
+	    touch $SESSIONS_DIR/was-up
 	else 
 	    echo -e $YELLOW ==== SKIP CLEANING UP SESSION, AT LEAST ONE STILL EXISTS ==== $NC
 	fi
