@@ -101,11 +101,12 @@ case $1 in
 	if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
 	    echo -e $GREEN ==== CLEANING UP SESSION ==== $NC
             # run twice umount in case of race conditions
+	    #  with force and lazy 
 	    for bind in $BINDS $BINDS; do
-		umount -v $STEAM_ROOT$bind;
+		umount -vlf $STEAM_ROOT$bind;
 	    done
 	    rm -fv $STEAM_ROOT/is-session-up
-	    umount -v $STEAM_ROOT
+	    umount -vlf $STEAM_ROOT
 	else 
 	    echo -e $YELLOW ==== SKIP CLEANING UP SESSION, AT LEAST ONE STILL EXISTS ==== $NC
 	fi
