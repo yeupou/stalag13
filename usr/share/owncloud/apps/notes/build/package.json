@@ -1,0 +1,31 @@
+{
+	"name": "notes",
+	"description": "Notes app",
+	"version": "0.0.1",
+	"private": true,
+	"homepage": "https://github.com/owncloud/notes",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:owncloud/notes.git"
+	},
+	"bugs": "https://github.com/owncloud/notes/issues",
+	"dependencies": {},
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-cli": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-jshint": "*",
+		"grunt-contrib-watch": "*",
+		"karma": "*",
+		"grunt-karma": "*",
+		"grunt-wrap": "*",
+		"phantomjs": "*",
+		"grunt-phpunit": "*",
+		"bower": "*",
+		"karma-jasmine": "*",
+		"karma-phantomjs-launcher": "*",
+		"karma-chrome-launcher": "*",
+		"karma-firefox-launcher": "*"
+	},
+	"engine": "node >= 0.8"
+}

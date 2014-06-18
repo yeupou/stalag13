@@ -1,0 +1,14 @@
+{
+  "name": "ownCloud notes",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "",
+    "restangular": "",
+    "jquery": "",
+    "jquery-ui": "",
+    "underscore": "",
+    "angular-mocks": "",
+    "markdown": "~0.5.0",
+    "angular-route": ""
+  }
+}

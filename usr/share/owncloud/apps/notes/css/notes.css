@@ -1,0 +1,212 @@
+/**
+ * Copyright (c) 2013, Jan-Christoph Borchardt http://jancborchardt.net
+ * This file is licensed under the Affero General Public License version 3 or later.
+ * See the COPYING file.
+ */
+
+#app-navigation {
+	padding-bottom: 0; /* no settings bar, so no padding needed */
+}
+
+#app-navigation li.active {
+	font-weight: bold; /* bold currently active note */
+}
+
+/* fancy handling of 'New Note' text */
+#app-navigation .utils {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+#app-navigation .utils > * {
+	float: right;
+}
+
+
+#app-navigation #note-add span {
+	display: none;
+	font-weight: bold;
+	padding-left: 2px;
+}
+	#app-navigation #note-add:hover span,
+	#app-navigation #note-add:focus span {
+		display: inline;
+	}
+
+#app-navigation .utils button {
+	margin: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 0;
+	box-shadow: none;
+	display: none;
+	height: 32px;
+	width: 32px;
+}
+
+	/* only display the delete button when the feed is active */
+	#app-navigation .utils .delete-button {
+		display: none;
+	}
+
+	#app-navigation .active > .utils .delete-icon {
+		display: block;
+	}
+
+.tooltip {
+	text-shadow: none;
+	text-transform: none;
+}
+
+#app-content {
+	background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -o-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -moz-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -webkit-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -ms-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+}
+
+/* special styling to make textarea subtle and fit the window */
+#app-content textarea {
+	display: block;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 30px 20px 100px 30px;
+	font-size: 18px;
+	line-height: 150%;
+	border: 0;
+	background: none;
+	box-shadow: none;
+	resize: none;
+	-moz-box-sizing: border-box; box-sizing: border-box;
+	float: left;
+}
+
+#app-content textarea.markdown {
+	/* 
+	* width: 50%;
+	*/
+}
+
+/* TODO: move into core app styles */
+#app-content.loading {
+	background-image: url('../img/loading.gif');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#app-content .markdown {
+	height: 100%;
+	/*
+	* width: 50%;
+	*/
+	margin: 0;
+	padding: 30px 20px 100px 30px;
+	font-size: 18px;
+	line-height: 1.5;
+	border: 0;
+	background: none;
+	box-shadow: none;
+	resize: none;
+	-moz-box-sizing: border-box; box-sizing: border-box;
+	float: left;
+	border-left: 1px solid #ccc;
+	overflow: auto;
+}
+
+#app-content .utils {
+	padding: 0 20px 0 20px;
+	line-height: 30px;
+	position: fixed;
+	top: 45px;
+	right: 20px;
+}
+
+	#app-content .utils > * {
+
+	}
+
+.markdown h1, h2, h3 {
+	font-weight: bold;
+	text-decoration: underline;
+	margin-top: 10px;
+}
+
+.markdown h1 {
+	font-size: 26px;
+}
+
+.markdown pre {
+	padding: 7px 7px 7px 14px;
+	background-color: #dadada;
+	border: 1px solid #ccc;
+	margin: 7px 0 14px 0;
+	overflow-y: auto;
+}
+	.markdown pre::-webkit-scrollbar {
+		height: 10px;
+	}
+
+	.markdown pre::-webkit-scrollbar-thumb {
+		background: #333;
+	}
+
+	.markdown pre::-webkit-scrollbar-track-piece {
+		background: #ddd;
+	}
+
+	.markdown code,
+	.markdown pre {
+		font-family: monospace;
+		font-size: 16px;
+	}
+
+.markdown blockquote {
+	border-left: 1px solid #aaa;
+	margin: 25px 0;
+	padding: 0 0 0 15px;
+	font-style: italic;
+}
+
+
+
+.markdown h2 {
+	font-size: 24px;
+}
+
+.markdown h3 {
+	font-size: 22px;
+}
+
+.markdown ul, ol {
+	margin: 0 0 10px 25px;
+}
+
+.markdown li {
+	cursor: auto;
+}
+
+.markdown p {
+	margin-bottom: 20px;
+}
+
+.markdown ul {
+	list-style-type: disc;
+}
+
+.markdown ul ul,
+.markdown ol ul {
+	list-style-type: disc;
+}
+
+.markdown a {
+	color: #4183C4;
+}
+
+	.markdown a:hover {
+		text-decoration: underline;
+	}
