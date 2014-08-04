@@ -1,3 +1,9 @@
+stalag13-utils (3.148-20140804) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 04 Aug 2014 13:32:05 +0200
+ 
 stalag13-utils (3.147-20140620) unstable; urgency=low
  
   * Add owncloud notes.

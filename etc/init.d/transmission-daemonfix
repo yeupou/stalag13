@@ -11,6 +11,6 @@
 # Description:       Create .down file so torrent watch knows the daemon woke up
 ### END INIT INFO
 
-su transmission-daemon -c "touch /home/torrent/watch/.down"
+su debian-transmission -c "touch /home/torrent/watch/.down"
 
 # EOF
