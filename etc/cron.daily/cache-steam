@@ -30,7 +30,7 @@ use CGI qw(:standard Link);
 my $dir = "/srv/www/depot";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/cache-steam";
-my $steamdb_baseurl="http://steamdb.info/apps";
+my $steamdb_baseurl="http://steamdb.info/depot";
 my $steamdb_unknown_string="Unknown / Deleted App";
 
 my $debug = 0;
