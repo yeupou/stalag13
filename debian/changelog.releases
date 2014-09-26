@@ -1,3 +1,12 @@
+stalag13-utils (3.149-20140926) unstable; urgency=low
+ 
+  * Add console.
+    M debian/changelog.full
+    M etc/cron.daily/cache-steam
+    M usr/local/bin/steam-boxed.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 26 Sep 2014 15:30:27 +0200
+ 
 stalag13-utils (3.148-20140804) unstable; urgency=low
  
   * Cosmetics/trivial fixes
