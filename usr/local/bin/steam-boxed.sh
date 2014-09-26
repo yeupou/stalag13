@@ -86,7 +86,7 @@ case $1 in
 	chroot $STEAM_ROOT su $STEAM_USER
 	;;
     *) echo -e $GREEN ==== STEAMING ==== $NC
-	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam"
+	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam --console"
 	;;
 esac
 
