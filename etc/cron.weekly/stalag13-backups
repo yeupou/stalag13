@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2011-2012 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2011-2014 Mathieu Roy <yeupou--gnu.org>
 #                   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -18,29 +18,55 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 
+# run only on server
 if [ `hostname` != "moe" ]; then exit; fi
+
+# available hard drives
+drive1=wd2T
+drive2=sg2T
+
+# get opts
+for i in "$@"; do
+    case $i in
+	--drive1=*)
+	    drive1="${i#*=}"
+	    shift
+	    ;;
+	--drive2=*)
+	    drive2="${i#*=}"
+	    shift
+	    ;;
+	--skip-user-data)
+	    skipuserdata=1
+	    shift
+	    ;;
+	*)
+            # unknown
+	    ;;
+    esac
+done
 
 ## user data backing up
 # not trying to be smart here, just put stuff in backups, not trying to 
 # understand on which drives we work on
 # (the system clone will mess with /home but not part outside the system 
 # partitions)
-for userhome in  /storage/abstract/home.*; do
-    /usr/bin/rsync -a --delete $userhome /backups/
-done
-/usr/bin/rsync -a --delete /var/lib/wiki /backups/
-/usr/bin/rsync -a --delete /storage/abstract/musique /backups/
-date > /backups/.lastrun
-
+if [ ! -z ${skipuserdata+x} ]; then
+    echo "Skip user datat";
+else
+    for userhome in  /storage/abstract/home.*; do
+	/usr/bin/rsync -a --delete $userhome /backups/
+    done
+    /usr/bin/rsync -a --delete /var/lib/wiki /backups/
+    /usr/bin/rsync -a --delete /storage/abstract/musique /backups/
+    date > /backups/.lastrun
+fi
+    
 ## system cloning
 sys=debian64
 swap=swap
 mount=/mnt/sysclone
 ignore="backups dev lost+found media proc run sys tmp"
-
-# available hard drives
-drive1=wd2T
-drive2=sg2T
 
 # determines which drive is currently / by reading /etc/fstab
 orig=`cat /etc/fstab | grep $sys | cut -f 1 | cut -f 2 -d = | sed s/$sys//g;`
