@@ -22,8 +22,8 @@
 if [ `hostname` != "moe" ]; then exit; fi
 
 # available hard drives
-drive1=wd2T
-drive2=sg2T
+drive1=wd4T
+drive2=wd2T
 
 # get opts
 for i in "$@"; do
