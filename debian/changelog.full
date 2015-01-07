@@ -1,3 +1,11 @@
+stalag13-utils (3.152-20150107) unstable; urgency=low
+ 
+  * Remove obsolete lists.
+    M debian/changelog.full
+    M etc/exim4/conf.d/acl/01_stalag13-config_options
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 07 Jan 2015 17:09:05 +0100
+ 
 stalag13-utils (3.151+1-20150107) unstable; urgency=low
  
   * Upstream prerelease
