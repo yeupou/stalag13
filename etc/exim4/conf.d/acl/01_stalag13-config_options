@@ -3,8 +3,8 @@
 .ifdef SPAMBLOCKING_ENABLE
 
 # sender host check
-CHECK_RCPT_IP_DNSBLS_NEGATIVE = dnsbl.ahbl.org=127.0.0.9 : dnsbl.ahbl.org=127.0.0.11
-CHECK_RCPT_IP_DNSBLS = sbl-xbl.spamhaus.org : dnsbl.ahbl.org : cbl.abuseat.org : smtp.dnsbl.sorbs.net : http.dnsbl.sorbs.net : socks.dnsbl.sorbs.net : zombie.dnsbl.sorbs.net
+CHECK_RCPT_IP_DNSBLS_NEGATIVE = 
+CHECK_RCPT_IP_DNSBLS = sbl-xbl.spamhaus.org : cbl.abuseat.org : smtp.dnsbl.sorbs.net : http.dnsbl.sorbs.net : socks.dnsbl.sorbs.net : zombie.dnsbl.sorbs.net
 
 # sender address domain check
 CHECK_RCPT_DOMAIN_DNSBLS = dsn.rfc-ignorant.org/$sender_address_domain
