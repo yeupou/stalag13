@@ -23,7 +23,7 @@
 #   2. wtf wrapping stuff already supposed to work?
 
 # CONFIG
-STEAM_ROOT="/mnt/steam"
+STEAM_ROOT="/mnt/scratch/steamos"
 BINDS="/proc /dev /sys /var/lib/dbus /run"
 FILES="/etc/resolv.conf /etc/hosts"
 
@@ -54,11 +54,16 @@ fi
 # SET UP SESSION
 if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     echo -e $GREEN ==== SETTING UP SESSION ==== $NC
-    mount -v $STEAM_ROOT
+    # mount root dir if current does not seems to contain proper OS
+    if [ ! -e $STEAM_ROOT/etc/debian_version ]; then
+	mount -v $STEAM_ROOT;
+    fi
+    # mount every specific bind
     for bind in $BINDS; do
 	if [ ! -d $STEAM_ROOT$bind ]; then mkdir -v $STEAM_ROOT$bind; fi
 	mount -v --rbind $bind $STEAM_ROOT$bind;
     done
+    # overwrite specific files
     for file in $FILES; do
 	rm -f $STEAM_ROOT$file
 	cp -v $file $STEAM_ROOT$file
