@@ -57,7 +57,7 @@ else
     for userhome in  /storage/abstract/home.*; do
 	/usr/bin/rsync -a --delete $userhome /backups/
     done
-    /usr/bin/rsync -a --delete /var/lib/wiki /backups/
+    #outdated /usr/bin/rsync -a --delete /var/lib/wiki /backups/
     /usr/bin/rsync -a --delete /storage/abstract/musique /backups/
     /usr/bin/mysqldump --compact wiki2012 > /backups/mediawiki.sql && /bin/bzip2 -f /backups/mediawiki.sql
     date > /backups/.lastrun
