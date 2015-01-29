@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# (c) 2001-2012 Mathieu Roy <yeupou--gnu.org>
+# (c) 2001-2015 Mathieu Roy <yeupou--gnu.org>
 #     http://yeupou.wordpress.com
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -24,9 +24,10 @@
 # Requirements
 use strict;
 use Getopt::Long;
+use Text::Unaccent;
 
 # Usual for Darius Tools perl scripts
-my $DARIUS_AUTHOR="2002-2012 Mathieu Roy";
+my $DARIUS_AUTHOR="2002-2015 Mathieu Roy";
 my $DARIUS_MAIL="yeupou--gnu.org";
 my $DARIUS_VER="Irrelevant";
 
@@ -91,8 +92,8 @@ exit(1);
 
 sub Urlize {
     my $ret = $_[0];  
-    $ret =~ tr/ /_/;  
-    $ret =~ tr/à-é/a-e/;
+    $ret =~ tr/ /_/;
+    $ret = unac_string("", $ret);
     $ret =~ tr/+/_/;
     $ret =~ tr/=/_/;
     $ret =~ s/\&//g;
