@@ -26,10 +26,11 @@
 # automatically remove bigger directories not accessed at all in 256d.
 
 use strict;
-use LWP::UserAgent;
-use HTTP::Request;
-use HTTP::Response;
-use HTML::TableExtract;
+#use LWP::UserAgent;
+#use HTTP::Request;
+#use HTTP::Response;
+#use HTML::TableExtract;
+use File::stat;
 use Number::Bytes::Human;
 use CGI qw(:standard Link);
 
@@ -51,8 +52,9 @@ exit unless -e $nginx_conf;
 
 ## SLURP INFO
 my (%depots, $depots_size,
-    %depot_size, 
-    %depot_name);
+    %depot_size,
+    ###%depot_name,
+    %depot_atime);
 while (defined(my $depot = glob('*'))) {
     # only deal with directories
     next unless -d $depot;
@@ -67,7 +69,12 @@ while (defined(my $depot = glob('*'))) {
     ## get local file info: du size
     ($depot_size{$depot},) = split(/\W/, `du --summarize --block-size=1 $dir/$depot`);
     $depots_size += $depot_size{$depot};
+    ## get local file info: last access time
+    my $stat = stat "$dir/$depot";
+    $depot_atime{$depot} = $stat->atime; 
+
     print " size: ".$depot_size{$depot}."\n" if $debug;
+    print " atime: ".$depot_atime{$depot}."\n" if $debug;
 
     ##### get distant (steamdb webpages) info to obtain a proper name
     ###my $url = "$steamdb_baseurl/$depot/";
