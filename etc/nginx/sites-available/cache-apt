@@ -4,11 +4,13 @@ server  {
   listen 80;
   server_name *.debian.org *.ubuntu.com;
 
-  access_log /var/log/nginx/apt.access.log;
+  access_log off;
   error_log /var/log/nginx/apt.error.log;
 
   root /var/www/;
   resolver 127.0.0.1;
+  ## use this resolver instead if your local interface got domain names spoofed 
+  ##resolver 8.8.8.8 4.2.2.2;
 
   allow 192.168.1.0/24;
   allow 127.0.0.1;
@@ -22,36 +24,19 @@ server  {
     try_files $uri @mirror;
   }
 
-
   location /ubuntu/pool/ {
     try_files $uri @mirror;
   }
 
   location / {
-    proxy_next_upstream error timeout http_404;
-    proxy_pass http://$host$request_uri;
-    proxy_redirect off;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
-    add_header X-Mirror-Upstream-Status $upstream_status;
-    add_header X-Mirror-Upstream-Response-Time $upstream_response_time;
-    add_header X-Mirror-Status $upstream_cache_status;
+    include cache_proxy_params;
   }
 
   location @mirror {
     access_log /var/log/nginx/apt.remote.log;
     proxy_store on;
-    proxy_store_access user:rw group:rw all:r;
-    proxy_next_upstream error timeout http_404;
-    proxy_pass http://$host$request_uri;
-    proxy_redirect off;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
-    add_header X-Mirror-Upstream-Status $upstream_status;
-    add_header X-Mirror-Upstream-Response-Time $upstream_response_time;
-    add_header X-Mirror-Status $upstream_cache_status;
+    proxy_store_access user:rw group:r all:r;
+    include cache_proxy_params;    
    }
 }
 
