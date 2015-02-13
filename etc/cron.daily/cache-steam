@@ -40,7 +40,7 @@ my $dir = "/srv/www/depot";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/cache-steam";
 my $keepers = "$dir/keepers";
-###my $steamdb_baseurl="http://steamdb.info/depot";
+my $steamdb_baseurl="http://steamdb.info/depot";
 ###my $steamdb_unknown_string="Unknown / Deleted App";
 
 my $debug = 0;
@@ -187,12 +187,11 @@ if (scalar(keys(%depot_to_keep)) < 1) {
 } else {
     print OUTPUT p("* ".scalar(keys(%depot_to_keep))." depots were set to be kept in $keepers.");
 
-}
 
-foreach my $depot (sort keys %depots) {
+foreach my $depot (sort {$a<=>$b} keys %depots) {
     my $size = $human->format($depot_size{$depot});
     $size = b($size) if $depot_size{$depot} > 999999999;
-    print OUTPUT a({-href=>$depot}, $depot)."\t";
+    print OUTPUT a({-href=>"$steamdb_baseurl/$depot"}, $depot)."\t";
     print OUTPUT b("*") if $depot_to_keep{$depot};
     print OUTPUT "\t".$size."\t".strftime('%c', localtime($depot_mtime{$depot}))."\n";  
 }
