@@ -30,7 +30,6 @@ use strict;
 #use HTTP::Request;
 #use HTTP::Response;
 #use HTML::TableExtract;
-use File::stat;
 use Number::Bytes::Human;
 use POSIX qw(strftime);
 use CGI qw(:standard Link);
@@ -78,8 +77,7 @@ while (defined(my $depot = glob('*'))) {
     ($depot_size{$depot},) = split(/\W/, `du --summarize --block-size=1 $dir/$depot`);
     $depots_size += $depot_size{$depot};
     ## get local file info: last access time
-    my $stat = stat "$dir/$depot";
-    $depot_mtime{$depot} = $stat->mtime; 
+    $depot_mtime{$depot} = (stat($depot))[9];
 
     print " size: ".$depot_size{$depot}."\n" if $debug;    
     print " mtime: ".strftime('%c', localtime($depot_mtime{$depot}))."\n" if $debug; 
