@@ -23,7 +23,7 @@
 ### discourage any crawling of their stuff.
 #
 # New approach: maintain by hand a list of depotid to be kept,
-# remove old directories not in the list 
+# remove old directories (2yo?) not in the list 
 
 use strict;
 #use LWP::UserAgent;
@@ -55,7 +55,7 @@ exit unless -e $nginx_conf;
 my (%depots, $depots_size,
     %depot_size,
     ###%depot_name,
-    %depot_atime);
+    %depot_mtime);
 while (defined(my $depot = glob('*'))) {
     # only deal with directories
     next unless -d $depot;
@@ -72,10 +72,10 @@ while (defined(my $depot = glob('*'))) {
     $depots_size += $depot_size{$depot};
     ## get local file info: last access time
     my $stat = stat "$dir/$depot";
-    $depot_atime{$depot} = $stat->atime; 
+    $depot_mtime{$depot} = $stat->mtime; 
 
     print " size: ".$depot_size{$depot}."\n" if $debug;    
-    print " atime: ".strftime('%c', localtime($depot_atime{$depot}))."\n" if $debug;
+    print " mtime: ".strftime('%c', localtime($depot_mtime{$depot}))."\n" if $debug;
 
     ##### get distant (steamdb webpages) info to obtain a proper name
     ###my $url = "$steamdb_baseurl/$depot/";
@@ -169,7 +169,7 @@ print OUTPUT start_html(-encoding => 'UTF-8',
 foreach my $depot (sort keys %depots) {
     my $size = $human->format($depot_size{$depot});
     $size = b($size) if $depot_size{$depot} > 999999999;
-    print OUTPUT a({-href=>$depot}, $depot)."\t\t".$size."\t".strftime('%c', localtime($depot_atime{$depot}))."\n";  
+    print OUTPUT a({-href=>$depot}, $depot)."\t\t".$size."\t".strftime('%c', localtime($depot_mtime{$depot}))."\n";  
 }
 
 print OUTPUT "\t\t".i($human->format($depots_size))."\n".
