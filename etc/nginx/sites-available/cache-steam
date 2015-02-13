@@ -4,7 +4,7 @@ server  {
   listen 80;
   server_name *.steampowered.com *.steamstatic.com *.edgesuite.net;
 
-  access_log /var/log/nginx/steam.access.log;
+  access_log off;
   error_log /var/log/nginx/steam.error.log;
 
   root /var/www/;
