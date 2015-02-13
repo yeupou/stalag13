@@ -161,7 +161,7 @@ while (defined(my $depot = glob('*'))) {
 # Get list of depots to be kept no matter what
 my %depot_to_keep;
 if (-e "$dir/keepers") {
-    open(KEEPERS, "< $sysemails");
+    open(KEEPERS, "< $dir/keepers");
     while(<KEEPERS>) {
 	$depot_to_keep{$1} if /^\d+/i;
     }
