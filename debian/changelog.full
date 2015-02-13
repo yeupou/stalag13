@@ -1,3 +1,9 @@
+stalag13-utils (3.156+1-20150213) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 13 Feb 2015 20:02:52 +0100
+ 
 stalag13-utils (3.156-20150213) unstable; urgency=low
  
   * No longer try to get info on steamdb.info (unreliable). Remove automatically repositories not modified since at least 2 years, unless listed in "keepers" file (one depotid per line). Many cleanups. Will run only as www-data (will silently exit if with a different user and not able to setuid).
