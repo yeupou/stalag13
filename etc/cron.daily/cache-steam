@@ -58,10 +58,15 @@ my (%depots, $depots_size,
     ###%depot_name,
     %depot_mtime);
 while (defined(my $depot = glob('*'))) {
+    # make sure no symlink get registered
+    next if -l $depot;    
     # only deal with directories
     next unless -d $depot;
     # with only numeric names
     next if $depot =~ /\D/;
+    # that belongs to www-data
+    next if getpwuid((stat($depot))[4]) ne "www-data";
+    
     # assume that's a valid depot to work with proceed
     print "$depot:\n" if $debug;
 
@@ -164,7 +169,7 @@ if (-e "$dir/keepers") {
     open(KEEPERS, "< $dir/keepers");
     print "$keepers: " if $debug;
     while(<KEEPERS>) {
-	if (/^(\d+)/i) {
+	if (/^(\D+)/i) {
 	    $depot_to_keep{$1} = $1;
 	    print "$1," if $debug;
 	}
@@ -173,10 +178,13 @@ if (-e "$dir/keepers") {
 }
 # go through the whole list and remove if too old
 my $timelimit = (time() - 2*365*24*60*60);
-print "older than ".strftime('%c',localtime($timelimit)).": "; if $debug;
+print "older than ".strftime('%c',localtime($timelimit)).": " if $debug;
 foreach my $depot (keys %depots) {
+    # we already know we deal with a directory that belongs to
+    # www-data
     next if $depot_to_keep{$depot};
     next if $depot_mtime{$depot} > $timelimit;
+
     print "$depot," if $debug;
 }
 
