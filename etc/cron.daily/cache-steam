@@ -166,7 +166,7 @@ print OUTPUT start_html(-encoding => 'UTF-8',
     h1("Local Steam Depots ".$human->format($depots_size)." Cache").
     "<pre>";
 
-foreach $depot (sort keys %depots) {
+foreach my $depot (sort keys %depots) {
     my $size = $human->format($depot_size{$depot});
     $size = b($size) if $depot_size{$depot} > 999999999;
     print OUTPUT a({-href=>$depot}, $depot)."\t\t".$size."\n";  
