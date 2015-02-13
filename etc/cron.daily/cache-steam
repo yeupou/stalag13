@@ -186,7 +186,7 @@ if (scalar(keys(%depot_to_keep)) < 1) {
     print OUTPUT p("No depot were set to be kept in $keepers (one id per line) so none will be removed.");
 } else {
     print OUTPUT p("* ".scalar(keys(%depot_to_keep))." depots were set to be kept in $keepers.");
-
+}
 
 foreach my $depot (sort {$a<=>$b} keys %depots) {
     my $size = $human->format($depot_size{$depot});
