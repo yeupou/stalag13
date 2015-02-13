@@ -34,7 +34,9 @@ use Number::Bytes::Human;
 use POSIX qw(strftime);
 use CGI qw(:standard Link);
 
-## SETUP 
+
+## SETUP
+my $user = "www-data"; # standard for Debian
 my $dir = "/srv/www/depot";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/cache-steam";
@@ -46,10 +48,23 @@ my $debug = 0;
 my $debug_sample = 0;
 $debug = 1 if -e "$dir/debug";
 
+
+## INIT
+
 # no point to run if no depots directory available
 exit unless chdir($dir);
 # no point to run if steam not enabled in nginx
 exit unless -e $nginx_conf;
+# disallow concurrent run
+open(LOCK, "< $0") or die "Failed to ask lock. Exiting";
+flock(LOCK, LOCK_EX | LOCK_NB) or die "Unable to lock. Exiting";
+# run only as www-data
+if (((getpwuid($<))[0]) ne $user) {
+    # try to change uid
+    $< = getpwnam($user);
+}
+exit unless ((getpwuid($<))[0]) eq $user;
+
 
 ## SLURP DEPOT INFOS
 my (%depots, $depots_size,
@@ -65,7 +80,7 @@ while (defined(my $depot = glob('*'))) {
     next if $depot =~ /\D/;
     # that belongs to www-data
     my $owner = getpwuid((stat($depot))[4]);
-  #  next unless $owner eq "www-data";
+    next unless $owner eq $user;
     
     # assume that's a valid depot to work with proceed
     print "$depot:\n" if $debug;
@@ -185,8 +200,10 @@ foreach my $depot (keys %depots) {
     # www-data
     next if $depot_to_keep{$depot};
     next if $depot_mtime{$depot} > $timelimit;
-
     print "$depot," if $debug;
+
+    # remove outdated if not in debug mode
+    system("/bin/rm", "-rf", "$dir/$depot") unless $debug;
 }
 print "\n" if $debug;
 
