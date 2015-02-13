@@ -55,9 +55,6 @@ $debug = 1 if -e "$dir/debug";
 exit unless chdir($dir);
 # no point to run if steam not enabled in nginx
 exit unless -e $nginx_conf;
-# disallow concurrent run
-open(LOCK, "< $0") or die "Failed to ask lock. Exiting";
-flock(LOCK, LOCK_EX | LOCK_NB) or die "Unable to lock. Exiting";
 # run only as www-data
 if (((getpwuid($<))[0]) ne $user) {
     # try to change uid
@@ -204,6 +201,7 @@ foreach my $depot (keys %depots) {
 
     # unregister
     delete($depots{$depot});
+    $depots_size -= $depot_size{$depot};
 
     # remove outdated if not in debug mode
     system("/bin/rm", "-rf", "$dir/$depot") unless $debug;
