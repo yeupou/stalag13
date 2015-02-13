@@ -202,6 +202,9 @@ foreach my $depot (keys %depots) {
     next if $depot_mtime{$depot} > $timelimit;
     print "$depot," if $debug;
 
+    # unregister
+    delete($depots{$depot});
+
     # remove outdated if not in debug mode
     system("/bin/rm", "-rf", "$dir/$depot") unless $debug;
 }
