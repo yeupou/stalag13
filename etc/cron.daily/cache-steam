@@ -175,6 +175,7 @@ if (-e "$dir/keepers") {
 	}
     }
     close(KEEPERS);
+    print "\n" if $debug;
 }
 # go through the whole list and remove if too old
 my $timelimit = (time() - 2*365*24*60*60);
@@ -187,7 +188,7 @@ foreach my $depot (keys %depots) {
 
     print "$depot," if $debug;
 }
-
+print "\n" if $debug;
 
        
 ## PRINT INFO
