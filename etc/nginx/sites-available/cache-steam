@@ -58,7 +58,7 @@ server  {
     proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
     add_header X-Mirror-Upstream-Status $upstream_status;
     add_header X-Mirror-Upstream-Response-Time $upstream_response_time;
-    add_header X-Mirror-Status $upstream_cache_statu
+    add_header X-Mirror-Status $upstream_cache_status;
   }
 
 }
