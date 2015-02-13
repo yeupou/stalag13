@@ -18,6 +18,10 @@ server  {
 
   location /depot/ {
     try_files $uri @mirror;
+    }
+    
+  location /serverlist/ {
+    try_files $uri @mirror;
   }
 
   location / {
@@ -47,7 +51,7 @@ server  {
     add_header X-Mirror-Status $upstream_cache_status;
   }
 
-  location /serverlist/ {
+  location @serverlist {
     proxy_store /var/www/servers.txt;
     proxy_store_access user:rw group:rw all:r;
     proxy_next_upstream error timeout http_404;

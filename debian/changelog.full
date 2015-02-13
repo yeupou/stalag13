@@ -1,3 +1,9 @@
+stalag13-utils (3.158+1-20150213) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 13 Feb 2015 20:34:35 +0100
+ 
 stalag13-utils (3.158-20150213) unstable; urgency=low
  
   * Add sample dnsspoof conf to go with nginx cache-steam & cache-apt
