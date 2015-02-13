@@ -162,8 +162,12 @@ while (defined(my $depot = glob('*'))) {
 my %depot_to_keep;
 if (-e "$dir/keepers") {
     open(KEEPERS, "< $dir/keepers");
+    print "$keepers: " if $debug;
     while(<KEEPERS>) {
-	$depot_to_keep{$1} if /^\d+/i;
+	if (/^(\d+)/i) {
+	    $depot_to_keep{$1} = $1;
+	    print "$1, " if $debug;
+	}
     }
     close(KEEPERS);
 }
@@ -177,7 +181,13 @@ print OUTPUT start_html(-encoding => 'UTF-8',
 			-title => 'Local Steam Depots Cache').
     h1("Local Steam Depots ".$human->format($depots_size)." Cache").
     "<pre>";
-print OUTPUT p("No depot were set to be kept in $keepers (one id per line) so none will be removed") if scalar(keys(%depot_to_keep)) < 1;
+
+if (scalar(keys(%depot_to_keep)) < 1) {
+    print OUTPUT p("No depot were set to be kept in $keepers (one id per line) so none will be removed.");
+} else {
+    print OUTPUT p("* ".scalar(keys(%depot_to_keep))." depots were set to be kept in $keepers.");
+
+}
 
 foreach my $depot (sort keys %depots) {
     my $size = $human->format($depot_size{$depot});
