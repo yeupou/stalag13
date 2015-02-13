@@ -82,7 +82,8 @@ while (defined(my $depot = glob('*'))) {
     $depot_mtime{$depot} = $stat->mtime; 
 
     print " size: ".$depot_size{$depot}."\n" if $debug;    
-    print " mtime: ".strftime('%c', localtime($depot_mtime{$depot}))."\n" if $debug;
+    print " mtime: ".strftime('%c', localtime($depot_mtime{$depot}))."\n" if $debug; 
+    print " owner: $owner\n" if $debug;
 
     ##### get distant (steamdb webpages) info to obtain a proper name
     ###my $url = "$steamdb_baseurl/$depot/";
@@ -176,7 +177,7 @@ if (-e "$dir/keepers") {
 	}
     }
     close(KEEPERS);
-    print "\n" if $debug;
+    print "\n\n" if $debug;
 }
 # go through the whole list and remove if too old
 my $timelimit = (time() - 2*365*24*60*60);
