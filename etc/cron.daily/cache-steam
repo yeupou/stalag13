@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2013-2014 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2013-2015 Mathieu Roy <yeupou--gnu.org>
 #      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -18,6 +18,13 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 #   USA
 
+### First version of this script was using steamdb to obtain info on
+### cached depots. This proven unreliable, plus steamdb people on their FAQ
+### discourage any crawling of their stuff.
+#
+# New approach: ignore any directories that are not even 100M big and 
+# automatically remove bigger directories not accessed at all in 256d.
+
 use strict;
 use LWP::UserAgent;
 use HTTP::Request;
@@ -30,8 +37,8 @@ use CGI qw(:standard Link);
 my $dir = "/srv/www/depot";
 my $list = "$dir/depots.html";
 my $nginx_conf = "/etc/nginx/sites-enabled/cache-steam";
-my $steamdb_baseurl="http://steamdb.info/depot";
-my $steamdb_unknown_string="Unknown / Deleted App";
+###my $steamdb_baseurl="http://steamdb.info/depot";
+###my $steamdb_unknown_string="Unknown / Deleted App";
 
 my $debug = 0;
 my $debug_sample = 0;
@@ -62,79 +69,79 @@ while (defined(my $depot = glob('*'))) {
     $depots_size += $depot_size{$depot};
     print " size: ".$depot_size{$depot}."\n" if $debug;
 
-    ## get distant (steamdb webpages) info to obtain a proper name
-    my $url = "$steamdb_baseurl/$depot/";
-    my $useragent = LWP::UserAgent->new();
-    $useragent->agent("Mozilla 5.0 (Debian, kFreeBSD) Iceweasel 10.1");
-    $useragent->show_progress(1) if $debug;
-    $useragent->timeout(25);
-    my $request = HTTP::Request->new(GET => $url);
-    $request->referer("http://yeupou.wordpress.com/");
-    my $result = $useragent->request($request);
-    
-    # skip on failure
-    next if $result->is_error();
-    
-    # otherwise go through the content to find something nice to use
-    # as name. As soon as we do, go to the next entry.
-    for ($result->decoded_content()) {
-	# (yeah, this is ugly, wish to find some raw data)
-
-	# look for h1 header-title
-	$depot_name{$depot} = $1 if /<h1 class="header-title">([^<>]*)<\/h1>/;
-	print " h1:\t\t".$depot_name{$depot}."\n" if $debug;
-	last unless $depot_name{$depot} eq $steamdb_unknown_string;
-
-	# look for the next clever spot, that is the history
-	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>((?!SteamApp)[^<>]*)<\/b>/;
-	print " deleted was:\t".$depot_name{$depot}."\n" if $debug;
-	last unless $depot_name{$depot} eq $steamdb_unknown_string;
-	
-	# worse, the list of Packages that include the app. Take the 
-	# latest of the list because the first ones are often kind of
-	# vague (ie: sub NN, etc)
-	# This is really really vague.
-	my $tableextract = HTML::TableExtract->new(headers => [("SubID", "Name", "Last Updated")]);
-	$tableextract->parse($_);
-	foreach my $table ($tableextract->tables()) { 
-	    foreach my $row ($table->rows()) {
-		# field were as follow: id, name, last update
-		# we care only for the second
-		my ($id,$name,$timestamp) = (@$row);
-		print "\tsub$id: $name...\n" if $debug;
-
-		# first skip meaningless names or collections like
-		# Sub / ValveTest / Comp
-		next if $name =~ /Sub |ValveTest|Comp(\s|$)|Collection|Bundle| Sale| Retail|Weekend/;
-		# remove parenthesis if any
-		$name =~ s/ \(\w*\)//g;
-
-		# save the name if we have none so far
-		$depot_name{$depot} = $name." ~" 
-		    unless exists($depot_name{$depot});
-		print "\t\tok\n" if $debug;
-
-		# then look further entries 
-		# if we can find a recent and clean name
-		# skip bundles:
-		next if $name =~ / OSX |BAFTA 20| Demo| Franchise| Gift|(2|4|Two|Four) Pack/;
-		# skip unlikely locales
-		next if $name =~ / (PL|RU|RU\+CIS|ROW|JP)$/;
-
-		# if we get here, overwrite what we had before
-		$depot_name{$depot} = $name." ~";
-		print "\t\tok+\n" if $debug;
-	    }
-	}
-	print " subs:\t\t".$depot_name{$depot}."\n" if $debug;
-	
-    }
-        
-    # no name found? worse case scenario, use the page title
-    $depot_name{$depot} = $result->title()
-	unless exists($depot_name{$depot});
-    print " head:\t\t".$depot_name{$depot}."\n" if $debug;
-
+    ##### get distant (steamdb webpages) info to obtain a proper name
+    ###my $url = "$steamdb_baseurl/$depot/";
+    ###my $useragent = LWP::UserAgent->new();
+    ###$useragent->agent("Mozilla 5.0 (Debian, kFreeBSD) Iceweasel 10.1");
+    ###$useragent->show_progress(1) if $debug;
+    ###$useragent->timeout(25);
+    ###my $request = HTTP::Request->new(GET => $url);
+    ###$request->referer("http://yeupou.wordpress.com/");
+    ###my $result = $useragent->request($request);
+    ###
+    #### skip on failure
+    ###next if $result->is_error();
+    ###
+    #### otherwise go through the content to find something nice to use
+    #### as name. As soon as we do, go to the next entry.
+    ###for ($result->decoded_content()) {
+    ###	# (yeah, this is ugly, wish to find some raw data)
+    ###
+    ###	# look for h1 header-title
+    ###	$depot_name{$depot} = $1 if /<h1 class="header-title">([^<>]*)<\/h1>/;
+    ###	print " h1:\t\t".$depot_name{$depot}."\n" if $debug;
+    ###	last unless $depot_name{$depot} eq $steamdb_unknown_string;
+    ###
+    ###	# look for the next clever spot, that is the history
+    ###	$depot_name{$depot} = $1 if /App was deleted, previous name: <b>((?!SteamApp)[^<>]*)<\/b>/;
+    ###	print " deleted was:\t".$depot_name{$depot}."\n" if $debug;
+    ###	last unless $depot_name{$depot} eq $steamdb_unknown_string;
+    ###	
+    ###	# worse, the list of Packages that include the app. Take the 
+    ###	# latest of the list because the first ones are often kind of
+    ###	# vague (ie: sub NN, etc)
+    ###	# This is really really vague.
+    ###	my $tableextract = HTML::TableExtract->new(headers => [("SubID", "Name", "Last Updated")]);
+    ###	$tableextract->parse($_);
+    ###	foreach my $table ($tableextract->tables()) { 
+    ###	    foreach my $row ($table->rows()) {
+    ###		# field were as follow: id, name, last update
+    ###		# we care only for the second
+    ###		my ($id,$name,$timestamp) = (@$row);
+    ###		print "\tsub$id: $name...\n" if $debug;
+    ###
+    ###		# first skip meaningless names or collections like
+    ###		# Sub / ValveTest / Comp
+    ###		next if $name =~ /Sub |ValveTest|Comp(\s|$)|Collection|Bundle| Sale| Retail|Weekend/;
+    ###		# remove parenthesis if any
+    ###		$name =~ s/ \(\w*\)//g;
+    ###
+    ###		# save the name if we have none so far
+    ###		$depot_name{$depot} = $name." ~" 
+    ###		    unless exists($depot_name{$depot});
+    ###		print "\t\tok\n" if $debug;
+    ###
+    ###		# then look further entries 
+    ###		# if we can find a recent and clean name
+    ###		# skip bundles:
+    ###		next if $name =~ / OSX |BAFTA 20| Demo| Franchise| Gift|(2|4|Two|Four) Pack/;
+    ###		# skip unlikely locales
+    ###		next if $name =~ / (PL|RU|RU\+CIS|ROW|JP)$/;
+    ###
+    ###		# if we get here, overwrite what we had before
+    ###		$depot_name{$depot} = $name." ~";
+    ###		print "\t\tok+\n" if $debug;
+    ###	    }
+    ###	}
+    ###	print " subs:\t\t".$depot_name{$depot}."\n" if $debug;
+    ###	
+    ### }
+    ###   
+    ### # no name found? worse case scenario, use the page title
+    ### $depot_name{$depot} = $result->title()
+    ###	unless exists($depot_name{$depot});
+    ###  print " head:\t\t".$depot_name{$depot}."\n" if $debug;
+    ###
     print "\n" if $debug;
 
     last if $debug_sample > 2;
