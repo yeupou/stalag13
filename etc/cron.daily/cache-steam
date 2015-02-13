@@ -65,7 +65,8 @@ while (defined(my $depot = glob('*'))) {
     # with only numeric names
     next if $depot =~ /\D/;
     # that belongs to www-data
-    next if getpwuid((stat($depot))[4]) ne "www-data";
+    my $owner = getpwuid((stat($depot))[4]);
+    next unless $owner eq "www-data";
     
     # assume that's a valid depot to work with proceed
     print "$depot:\n" if $debug;
