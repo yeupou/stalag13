@@ -22,8 +22,8 @@
 ### cached depots. This proven unreliable, plus steamdb people on their FAQ
 ### discourage any crawling of their stuff.
 #
-# New approach: ignore any directories that are not even 100M big and 
-# automatically remove bigger directories not accessed at all in 256d.
+# New approach: maintain by hand a list of depotid to be kept,
+# remove old directories not in the list 
 
 use strict;
 #use LWP::UserAgent;
@@ -32,6 +32,7 @@ use strict;
 #use HTML::TableExtract;
 use File::stat;
 use Number::Bytes::Human;
+use POSIX qw(strftime);
 use CGI qw(:standard Link);
 
 ## SETUP 
@@ -73,8 +74,8 @@ while (defined(my $depot = glob('*'))) {
     my $stat = stat "$dir/$depot";
     $depot_atime{$depot} = $stat->atime; 
 
-    print " size: ".$depot_size{$depot}."\n" if $debug;
-    print " atime: ".$depot_atime{$depot}."\n" if $debug;
+    print " size: ".$depot_size{$depot}."\n" if $debug;    
+    print " atime: ".strftime('%c', localtime($depot_atime{$depot}))."\n" if $debug;
 
     ##### get distant (steamdb webpages) info to obtain a proper name
     ###my $url = "$steamdb_baseurl/$depot/";
@@ -164,13 +165,13 @@ print OUTPUT start_html(-encoding => 'UTF-8',
 			-title => 'Local Steam Depots Cache').
     h1("Local Steam Depots ".$human->format($depots_size)." Cache").
     "<pre>";
-# print order by name
-###foreach (sort{lc($depot_name{$a}) cmp lc($depot_name{$b})} keys(%depots)) {
-#    print "$_ -> $list\n" if $debug;
-#    my $size = $human->format($depot_size{$_});
-#    $size = b($size) if $depot_size{$_} > 999999999;
-#    print OUTPUT a({-href=>$_}, $_)."\t\t".$size."\n";  
-#}
+
+foreach $depot (sort keys %depots) {
+    my $size = $human->format($depot_size{$depot});
+    $size = b($size) if $depot_size{$depot} > 999999999;
+    print OUTPUT a({-href=>$depot}, $depot)."\t\t".$size."\n";  
+}
+
 print OUTPUT "\t\t".i($human->format($depots_size))."\n".
     "</pre>".
     end_html();
