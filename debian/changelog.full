@@ -1,3 +1,9 @@
+stalag13-utils (3.158-20150213) unstable; urgency=low
+ 
+  * Add sample dnsspoof conf to go with nginx cache-steam & cache-apt
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 13 Feb 2015 20:30:47 +0100
+ 
 stalag13-utils (3.157-20150213) unstable; urgency=low
  
   * Try to obtain servers list as in http://blog.multiplay.co.uk/2014/04/lancache-dynamically-caching-game-installs-at-lans-using-nginx/ + cleanups
