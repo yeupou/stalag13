@@ -15,29 +15,32 @@ server {
 	ssl_certificate_key  certs/cert-cloud.key;
 	ssl_session_timeout 5m;
 
-	# set for roundcube
+	# set for owncloud
 	root   /usr/share/owncloud; 
-	index  index.php index.html;
+	index  index.php;
 	autoindex off;
 	allow all;
 
 	# from 
-
 	location ~ /\. {
                 deny all;
                 access_log off;
         }
-     
-	client_max_body_size 250M; # set max upload size
+
+	# set max upload size
+	client_max_body_size 250M;
+	fastcgi_buffers 64 4K;
+	
 
 	rewrite ^/caldav(.*)$ /remote.php/caldav$1 redirect;
 	rewrite ^/carddav(.*)$ /remote.php/carddav$1 redirect;
 	rewrite ^/webdav(.*)$ /remote.php/webdav$1 redirect;
-	rewrite ^/apps/calendar/caldav.php /remote.php/caldav/ last;
-	rewrite ^/apps/contacts/carddav.php /remote.php/carddav/ last;
-	rewrite ^/apps/([^/]*)/(.*\.(css|php))$ /index.php?app=$1&getfile=$2 last;
-	rewrite ^/remote/(.*) /remote.php last;
-	
+#	rewrite ^/apps/calendar/caldav.php /remote.php/caldav/ last;
+#	rewrite ^/apps/contacts/carddav.php /remote.php/carddav/ last;
+#	rewrite ^/apps/([^/]*)/(.*\.(css|php))$ /index.php?app=$1&getfile=$2 last;
+#	rewrite ^/remote/(.*) /remote.php last;
+
+
 	error_page 403 = /core/templates/403.php;
 	error_page 404 = /core/templates/404.php;
 
@@ -51,15 +54,18 @@ server {
 		 rewrite ^/.well-known/carddav /remote.php/carddav/ redirect;
 		 rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
 		 rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
-		 try_files $uri $uri/ /index.php$is_args$args;
-	}
-        location ~ ^(.+?\.php)(/.*)?$ {
-                try_files $1 =404;
+		 try_files $uri $uri/ /index.php;
+		 }
+
+	location ~ \.php(?:$|/) {
+	        fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		# fastcgi_params is part of nginx-common
 		include fastcgi_params;
 	        fastcgi_pass   127.0.0.1:9000;
 		fastcgi_index  index.php;
-	}   
+		}
+
+	# Optional: set long EXPIRES header on static assets
 	location ~* ^.+\.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
                 expires 30d;
 		access_log off;
