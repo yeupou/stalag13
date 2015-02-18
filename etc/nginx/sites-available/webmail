@@ -11,7 +11,7 @@ server {
 
 	# can be created with certs/makecert.sh
 	ssl on;
-	ssl_certificate  certs/webmail.crt;
+	ssl_certificate  certs/webmail.pem;
 	ssl_certificate_key  certs/webmail.key;
 	ssl_session_timeout 5m;
 
