@@ -26,6 +26,9 @@ user root
 [sec_*]
 group adm
 
+[spamstored]
+user klink
+
 [stored_*]
 user root
 
