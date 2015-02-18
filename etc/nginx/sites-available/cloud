@@ -11,8 +11,8 @@ server {
 
 	# can be created with certs/makecert.sh
 	ssl on;
-	ssl_certificate  certs/cert-cloud.crt;
-	ssl_certificate_key  certs/cert-cloud.key;
+	ssl_certificate  certs/cloud.crt;
+	ssl_certificate_key  certs/cloud.key;
 	ssl_session_timeout 5m;
 
 	# set for owncloud
