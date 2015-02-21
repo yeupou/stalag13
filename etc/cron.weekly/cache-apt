@@ -1,0 +1,19 @@
+#!/bin/sh
+# remove old files from apt mirrors
+
+# no point to run if apt cache not enabled in nginx
+if [ ! -e "/etc/nginx/sites-enabled/cache-apt" ]; then exit; fi
+
+# should work zeroconf
+LIST="/var/www/debian /var/www/ubuntu /var/www/debian-security"
+
+for DIR in $LIST; do
+    if [ ! -e $DIR ]; then continue fi
+    
+    # remove any file that has not been accessed in the last 30 days 
+    find $DIR/ -type f -atime +30 -print0 | xargs -0 --no-run-if-empty rm
+    
+    # remove any empty dir (except the main ones)
+    find $DIR/ -mindepth 2 -type d -empty -print0 | xargs -0  --no-run-if-empty rm -r
+
+# EOF
