@@ -14,8 +14,8 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/certs", "/etc/nginx/allow_local"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
 		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"],
-		"utils-torrent" => ["/usr/local/bin/*torrent-watch*", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"],
-		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
+		"utils-torrent" => ["/usr/local/bin/torrent-watch", "/usr/local/bin/torrent-watch.pl", "/usr/local/bin/torrent-watch", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"],
+		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl","/usr/local/bin/post-image-to-tumblr-init-auth", "/usr/local/bin/post-image-to-tumblr", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
     );
 
 for my $package (keys %packages) {
