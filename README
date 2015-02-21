@@ -19,8 +19,4 @@ Debian packages:
   stalag13-utils-torrent: Manage transmission via NFS/Samba
   stalag13-utils-tumblr: Automated image post on tumblr
   stalag13-utils-webmail: Roundcube setup and plugins
-  
-  	
-
-(In general, files prefixed stalag13- are specific to stalag13.ici local network and probably cannot be used anywhere else without being at least edited. The others should be portable as such)
 
