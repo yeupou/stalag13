@@ -6,7 +6,9 @@ my $curdir = $ARGV[0];
 die "Invalid directory passed as argument" unless -d $curdir;
 my $path = "$curdir/debian/stalag13";
 my $main = "utils-ahem";
-my @ignore = ("/etc/apt/sources.list.d/49-stalag13.list");
+
+# here we pick files
+my %ignore = ("/etc/apt/sources.list.d/49-stalag13.list" => 1);
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
 		keyring => ["/etc/apt"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
@@ -20,11 +22,12 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
     );
 
+# here we actually move them
 for my $package (keys %packages) {
     print "Repacking $package with:\n";
     foreach (@{$packages{$package}}) {
 	# check ignore list first
-	next if $_ ~~ @ignore;
+	next if $ignore{$_};
 	
 	print "  $_\n";
 	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);

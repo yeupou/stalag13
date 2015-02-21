@@ -105,8 +105,8 @@ Description: Keyring used to signed packages along with repository set-up
 
 Package: stalag13-utils-ahem
 Architecture: all
-Replaces: stalag13-utils (<<3.166)
-Breaks: stalag13-utils (<<3.166)
+Replaces: stalag13-utils (<<3.166), stalag13-utils-extra
+Breaks: stalag13-utils (<<3.166), stalag13-utils-extra
 Depends: stalag13-utils, ntp | openntpd, lltag, libterm-readkey-perl, libdate-calc-perl, libcalendar-simple-perl, libtext-unaccent-perl
 Conflicts: stalag13-utils (<<3.166)
 Description: Utmost non-generic stuff that no one else probably needs
