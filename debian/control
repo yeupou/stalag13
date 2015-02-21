@@ -74,7 +74,7 @@ Description: Manage transmission via NFS/Samba
  /home/torrent must be set, check https://yeupou.wordpress.com/?s=transmission
  .
  Homepage: https://yeupou.wordpress.com/
-
+ 
 Package: stalag13-keyring
 Architecture: all
 Depends: apt-transport-https

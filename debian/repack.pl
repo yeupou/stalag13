@@ -13,7 +13,7 @@ my %packages = (utils => [["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/prof
 		"utils-cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"],
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/certs", "/etc/nginx/allow_local"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
-		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"]
+		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"],
 		"utils-transmission" => ["/usr/local/bin/*torrent-watch*", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"]
     );
 
