@@ -4,7 +4,11 @@ See http://yeupou.wordpress.com/
 
 Debian packages:
   stalag13-keyring: Keyring used to signed packages along with repository set-up
-  
+  	# wget http://apt.attique.org/stalag13-keyring.deb
+	# dpkg -i stalag13-keyring.deb
+	# apt-get update
+	# apt-get install ...
+
   stalag13-utils: Utmost generic stuff
   
   stalag13-utils-ahem: Utmost non-generic stuff that no one else
