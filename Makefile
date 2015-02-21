@@ -89,7 +89,7 @@ move:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	# only keep the latest build
-	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-extra_*.deb Packages* Release* InRelease*
+	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-*.deb Packages* Release* InRelease*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	# update the keyring only if make was called with 'keys' 
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm stalag13-keyring_*.deb; fi
