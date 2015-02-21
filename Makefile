@@ -49,7 +49,7 @@ deb-prerelease:
 	git push
 	make log
 	dpkg-buildpackage -uc -us -rfakeroot
-	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
+	su -c "dpkg -i ../stalag13-utils-ahem_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
 
 deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
@@ -62,7 +62,7 @@ deb-release:
 	@git push github
 	make log
 	dpkg-buildpackage -uc -us -rfakeroot
-	su -c "dpkg -i ../stalag13-utils_$(MAJORVERSION).$(NEWVERSION)*.deb"
+	su -c "dpkg -i ../stalag13-utils-ahem_$(MAJORVERSION).$(NEWVERSION)*.deb ../stalag13-utils_$(MAJORVERSION).$(NEWVERSION)*.deb"
 
 pre: prerelease
 
