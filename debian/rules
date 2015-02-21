@@ -67,7 +67,7 @@ install: build
 	$(CURDIR)/debian/repack.pl $(CURDIR)
 	# needs to be brought back to its original place
 	mkdir -p  $(CURDIR)/debian/stalag13-utils-ahem/etc/apt/sources.list.d/
-	mv -f $(CURDIR)/debian/stalag13-keyring/etc/apt/sources.list.d/49-stalag13.List $(CURDIR)/debian/stalag13-utils-ahem/etc/apt/sources.list.d/
+	mv -f $(CURDIR)/debian/stalag13-keyring/etc/apt/sources.list.d/49-stalag13.list $(CURDIR)/debian/stalag13-utils-ahem/etc/apt/sources.list.d/
 
 # Build architecture-independent files here.
 binary-indep: build install
