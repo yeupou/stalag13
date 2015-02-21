@@ -41,6 +41,30 @@ Description: DNS spoofer needed by cache setups
  .
  Homepage: https://yeupou.wordpress.com/
 
+Package: stalag13-utils-fastcgi
+Architecture: all
+Depends: stalag13-utils, nginx, spawn-fcgi
+Conflicts: stalag13-utils (<<3.166)
+Description: Perl and PHP fastcgi setup and init.d scripts
+ .
+ Homepage: https://yeupou.wordpress.com/
+
+Package: stalag13-utils-cloud
+Architecture: all
+Depends: stalag13-utils, nginx, owncloud, stalag13-utils-fastcgi
+Conflicts: stalag13-utils (<<3.166)
+Description: Owncloud setup and apps 
+ .
+ Homepage: https://yeupou.wordpress.com/
+
+Package: stalag13-utils-webmail
+Architecture: all
+Depends: stalag13-utils, nginx, roundcube, stalag13-utils-fastcgi
+Conflicts: stalag13-utils (<<3.166)
+Description: Roundcube setup and plugins
+ .
+ Homepage: https://yeupou.wordpress.com/
+
 
 
 Package: stalag13-keyring

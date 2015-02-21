@@ -10,7 +10,11 @@ my %packages = (utils => [],
 		keyring => ["/etc/apt"],
                 "utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"utils-cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
-		"utils-cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"]);
+		"utils-cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"]
+		"utils-fastcgi" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi"],
+		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
+		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"]
+    );
 
 for my $package (keys %packages) {
     print "Repacking $package with:\n";
@@ -19,6 +23,6 @@ for my $package (keys %packages) {
 	# create parent directory if missing
 	system("/bin/mkdir", "-p", dirname("$path-$package$_")) unless -e dirname("$path-$package$_");
 	# move
-	system("/bin/mv", "-fv", "$path-$main$_", "$path-$package$_");
+	system("/bin/mv", "-f", "$path-$main$_", "$path-$package$_");
     }
 }
