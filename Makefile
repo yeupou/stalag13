@@ -109,7 +109,7 @@ move:
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-*.deb Packages* Release* InRelease*
 	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	# update the keyring only if make was called with 'keys' 
-	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
+	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && ln -s stalag13-keyring_$(MAJORVERSION).*.deb stalag13-keyring.deb; fi
 	# build proper required repository files
