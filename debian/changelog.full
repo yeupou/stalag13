@@ -1,3 +1,9 @@
+stalag13-utils (3.173-20150221) unstable; urgency=low
+ 
+  * -keyring no longer depends on apt-transport-https
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 21 Feb 2015 22:49:48 +0100
+ 
 stalag13-utils (3.172-20150221) unstable; urgency=low
  
   * -keyring package no longer depends on apt-https
