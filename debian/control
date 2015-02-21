@@ -41,17 +41,17 @@ Description: DNS spoofer needed by cache setups
  .
  Homepage: https://yeupou.wordpress.com/
 
-Package: stalag13-utils-fastcgi
+Package: stalag13-utils-nginx
 Architecture: all
 Depends: stalag13-utils, nginx, spawn-fcgi
 Conflicts: stalag13-utils (<<3.166)
-Description: Perl and PHP fastcgi setup and init.d scripts
+Description: Perl/PHP fastcgi setup and nginx files
  .
  Homepage: https://yeupou.wordpress.com/
 
 Package: stalag13-utils-cloud
 Architecture: all
-Depends: stalag13-utils, nginx, owncloud, stalag13-utils-fastcgi
+Depends: stalag13-utils, nginx, owncloud, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
 Description: Owncloud setup and apps 
  .
@@ -59,7 +59,7 @@ Description: Owncloud setup and apps
 
 Package: stalag13-utils-webmail
 Architecture: all
-Depends: stalag13-utils, nginx, roundcube, stalag13-utils-fastcgi
+Depends: stalag13-utils, nginx, roundcube, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
 Description: Roundcube setup and plugins
  .

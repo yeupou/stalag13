@@ -15,12 +15,11 @@ Debian packages:
   stalag13-utils-cache-spoof: DNS spoofer needed by cache setups
   stalag13-utils-cloud: Owncloud setup and apps 
   stalag13-utils-exim4: Exim greylist, bogofilter and spamassassin setup
+  stalag13-utils-nginx: Nginx related files
   stalag13-utils-transmission: Manage transmission (torrents) via NFS/Samba
   stalag13-utils-tumblr: Automated image post on tumblr
   stalag13-utils-webmail: Roundcube setup and plugins
   
-
-
   	
 
 (In general, files prefixed stalag13- are specific to stalag13.ici local network and probably cannot be used anywhere else without being at least edited. The others should be portable as such)
