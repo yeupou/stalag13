@@ -17,8 +17,8 @@ for my $package (keys %packages) {
     foreach (@{$packages{$package}}) {
 	print "\t$_\n";
 	# create parent directory if missing
-#	system("/bin/mkdir", "-p", dirname("$path-$package$_")) unless -e dirname("$path-$package$_");
+	system("/bin/mkdir", "-p", dirname("$path-$package$_")) unless -e dirname("$path-$package$_");
 	# move
-#	system("/bin/mv", "-f", "$path-$main$_", "$path-$package$_");
+	system("/bin/mv", "-f", "$path-$main$_", "$path-$package$_");
     }
 }
