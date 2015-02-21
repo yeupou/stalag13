@@ -15,7 +15,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/certs", "/etc/nginx/allow_local"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
 		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"],
-		"utils-torrent" => ["/usr/local/bin/torrent-watch", "/usr/local/bin/torrent-watch.pl", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"],
+		"utils-torrent" => ["/usr/local/bin/torrent-watch.pl", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"],
 		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
     );
 
@@ -31,7 +31,8 @@ for my $package (keys %packages) {
 	# to move as well
 	my $symlink =~ s{\.[^.]+$}{};
 	system("/bin/mv", "-f", "$path-$main$symlink", "$path-$package$symlink")
-	    if -l  $symlink;
+	    if -l "$path-$main$symlink";
+	print "SYMINK $path-$main$symlink\n";
 	
 	
 	
