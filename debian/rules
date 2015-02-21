@@ -64,7 +64,7 @@ install: build
 	rm -rf $(CURDIR)/debian/stalag13-keyring/
 	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils-ahem/
 	# run a perl script that will make the subpackages
-	repack.pl $(CURDIR)
+	./repack.pl $(CURDIR)
 
 # Build architecture-independent files here.
 binary-indep: build install
