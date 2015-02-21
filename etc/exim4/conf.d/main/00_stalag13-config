@@ -1,7 +1,7 @@
 ####### GREYLISTING
 
 # requires memcached to be installed
-#GREYLISTING_ENABLE = 1
+GREYLISTING_ENABLE = 1
 
 # wait time, time to live
 GREY_MINUTES  = 5
