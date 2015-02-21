@@ -23,16 +23,18 @@ for my $package (keys %packages) {
     print "Repacking $package with:\n";
     foreach (@{$packages{$package}}) {
 	print "  $_\n";
+	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);
+ 
 	# create parent directory if missing
-	system("/bin/mkdir", "-p", dirname("$path-$package$_")) unless -e dirname("$path-$package$_");
+	system("/bin/mkdir", "-p", "$path-$package$dir") unless -e "$path-$package$dir";
 	# move the file
 	system("/bin/mv", "-f", "$path-$main$_", "$path-$package$_");
 	# if it's a script, assume there could be a symlink without ext
 	# to move as well
-	my $symlink =~ s{\.[^.]+$}{};
-	system("/bin/mv", "-f", "$path-$main$symlink", "$path-$package$symlink")
-	    if -l "$path-$main$symlink";
-	print "SYMINK $path-$main$symlink\n";
+	if ($ext eq ".pl" || $ext eq ".sh") {
+	    system("/bin/mv", "-f", "$path-$main$dir/$file", "$path-$package$dir/$file")
+		if -l "$path-$main$dir/$file";
+	}
 	
 	
 	
