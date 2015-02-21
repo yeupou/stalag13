@@ -1,3 +1,9 @@
+stalag13-utils (3.168+1-20150221) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 21 Feb 2015 21:42:00 +0100
+ 
 stalag13-utils (3.168-20150221) unstable; urgency=low
  
   * Cosmetics/trivial fixes
