@@ -10,12 +10,12 @@ my %packages = (utils => [],
 		keyring => ["/etc/apt"],
                 "cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
-		"cache-spoof" => ["/etc/dnsspoof.com", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"]);
+		"cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"]);
 
 for my $package (keys %packages) {
     print "Repacking $package with:\n";
     foreach (@{$packages{$package}}) {
-	print "\t$_\n";
+	print "  $_\n";
 	# create parent directory if missing
 	system("/bin/mkdir", "-p", dirname("$path-$package$_")) unless -e dirname("$path-$package$_");
 	# move
