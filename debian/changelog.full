@@ -1,3 +1,11 @@
+stalag13-utils (3.169-20150221) unstable; urgency=low
+ 
+  * Public release of new packages
+    M debian/changelog.full
+    M Makefile
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 21 Feb 2015 21:52:32 +0100
+ 
 stalag13-utils (3.168+1-20150221) unstable; urgency=low
  
   * Upstream prerelease
