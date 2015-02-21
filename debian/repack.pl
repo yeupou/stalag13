@@ -14,8 +14,8 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/certs", "/etc/nginx/allow_local"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
 		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"],
-		"utils-transmission" => ["/usr/local/bin/*torrent-watch*", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"]
-		"utils-tumblr" => ["/usr/local/bin/*post-image-to-tumblr*" "/usr/local/lib/site_perl/WWW/Tumblr*"],
+		"utils-transmission" => ["/usr/local/bin/*torrent-watch*", "/etc/cron.d/torrent", "/etc/logrotate.d/torrent"],
+		"utils-tumblr" => ["/usr/local/bin/*post-image-to-tumblr*" "/usr/local/lib/site_perl/WWW/Tumblr*"]
     );
 
 for my $package (keys %packages) {
