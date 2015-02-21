@@ -82,7 +82,7 @@ clean:
 	rm -rf doc-pak
 
 clean-prev-dir:
-	rm -f ../stalag13-utils_* ../stalag13-utils-_* ../stalag13-keyring_*
+	rm -f ../stalag13-utils*.deb ../stalag13-utils*.changes ../stalag13-keyring_* ../stalag13-utils*.tar.gz ../stalag13-utils*.dsc
 
 move:
 	# can be done only within stalag13 network

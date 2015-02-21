@@ -64,8 +64,16 @@ Conflicts: stalag13-utils (<<3.166)
 Description: Roundcube setup and plugins
  .
  Homepage: https://yeupou.wordpress.com/
-
-
+ 
+Package: stalag13-utils-torrent
+Architecture: all
+Depends: stalag13-utils, logrotate, transmission-cli
+Conflicts: stalag13-utils (<<3.166)
+Description: Manage transmission via NFS/Samba
+ Assume you already have networking file system up
+ /home/torrent must be set, check https://yeupou.wordpress.com/?s=transmission
+ .
+ Homepage: https://yeupou.wordpress.com/
 
 Package: stalag13-keyring
 Architecture: all

@@ -1,0 +1,8 @@
+/home/torrent/watch/log {
+	weekly
+	missingok
+	rotate 2
+	su debian-transmission users
+	nocompress
+	notifempty
+}

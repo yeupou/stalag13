@@ -16,7 +16,7 @@ Debian packages:
   stalag13-utils-cloud: Owncloud setup and apps 
   stalag13-utils-exim4: Exim greylist, bogofilter and spamassassin setup
   stalag13-utils-nginx: Nginx related files
-  stalag13-utils-transmission: Manage transmission (torrents) via NFS/Samba
+  stalag13-utils-torrent: Manage transmission via NFS/Samba
   stalag13-utils-tumblr: Automated image post on tumblr
   stalag13-utils-webmail: Roundcube setup and plugins
   
