@@ -107,7 +107,10 @@ my @outdated_2014 = ("/etc/bashrc.d/stalag13-shell.sh",
 		     "/etc/exim4/conf.d/router/399_stalag13_system_aliases_per_domain",
 		     "/etc/cron.daily/steam");
 
-my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011, @outdated_2012, @outdated_2014);
+my @outdated_2015 = ("/etc/cron.weekly/stalag13-apt");
+
+
+my @outdated = (@outdated_nov2003, @outdated_dec2003, @outdated_2004, @outdated_dec2004, @outdated_2005, @outdated_2006, @outdated_2007, @outdated_2010, @outdated_2011, @outdated_2012, @outdated_2014, @outdated_2015);
 
 foreach my $file (@outdated) {
     unlink($file) && print "$file removed\n" if -e $file;

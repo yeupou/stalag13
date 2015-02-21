@@ -1,0 +1,2 @@
+# should match your local network
+allow 192.168.1.0/24;

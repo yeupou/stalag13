@@ -58,18 +58,13 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# create package
+	# create main package
 	rm -rf $(CURDIR)/debian/stalag13-utils/
-	rm -rf $(CURDIR)/debian/stalag13-utils-extra/
+	rm -rf $(CURDIR)/debian/stalag13-utils-*/
 	rm -rf $(CURDIR)/debian/stalag13-keyring/
-	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils/
-	# create -extra
-	mkdir -p $(CURDIR)/debian/stalag13-utils-extra/usr/share/wallpapers 
-	mv -f $(CURDIR)/debian/stalag13-utils/usr/share/wallpapers/ $(CURDIR)/debian/stalag13-utils-extra/usr/share/
-	# create -keyring
-	mkdir -p $(CURDIR)/debian/stalag13-keyring/etc/apt 
-	mv -f $(CURDIR)/debian/stalag13-utils/etc/apt/ $(CURDIR)/debian/stalag13-keyring/etc/
-
+	$(MAKE) install PREFIX=$(CURDIR)/debian/stalag13-utils-ahem/
+	# run a perl script that will make the subpackages
+	repack.pl $(CURDIR)
 
 # Build architecture-independent files here.
 binary-indep: build install
