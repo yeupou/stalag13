@@ -1,0 +1,3 @@
+# restricted
+# requires Acquire::https::gate.attique.org::Verify-Peer "false";
+deb https://gate.attique.org/apt/ ./
