@@ -8,6 +8,7 @@ NEWVERSION = $(shell expr $(VERSION) \+ 1)
 NEWPREVERSION = $(shell expr $(PREVERSION) \+ 1)
 WHOAMI = $(shell whoami)
 KEYS = 0
+$(eval TEMPDIR := $(shell mktemp --directory)) 
 
 install: clean
 	@echo "INSTALL WITH PREFIX "$(PREFIX)
@@ -92,8 +93,9 @@ clean:
 clean-prev-dir:
 	rm -f ../stalag13-utils*.deb ../stalag13-utils*.changes ../stalag13-keyring_* ../stalag13-utils*.tar.gz ../stalag13-utils*.dsc
 
-move-local:
+move-prepare:
 	# can be done only within stalag13 network
+	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
@@ -101,6 +103,7 @@ move-local:
 		rm -f $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`* && \
 		cp $$deb $(TEMPDIR); \
 	done
+#	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	# update the keyring only if make was called with 'keys' 
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
@@ -108,23 +111,12 @@ move-local:
 	# build proper required repository files
 	cd $(TEMPDIR) && apt-ftparchive packages . > Packages 
 	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
+
+move-local: move-prepare
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/srv/www/apt/
 	rm -r $(TEMPDIR)
 
-move:
-	# can be done only within stalag13 network
-	$(eval TEMPDIR := $(shell mktemp --directory)) 
-	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
-	# only keep the latest build
-	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-*.deb Packages* Release* InRelease*
-	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
-	# update the keyring only if make was called with 'keys' 
-	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring*.deb; fi
-	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
-	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && ln -s stalag13-keyring_$(MAJORVERSION).*.deb stalag13-keyring.deb; fi
-	# build proper required repository files
-	cd $(TEMPDIR) && apt-ftparchive packages . > Packages 
-	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
+move: move-prepare
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/var/www/apt/
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survival:/var/www/apt/
 	rm -r $(TEMPDIR)
