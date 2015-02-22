@@ -98,11 +98,11 @@ move-prepare:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	# only keep the latest build
-	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
+	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
 		if [ `echo $$deb | cut -f 1 -d "_"` != "stalag13-utils" ]; then \
 			echo rm -fv $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
-		fi ;
+		fi ; \
 		echo cp $$deb $(TEMPDIR); \
 	done
 	# update the keyring only if make was called with 'keys' 
