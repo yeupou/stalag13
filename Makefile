@@ -100,7 +100,7 @@ move-prepare:
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
-		rm -f $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`* && \
+		rm -fv $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`* && \
 		cp $$deb $(TEMPDIR); \
 	done
 #	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
