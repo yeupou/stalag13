@@ -86,7 +86,7 @@ clean:
 	if [ -e debian/notupdated ]; then \
 		while read package; do \
 			rm -f ../stalag13-$$package*.deb; \
-		done < debian/notupdated \
+		done < debian/notupdated; \
 	fi
 
 clean-prev-dir:
