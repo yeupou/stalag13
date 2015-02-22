@@ -70,7 +70,9 @@ for my $package (keys %packages) {
     }
 
     # no file in the package was not updated? then remove it
+    # (ignore the main package)
     next if $updated;
+    next if $package eq "utils";
     print "  => no changes\n";
     print NOTUPDATED "$package\n";
 }

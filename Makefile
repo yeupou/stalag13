@@ -82,6 +82,12 @@ clean:
 	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -f backup*
 	rm -rf doc-pak
+	# remove not updated packages
+	if [ -e debian/notupdated ]; then \
+		while read package; do \
+			rm -f ../stalag13-$$package*.deb; \
+		done < debian/notupdated \
+	fi
 
 clean-prev-dir:
 	rm -f ../stalag13-utils*.deb ../stalag13-utils*.changes ../stalag13-keyring_* ../stalag13-utils*.tar.gz ../stalag13-utils*.dsc
