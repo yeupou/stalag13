@@ -67,9 +67,6 @@ for my $package (keys %packages) {
 	    print " UPDATED";
 	    $updated = 1;
 	}
-	if (-d "$path-$main$_") {
-	    print " is a directory! maybe updated... FIXME";
-	}
 	print "\n";
 	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);
  

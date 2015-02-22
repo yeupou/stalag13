@@ -85,7 +85,7 @@ clean:
 	# remove not updated packages
 	if [ -e debian/notupdated ]; then \
 		while read package; do \
-			rm -f ../stalag13-$$package*.deb; \
+			rm -vf ../stalag13-$$package*.deb; \
 		done < debian/notupdated; \
 	fi
 
