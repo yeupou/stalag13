@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use File::Basename;
+use File::Spec;
 
 my $curdir = $ARGV[0];
 die "Invalid directory passed as argument" unless -d $curdir;
@@ -19,15 +20,20 @@ my %changed;
 open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
     # we dont need to be very selective since we just want a list of files
+    # and directories
     # anything else does not matter
     chomp();
-    $changed{"/$_"} = 1;
+    $changed{"/$_"} = 1;  
+    my @dirs = File::Spec->splitdir( $directories );
+    foreach my $dir (@dirs) {
+	print "dir $dir\n";
+    }
 }
 close(CHANGED);
 
 # handpick files
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
-		keyring => ["/etc/apt"],
+		keyring => ["/etc/apt/apt.conf.d/stalag13", "/etc/apt/sources.list.d/49-stalag13.list", "/etc/apt/trusted.gpg.d/stalag13.gpg"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"utils-cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
 		"utils-cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"],
@@ -67,6 +73,6 @@ for my $package (keys %packages) {
 
     # no file in the package was not updated? then remove it
     next if $updated;
-    print "Package $package has not changed, remove this\n";
+    print "  => no changes, remove this\n";
     system("/bin/rm", "-rf", "$path-$package");
 }
