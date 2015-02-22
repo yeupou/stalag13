@@ -1,3 +1,4 @@
+# OUTDATED!
 # http://articles.slicehost.com/2007/12/19/ubuntu-gutsy-self-signed-ssl-certific
 ates-and-nginx
 
