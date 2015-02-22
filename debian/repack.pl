@@ -21,6 +21,7 @@ while(<CHANGED>) {
     # we dont need to be very selective since we just want a list of files
     # anything else does not matter
     $changed{chomp($_)} = 1;
+    print "registered ".chomp($_)."\n";
 }
 close(CHANGED);
 
@@ -47,6 +48,8 @@ for my $package (keys %packages) {
 	if (exists($changed{$_})) {
 	    print " UPDATED";
 	    $updated = 1;
+	} else {
+	    print " bah".$changed{$_};
 	}
 	print "\n";
 	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);
