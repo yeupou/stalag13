@@ -19,15 +19,24 @@ my %changed;
 open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
     # we dont need to be very selective since we just want a list of files
-    # and directories (FIXME: this will handle poorly handpicked directories)
-    # anything else does not matter
     chomp();
-    $changed{"/$_"} = 1;
-    $changed{dirname("/$_")} = 1;
-    
+    $changed{"/$_"} = 1;    
 }
 close(CHANGED);
-
+# need also to get every directory within the path of updated files in the list
+for my $file (keys %changed) {
+    while ($file =~ /\//) {
+	$changed{dirname($file)};
+	$file = dirname($file);
+	last if $file eq "/";
+    }
+}
+print "LIST :";
+for my $file (keys %changed) {
+    print "$file ";
+}
+    
+  
 # handpick files or directories
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
 		keyring => ["/etc/apt/apt.conf.d/stalag13", "/etc/apt/sources.list.d/50-stalag13.list", "/etc/apt/trusted.gpg.d/stalag13.gpg"],
@@ -54,7 +63,7 @@ for my $package (keys %packages) {
 	    $updated = 1;
 	}
 	if (-d "$path-$main$_") {
-	    print " is a directory! maybe updated...";
+	    print " is a directory! maybe updated... FIXME";
 	}
 	print "\n";
 	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);
