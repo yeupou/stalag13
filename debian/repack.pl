@@ -7,6 +7,23 @@ die "Invalid directory passed as argument" unless -d $curdir;
 my $path = "$curdir/debian/stalag13";
 my $main = "utils-ahem";
 
+# get list of files that changed since the latest release
+# number of commits
+my $commits;
+open(LATESTIS, "< $curdir/LATESTIS");
+while (<LATESTIS>) { $commits = $_;}
+close(LATESTIS);
+chomp($commits);
+# list of changed files
+my %changed;
+open(CHANGED, "git log --name-only -n $commits |");
+while(<CHANGED>) {
+    # we dont need to be very selective since we just want a list of files
+    # anything else does not matter
+    $changed{chomp($_)} = 1;
+}
+close(CHANGED);
+
 # here we pick files
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
 		keyring => ["/etc/apt"],
@@ -23,9 +40,15 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 
 # here we actually move them
 for my $package (keys %packages) {
+    my $updated = 0;
     print "Repacking $package with:\n";
     foreach (@{$packages{$package}}) {	
-	print "  $_\n";
+	print "  $_";
+	if (exists($changed{$_})) {
+	    print " UPDATED";
+	    $updated = 1;
+	}
+	print "\n";
 	my ($file, $dir, $ext) = fileparse($_, qr/\.[^.]*/);
  
 	# create parent directory if missing
