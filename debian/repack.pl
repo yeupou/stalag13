@@ -25,7 +25,7 @@ while(<CHANGED>) {
 }
 close(CHANGED);
 
-# here we pick files
+# handpick files
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
 		keyring => ["/etc/apt"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
@@ -39,7 +39,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
     );
 
-# here we actually move them
+# move them
 for my $package (keys %packages) {
     my $updated = 0;
     print "Repacking $package with:\n";
@@ -64,4 +64,9 @@ for my $package (keys %packages) {
 	}
 		
     }
+
+    # no file in the package was not updated? then remove it
+    next if $updated;
+    print "Package $package has not changed, remove this\n";
+    system("/bin/rm", "-rf", "$path-$package");
 }
