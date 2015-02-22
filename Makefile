@@ -100,10 +100,11 @@ move-prepare:
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
-		echo rm -fv $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
+		if [ `echo $$deb | cut -f 1 -d "_"` != "stalag13-utils" ]; then \
+			echo rm -fv $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
+		fi ;
 		echo cp $$deb $(TEMPDIR); \
 	done
-#	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	# update the keyring only if make was called with 'keys' 
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
