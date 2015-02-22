@@ -18,6 +18,11 @@ chomp($commits);
 my %changed;
 open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
+    next if /^commits /;
+    next if /^Author\: /;
+    next if /^Date\: /;
+    next if /^$/;
+    next if /^\s/;
     # we dont need to be very selective since we just want a list of files
     chomp();
     $changed{"/$_"} = 1;    
