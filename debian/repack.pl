@@ -31,8 +31,8 @@ close(CHANGED);
 # need also to get every directory within the path of updated files in the list
 for my $file (keys %changed) {
     while ($file =~ /\//) {
-	$changed{dirname($file)};
 	$file = dirname($file);
+	$changed{$file} = 1;
 	last if $file eq "/";
     }
 }
