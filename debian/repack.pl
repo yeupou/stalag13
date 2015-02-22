@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 use strict;
 use File::Basename;
-use File::Spec;
 
 my $curdir = $ARGV[0];
 die "Invalid directory passed as argument" unless -d $curdir;
@@ -23,11 +22,9 @@ while(<CHANGED>) {
     # and directories
     # anything else does not matter
     chomp();
-    $changed{"/$_"} = 1;  
-    my @dirs = File::Spec->splitdir("/$_");
-    foreach my $dir (@dirs) {
-	print "dir $dir\n";
-    }
+    $changed{"/$_"} = 1;
+    $changed{dirname("/$_")} = 1;
+    
 }
 close(CHANGED);
 
