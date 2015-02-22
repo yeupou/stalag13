@@ -98,8 +98,11 @@ move-local:
 	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
-#	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb stalag13-utils-ahem*.deb Packages* Release* InRelease*
-	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
+	cd ../ && for deb in stalag13-utils*.deb; do \
+		rm -f $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_" && \
+		cp $$deb $(TEMPDIR); \
+	done
+#	cp ../stalag13-utils*_$(MAJORVERSION).*.deb $(TEMPDIR)/
 	# update the keyring only if make was called with 'keys' 
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
