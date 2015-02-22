@@ -101,9 +101,9 @@ move-prepare:
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
 		if [ `echo $$deb | cut -f 1 -d "_"` != "stalag13-utils" ]; then \
-			echo rm -fv $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
+			rm -f $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
 		fi ; \
-		cp -v $$deb $(TEMPDIR); \
+		cp $$deb $(TEMPDIR); \
 	done
 	# update the keyring only if make was called with 'keys' 
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
