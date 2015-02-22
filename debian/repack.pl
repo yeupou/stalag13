@@ -18,7 +18,7 @@ chomp($commits);
 my %changed;
 open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
-    next if /^commits /;
+    next if /^commit /;
     next if /^Author\: /;
     next if /^Date\: /;
     next if /^$/;
