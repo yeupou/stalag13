@@ -20,8 +20,8 @@ open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
     # we dont need to be very selective since we just want a list of files
     # anything else does not matter
-    $changed{chomp($_)} = 1;
-    print "registered ".chomp($_)."\n";
+    $changed{$_} = 1;
+    print "registered ".$_."\n";
 }
 close(CHANGED);
 
