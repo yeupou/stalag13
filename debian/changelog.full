@@ -1,3 +1,22 @@
+stalag13-utils (3.174-20150222) unstable; urgency=low
+ 
+  * Update packages only when there has been effective file changes
+    A debian/makereadme.pl
+    M debian/changelog.full
+    M debian/control
+    M debian/.gitignore
+    M debian/README.Debian
+    M debian/repack.pl
+    M debian/rules
+    M etc/dnsspoof.conf
+    M etc/nginx/certs/makecert-davdroid.old.sh
+    M etc/nginx/certs/makecert.old.sh
+    M Makefile
+    M README
+    M usr/local/bin/update-bind-ads-block.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 22 Feb 2015 15:55:04 +0100
+ 
 stalag13-utils (3.173+40-20150222) unstable; urgency=low
  
   * Upstream prerelease
