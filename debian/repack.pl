@@ -24,7 +24,7 @@ while(<CHANGED>) {
     # anything else does not matter
     chomp();
     $changed{"/$_"} = 1;  
-    my @dirs = File::Spec->splitdir( $directories );
+    my @dirs = File::Spec->splitdir("/$_");
     foreach my $dir (@dirs) {
 	print "dir $dir\n";
     }
