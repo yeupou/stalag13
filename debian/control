@@ -23,6 +23,15 @@ Description: APT downloads cache setup
  .
  Homepage: https://yeupou.wordpress.com/
 
+Package: stalag13-utils-cache-spoof
+Architecture: all
+Depends: stalag13-utils, nginx
+Conflicts: stalag13-utils (<<3.166)
+Description: DNS spoofer needed by cache setups
+ /etc/dnsspoof.conf must be edited
+ .
+ Homepage: https://yeupou.wordpress.com/
+ 
 Package: stalag13-utils-cache-steam
 Architecture: all
 Depends: stalag13-utils, nginx, stalag13-utils-cache-spoof
@@ -32,15 +41,6 @@ Description: Steam downloads cache setup
  .
  Homepage: https://yeupou.wordpress.com/
  
-Package: stalag13-utils-cache-spoof
-Architecture: all
-Depends: stalag13-utils, nginx
-Conflicts: stalag13-utils (<<3.166)
-Description: DNS spoofer needed by cache setups
- /etc/dnsspoof.conf must be edited
- .
- Homepage: https://yeupou.wordpress.com/
-
 Package: stalag13-utils-exim
 Architecture: all
 Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter
@@ -50,13 +50,12 @@ Description: Exim greylist, bogofilter and spamassassin setup
  Edit /etc/exim4/conf.d/main/00_stalag13-config to use bogofilter and spamassassin
  .
  Homepage: https://yeupou.wordpress.com/
- 
- 
+  
 Package: stalag13-utils-nginx
 Architecture: all
-Depends: stalag13-utils, nginx, spawn-fcgi
+Depends: stalag13-utils, nginx, spawn-fcgi, openssl
 Conflicts: stalag13-utils (<<3.166)
-Description: Perl/PHP fastcgi setup and nginx files
+Description: Perl/PHP fastcgi and TLS certificates setup for nginx
  .
  Homepage: https://yeupou.wordpress.com/
 

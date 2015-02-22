@@ -37,6 +37,8 @@ install: clean
 log:
 	git log --stat -n100 --pretty=format:"%s of %ad" > ChangeLog
 
+readme:
+	debian/makereadme.pl
 
 deb-prerelease:
 	@echo "New prerelease "$(NEWPREVERSION)" (on top of "$(MAJORVERSION).$(VERSION)")"
@@ -66,11 +68,11 @@ deb-release:
 
 pre: prerelease
 
-prerelease: clean-prev-dir deb-prerelease clean move-local
+prerelease: clean-prev-dir readme deb-prerelease clean move-local
 
 rel: release
 
-release: clean-prev-dir deb-release clean move
+release: clean-prev-dir readme deb-release clean move
 
 keys:
 	$(eval KEYS = 1)
