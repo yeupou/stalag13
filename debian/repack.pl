@@ -43,7 +43,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
     );
 
 # move them
-open(NOTUPDATED, "$curdir/debian/notupdated");
+open(NOTUPDATED, ">$curdir/debian/notupdated");
 for my $package (keys %packages) {
     my $updated = 0;
     print "Repacking $package with:\n";
