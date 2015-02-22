@@ -43,6 +43,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
     );
 
 # move them
+open(NOTUPDATED, "$curdir/debian/notupdated");
 for my $package (keys %packages) {
     my $updated = 0;
     print "Repacking $package with:\n";
@@ -70,6 +71,7 @@ for my $package (keys %packages) {
 
     # no file in the package was not updated? then remove it
     next if $updated;
-    print "  => no changes, remove this\n";
-    system("/bin/rm", "-rf", "$path-$package");
+    print "  => no changes\n";
+    print NOTUPDATED "$package\n";
 }
+close(NOTUPDATED);

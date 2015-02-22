@@ -59,6 +59,7 @@ install: build
 	dh_installdirs
 
 	# create main package
+	rm -rf $(CURDIR)/debian/notupdated
 	rm -rf $(CURDIR)/debian/stalag13-utils/
 	rm -rf $(CURDIR)/debian/stalag13-utils-*/
 	rm -rf $(CURDIR)/debian/stalag13-keyring/
