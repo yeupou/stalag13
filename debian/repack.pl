@@ -19,7 +19,7 @@ my %changed;
 open(CHANGED, "git log --name-only -n $commits |");
 while(<CHANGED>) {
     # we dont need to be very selective since we just want a list of files
-    # and directories
+    # and directories (FIXME: this will handle poorly handpicked directories)
     # anything else does not matter
     chomp();
     $changed{"/$_"} = 1;
@@ -28,7 +28,7 @@ while(<CHANGED>) {
 }
 close(CHANGED);
 
-# handpick files
+# handpick files or directories
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
 		keyring => ["/etc/apt/apt.conf.d/stalag13", "/etc/apt/sources.list.d/49-stalag13.list", "/etc/apt/trusted.gpg.d/stalag13.gpg"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
