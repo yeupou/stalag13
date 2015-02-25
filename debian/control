@@ -25,7 +25,7 @@ Description: APT downloads cache setup
 
 Package: stalag13-utils-cache-spoof
 Architecture: all
-Depends: stalag13-utils, nginx
+Depends: stalag13-utils, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
 Description: DNS spoofer needed by cache setups
  /etc/dnsspoof.conf must be edited
@@ -34,7 +34,7 @@ Description: DNS spoofer needed by cache setups
  
 Package: stalag13-utils-cache-steam
 Architecture: all
-Depends: stalag13-utils, nginx, stalag13-utils-cache-spoof
+Depends: stalag13-utils, stalag13-utils-nginx, stalag13-utils-cache-spoof
 Conflicts: stalag13-utils (<<3.166)
 Description: Steam downloads cache setup
  Needs writable to nginx directories such as /var/www/depot

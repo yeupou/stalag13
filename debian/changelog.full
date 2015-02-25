@@ -1,3 +1,9 @@
+stalag13-utils (3.175-20150225) unstable; urgency=low
+ 
+  * Fix package dep
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 25 Feb 2015 15:04:03 +0100
+ 
 stalag13-utils (3.174-20150222) unstable; urgency=low
  
   * Update packages only when there has been effective file changes
