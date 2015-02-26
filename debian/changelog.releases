@@ -1,3 +1,9 @@
+stalag13-utils (3.178-20150226) unstable; urgency=low
+ 
+  * Package PXE setup from https://github.com/yeupou/calaboose.pxe
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 26 Feb 2015 17:10:04 +0100
+ 
 stalag13-utils (3.177-20150226) unstable; urgency=low
  
   * Add -pxe setup from https://github.com/yeupou/calaboose.pxe
