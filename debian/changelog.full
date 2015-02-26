@@ -1,3 +1,14 @@
+stalag13-utils (3.177-20150226) unstable; urgency=low
+ 
+  * Add -pxe setup from https://github.com/yeupou/calaboose.pxe
+    M debian/changelog.full
+    M debian/control
+    M debian/repack.pl
+    M debian/rules
+    M README
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 26 Feb 2015 17:09:00 +0100
+ 
 stalag13-utils (3.176+15-20150226) unstable; urgency=low
  
   * Upstream prerelease

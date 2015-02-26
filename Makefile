@@ -79,6 +79,10 @@ keys:
 	$(eval KEYS = 1)
 	@echo Will update the keyring package
 
+pxe:
+	@echo Will update the pxe package
+	touch debian/utils-pxe.rebuild
+
 clean:
 	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -f backup*
