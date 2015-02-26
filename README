@@ -22,6 +22,9 @@ stalag13-utils-cache-steam:
  Steam downloads cache setup
  Needs writable to nginx directories such as /var/www/depot
 
+stalag13-utils-cloud:
+ Owncloud setup and apps 
+
 stalag13-utils-exim:
  Exim greylist, bogofilter and spamassassin setup
  Assumes you use splitted exim4 conf files
@@ -30,8 +33,10 @@ stalag13-utils-exim:
 stalag13-utils-nginx:
  Perl/PHP fastcgi and TLS certificates setup for nginx
 
-stalag13-utils-cloud:
- Owncloud setup and apps 
+stalag13-utils-pxe:
+ Preboot Execution Environment setup
+ Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
+ at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
 
 stalag13-utils-webmail:
  Roundcube setup and plugins

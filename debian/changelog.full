@@ -1,3 +1,9 @@
+stalag13-utils (3.176+1-20150226) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 26 Feb 2015 16:12:22 +0100
+ 
 stalag13-utils (3.176-20150226) unstable; urgency=low
  
   * Add possibility to force rebuild of packages even with no content update.

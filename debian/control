@@ -40,7 +40,15 @@ Description: Steam downloads cache setup
  Needs writable to nginx directories such as /var/www/depot
  .
  Homepage: https://yeupou.wordpress.com/
- 
+
+Package: stalag13-utils-cloud
+Architecture: all
+Depends: stalag13-utils, nginx, owncloud, stalag13-utils-nginx
+Conflicts: stalag13-utils (<<3.166)
+Description: Owncloud setup and apps 
+ .
+ Homepage: https://yeupou.wordpress.com/
+
 Package: stalag13-utils-exim
 Architecture: all
 Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter
@@ -59,11 +67,12 @@ Description: Perl/PHP fastcgi and TLS certificates setup for nginx
  .
  Homepage: https://yeupou.wordpress.com/
 
-Package: stalag13-utils-cloud
+Package: stalag13-utils-pxe
 Architecture: all
-Depends: stalag13-utils, nginx, owncloud, stalag13-utils-nginx
-Conflicts: stalag13-utils (<<3.166)
-Description: Owncloud setup and apps 
+Depends: stalag13-utils, tftpd-hpa, isc-dhcp-server
+Description: Preboot Execution Environment setup
+ Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
+ at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
  .
  Homepage: https://yeupou.wordpress.com/
 
