@@ -83,11 +83,18 @@ for my $package (keys %packages) {
 		
     }
 
-    # no file in the package was not updated? then remove it
-    # (ignore the main package)
+    # no file in the package was not updated? 
     next if $updated;
+    # not main utils package that we always want up to date no matter what?
     next if $package eq "utils";
+    # not selected by hand for rebuild?
+    if (-e "$curdir/debian/$package.rebuild") {
+	unlink("$curdir/debian/$package.rebuild");
+	next;
+    }
+    
     print "  => no changes\n";
+    # then register the information for later
     print NOTUPDATED "$package\n";
 }
 close(NOTUPDATED);
