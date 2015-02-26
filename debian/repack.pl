@@ -90,10 +90,11 @@ for my $package (keys %packages) {
     # not selected by hand for rebuild?
     if (-e "$curdir/debian/$package.rebuild") {
 	unlink("$curdir/debian/$package.rebuild");
+	print "  => no changes but will be updated since debian/?.rebuild exists\n";
 	next;
     }
     
-    print "  => no changes\n";
+    print "  => no changes, won't be updated\n";
     # then register the information for later
     print NOTUPDATED "$package\n";
 }
