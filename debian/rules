@@ -68,7 +68,7 @@ install: build
 	$(CURDIR)/debian/repack.pl $(CURDIR)
 	# deal with subpackages outside of the git repository - make them
 	# only if specifically asked
-	if [ -e $(CURDIR)/debian/utils-pxe.rebuild ] || [ -d ../$(CURDIR)/calaboose.pxe ]; then mkdir -p $(CURDIR)/debian/utils-pxe/srv $(CURDIR)/debian/utils-pxe/etc/cron.monthly && cp -rv $(CURDIR)/../calaboose.pxe $(CURDIR)/debian/utils-pxe/srv/pxe && mv $(CURDIR)/debian/utils-pxe/srv/pxe/cronjob $(CURDIR)/debian/utils-pxe/etc/cron.monthly/pxe ; fi;
+	if [ -e $(CURDIR)/debian/utils-pxe.rebuild ] || [ -d ../$(CURDIR)/calaboose.pxe ]; then mkdir -p $(CURDIR)/debian/stalag13-utils-pxe/srv $(CURDIR)/debian/stalag13-utils-pxe/etc/cron.monthly && cp -rv $(CURDIR)/../calaboose.pxe $(CURDIR)/debian/stalag13-utils-pxe/srv/pxe && mv $(CURDIR)/debian/stalag13-utils-pxe/srv/pxe/cronjob $(CURDIR)/debian/utils-pxe/etc/cron.monthly/pxe  && rm -fv $(CURDIR)/debian/utils-pxe.rebuild ; fi;
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
