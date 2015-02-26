@@ -1,3 +1,13 @@
+stalag13-utils (3.176-20150226) unstable; urgency=low
+ 
+  * Add possibility to force rebuild of packages even with no content update.
+    M debian/changelog.full
+    M debian/.gitignore
+    M debian/repack.pl
+    M etc/nginx/allow_local
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 26 Feb 2015 14:44:51 +0100
+ 
 stalag13-utils (3.175-20150225) unstable; urgency=low
  
   * Fix package dep
