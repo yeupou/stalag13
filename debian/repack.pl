@@ -36,7 +36,7 @@ for my $file (keys %changed) {
 	last if $file eq "/";
     }
 }
-print "Changed since $commits commits:";
+print "Changed since $commits commit(s):\n  ";
 for my $file (keys %changed) {
     print "$file ";
 }
