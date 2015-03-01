@@ -35,11 +35,6 @@ server {
 	rewrite ^/caldav(.*)$ /remote.php/caldav$1 redirect;
 	rewrite ^/carddav(.*)$ /remote.php/carddav$1 redirect;
 	rewrite ^/webdav(.*)$ /remote.php/webdav$1 redirect;
-#	rewrite ^/apps/calendar/caldav.php /remote.php/caldav/ last;
-#	rewrite ^/apps/contacts/carddav.php /remote.php/carddav/ last;
-#	rewrite ^/apps/([^/]*)/(.*\.(css|php))$ /index.php?app=$1&getfile=$2 last;
-#	rewrite ^/remote/(.*) /remote.php last;
-
 
 	error_page 403 = /core/templates/403.php;
 	error_page 404 = /core/templates/404.php;
@@ -63,7 +58,17 @@ server {
 		include fastcgi_params;
 	        fastcgi_pass   127.0.0.1:9000;
 		fastcgi_index  index.php;
+		# serve static files by himself
+		# https://doc.owncloud.org/server/7.0/admin_manual/configuration/serving_static_files_configuration.html
+		fastcgi_param MOD_X_ACCEL_REDIRECT_ENABLED on;
 		}
+
+	location ^~ /data {
+		# serve static files by himself
+		# https://doc.owncloud.org/server/7.0/admin_manual/configuration/serving_static_files_configuration.html
+	        internal;
+	}
+
 
 	# Optional: set long EXPIRES header on static assets
 	location ~* ^.+\.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
