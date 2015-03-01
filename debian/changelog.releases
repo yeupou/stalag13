@@ -1,3 +1,12 @@
+stalag13-utils (3.180-20150301) unstable; urgency=low
+ 
+  * Packaging trivial improvements.
+    M debian/changelog.full
+    M debian/repack.pl
+    M etc/cron.weekly/cache-apt
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 01 Mar 2015 14:27:23 +0100
+ 
 stalag13-utils (3.179-20150301) unstable; urgency=low
  
   * Static files now directly served by nginx, see https://doc.owncloud.org/server/7.0/admin_manual/configuration/serving_static_files_configuration.html
