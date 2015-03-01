@@ -36,10 +36,11 @@ for my $file (keys %changed) {
 	last if $file eq "/";
     }
 }
-print "LIST :";
+print "Changed since $commits commits:";
 for my $file (keys %changed) {
     print "$file ";
 }
+print "\n";
   
 # handpick files or directories
 my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl"],
