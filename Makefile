@@ -62,7 +62,7 @@ deb-release:
 	cd debian && rm -f changelog && ln -s changelog.releases changelog
 	# build the package one first time to make sure everything is okay
 	dpkg-buildpackage -uc -us -rfakeroot
-	# then commit changes 
+	# only then commit changes, assuming it worked ok 
 	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\\*\ //;` (new release $(MAJORVERSION).$(NEWVERSION))"
 	@git push
 	@git push github
