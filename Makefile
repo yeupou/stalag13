@@ -48,8 +48,10 @@ deb-prerelease:
 	cd debian && rm -f changelog && ln -s changelog.full changelog
 	echo $(VERSION) > $(LATESTIS)
 	echo $(NEWPREVERSION) >> $(LATESTIS)
+	# commit changes early to the package can contain an up to date log
 	@git commit -a -m 'New prerelease $(NEWPREVERSION) (on top of $(MAJORVERSION).$(VERSION))'
 	git push
+	# make the up to date log
 	make log
 	dpkg-buildpackage -uc -us -rfakeroot
 	su -c "dpkg -i ../stalag13-utils-ahem_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb ../stalag13-utils_$(MAJORVERSION).$(VERSION)+$(NEWPREVERSION)*.deb"
@@ -58,13 +60,20 @@ deb-release:
 	@echo "New release "$(MAJORVERSION).$(NEWVERSION)
 	debian/makechangelog.sh $(MAJORVERSION) $(NEWVERSION)
 	cd debian && rm -f changelog && ln -s changelog.releases changelog
-	echo $(NEWVERSION) > $(LATESTIS)
-	echo 0 >> $(LATESTIS)
+	# build the package one first time to make sure everything is okay
+	dpkg-buildpackage -uc -us -rfakeroot
+	# then commit changes 
 	@git commit -a -m "`cat debian/changelog  | head -3 | tail -1 | sed s/^\ \ \\\*\ //;` (new release $(MAJORVERSION).$(NEWVERSION))"
 	@git push
 	@git push github
+	# make a log up to date
 	make log
+	# build the definitive package
 	dpkg-buildpackage -uc -us -rfakeroot
+	# update the version reminder late so the number of commits done since
+	# latest release is still available
+	echo $(NEWVERSION) > $(LATESTIS)
+	echo 0 >> $(LATESTIS)
 	su -c "dpkg -i ../stalag13-utils-ahem_$(MAJORVERSION).$(NEWVERSION)*.deb ../stalag13-utils_$(MAJORVERSION).$(NEWVERSION)*.deb"
 
 pre: prerelease
