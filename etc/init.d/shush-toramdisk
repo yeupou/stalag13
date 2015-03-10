@@ -126,7 +126,7 @@ do_stop() {
 
         # Merge back to permanent storage
 	rm -f $RAMLOCK
-        /usr/bin/rsync --archive --delete $RAMDIR $SOLIDDIR
+        /usr/bin/rsync --archive --delete $RAMDIR/ $SOLIDDIR/
 
 	# unmount it all
         umount -l $RAMDIR
@@ -163,7 +163,7 @@ do_save() {
 	
         # Merge back to permanent storage
 	rm -f $RAMLOCK
-        /usr/bin/rsync --archive --delete $RAMDIR $SOLIDDIR
+        /usr/bin/rsync --archive --delete $RAMDIR/ $SOLIDDIR/
 	set -o noclobber && echo $RAMDIR > $RAMLOCK && set +o noclobber
     done
     return $RETURN
