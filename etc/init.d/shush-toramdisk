@@ -87,7 +87,7 @@ do_start()
 	# populate the ramdisk on success
 	[ $? -eq 0 ] && cp -rfp $SOLIDDIR -T $RAMDIR
 	# set a lock on success
-	[ $? -eq 0 ] && set -o noclobber && echo > $RAMLOCK && set +o noclobber
+	[ $? -eq 0 ] && set -o noclobber && echo $RAMDIR > $RAMLOCK && set +o noclobber
 	# go to the next RAMDIR on success
 	[ $? -eq 0 ] && continue
 	
@@ -164,7 +164,7 @@ do_save() {
         # Merge back to permanent storage
 	rm -f $RAMLOCK
         cp -rfup $RAMDIR -T $SOLIDDIR
-	set -o noclobber && echo > $RAMLOCK && set +o noclobber
+	set -o noclobber && echo $RAMDIR > $RAMLOCK && set +o noclobber
     done
     return $RETURN
 }
@@ -180,6 +180,14 @@ case "$1" in
     stop)
 	log_daemon_msg "Stopping $DESC" "$RAMDIRS"
 	do_stop
+	log_end_msg $?
+	;;
+    restart)
+	log_daemon_msg "Starting $DESC" "$RAMDIRS"
+	do_stop
+	log_end_msg $?
+	log_daemon_msg "Stopping $DESC" "$RAMDIRS"
+	do_start
 	log_end_msg $?
 	;;
     status)
