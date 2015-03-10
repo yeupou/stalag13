@@ -27,28 +27,23 @@ if [ -f /etc/default/$NAME ] ; then
 fi
 
 # Return
-#   0 if just been started
-#   1 if already running
-#   2 if could not be started
+#   0 been started or already running
+#   1 failure
 
-
-# Load the VERBOSE setting and other rcS variables
+# Load rcS variables
 . /lib/init/vars.sh
 
 # Define LSB log_* functions.
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
-
-
 do_start()
 {
     # not root? fail
     [ `id -u` -eq 0 ] || return 2
 
-    # set default return value as already running, since this will be
-    # updated only on success or failure
-    RETURN=1
+    # set default return value to success
+    RETURN=0
     
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
@@ -57,7 +52,7 @@ do_start()
 	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
 	
 	# there is a fishy lock, fail with warning
-	[ -h $RAMLOCK ] && RETURN=2 && continue
+	[ -h $RAMLOCK ] && RETURN=1 && continue
 
 	# there is lock already, assumes this RAMDIR is already on
 	[ -f $RAMLOCK ] && continue
@@ -77,6 +72,8 @@ do_start()
     
 	# bind the original directory before putting up the ramdisk
 	mount --bind $RAMDIR $SOLIDDIR
+
+	# find out the directory size to set a sensible ramdisk size
 	
 	# bring up the ramdisk
 	mount -t tmpfs -o nodev,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
@@ -87,8 +84,6 @@ do_start()
 	    set -o noclobber && echo > $RAMLOCK && set +o noclobber
 	    # populate the ramdisk
 	    cp -rfp $SOLIDDIR -T $RAMDIR
-	    # set a success return value, unless it was already set
-	    [ $RETURN -eq 1 ] && RETURN=0
 	    continue
 	fi
 	
@@ -97,7 +92,7 @@ do_start()
 	umount $RAMDIR
 	umount $SOLIDDIR
 	# and set a fail return value
-	RETURN=2
+	RETURN=1
     done
     return $RETURN
 }
@@ -107,14 +102,8 @@ do_stop() {
     # not root? fail
     [ `id -u` -eq 0 ] || return 2
 
-    # Return
-    #   0 if has been stopped
-    #   1 if was already stopped
-    #   2 if could not be stopped other if a failure occurred
-
-    # set default return value as already running, since this will be
-    # updated only on success or failure
-    RETURN=1
+    # set default return value to success
+    RETURN=0
     
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
@@ -126,8 +115,8 @@ do_stop() {
 	[ -f $RAMLOCK ] || continue
 	
 	# there is a fishy lock, fail with warning
-	[ -h $RAMLOCK ] && RETURN=2 && continue
-	[ ! -f $RAMLOCK ] && RETURN=2 && continue
+	[ -h $RAMLOCK ] && RETURN=1 && continue
+	[ ! -f $RAMLOCK ] && RETURN=1 && continue
 	
 	# RAMDIR non-existant? silent fail
 	[ -d $RAMDIR ] || continue
@@ -140,8 +129,8 @@ do_stop() {
         umount -l $RAMDIR
         umount -l $SOLIDDIR
 
-	# set a success return value, unless it was already set
-	[ $RETURN -eq 1 ] && RETURN=0
+	# remove the solid directory now useless, if empty
+	rm -d $SOLIDDIR
     done
     return $RETURN
 }
@@ -149,16 +138,11 @@ do_stop() {
 do_save() {
     # not root? fail
     [ `id -u` -eq 0 ] || return 2
-    
-    # Return
-    #   0 if has been saved
-    #   1 if was not running
-    #   2 if could not be saved
-    
-    # set default return value as already running, since this will be
-    # updated only on success or failure
-    RETURN=1
-    
+
+
+    # set default return value to success
+    RETURN=0
+            
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
 	RAMNAME=`echo $RAMDIR | sed s@/@@g`
@@ -169,8 +153,8 @@ do_save() {
         [ -f $RAMLOCK ] || continue
 
 	# there is a fishy lock, fail with warning
-	[ -h $RAMLOCK ] && RETURN=2 && continue
-	[ ! -f $RAMLOCK ] && RETURN=2 && continue
+	[ -h $RAMLOCK ] && RETURN=1 && continue
+	[ ! -f $RAMLOCK ] && RETURN=1 && continue
 	
 	# RAMDIR non-existant? silent fail
 	[ -d $RAMDIR ] || continue
@@ -179,9 +163,6 @@ do_save() {
 	rm -f $RAMLOCK
         cp -rfup $RAMDIR -T $SOLIDDIR
 	set -o noclobber && echo > $RAMLOCK && set +o noclobber
-	
-	# set a success return value, unless it was already set
-	[ $RETURN -eq 1 ] && RETURN=0
     done
     return $RETURN
 }
@@ -209,7 +190,7 @@ case "$1" in
 	# proceed for each directory
 	for RAMDIR in $RAMDIRS; do
 	    RAMNAME=`echo $RAMDIR | sed s@/@@g`
-	    RAMLOCK=/var/lock/shush$RAMNAME.ock
+	    RAMLOCK=/var/lock/shush$RAMNAME.lock
             if [ -f $RAMLOCK ]; then
 		echo "$RAMDIR is shushed/on ramdisk"
 	    else
