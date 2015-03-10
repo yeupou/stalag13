@@ -82,7 +82,7 @@ do_start()
 	[ $DIRSIZE -lt $MINSIZE ] && DIRSIZE=$MINSIZE
 	
 	# bring up the ramdisk
-	mount -t tmpfs -o nodev,size=$DIRSIZE,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
+	mount -t tmpfs -o nodev,size=$DIRSIZE $RAMNAME $RAMDIR
 
 	# populate the ramdisk on success
 	[ $? -eq 0 ] && cp -rfp $SOLIDDIR -T $RAMDIR
