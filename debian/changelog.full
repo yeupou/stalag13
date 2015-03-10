@@ -1,3 +1,9 @@
+stalag13-utils (3.182+1-20150310) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 10 Mar 2015 21:09:40 +0100
+ 
 stalag13-utils (3.182-20150310) unstable; urgency=low
  
   * Add shush-toramdisk, script to use tmpfs like debian does for /run /tmp but for any other directory. By default it's for /var/log and as such replaces the previous transientlog script.
