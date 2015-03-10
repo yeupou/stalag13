@@ -66,9 +66,9 @@ do_start()
 	[ -d $RAMDIR ] || continue
 	
 	# keep ownership and mode
-	$DIRMODE=`stat -c "%a" $RAMDIR`
-	$DIRUID=`stat -c "%u" $RAMDIR`
-	$DIRGID=`stat -c "%g" $RAMDIR`
+	DIRMODE=`stat -c "%a" $RAMDIR`
+	DIRUID=`stat -c "%u" $RAMDIR`
+	DIRGID=`stat -c "%g" $RAMDIR`
 	
 	# SOLIDDIR non-existant? build it
 	[ -d $RAMDIR ] || mkdir $SOLIDDIR
