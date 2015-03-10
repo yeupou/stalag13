@@ -73,11 +73,12 @@ do_start()
 	# bind the original directory before putting up the ramdisk
 	mount --bind $RAMDIR $SOLIDDIR
 
-	# find out the directory size to set a sensible ramdisk size
+ 	# find out the directory size to set a sensible ramdisk size
 	# (we can be generous as tmpfs partitions do not consume any
 	# memory until it is actually needed)
 	DIRSIZE=`du -s $RAMDIR | cut -f 1`
 	DIRSIZE=$(($DIRSIZE * 3))
+	[ $DIRSIZE -lt 51200 ] && DIRSIZE=51200
 	
 	# bring up the ramdisk
 	mount -t tmpfs -o nodev,size=$DIRSIZE,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
@@ -175,12 +176,12 @@ do_save() {
 
 case "$1" in
     start)
-	log_daemon_msg "Starting $DESC" "$NAME"
+	log_daemon_msg "Starting $DESC" "$RAMDIRS"
 	do_start
 	log_end_msg $?
 	;;
     stop)
-	log_daemon_msg "Stopping $DESC" "$NAME"
+	log_daemon_msg "Stopping $DESC" "$RAMDIRS"
 	do_stop
 	log_end_msg $?
 	;;
