@@ -20,6 +20,7 @@
 NAME=shush-toramdisk
 DESC="hard disk silencer" 
 RAMDIRS=/var/log
+MINSIZE=52428800
 
 # Include defaults if available
 if [ -f /etc/default/$NAME ] ; then
@@ -76,9 +77,9 @@ do_start()
  	# find out the directory size to set a sensible ramdisk size
 	# (we can be generous as tmpfs partitions do not consume any
 	# memory until it is actually needed)
-	DIRSIZE=`du -s $RAMDIR | cut -f 1`
+	DIRSIZE=`du --summarize --bytes $RAMDIR | cut -f 1`
 	DIRSIZE=$(($DIRSIZE * 3))
-	[ $DIRSIZE -lt 51200 ] && DIRSIZE=51200
+	[ $DIRSIZE -lt $MINSIZE ] && DIRSIZE=$MINSIZE
 	
 	# bring up the ramdisk
 	mount -t tmpfs -o nodev,size=$DIRSIZE,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
