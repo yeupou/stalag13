@@ -83,14 +83,12 @@ do_start()
 	# bring up the ramdisk
 	mount -t tmpfs -o nodev,size=$DIRSIZE,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
 
-	# if it worked ok
-	if [ $? -eq 0 ]; then
-	    # set a lock
-	    set -o noclobber && echo > $RAMLOCK && set +o noclobber
-	    # populate the ramdisk
-	    cp -rfp $SOLIDDIR -T $RAMDIR
-	    continue
-	fi
+	# populate the ramdisk on success
+	[ $? -eq 0 ] && cp -rfp $SOLIDDIR -T $RAMDIR
+	# set a lock on success
+	[ $? -eq 0 ] && set -o noclobber && echo > $RAMLOCK && set +o noclobber
+	# go to the next RAMDIR on success
+	[ $? -eq 0 ] && continue
 	
 	# if we get here, it means something went wrong
 	# so cancel previous mounts
