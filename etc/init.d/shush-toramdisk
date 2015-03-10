@@ -64,12 +64,22 @@ do_start()
 	
 	# RAMDIR non-existant? silent fail
 	[ -d $RAMDIR ] || continue
+	
+	# keep ownership and mode
+	$DIRMODE=`stat -c "%a" $RAMDIR`
+	$DIRUID=`stat -c "%u" $RAMDIR`
+	$DIRGID=`stat -c "%g" $RAMDIR`
+	
+	# SOLIDDIR non-existant? build it
+	[ -d $RAMDIR ] || mkdir $SOLIDDIR
+	chmod $DIRMODE $SOLIDDIR
+	chown $DIRUID:$DIRGID $SOLIDDIR
     
 	# bind the original directory before putting up the ramdisk
 	mount --bind $RAMDIR $SOLIDDIR
-
+	
 	# bring up the ramdisk
-	mount -t tmpfs -o nosuid,noexec,nodev,mode=0755 $RAMNAME $RAMDIR
+	mount -t tmpfs -o nodev,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
 
 	# if it worked ok
 	if [ $? -eq 0 ]; then
