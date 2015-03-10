@@ -1,0 +1,34 @@
+#!/bin/sh
+
+RUN=0
+NAME=shush-toram
+RAMDIRS=/var/log
+
+# Include defaults if available
+if [ -f /etc/default/$NAME ] ; then
+    . /etc/default/$NAME
+fi
+
+# check if any shush-toramdisk active
+for RAMDIR in $RAMDIRS; do
+    RAMLOCK=/var/lock/shush-`echo $RAMDIR | sed s@/@@g`.lock
+    # go check the next if no lock found
+    [ ! -f $RAMLOCK ] && continue
+    # register that we need at least a reload
+    [ $RUN -eq 0 ] && RUN=1
+    # check if we may want to recreate to tmpfs because it's near full
+    RAMDIR=`cat $RAMLOCK`
+    RAMPCENT=`df --output=pcent $RAMDIR | tail -1 | sed s@%@@g`
+    [ $RAMPCENT -gt 74 ] && RUN=2    
+done
+
+# exit if no ramdisk found
+[ $RUN -eq 0 ] && exit
+
+# update the harddisk with data on ramdisk
+[ $RUN -eq 1 ] && /etc/init.d/$NAME reload >/dev/null
+# or restart it to recreate a bigger tmpfs if need be
+[ $RUN -eq 2 ] && /etc/init.d/$NAME restart >/dev/null
+
+# EOF
+

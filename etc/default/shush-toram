@@ -1,0 +1,3 @@
+# list of directories to put on ramdisk separated by a space
+# as in "/var/log /home/thisuser"
+RAMDIRS="/var/log"
