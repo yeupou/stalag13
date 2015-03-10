@@ -133,7 +133,7 @@ do_stop() {
         umount -l $SOLIDDIR
 
 	# remove the solid directory now useless, if empty
-	rm -d $SOLIDDIR
+	rmdir $SOLIDDIR
     done
     return $RETURN
 }
