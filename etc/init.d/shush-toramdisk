@@ -8,14 +8,14 @@
 # X-Stop-After:    $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Silence the hard disk by using ramdisk for /var/log and others
+# Short-Description: Silence the hard disk by using ramdisk for /var/log and other directories
 # X-Interactive:   yes
 ### END INIT INFO
 
 # Based on
 # http://www.debian-administration.org/article/661/A_transient_/var/log
 # and debian tmpfs for /var/run and /var/lock
-# but also handle one or more user directories
+# but also any other directories
 
 NAME=shush-toramdisk
 DESC="hard disk silencer" 
@@ -65,7 +65,7 @@ do_start()
 	DIRUID=`stat -c "%u" $RAMDIR`
 	DIRGID=`stat -c "%g" $RAMDIR`
 	
-	# SOLIDDIR non-existant? build it
+	# make sure SOLIDDIR exists, with proper modes and ownership
 	[ -d $SOLIDDIR ] || mkdir $SOLIDDIR
 	chmod $DIRMODE $SOLIDDIR
 	chown $DIRUID:$DIRGID $SOLIDDIR
@@ -74,9 +74,13 @@ do_start()
 	mount --bind $RAMDIR $SOLIDDIR
 
 	# find out the directory size to set a sensible ramdisk size
+	# (we can be generous as tmpfs partitions do not consume any
+	# memory until it is actually needed)
+	DIRSIZE=`du -s $RAMDIR | cut -f 1`
+	DIRSIZE=$(($DIRSIZE * 3))
 	
 	# bring up the ramdisk
-	mount -t tmpfs -o nodev,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
+	mount -t tmpfs -o nodev,size=$DIRSIZE,uid=$DIRUID,gid=$DIRGID,mode=$DIRMODE $RAMNAME $RAMDIR
 
 	# if it worked ok
 	if [ $? -eq 0 ]; then
@@ -171,20 +175,14 @@ do_save() {
 
 case "$1" in
     start)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	log_daemon_msg "Starting $DESC" "$NAME"
 	do_start
-	case "$?" in
-	    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-	    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-	esac
+	log_end_msg $?
 	;;
     stop)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	log_daemon_msg "Stopping $DESC" "$NAME"
 	do_stop
-	case "$?" in
-	    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-	    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-	esac
+	log_end_msg $?
 	;;
     status)
 	# proceed for each directory
