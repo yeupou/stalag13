@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          varlog
+# Provides:          shush-toramdisk
 # Required-Start:    $local_fs
 # Required-Stop: $local_fs
 # X-Start-Before:  $syslog
@@ -18,7 +18,8 @@
 # but also any other directories
 
 NAME=shush-toramdisk
-DESC="hard disk silencer" 
+DESC="hard disk silencer"
+RAMNAME=tmpfs
 RAMDIRS=/var/log
 MINSIZE=52428800
 
@@ -48,8 +49,7 @@ do_start()
     
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
-	RAMNAME=`echo $RAMDIR | sed s@/@@g`
-	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	RAMLOCK=/var/lock/shush-`echo $RAMDIR | sed s@/@@g`.lock
 	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
 	
 	# there is a fishy lock, fail with warning
@@ -111,8 +111,7 @@ do_stop() {
     
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
-	RAMNAME=`echo $RAMDIR | sed s@/@@g`
-	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	RAMLOCK=/var/lock/shush-`echo $RAMDIR | sed s@/@@g`.lock
 	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
 	
 	# there is no lock, assumes this RAMDIR is already off
@@ -149,8 +148,7 @@ do_save() {
             
     # proceed for each directory
     for RAMDIR in $RAMDIRS; do
-	RAMNAME=`echo $RAMDIR | sed s@/@@g`
-	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	RAMLOCK=/var/lock/shush-`echo $RAMDIR | sed s@/@@g`.lock
 	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
 
 	# there is no lock, assumes this RAMDIR is off
@@ -187,17 +185,16 @@ case "$1" in
     status)
 	# proceed for each directory
 	for RAMDIR in $RAMDIRS; do
-	    RAMNAME=`echo $RAMDIR | sed s@/@@g`
-	    RAMLOCK=/var/lock/shush$RAMNAME.lock
+	    RAMLOCK=/var/lock/shush-`echo $RAMDIR | sed s@/@@g`.lock
             if [ -f $RAMLOCK ]; then
-		echo "$RAMDIR is shushed/on ramdisk"
+		echo "$RAMDIR on ramdisk"
 	    else
-		echo "$RAMDIR is not shushed/on ramdisk"
+		echo "$RAMDIR is not on ramdisk"
 	    fi
 	done
 	;;
     reload)
-	log_daemon_msg "Reloading $DESC" "$NAME"
+	log_daemon_msg "Reloading $DESC" "$RAMDIRS"
 	do_save
 	log_end_msg $?
 	;;
