@@ -1,0 +1,222 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          varlog
+# Required-Start:    $local_fs
+# Required-Stop: $local_fs
+# X-Start-Before:  $syslog
+# X-Stop-After:    $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Silence the hard disk by using ramdisk for /var/log and others
+# X-Interactive:   yes
+### END INIT INFO
+
+# Based on
+# http://www.debian-administration.org/article/661/A_transient_/var/log
+# and debian tmpfs for /var/run and /var/lock
+# but also handle one or more user directories
+
+NAME=shush-toramdisk
+DESC="hard disk silencer" 
+RAMDIRS=/var/log
+
+# Include defaults if available
+if [ -f /etc/default/$NAME ] ; then
+    . /etc/default/$NAME
+fi
+
+# Return
+#   0 if just been started
+#   1 if already running
+#   2 if could not be started
+
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+
+
+
+do_start()
+{
+    # not root? fail
+    [ `id -u` -eq 0 ] || return 2
+
+    # set default return value as already running, since this will be
+    # updated only on success or failure
+    RETURN=1
+    
+    # proceed for each directory
+    for RAMDIR in $RAMDIRS; do
+	RAMNAME=`echo $RAMDIR | sed s@/@@g`
+	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
+	
+	# there is a fishy lock, fail with warning
+	[ -h $RAMLOCK ] && RETURN=2 && continue
+
+	# there is lock already, assumes this RAMDIR is already on
+	[ -f $RAMLOCK ] && continue
+	
+	# RAMDIR non-existant? silent fail
+	[ -d $RAMDIR ] || continue
+    
+	# bind the original directory before putting up the ramdisk
+	mount --bind $RAMDIR $SOLIDDIR
+
+	# bring up the ramdisk
+	mount -t tmpfs -o nosuid,noexec,nodev,mode=0755 $RAMNAME $RAMDIR
+
+	# if it worked ok
+	if [ $? -eq 0 ]; then
+	    # set a lock
+	    set -o noclobber && echo > $RAMLOCK && set +o noclobber
+	    # populate the ramdisk
+	    cp -rfp $SOLIDDIR -T $RAMDIR
+	    # set a success return value, unless it was already set
+	    [ $RETURN -eq 1 ] && RETURN=0
+	    continue
+	fi
+	
+	# if we get here, it means something went wrong
+	# so cancel previous mounts
+	umount $RAMDIR
+	umount $SOLIDDIR
+	# and set a fail return value
+	RETURN=2
+    done
+    return $RETURN
+}
+
+
+do_stop() {
+    # not root? fail
+    [ `id -u` -eq 0 ] || return 2
+
+    # Return
+    #   0 if has been stopped
+    #   1 if was already stopped
+    #   2 if could not be stopped other if a failure occurred
+
+    # set default return value as already running, since this will be
+    # updated only on success or failure
+    RETURN=1
+    
+    # proceed for each directory
+    for RAMDIR in $RAMDIRS; do
+	RAMNAME=`echo $RAMDIR | sed s@/@@g`
+	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
+	
+	# there is no lock, assumes this RAMDIR is already off
+	[ -f $RAMLOCK ] || continue
+	
+	# there is a fishy lock, fail with warning
+	[ -h $RAMLOCK ] && RETURN=2 && continue
+	[ ! -f $RAMLOCK ] && RETURN=2 && continue
+	
+	# RAMDIR non-existant? silent fail
+	[ -d $RAMDIR ] || continue
+
+        # Merge back to permanent storage
+	rm -f $RAMLOCK
+        cp -rfup $RAMDIR -T $SOLIDDIR
+
+	# unmount it all
+        umount -l $RAMDIR
+        umount -l $SOLIDDIR
+
+	# set a success return value, unless it was already set
+	[ $RETURN -eq 1 ] && RETURN=0
+    done
+    return $RETURN
+}
+
+do_save() {
+    # not root? fail
+    [ `id -u` -eq 0 ] || return 2
+    
+    # Return
+    #   0 if has been saved
+    #   1 if was not running
+    #   2 if could not be saved
+    
+    # set default return value as already running, since this will be
+    # updated only on success or failure
+    RETURN=1
+    
+    # proceed for each directory
+    for RAMDIR in $RAMDIRS; do
+	RAMNAME=`echo $RAMDIR | sed s@/@@g`
+	RAMLOCK=/var/lock/shush$RAMNAME.lock
+	SOLIDDIR=`dirname $RAMDIR`/.`basename $RAMDIR`-solid
+
+	# there is no lock, assumes this RAMDIR is off
+        [ -f $RAMLOCK ] || continue
+
+	# there is a fishy lock, fail with warning
+	[ -h $RAMLOCK ] && RETURN=2 && continue
+	[ ! -f $RAMLOCK ] && RETURN=2 && continue
+	
+	# RAMDIR non-existant? silent fail
+	[ -d $RAMDIR ] || continue
+	
+        # Merge back to permanent storage
+	rm -f $RAMLOCK
+        cp -rfup $RAMDIR -T $SOLIDDIR
+	set -o noclobber && echo > $RAMLOCK && set +o noclobber
+	
+	# set a success return value, unless it was already set
+	[ $RETURN -eq 1 ] && RETURN=0
+    done
+    return $RETURN
+}
+
+
+
+case "$1" in
+    start)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	do_start
+	case "$?" in
+	    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+	    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+    stop)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	do_stop
+	case "$?" in
+	    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+	    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+    status)
+	# proceed for each directory
+	for RAMDIR in $RAMDIRS; do
+	    RAMNAME=`echo $RAMDIR | sed s@/@@g`
+	    RAMLOCK=/var/lock/shush$RAMNAME.ock
+            if [ -f $RAMLOCK ]; then
+		echo "$RAMDIR is shushed/on ramdisk"
+	    else
+		echo "$RAMDIR is not shushed/on ramdisk"
+	    fi
+	done
+	;;
+    reload)
+	log_daemon_msg "Reloading $DESC" "$NAME"
+	do_save
+	log_end_msg $?
+	;;
+    *)
+	echo "Usage: $0 {start|stop|status|reload}" >&2
+	exit 3
+	;;
+esac
+
+
+# EOF

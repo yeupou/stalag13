@@ -1,0 +1,2 @@
+# directories to put on ramdisk
+RAMDIRS="/var/log /home/thisuser"
