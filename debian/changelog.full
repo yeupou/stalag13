@@ -1,3 +1,12 @@
+stalag13-utils (3.184-20150311) unstable; urgency=low
+ 
+  * start or restart now remount the tmpfs instead of just mounting or umount/mount.
+    M debian/changelog.full
+    M etc/cron.daily/shush-toram
+    M etc/init.d/shush-toram
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 11 Mar 2015 10:14:08 +0100
+ 
 stalag13-utils (3.183+2-20150311) unstable; urgency=low
  
   * Upstream prerelease
