@@ -55,9 +55,6 @@ do_start()
 	# there is a fishy lock, fail with warning
 	[ -h $RAMLOCK ] && RETURN=1 && continue
 
-	# there is lock already, assumes this RAMDIR is already on
-	[ -f $RAMLOCK ] && continue
-	
 	# RAMDIR non-existant? silent fail
 	[ -d $RAMDIR ] || continue
 	
@@ -72,7 +69,8 @@ do_start()
 	chown $DIRUID:$DIRGID $SOLIDDIR
     
 	# bind the original directory before putting up the ramdisk
-	mount --bind $RAMDIR $SOLIDDIR
+	# (unless there's a lock already - handling restart)
+	[ -f $RAMLOCK ] && mount --bind $RAMDIR $SOLIDDIR
 
  	# find out the directory size to set a sensible ramdisk size
 	# (we can be generous as tmpfs partitions do not consume any
@@ -82,17 +80,22 @@ do_start()
 	[ $DIRSIZE -lt $MINSIZE ] && DIRSIZE=$MINSIZE
 	
 	# bring up the ramdisk
-	mount -t tmpfs -o nodev,size=$DIRSIZE $RAMNAME $RAMDIR
+	if [ ! -f $RAMLOCK ]; then
+	    # start: mount
+	    mount -t tmpfs -o nodev,size=$DIRSIZE $RAMNAME $RAMDIR
+	    # populate the ramdisk on success
+	    [ $? -eq 0 ] && cp -rfp $SOLIDDIR -T $RAMDIR
+	    # set a lock on success
+	    [ $? -eq 0 ] && set -o noclobber && echo $RAMDIR > $RAMLOCK && set +o noclobber
+	else
+	    # restart: remount
+	    mount -t tmpfs -o remount,nodev,size=$DIRSIZE $RAMNAME $RAMDIR	    
+	fi
 
-	# populate the ramdisk on success
-	[ $? -eq 0 ] && cp -rfp $SOLIDDIR -T $RAMDIR
-	# set a lock on success
-	[ $? -eq 0 ] && set -o noclobber && echo $RAMDIR > $RAMLOCK && set +o noclobber
 	# go to the next RAMDIR on success
 	[ $? -eq 0 ] && continue
 	
-	# if we get here, it means something went wrong
-	# so cancel previous mounts
+	# on failure cancel previous mounts
 	umount $RAMDIR
 	umount $SOLIDDIR
 	# and set a fail return value
@@ -172,7 +175,9 @@ do_save() {
 
 
 case "$1" in
-    start)
+    start|restart)
+	# start will mount the tmpfs, restart will remount it
+	# so it should be transparent
 	log_daemon_msg "Starting $DESC" "$RAMDIRS"
 	do_start
 	log_end_msg $?
@@ -180,14 +185,6 @@ case "$1" in
     stop)
 	log_daemon_msg "Stopping $DESC" "$RAMDIRS"
 	do_stop
-	log_end_msg $?
-	;;
-    restart)
-	log_daemon_msg "Starting $DESC" "$RAMDIRS"
-	do_stop
-	log_end_msg $?
-	log_daemon_msg "Stopping $DESC" "$RAMDIRS"
-	do_start
 	log_end_msg $?
 	;;
     status)
