@@ -70,7 +70,7 @@ do_start()
     
 	# bind the original directory before putting up the ramdisk
 	# (unless there's a lock already - handling restart)
-	[ -f $RAMLOCK ] && mount --bind $RAMDIR $SOLIDDIR
+	[ ! -f $RAMLOCK ] && mount --bind $RAMDIR $SOLIDDIR
 
  	# find out the directory size to set a sensible ramdisk size
 	# (we can be generous as tmpfs partitions do not consume any
