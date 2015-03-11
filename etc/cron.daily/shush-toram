@@ -25,9 +25,9 @@ done
 # exit if no ramdisk found
 [ $RUN -eq 0 ] && exit 0
 
-## update the harddisk with data on ramdisk
-[ $RUN -eq 1 ] && /etc/init.d/$NAME reload >/dev/null
-## or restart it to recreate a bigger tmpfs if need be
+# update the harddisk with data on ramdisk
+/etc/init.d/$NAME reload >/dev/null
+# restart it to recreate a bigger tmpfs if need be
 [ $RUN -eq 2 ] && /etc/init.d/$NAME restart >/dev/null
 
 exit 0

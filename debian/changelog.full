@@ -1,3 +1,9 @@
+stalag13-utils (3.185-20150311) unstable; urgency=low
+ 
+  * Always update hard disk copy on cronjob
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 11 Mar 2015 10:19:44 +0100
+ 
 stalag13-utils (3.184-20150311) unstable; urgency=low
  
   * start or restart now remount the tmpfs instead of just mounting or umount/mount.

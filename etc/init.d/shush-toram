@@ -199,7 +199,7 @@ case "$1" in
 	done
 	;;
     reload)
-	log_daemon_msg "Reloading $DESC" "$RAMDIRS"
+	log_daemon_msg "Updating hard disk copies" "$RAMDIRS"
 	do_save
 	log_end_msg $?
 	;;
