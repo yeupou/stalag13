@@ -112,13 +112,14 @@ Description: Roundcube setup and plugins
  .
  Homepage: https://yeupou.wordpress.com/
 
-Package: stalag13-utils-websys
+Package: stalag13-utils-websysadmin
 Architecture: all
 Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-perl, mysql-server, passwdqc, liburi-encode-perl, libdata-password-perl, libdbd-mysql-perl, libmailtools-perl
 Conflicts: stalag13-utils (<<3.166)
 Description: Basic sysadmin via intranet
- Build the database according to the README. Assumes that you Perl FastCGI
- setup will allow local access to /srv/www/sysadmin/index.pl
+ Build the database according to the README and set MySQL database password in
+ /etc/websysadminrc
+ Assumes that you Perl FastCGI setup will allow local access to /srv/www/sysadmin/index.pl
  .
  Homepage: https://yeupou.wordpress.com/
 

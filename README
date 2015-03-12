@@ -54,10 +54,11 @@ stalag13-utils-tumblr:
 stalag13-utils-webmail:
  Roundcube setup and plugins
 
-stalag13-utils-websys:
+stalag13-utils-websysadmin:
  Basic sysadmin via intranet
- Build the database according to the README. Assumes that you Perl FastCGI
- setup will allow local access to /srv/www/sysadmin/index.pl
+ Build the database according to the README and set MySQL database password in
+ /etc/websysadminrc
+ Assumes that you Perl FastCGI setup will allow local access to /srv/www/sysadmin/index.pl
 
 stalag13-utils-ahem:
  Utmost non-generic stuff that no one else probably needs
