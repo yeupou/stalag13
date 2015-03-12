@@ -9,6 +9,9 @@
 # You may want instead to use more defined location like
 #        ^/sysinfo/(.*)\.php$
 location ~ .php$ {
+  # allow only local for starters
+  include allow_local;
+  deny all;
   include fastcgi_params;
   fastcgi_pass   127.0.0.1:9000;
   fastcgi_index  index.php;
@@ -18,6 +21,9 @@ location ~ .php$ {
 # You may want instead to use more defined location like
 #        /sysadmin/index.pl
 location ~ .pl$ {
+  # allow only local for starters
+  include allow_local;
+  deny all;
   include fastcgi_params;
   fastcgi_pass  127.0.0.1:8999;
   fastcgi_index index.pl;

@@ -1,3 +1,17 @@
+stalag13-utils (3.188-20150312) unstable; urgency=low
+ 
+  * Get nginx fastcgi recent scripts. Provide a sample default snipper to have .php and .pl handled by nginx.
+    A etc/nginx/sites-available/fcgi
+    A usr/local/bin/fastcgi-wrapper.pl
+    M debian/changelog.full
+    M debian/control
+    M etc/init.d/perl-fcgi
+    M etc/init.d/php-fcgi
+    M etc/nginx/sites-available/fcgi
+    M README
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 12 Mar 2015 17:22:19 +0100
+ 
 stalag13-utils (3.187+9-20150312) unstable; urgency=low
  
   * Upstream prerelease

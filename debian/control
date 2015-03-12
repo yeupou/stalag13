@@ -111,15 +111,6 @@ Description: Roundcube setup and plugins
  .
  Homepage: https://yeupou.wordpress.com/
 
-Package: stalag13-utils-websys
-Architecture: all
-Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-perl, mysql-server, libemail-sender-perl
-Conflicts: stalag13-utils (<<3.166)
-Description: Basic sysadmin via intranet
- Nginx sys conffile must be inserted into intranet setup with include
- .
- Homepage: https://yeupou.wordpress.com/
-
 Package: stalag13-utils-ahem
 Architecture: all
 Replaces: stalag13-utils (<<3.166), stalag13-utils-extra
