@@ -4,7 +4,7 @@
 # Since it involves, it's recommended however to copy and paste want you need
 
 
-# PHP apps with spawn-fcgi for any .php files anywhere
+# PHP apps with spawn-fcgi for any .php files anywhere: ~ .php$
 # You may want instead to use more defined location like
 #        ^/sysinfo/(.*)\.php$
 location ~ .php$ {
@@ -13,7 +13,7 @@ location ~ .php$ {
   fastcgi_index  index.php;
 }
 
-# Perl apps with spawn-fcgi for any .pl files anywhere
+# Perl apps with spawn-fcgi for any .pl files anywhere: ~ .pl$
 # You may want instead to use more defined location like
 #        /sysadmin/index.pl
 location ~ .pl$ {
