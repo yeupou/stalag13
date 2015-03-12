@@ -12,9 +12,9 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 SPAWN_FCGI="/usr/bin/spawn-fcgi"
-DAEMON="/usr/sbin/fcgiwrap"
-NAME="fcgiwrap"
-DESC="PERL FastCGI wrapper"
+DAEMON="/usr/local/bin/fastcgi-wrapper.pl"
+NAME="perl-fcgi"
+DESC="Perl FastCGI wrapper"
 
 PIDFILE="/var/run/$NAME.pids"
 

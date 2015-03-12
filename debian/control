@@ -4,6 +4,13 @@ Priority: optional
 Maintainer: Mathieu Roy <yeupou@gnu.org>
 Standards-Version: 3.5.9.0
 
+Package: stalag13-keyring
+Architecture: all
+Conflicts: stalag13-utils (<<3.133)
+Description: Keyring used to signed packages along with repository set-up
+ .
+ Homepage: https://yeupou.wordpress.com/
+
 Package: stalag13-utils
 Architecture: all
 Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libtimedate-perl, debfoster, localepurge, etckeeper, libmoose-perl, liburi-encode-perl, libjson-perl, libio-interactive-perl, libhtml-tableextract-perl, libnumber-bytes-human-perl, bash-completion
@@ -62,6 +69,7 @@ Description: Exim greylist, bogofilter and spamassassin setup
 Package: stalag13-utils-nginx
 Architecture: all
 Depends: stalag13-utils, nginx, spawn-fcgi, openssl
+Recommends: php5-cgi, libfcgi-perl
 Conflicts: stalag13-utils (<<3.166)
 Description: Perl/PHP fastcgi and TLS certificates setup for nginx
  .
@@ -73,14 +81,6 @@ Depends: stalag13-utils, tftpd-hpa, isc-dhcp-server
 Description: Preboot Execution Environment setup
  Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
  at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
- .
- Homepage: https://yeupou.wordpress.com/
-
-Package: stalag13-utils-webmail
-Architecture: all
-Depends: stalag13-utils, nginx, roundcube, stalag13-utils-nginx
-Conflicts: stalag13-utils (<<3.166)
-Description: Roundcube setup and plugins
  .
  Homepage: https://yeupou.wordpress.com/
  
@@ -102,11 +102,21 @@ Description: Automated image post on tumblr
  Check https://yeupou.wordpress.com/?s=tumblr beforehand
  .
  Homepage: https://yeupou.wordpress.com/
- 
-Package: stalag13-keyring
+
+Package: stalag13-utils-webmail
 Architecture: all
-Conflicts: stalag13-utils (<<3.133)
-Description: Keyring used to signed packages along with repository set-up
+Depends: stalag13-utils, nginx, roundcube, stalag13-utils-nginx
+Conflicts: stalag13-utils (<<3.166)
+Description: Roundcube setup and plugins
+ .
+ Homepage: https://yeupou.wordpress.com/
+
+Package: stalag13-utils-websys
+Architecture: all
+Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-perl, mysql-server libemail-sender-perl
+Conflicts: stalag13-utils (<<3.166)
+Description: Basic sysadmin via intranet
+ Nginx sys conffile must be inserted into intranet setup with include
  .
  Homepage: https://yeupou.wordpress.com/
 

@@ -7,6 +7,9 @@ Debian packages are available. The easier way to get them is to get the keyring 
 	# apt-get update
 	# apt-get install ...
 
+stalag13-keyring:
+ Keyring used to signed packages along with repository set-up
+
 stalag13-utils:
  Utmost generic stuff from stalag13
 
@@ -38,9 +41,6 @@ stalag13-utils-pxe:
  Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
  at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
 
-stalag13-utils-webmail:
- Roundcube setup and plugins
-
 stalag13-utils-torrent:
  Manage transmission via NFS/Samba
  Assume you already have networking file system up
@@ -50,8 +50,12 @@ stalag13-utils-tumblr:
  Automated image post on tumblr
  Check https://yeupou.wordpress.com/?s=tumblr beforehand
 
-stalag13-keyring:
- Keyring used to signed packages along with repository set-up
+stalag13-utils-webmail:
+ Roundcube setup and plugins
+
+stalag13-utils-websys:
+ Basic sysadmin via intranet
+ Nginx sys conffile must be inserted into intranet setup with include
 
 stalag13-utils-ahem:
  Utmost non-generic stuff that no one else probably needs
