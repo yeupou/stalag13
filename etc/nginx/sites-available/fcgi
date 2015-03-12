@@ -1,0 +1,25 @@
+# These are example to activate Perl and/or PHP fastcgi
+# You can include this file with
+#           include sites-available/fcgi
+# Since it involves, it's recommended however to copy and paste want you need
+
+
+# PHP apps with spawn-fcgi for any .php files anywhere
+# You may want instead to use more defined location like
+#        ^/sysinfo/(.*)\.php$
+location ~ .php$ {
+  include fastcgi_params;
+  fastcgi_pass   127.0.0.1:9000;
+  fastcgi_index  index.php;
+}
+
+# Perl apps with spawn-fcgi for any .pl files anywhere
+# You may want instead to use more defined location like
+#        /sysadmin/index.pl
+location ~ .pl$ {
+  include fastcgi_params;
+  fastcgi_pass  127.0.0.1:8999;
+  fastcgi_index index.pl;
+}
+
+# EOF
