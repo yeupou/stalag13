@@ -1,14 +1,14 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          shush-toramdisk
+# Provides:          shush-toram
 # Required-Start:    $local_fs
-# Required-Stop: $local_fs
-# X-Start-Before:  $syslog
-# X-Stop-After:    $syslog
+# Required-Stop:     $local_fs
+# X-Start-Before:    $syslog
+# X-Stop-After:      $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Silence the hard disk by using ramdisk for /var/log and other directories
+# Short-Description: Silence the hard disk by using tmpfs for /var/log and other directories
 # X-Interactive:   yes
 ### END INIT INFO
 
