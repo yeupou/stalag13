@@ -1,3 +1,6 @@
 # list of directories to put on ramdisk separated by a space
 # as in "/var/log /home/thisuser"
 RAMDIRS="/var/log"
+
+# minimum size of tmpfs, default 52M
+#MINSIZE=52428800
