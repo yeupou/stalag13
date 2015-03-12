@@ -1,7 +1,8 @@
 # These are example to activate Perl and/or PHP fastcgi
-# You can include this file with
-#           include sites-available/fcgi
-# Since it involves, it's recommended however to copy and paste want you need
+# You can include this file within your intranet setup with:
+#           include sites-available/fcgi;
+# Since it involves security, it's recommended however to edit or
+# copy and paste just what you need.
 
 
 # PHP apps with spawn-fcgi for any .php files anywhere: ~ .php$
