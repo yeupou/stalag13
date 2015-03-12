@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2012-2014 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2012-2015 Mathieu Roy <yeupou--gnu.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 #   libaudio-mixer-perl (for OSS)
 # 
 # for sound volume  consistency, you should run 
-#       cd ~/.wakey && normalize-ogg -b *
+#   cd ~/.wakey && normalize-mp3 *.mp3 --ogg
+#   cd ~/.wakey && normalize-mp3 *.ogg --ogg
+#   cd ~/.wakey && normalize-mp3 *.flac --ogg
 
 use strict;
 
@@ -100,7 +102,10 @@ a song contained in ~\/.wakey that can be of any format the configured
 player ($player) supports.
 
 For sound volume  consistency, you should run something like:
-   cd ~/.wakey && normalize-audio -b *
+   cd ~/.wakey && normalize-mp3 *.mp3 --ogg
+   cd ~/.wakey && normalize-mp3 *.ogg --ogg
+   cd ~/.wakey && normalize-mp3 *.flac --ogg
+
 
 To manipulate volume, it expects ALSA $mixer_alsa to be properly set up, 
 with a 'Master' control. It it fails, it will try to fallback on 

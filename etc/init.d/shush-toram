@@ -76,7 +76,7 @@ do_start()
 	# (we can be generous as tmpfs partitions do not consume any
 	# memory until it is actually needed)
 	DIRSIZE=`du --summarize --bytes $RAMDIR | cut -f 1`
-	DIRSIZE=$(($DIRSIZE * 4))
+	DIRSIZE=$(($DIRSIZE * 6))
 	[ $DIRSIZE -lt $MINSIZE ] && DIRSIZE=$MINSIZE
 	
 	# bring up the ramdisk
