@@ -25,7 +25,7 @@ DESC="Perl FastCGI wrapper"
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
-PERL_SCRIPT=/usr/bin/fastcgi-wrapper.pl
+PERL_SCRIPT=/usr/local/bin/fastcgi-wrapper.pl
 FASTCGI_USER=www-data
 RETVAL=0
 
@@ -33,21 +33,21 @@ case "$1" in
     start)
       log_daemon_msg "Starting $DESC" "$NAME"
       su - $FASTCGI_USER -c $PERL_SCRIPT
-      RETVAL=$?
       log_end_msg $?
+      RETVAL=$?
   ;;
     stop)
       log_daemon_msg "Stopping $DESC" "$NAME"
       killall -9 fastcgi-wrapper.pl
-      RETVAL=$?
       log_end_msg $?
+      RETVAL=$?
   ;;
     restart)
       log_daemon_msg "Restarting $DESC" "$NAME"
       killall -9 fastcgi-wrapper.pl
       su - $FASTCGI_USER -c $PERL_SCRIPT
-      RETVAL=$?
       log_end_msg $?
+      RETVAL=$?
   ;;
     *)
       echo "Usage: perl-fcgi {start|stop|restart}"
