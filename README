@@ -34,7 +34,8 @@ stalag13-utils-exim:
  Edit /etc/exim4/conf.d/main/00_stalag13-config to use bogofilter and spamassassin
 
 stalag13-utils-nginx:
- Perl/PHP fastcgi and TLS certificates setup for nginx
+ Perl/PHP FastCGI and TLS certificates setup for nginx
+ FastCGI will need php5-cgi or libfcgi-perl to actually run.
 
 stalag13-utils-pxe:
  Preboot Execution Environment setup

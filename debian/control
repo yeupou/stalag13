@@ -71,7 +71,8 @@ Architecture: all
 Depends: stalag13-utils, nginx, spawn-fcgi, openssl
 Recommends: php5-cgi, libfcgi-perl
 Conflicts: stalag13-utils (<<3.166)
-Description: Perl/PHP fastcgi and TLS certificates setup for nginx
+Description: Perl/PHP FastCGI and TLS certificates setup for nginx
+ FastCGI will need php5-cgi or libfcgi-perl to actually run.
  .
  Homepage: https://yeupou.wordpress.com/
 
