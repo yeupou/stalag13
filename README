@@ -57,7 +57,7 @@ stalag13-utils-webmail:
 stalag13-utils-websysadmin:
  Basic sysadmin via intranet
  Build the database according to the README and set MySQL database password in
- /etc/websysadminrc
+ /etc/websysadminrc (must belong to www-data, mode 600)
  Assumes that you Perl FastCGI setup will allow local access to /srv/www/sysadmin/index.pl
 
 stalag13-utils-ahem:

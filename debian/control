@@ -118,7 +118,7 @@ Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-per
 Conflicts: stalag13-utils (<<3.166)
 Description: Basic sysadmin via intranet
  Build the database according to the README and set MySQL database password in
- /etc/websysadminrc
+ /etc/websysadminrc (must belong to www-data, mode 600)
  Assumes that you Perl FastCGI setup will allow local access to /srv/www/sysadmin/index.pl
  .
  Homepage: https://yeupou.wordpress.com/
