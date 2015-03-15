@@ -1,6 +1,5 @@
-<?php $TRANSLATIONS = array(
-"0 is unlimited" => "0 er ubegrensa",
-"Email" => "Epost",
-"Password" => "Passord",
-"Server address" => "Tenaradresse"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "Passord:"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

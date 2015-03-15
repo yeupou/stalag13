@@ -1,5 +1,5 @@
-<?php $TRANSLATIONS = array(
-"0 is unlimited" => "0 es pas limitat",
-"Email" => "Corrièl",
-"Password" => "Senhal"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "Senhal :"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

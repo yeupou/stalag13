@@ -1,5 +1,5 @@
-<?php $TRANSLATIONS = array(
-"Email" => "ఈమెయిలు",
-"Password" => "సంకేతపదం",
-"Server address" => "సేవకి చిరునామా"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "సంకేతపదం:"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

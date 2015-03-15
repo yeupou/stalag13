@@ -1,6 +1,5 @@
-<?php $TRANSLATIONS = array(
-"0 is unlimited" => "0 - ללא הגבלה",
-"Email" => "דואר אלקטרוני",
-"Password" => "סיסמא",
-"Server address" => "כתובת שרת"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "ססמה:"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

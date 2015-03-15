@@ -1,6 +1,5 @@
-<?php $TRANSLATIONS = array(
-"0 is unlimited" => "0 යනු සීමාවක් නැති බවය",
-"Email" => " ඉ-තැපැල්",
-"Password" => "මුර පදය",
-"Server address" => "සේවාදායකයේ ලිපිනය"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "මුරපදය"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

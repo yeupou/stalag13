@@ -1,6 +1,6 @@
 $(document).ready(function(){
     // restrict group ajax
-    $('#restrictgroup,#group').change(function() {
+    $('#restrictgroup,#groupselect').change(function() {
         $.post(OC.filePath('mozilla_sync', 'ajax', 'restrictgroup.php'),
             { restrictgroup: $('#restrictgroup[type=checkbox]').is(':checked'),
             groupselect: $('#groupselect').val()},
@@ -23,15 +23,13 @@ $(document).ready(function(){
             });
 
     });
-});
 
-// Shows a notification and hides it after 3 seconds
-showNotification = function(text) {
-    clearInterval(notification_timer);
-    OC.Notification.hide();
-    OC.Notification.show(text);
-    var notification_timer = setInterval(function() {
-        OC.Notification.hide();
-        clearInterval(notification_timer);
-    }, 3000);
-}
+    // auto create ajax
+    $('#msautocreate').change(function() {
+        $.post(OC.filePath('mozilla_sync', 'ajax', 'setautocreate.php'),
+            { autocreate: $('#msautocreate[type=checkbox]').is(':checked') },
+            function(result){
+                showNotification(result.data.message);
+            });
+    });
+});

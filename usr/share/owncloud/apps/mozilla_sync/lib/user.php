@@ -21,7 +21,9 @@ namespace OCA\mozilla_sync;
 *		oc_mozilla_sync_users.
 *	- User name: ownCloud user name, unique string. Stored in oc_users and also
 *		oc_mozilla_sync_users and oc_preferences.
-*	- Email address: ownCloud email address, string. Must be unique for Mozilla
+*	- Sync Email address: Mozilla Sync email address, string. Must be unique for
+*		Mozilla Sync to work. Stored in oc_preferences.
+*	- OC Email address: ownCloud email address, string. Must be unique for Mozilla
 *		Sync to work. Stored in oc_preferences.
 */
 class User
@@ -34,6 +36,17 @@ class User
 	* @return mixed User name on success, false otherwise.
 	*/
 	public static function emailToUserName($email) {
+		// Try to fetch user name with Sync email
+		$query = \OCP\DB::prepare('SELECT `userid` FROM `*PREFIX*preferences`
+			WHERE `appid` = ? AND `configkey` = ? AND `configvalue` = ?');
+		$result = $query->execute(array('mozilla_sync', 'email', $email));
+
+		$row = $result->fetchRow();
+		if ($row) {
+			return $row['userid'];
+		}
+
+		// Try to fetch user name with OC email
 		$query = \OCP\DB::prepare('SELECT `userid` FROM `*PREFIX*preferences`
 			WHERE `appid` = ? AND `configkey` = ? AND `configvalue` = ?');
 		$result = $query->execute(array('settings', 'email', $email));
@@ -114,6 +127,29 @@ class User
 	}
 
 	/**
+	* @brief Auto create Mozilla Sync user account
+	*
+	* @param string $userName The ownCloud userName.
+	* @return bool True on success, false otherwise.
+	*/
+	public static function autoCreateUser($userName = null) {
+
+		// By default the user name is the currently logged in user
+		if (is_null($userName)) {
+			$userName = \OCP\User::getUser();
+			if ( $userName === false ) {
+				Utils::writeLog("Could not get user name");
+				return false;
+			}
+		}
+
+		if ( !self::userNameToSyncId($userName) ) {
+			//User record doesn't exist so create it
+			return self::createUserRecord($userName, $userName);
+		}
+	}
+
+	/**
 	* @brief Create a new Mozilla Sync user.
 	*
 	* @param string $syncHash The Mozilla Sync user hash of the new user.
@@ -135,13 +171,25 @@ class User
 			Utils::writeLog("Password for user " . $userName . " did not match.");
 			return false;
 		}
+		
+		return self::createUserRecord($syncHash, $userName);
+	}
+
+	/**
+	* @brief Create a new Mozilla Sync user record.
+	*
+	* @param string $syncHash The Mozilla Sync user hash of the new user.
+	* @param string $userName The ownCloud userName.
+	* @return bool True on success, false otherwise.
+	*/
+	public static function createUserRecord($syncHash, $userName) {
 
 		$query = \OCP\DB::prepare('INSERT INTO `*PREFIX*mozilla_sync_users`
 			(`username`, `sync_user`) VALUES (?, ?)' );
 		$result = $query->execute(array($userName, $syncHash));
 
-		if ($result == false) {
-			Utils::writeLog("DB: Could not create user " . $userName . " with Sync hash " . $syncHash . ".");
+		if ($result === false) {
+			Utils::writeLogDbError("DB: Could not create user " . $userName . " with Sync hash " . $syncHash . ".", $query);
 			return false;
 		}
 
@@ -159,8 +207,8 @@ class User
 			WHERE `id` = ?');
 		$result = $query->execute(array($syncId));
 
-		if ($result == false) {
-			Utils::writeLog("DB: Could not delete user with Sync ID " . $syncId . ".");
+		if ($result === false) {
+			Utils::writeLogDbError("DB: Could not delete user with Sync ID " . $syncId . ".", $query);
 			return false;
 		}
 
@@ -189,13 +237,17 @@ class User
 	*
 	* @param string $syncHash Mozilla Sync user hash parameter extracted from
 	*	the URL.
+	* @param string $lookupUserName Lookup ownCloud username. If false assumes $syncHash is username (default = true)
 	* @return bool True on authentication success, false otherwise.
 	*/
-	public static function authenticateUser($syncHash) {
+	public static function authenticateUser($syncHash, $lookupUserName = true) {
 
 		if (!isset($_SERVER['PHP_AUTH_USER'])) {
-			Utils::writeLog("No HTTP authentication header sent.");
-			return false;
+			Utils::writeLog("No HTTP authentication header sent.", \OCP\Util::WARN);
+			// Send 'authentication needed' header for Foxbrowser
+			header("WWW-Authenticate: Basic");
+			Utils::changeHttpStatus(Utils::STATUS_INVALID_USER);
+			exit();
 		}
 
 		// Sync hash URL parameter and HTTP Authentication header user name do not match
@@ -204,10 +256,14 @@ class User
 			return false;
 		}
 
-		// Get user name corresponding to Sync hash
-		$userName = self::syncHashToUserName($syncHash);
-		if ($userName === false) {
-			return false;
+		if ( $lookupUserName ) {
+			// Get user name corresponding to Sync hash
+			$userName = self::syncHashToUserName($syncHash);
+			if ($userName === false) {
+				return false;
+			}
+		} else {
+			$userName = $syncHash;
 		}
 
 		// Check the password in the ownCloud database
@@ -230,8 +286,7 @@ class User
 	*/
 	private static function checkPassword($userName, $password) {
 
-		// Enable authentication app, necessary for LDAP to work
-		\OC_App::loadApps(array('authentication'));
+		// NOTE: Since ownCloud 7 authentication apps are loaded automatically
 
 		// Check if user is allowed to use Mozilla Sync
 		if (self::checkUserIsAllowed($userName) === false) {
@@ -267,18 +322,42 @@ class User
 
 
 	/**
-	* @brief Convert ownCloud user name to email address.
+	* @brief Convert ownCloud user name to email address. If an email address
+	*	was deduced, update it in the database.
 	*
-	* @param string $userName User name to be converted to email address.
+	* @param string $userName User name to be converted to email address. The
+	*	currently logged in user by default.
 	* @return mixed Email address on success, false otherwise.
 	*/
-	private static function userNameToEmail($userName) {
-		$email = \OCP\Config::getUserValue($userName, 'settings', 'email');
+	public static function userNameToEmail($userName = null) {
+		// By default the user name is the currently logged in user
+		if (is_null($userName)) {
+			$userName = \OCP\User::getUser();
+		}
 
+		// Try to get Sync email address
+		$email = \OCP\Config::getUserValue($userName, 'mozilla_sync', 'email');
 		if ($email) {
 			return $email;
+		}
+
+		// Try to get OC password-restore email address
+		$email = \OCP\Config::getUserValue($userName, 'settings', 'email');
+		if ($email) {
+			// Update Sync email in database
+			self::setEmail($email, $userName);
+			return $email;
+		}
+
+		// Check if user name is already an email address
+		if(filter_var($userName, FILTER_VALIDATE_EMAIL)) {
+			$email = $userName;
+			// Update Sync email in database
+			self::setEmail($email, $userName);
+			return $email;
 		} else {
-			Utils::writeLog("Could not convert user name " . $userName . " to email address. Make sure that emails are unique!");
+			Utils::writeLog("Could not convert user name " . $userName . " to email address. Make sure that emails are unique!",
+				\OCP\Util::INFO);
 			return false;
 		}
 	}
@@ -308,9 +387,9 @@ class User
 			return false;
 		}
 
-		// Check for duplicate emails
+		// Check for duplicate Sync email addresses
 		$query = \OCP\DB::prepare('SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences` WHERE `appid` = ? AND `configkey` = ? AND `configvalue` = ?');
-		$result = $query->execute(array('settings', 'email', $email));
+		$result = $query->execute(array('mozilla_sync', 'email', $email));
 
 		// Only return true if exactly one row matched for this email address
 		$row = $result->fetchRow();
@@ -429,6 +508,10 @@ class User
 		// By default the user name is the currently logged in user
 		if (is_null($userName)) {
 			$userName = \OCP\User::getUser();
+			if ( $userName === false ) {
+				Utils::writeLog("Could not get user name");
+				return false;
+			}
 		}
 
 		$query = \OCP\DB::prepare('SELECT COUNT(*) AS `count` FROM `*PREFIX*mozilla_sync_users` WHERE `username` = ?');
@@ -457,8 +540,8 @@ class User
 		$query = \OCP\DB::prepare('SELECT SUM(LENGTH(`payload`)) as `size` FROM `*PREFIX*mozilla_sync_wbo` JOIN `*PREFIX*mozilla_sync_collections` ON `*PREFIX*mozilla_sync_wbo`.`collectionid` = `*PREFIX*mozilla_sync_collections`.`id` WHERE `userid` = ?');
 		$result = $query->execute(array($syncId));
 
-		if ($result == false) {
-			Utils::writeLog("DB: Could not get info quota for user " . $syncId . ".");
+		if ($result === false) {
+			Utils::writeLogDbError("DB: Could not get info quota for user " . $syncId . ".", $query);
 			return false;
 		}
 
@@ -491,6 +574,43 @@ class User
 	*/
 	public static function setQuota($quota = 0) {
 		\OCP\Config::setAppValue('mozilla_sync', 'quota_limit', $quota);
+	}
+
+	/**
+	* @brief Sets the Sync email for the currently logged in user.
+	*
+	* @param integer $email The email address to set for the user.
+	* @param string $userName The user's user name. Defaults to the currently logged in user.
+	*/
+	public static function setEmail($email, $userName = null) {
+		// By default the user name is the currently logged in user
+		if (is_null($userName)) {
+			$userName = \OCP\User::getUser();
+		}
+
+		\OCP\Config::setUserValue($userName, 'mozilla_sync', 'email', $email);
+	}
+
+	/**
+	* @brief Gets auto create account flag
+	*
+	* If true Mozilla Sync accounts are auto created for ownCloud users, i.e. no registration required
+	*
+	* @return boolean
+	*/
+	public static function isAutoCreateUser() {
+		return ((bool) \OCP\Config::getAppValue('mozilla_sync', 'auto_create_user', '0'));
+	}
+
+	/**
+	* @brief Sets auto create account flag
+	*
+	* If true Mozilla Sync accounts are auto created for ownCloud users, i.e. no registration required
+	*
+	* @param boolean $autocreate
+	*/
+	public static function setAutoCreateUser($autocreate) {
+		\OCP\Config::setAppValue('mozilla_sync', 'auto_create_user', $autocreate);
 	}
 }
 

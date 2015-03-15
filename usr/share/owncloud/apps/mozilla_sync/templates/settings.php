@@ -1,4 +1,4 @@
-<fieldset class="personalblock">
+<div class="section">
 	<h2><?php p($l->t('Mozilla Sync')); ?></h2>
     <?php
     if (!\OCA\mozilla_sync\User::checkUserIsAllowed()) {
@@ -8,55 +8,79 @@
     <?php
     }
     ?>
-    <p><label>Client Configuration</label>
-    <table class="nostyle">
-      <tr>
-        <td><?php p($l->t('Email'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><code><?php p($_['email']);?></code>&nbsp;&nbsp;&nbsp;<?php
-            if (!\OCA\mozilla_sync\User::userHasUniqueEmail()) {
-                ?><b><span style="color: red"><?php p($l->t('Error! Duplicate email addresses detected! Email addresses need to be unique for Mozilla Sync to work.'));?></span></b><?php
-            }?></td>
-      </tr>
-      <tr>
-        <td><?php p($l->t('Password'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><?php p($l->t('Use your ownCloud account password'));?></td>
-      </tr>
-      <tr>
-        <td><?php p($l->t('Server address'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><code><?php p($_['syncaddress']);?></code></td>
-      </tr>
-    </table>
-    <i><?php
+    <p>
+      <em>
+      <?php
+
         // Verify whether a Sync account was already created
         $noSync = false;
-        if (!\OCA\mozilla_sync\User::hasSyncAccount()) {
-            $noSync = true;
+
+if ( \OCA\mozilla_sync\User::isAutoCreateUser() ) {
+
+            // Create account if it does not already exist
+            if (!\OCA\mozilla_sync\User::hasSyncAccount()) {
+                //create account
+                \OCA\mozilla_sync\User::autoCreateUser();
+
+                $formatStr = "Y-m-d H:i:s T";
+                $lastMod = date($formatStr, time());
+
+            } else {
+                $lastMod = \OCA\mozilla_sync\Storage::getLastModifiedTime();
+            }
+
+            p($l->t("To use Mozilla Sync enter the credentials in to Mozilla Sync client"));
+        
         } else {
-            $lastMod = \OCA\mozilla_sync\Storage::getLastModifiedTime();
+
+            // Verify whether a Sync account was already created
+            $noSync = false;
+            if (!\OCA\mozilla_sync\User::hasSyncAccount()) {
+                $noSync = true;
+            } else {
+                $lastMod = \OCA\mozilla_sync\Storage::getLastModifiedTime();
+            }
+            // Display if no account was created or no data was uploaded yet
+            if ($noSync || $lastMod === false) {
+                p($l->t("To set up Mozilla Sync create a new Sync account in Firefox."));
+            } else {
+                p($l->t("Mozilla Sync is set up, additional devices can be added via Mozilla's device pairing service or manually."));
+            }
         }
-        // Display if no account was created or no data was uploaded yet
-        if ($noSync || $lastMod === false) {
-            p($l->t("To set up Mozilla Sync create a new Sync account in Firefox."));
-        } else {
-            p($l->t("Mozilla Sync is set up, additional devices can be added via Mozilla's device pairing service or manually."));
-        }
-        ?></i>
-    </p><?php
+        ?>
+        </em>
+    </p>
+    <p>
+        <?php p($l->t('Email:'));?>
+        <input type="email" id="syncemailinput" name="syncemailinput" title="<?php p($l->t("Has to be unique among all Sync users")); ?>" value="<?php p($_['mozillaSyncEmail']); ?>">
+        <?php
+            if (!\OCA\mozilla_sync\User::userHasUniqueEmail()) {
+                ?><b><span style="color: red"><?php p($l->t('Error! Duplicate email addresses detected! Email addresses need to be unique for Mozilla Sync to work.'));?></span></b><?php
+            }?>
+    </p>
+    <p>
+       <?php p($l->t('Password:'));?>&nbsp;&nbsp;&nbsp;
+       <?php p($l->t('Use your ownCloud account password'));?>
+    </p>
+    <p>
+        <?php p($l->t('Server address:'));?>&nbsp;&nbsp;&nbsp;
+        <code><?php p($_['syncaddress']);?></code>
+    </p>
+    <?php
     // Show Sync Status only if Sync account was created
     if (!$noSync && $lastMod !== false) {
         ?>
 
-    <br>
+    <br/>
 
-    <p><label>Sync Status</label>
-    <table class="nostyle">
-      <tr>
-        <td><?php p($l->t('Last sync'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><?php p($lastMod); ?></td>
-      </tr>
-      <tr>
-        <td><?php p($l->t('Size of stored data'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><?php
+    <strong><?php p($l->t('Sync Status'));?></strong>
+    <p>
+        <?php p($l->t('Last sync:'));?>&nbsp;&nbsp;&nbsp;
+        <?php p($lastMod); ?>
+    </p>
+    <p>
+        <?php p($l->t('Size of stored data:'));?>&nbsp;&nbsp;&nbsp;
+        <?php
             $size = \OCA\mozilla_sync\Storage::getSyncSize();
             if ($size === false) {
                 p($l->t('No data stored yet.'));
@@ -71,29 +95,23 @@
                 }
                 p(human_file_size($size*1024) . " " . $quotaString);
             }
-            ?></td>
-      </tr>
-      <tr>
-        <td><?php p($l->t('Number of synced devices'));?>&nbsp;&nbsp;&nbsp;</td>
-        <td><code><?php p(\OCA\mozilla_sync\Storage::getNumClients()); ?></code></td>
-      </tr>
-    </table>
+            ?>
+    </p>
+    <p>
+        <?php p($l->t('Number of synced devices:'));?>&nbsp;&nbsp;&nbsp;
+        <code><?php p(\OCA\mozilla_sync\Storage::getNumClients()); ?></code>
     </p>
 
-    <br>
+    <br/>
 
-    <p><label>Delete Sync data</label>
-    <table class="nostyle">
-      <tr>
-	    <td><button type="button" id="deletestorage">
-		    <?php p($l->t('Delete storage')); ?>
+	<p>
+        <button type="button" id="deletestorage">
+		    <?php p($l->t('Delete Sync data')); ?>
 	        </button>
-        </td>
-      </tr>
-    </table>
-	<em><?php p($l->t('Attention! This will delete all your Sync data on the server.')); ?></em>
+    <br/>
+    <em><?php p($l->t('Attention! This will delete all your Sync data on the server.')); ?></em>
     </p>
 
     <?php } // End: Show only when account created ?>
 
-</fieldset>
+</div>

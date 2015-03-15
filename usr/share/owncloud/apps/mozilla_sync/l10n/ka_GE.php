@@ -1,6 +1,5 @@
-<?php $TRANSLATIONS = array(
-"0 is unlimited" => "0 is unlimited",
-"Email" => "იმეილი",
-"Password" => "პაროლი",
-"Server address" => "სერვერის მისამართი"
+<?php
+$TRANSLATIONS = array(
+"Password:" => "პაროლი:"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,8 +1,7 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Mozilla Sync" => "Mozilla sinhronizēšanas pakalpojums",
-"0 is unlimited" => "0 ir neierobežots",
-"Email" => "E-pasts",
-"Password" => "Parole",
-"Use your ownCloud account password" => "Izmantojiet jūsu ownCloud konta paroli",
-"Server address" => "Servera adrese"
+"Password:" => "Parole:",
+"Use your ownCloud account password" => "Izmantojiet jūsu ownCloud konta paroli"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";

@@ -3,15 +3,16 @@
 // Check if user is admin, redirect to home if not
 \OCP\User::checkAdminUser();
 
-// Load JavaScript file
+// Load JavaScript files
 \OCP\Util::addScript("mozilla_sync", "admin");
+\OCP\Util::addScript("mozilla_sync", "show_notification");
 
 // Assign admin template
 $tmpl = new \OCP\Template('mozilla_sync', 'admin');
 
-$tmpl->assign('mozillaSyncRestrictGroupEnabled', \OCA\mozilla_sync\User::getAuthorizedGroup());
+$tmpl->assign('mozillaSyncRestrictGroup', \OCA\mozilla_sync\User::getAuthorizedGroup());
 $tmpl->assign('mozillaSyncQuota', \OCA\mozilla_sync\User::getQuota());
-$tmpl->assign('mozillaSyncVersion', \OCP\App::getAppVersion('mozilla_sync'));
+$tmpl->assign('mozillaSyncAutoCreateUser', \OCA\mozilla_sync\User::isAutoCreateUser());
 
 return $tmpl->fetchPage();
 
