@@ -52,7 +52,7 @@ Package: stalag13-utils-cloud
 Architecture: all
 Depends: stalag13-utils, nginx, owncloud, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
-Description: Owncloud setup and apps 
+Description: ownCloud setup and extra apps 
  .
  Homepage: https://yeupou.wordpress.com/
 

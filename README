@@ -26,7 +26,7 @@ stalag13-utils-cache-steam:
  Needs writable to nginx directories such as /var/www/depot
 
 stalag13-utils-cloud:
- Owncloud setup and apps 
+ ownCloud setup and extra apps 
 
 stalag13-utils-exim:
  Exim greylist, bogofilter and spamassassin setup
