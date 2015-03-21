@@ -1,7 +1,7 @@
 SCAN2PDF_DIRECTORY=~/tmprm/scan
 SCAN2PDF_DPI=300
 
-function scan2pdf {
+function scan2pdf1 {
     cd $SCAN2PDF_DIRECTORY
     FILE=$1
     [ "$FILE" == "" ] && echo "filename: " && read FILE
@@ -15,13 +15,13 @@ function scan2pdf {
     rm -f "$FILE".pnm "$FILE".ps
 }
 
-function scan2pdfs {
+function scan2pdf {
     cd $SCAN2PDF_DIRECTORY
     ENDFILE=$1
     LIST=""
     [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
     for i in `seq --equal-width 999`; do
-	scan2pdf "$ENDFILE"$i
+	scan2pdf1 "$ENDFILE"$i
 	LIST="$LIST $ENDFILE"$i".pdf"
 	beep  -f 100 -l 25
 	echo -e "Another page? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
