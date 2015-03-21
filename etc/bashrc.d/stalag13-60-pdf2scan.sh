@@ -3,6 +3,7 @@ function scan2pdf {
     FILE=$1
     [ "$FILE" == "" ] && echo "filename: " && read FILE
     [ -e "$FILE".pdf ] && return
+    echo -e "\033[0;32scanning $FILE...\033[0m"
     # scan in A4 gray with decent contrast for text 
     scanimage -l 0 -t 0 -x 215 -y 297 --mode Gray  --brightness -20 --contrast 15 --resolution=300 > "$FILE".pnm
     # convert to A4 postscript
@@ -20,15 +21,19 @@ function scan2pdfs {
 	scan2pdf "$ENDFILE"$i
 	LIST="$LIST $ENDFILE"$i".pdf"
 	beep  -f 100 -l 25
-	echo "(d)one?"
+	echo -e "Done? [\033[1;34mN\033[0m/\033[1;34my\033[0m]"
 	read NEXT
-	[ "$NEXT" == "d" ] && break
-	[ "$NEXT" == "D" ] && break
+	[ "$NEXT" == "y" ] && break
+	[ "$NEXT" == "Y" ] && break
+	[ "$NEXT" == "o" ] && break
+	[ "$NEXT" == "O" ] && break
     done
     gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
     beep  -f 100 -l 100
-    echo "Correct final PDF? (CTRL-C to stop here)"
+    echo -e "Correct final PDF? [\033[1;34mY\033[0m/\033[1;34mn\033[0m]"
     read OK    
+    [ "$NEXT" == "n" ] && return
+    [ "$NEXT" == "N" ] && return
     rm -f $LIST
 }
 
