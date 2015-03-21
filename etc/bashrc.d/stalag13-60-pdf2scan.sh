@@ -21,19 +21,17 @@ function scan2pdfs {
 	scan2pdf "$ENDFILE"$i
 	LIST="$LIST $ENDFILE"$i".pdf"
 	beep  -f 100 -l 25
-	echo -e "Done? [\033[1;34mN\033[0m/\033[1;34my\033[0m]"
+	echo -e "Another page? [\033[1;34mY\033[0m/\033[1;34mn\033[0m]"
 	read NEXT
-	[ "$NEXT" == "y" ] && break
-	[ "$NEXT" == "Y" ] && break
-	[ "$NEXT" == "o" ] && break
-	[ "$NEXT" == "O" ] && break
+	[ "$NEXT" == "n" ] && return
+	[ "$NEXT" == "N" ] && return
     done
     gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
     beep  -f 100 -l 100
-    echo -e "Correct final PDF? [\033[1;34mY\033[0m/\033[1;34mn\033[0m]"
+    echo -e "Satisfactory final PDF? [\033[1;34mY\033[0m/\033[1;34mn\033[0m]"
     read OK    
-    [ "$NEXT" == "n" ] && return
-    [ "$NEXT" == "N" ] && return
+    [ "$OK" == "n" ] && return
+    [ "$OK" == "N" ] && return
     rm -f $LIST
 }
 
