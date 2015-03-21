@@ -23,8 +23,8 @@ function scan2pdfs {
 	beep  -f 100 -l 25
 	echo -e "Another page? [\033[1;34mY\033[0m/\033[1;34mn\033[0m]"
 	read NEXT
-	[ "$NEXT" == "n" ] && return
-	[ "$NEXT" == "N" ] && return
+	[ "$NEXT" == "n" ] && break
+	[ "$NEXT" == "N" ] && break
     done
     gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
     beep  -f 100 -l 100
