@@ -6,7 +6,7 @@ function scan2pdf {
     FILE=$1
     [ "$FILE" == "" ] && echo "filename: " && read FILE
     [ -e "$FILE".pdf ] && return
-    echo -e "scanning\033[1;34m$FILE\033[0m..."
+    echo -e "scanning \033[1;34m$FILE\033[0m..."
     # scan in A4 gray with decent contrast for text 
     scanimage -l 0 -t 0 -x 215 -y 297 --mode Gray  --brightness -20 --contrast 15 --resolution=$SCAN2PDF_DPI > "$FILE".pnm
     # convert to A4 postscript
