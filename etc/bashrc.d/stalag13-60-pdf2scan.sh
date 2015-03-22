@@ -13,7 +13,7 @@ function scan2pdf1 {
     # convert to A4 postscript
     pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
     # beep when scanning is done
-    beep  -f 100 -l 25    
+    beep  -f 100 -l 25
     gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
     rm -f "$FILE".pnm "$FILE".ps
 }
@@ -47,7 +47,7 @@ function scan2pdf {
 	scan2pdf1 "$ENDFILE"$i
 	# beep when prompting user
 	beep  -f 100 -l 25
-	beep  -f 0 -l 25
+	beep  -f 01 -l 25
 	beep  -f 100 -l 25
 	# by default scan another page
 	echo -e "Another page? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
