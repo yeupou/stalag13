@@ -14,7 +14,7 @@ function scan2pdf1 {
     pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
     # beep when scanning is done
     beep  -f 100 -l 25
-    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
+    gs -q -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
     rm -f "$FILE".pnm "$FILE".ps
 }
 
@@ -24,7 +24,7 @@ function pdfmerge {
     [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
     [ -e "$ENDFILE".pdf ] && return
     echo -e "merging \033[1;34m$ENDFILE*\033[0m..."
-    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
+    gs -q -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
     # beep when done
     beep  -f 100 -l 100
     # optional: remove files passed as arguments, if any
