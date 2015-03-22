@@ -1,6 +1,7 @@
 SCAN2PDF_DIRECTORY=~/tmprm/scan
 SCAN2PDF_DPI=300
 
+# scan one A4 page and make a PDF out of it
 function scan2pdf1 {
     cd $SCAN2PDF_DIRECTORY
     FILE=$1
@@ -15,26 +16,39 @@ function scan2pdf1 {
     rm -f "$FILE".pnm "$FILE".ps
 }
 
+# merge multiples PDF into one
+function pdfmerge {
+    ENDFILE=$1
+    [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
+    [ -e "$ENDFILE".pdf ] && return
+    echo -e "merging \033[1;34m$ENDFILE*\033[0m..."
+    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
+    beep  -f 100 -l 100
+    # optional: remove files passed as arguments, if any
+    LIST=${@:2}
+    [ "$LIST" == "" ] && return    
+    echo -e "Is \033[1;34m$ENDFILE\033[0m.pdf ok? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
+    read OK    
+    [ "$OK" == "n" ] && return
+    [ "$OK" == "N" ] && return
+    rm -f $LIST
+}
+
+
+# scan multiple A4 pages and merge them 
 function scan2pdf {
     cd $SCAN2PDF_DIRECTORY
     ENDFILE=$1
-    LIST=""
     [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
     for i in `seq --equal-width 999`; do
 	scan2pdf1 "$ENDFILE"$i
-	LIST="$LIST $ENDFILE"$i".pdf"
 	beep  -f 100 -l 25
+	# by default scan another page
 	echo -e "Another page? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
 	read NEXT
 	[ "$NEXT" == "n" ] && break
 	[ "$NEXT" == "N" ] && break
     done
-    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
-    beep  -f 100 -l 100
-    echo -e "Is $SCAN2PDF_DIRECTORY/\033[1;34m$ENDFILE\033[0m.pdf ok? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
-    read OK    
-    [ "$OK" == "n" ] && return
-    [ "$OK" == "N" ] && return
-    rm -f $LIST
+    pdfmerge "$ENDFILE" "$ENDFILE"*.pdf
 }
 
