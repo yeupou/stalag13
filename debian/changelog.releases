@@ -1,3 +1,11 @@
+stalag13-utils (3.195-20150322) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M debian/changelog.full
+    M etc/bashrc.d/stalag13-60-pdf2scan.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 22 Mar 2015 14:59:47 +0100
+ 
 stalag13-utils (3.194-20150322) unstable; urgency=low
  
   * pdfmerge as separate function
