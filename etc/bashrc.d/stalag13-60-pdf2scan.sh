@@ -1,5 +1,8 @@
 SCAN2PDF_DIRECTORY=~/tmprm/scan
+# depends on your scanner speed
 SCAN2PDF_DPI=300
+# depends on what your scanner backend support 
+SCAN2PDF_SCANIMAGE_OPTIONS="--mode Gray --brightness -20 --contrast 15"
 
 # beep is broken in many stupid ways on ubuntu at the moment
 # this function will beep with play/sox if beep is not available
@@ -30,7 +33,7 @@ function scan2pdf1 {
     [ -e "$FILE".pdf ] && return
     echo -e "scanning \033[1;34m$FILE\033[0m..."
     # scan in A4 gray with decent contrast for text 
-    scanimage -l 0 -t 0 -x 215 -y 297 --mode Gray  --brightness -20 --contrast 15 --resolution=$SCAN2PDF_DPI > "$FILE".pnm
+    scanimage -l 0 -t 0 -x 215 -y 297 $SCAN2PDF_SCANIMAGE_OPTIONS --resolution=$SCAN2PDF_DPI > "$FILE".pnm
     # convert to A4 postscript
     pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
     # beep when scanning is done

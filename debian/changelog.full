@@ -1,3 +1,9 @@
+stalag13-utils (3.197+1-20150330) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 30 Mar 2015 13:57:18 +0200
+ 
 stalag13-utils (3.197-20150324) unstable; urgency=low
  
   * Silence output from sox
