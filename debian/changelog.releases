@@ -1,3 +1,11 @@
+stalag13-utils (3.198-20150330) unstable; urgency=low
+ 
+  * No scanimage options can be set in ~/.bashrc (SCAN2PDF_SCANIMAGE_OPTIONS)
+    M debian/changelog.full
+    M etc/bashrc.d/stalag13-60-pdf2scan.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 30 Mar 2015 13:59:07 +0200
+ 
 stalag13-utils (3.197-20150324) unstable; urgency=low
  
   * Silence output from sox
