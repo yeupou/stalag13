@@ -72,6 +72,9 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     #if [ -e $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32 ]; then cp -fv /usr/lib/flashplugin-nonfree/libflashplayer.so $STEAM_ROOT/home/$STEAM_USER/.local/share/Steam/ubuntu12_32; fi
     # another dirty hack required by steam
     chmod -v 1777 $STEAM_ROOT/dev/shm
+    # make sure every useful debian package is there
+    DEBS="libnss3"
+    apt-get install $DEBS    
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
