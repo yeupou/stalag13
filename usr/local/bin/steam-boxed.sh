@@ -96,7 +96,7 @@ case $1 in
     *)
 	echo -e $GREEN ==== STEAMING ==== $NC
 	# make sure current user belong to group video needed for DRI
-	[ ! `grep ^video\: $STEAM_ROOT/etc/group | grep "$STEAM_USER"` ] && chroot adduser "$STEAM_USER" video
+	[ ! `grep ^video\: $STEAM_ROOT/etc/group | grep "$STEAM_USER"` ] && chroot $STEAM_ROOT adduser "$STEAM_USER" video
 	# run 
 	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam --console"
        ;;
