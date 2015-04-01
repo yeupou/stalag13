@@ -1,3 +1,14 @@
+stalag13-utils (3.200-20150401) unstable; urgency=low
+ 
+  * use /srv/www instead of /var/www
+    M debian/changelog.full
+    M debian/control
+    M etc/nginx/sites-available/cache-apt
+    M etc/nginx/sites-available/cache-steam
+    M README
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 01 Apr 2015 14:22:36 +0200
+ 
 stalag13-utils (3.199-20150401) unstable; urgency=low
  
   * Increase PDF DPI
