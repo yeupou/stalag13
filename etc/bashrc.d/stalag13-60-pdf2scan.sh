@@ -38,7 +38,8 @@ function scan2pdf1 {
     pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
     # beep when scanning is done
     rebeep 100 025
-    gs -q -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
+    # select /printer quality for 300dpi, /ebook for less
+    gs -q -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
     rm -f "$FILE".pnm "$FILE".ps
 }
 
@@ -60,7 +61,6 @@ function pdfmerge {
     [ "$OK" == "N" ] && return
     rm -f $LIST
 }
-
 
 # scan multiple A4 pages and merge them 
 function scan2pdf {
