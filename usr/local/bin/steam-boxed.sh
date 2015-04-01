@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2013-2014 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2013-2015 Mathieu Roy <yeupou--gnu.org>
 #      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -90,9 +90,13 @@ case $1 in
 	echo -e $YELLOW ==== OPENING UP A SHELL ==== $NC
 	chroot $STEAM_ROOT su $STEAM_USER
 	;;
-    *) echo -e $GREEN ==== STEAMING ==== $NC
+    *)
+	echo -e $GREEN ==== STEAMING ==== $NC
+	# make sure current user belong to group video needed for DRI
+	[ ! `group "$STEAM_USER" | grep video` ] && adduser "$STEAM_USER" video
+	# run 
 	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam --console"
-	;;
+       ;;
 esac
 
 
