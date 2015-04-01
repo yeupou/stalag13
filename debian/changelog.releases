@@ -1,3 +1,11 @@
+stalag13-utils (3.201-20150401) unstable; urgency=low
+ 
+  * make sure user belongs to group video and that libnss3:i386 is apt-got
+    M debian/changelog.full
+    M usr/local/bin/steam-boxed.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 01 Apr 2015 16:38:55 +0200
+ 
 stalag13-utils (3.200-20150401) unstable; urgency=low
  
   * Use /srv/www instead of /var/www
