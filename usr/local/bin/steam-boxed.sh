@@ -74,7 +74,7 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     chmod -v 1777 $STEAM_ROOT/dev/shm
     # make sure every useful debian package is there
     DEBS="libnss3:i386"
-    chroot $STEAM_ROOT -c "apt-get --quiet --assume-yes install $DEBS"    
+    chroot $STEAM_ROOT apt-get --quiet --assume-yes install $DEBS    
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
@@ -96,7 +96,7 @@ case $1 in
     *)
 	echo -e $GREEN ==== STEAMING ==== $NC
 	# make sure current user belong to group video needed for DRI
-	[ ! `grep ^video\: $STEAM_ROOT/etc/group | grep "$STEAM_USER"` ] && chroot -c "adduser $STEAM_USER video"
+	[ ! `grep ^video\: $STEAM_ROOT/etc/group | grep "$STEAM_USER"` ] && chroot adduser "$STEAM_USER" video
 	# run 
 	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam --console"
        ;;
