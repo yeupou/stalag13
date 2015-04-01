@@ -7,7 +7,7 @@ server  {
   access_log off;
   error_log /var/log/nginx/steam.error.log;
 
-  root /var/www/;
+  root /srv/www/;
   resolver 127.0.0.1;
   ## use this resolver instead if your local interface got domain names spoofed 
   ##resolver 8.8.8.8 4.2.2.2;
@@ -36,7 +36,7 @@ server  {
   }
 
   location @serverlist {
-    proxy_store /var/www/depot/servers.txt;
+    proxy_store /srv/www/depot/servers.txt;
     proxy_store_access user:rw group:r all:r;
     include cache_proxy_params;
   }

@@ -7,7 +7,7 @@ server  {
   access_log off;
   error_log /var/log/nginx/apt.error.log;
 
-  root /var/www/;
+  root /srv/www/;
   resolver 127.0.0.1;
   ## use this resolver instead if your local interface got domain names spoofed 
   ##resolver 8.8.8.8 4.2.2.2;

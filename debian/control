@@ -26,7 +26,7 @@ Architecture: all
 Depends: stalag13-utils, nginx, stalag13-utils-cache-spoof
 Conflicts: stalag13-utils (<<3.166)
 Description: APT downloads cache setup
- Needs writable to nginx directories such as /var/www/debian
+ Needs writable to nginx directories such as /srv/www/debian
  .
  Homepage: https://yeupou.wordpress.com/
 
@@ -44,7 +44,7 @@ Architecture: all
 Depends: stalag13-utils, stalag13-utils-nginx, stalag13-utils-cache-spoof
 Conflicts: stalag13-utils (<<3.166)
 Description: Steam downloads cache setup
- Needs writable to nginx directories such as /var/www/depot
+ Needs writable to nginx directories such as /srv/www/depot
  .
  Homepage: https://yeupou.wordpress.com/
 
