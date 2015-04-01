@@ -73,8 +73,8 @@ if [ `ls -1 $SESSIONS_DIR/ | wc -l` -lt 1 ]; then
     # another dirty hack required by steam
     chmod -v 1777 $STEAM_ROOT/dev/shm
     # make sure every useful debian package is there
-    DEBS="libnss3"
-    apt-get install $DEBS    
+    DEBS="libnss3:i386"
+    apt-get --quiet --assume-yes install $DEBS    
 else 
     echo -e $YELLOW ==== SKIP SETTING UP SESSION, AT LEAST ONE ALREADY EXISTS ==== $NC    
 fi
@@ -96,7 +96,7 @@ case $1 in
     *)
 	echo -e $GREEN ==== STEAMING ==== $NC
 	# make sure current user belong to group video needed for DRI
-	[ ! `group "$STEAM_USER" | grep video` ] && adduser "$STEAM_USER" video
+	[ ! `grep ^video\: /etc/group | grep "$STEAM_USER"` ] && adduser "$STEAM_USER" video
 	# run 
 	chroot $STEAM_ROOT su $STEAM_USER -c "dbus-launch steam --console"
        ;;
