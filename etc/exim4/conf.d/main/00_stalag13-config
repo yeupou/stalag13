@@ -1,3 +1,14 @@
+####### SSL/TLS
+
+# activate TLS
+MAIN_TLS_ENABLE = true
+MAIN_TLS_ADVERTISE_HOSTS = *
+
+# deactivate outdated SSLv3 (compiled with TLS)
+tls_require_ciphers = NORMAL:!VERS-SSL3.0
+# deactivate outdated SSLv3 (compiled with openssl)
+#openssl_options = +no_sslv2 +no_sslv3
+
 ####### GREYLISTING
 
 # requires memcached to be installed
