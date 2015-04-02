@@ -58,7 +58,7 @@ Description: ownCloud setup and extra apps
 
 Package: stalag13-utils-exim
 Architecture: all
-Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter
+Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter, stalag13-utils-ssl
 Conflicts: stalag13-utils (<<3.166)
 Description: Exim greylist, bogofilter and spamassassin setup
  Assumes you use splitted exim4 conf files
@@ -68,10 +68,10 @@ Description: Exim greylist, bogofilter and spamassassin setup
   
 Package: stalag13-utils-nginx
 Architecture: all
-Depends: stalag13-utils, nginx, spawn-fcgi, openssl
+Depends: stalag13-utils, nginx, spawn-fcgi, stalag13-utils-ssl
 Recommends: php5-cgi, libfcgi-perl
 Conflicts: stalag13-utils (<<3.166)
-Description: Perl/PHP FastCGI and TLS certificates setup for nginx
+Description: Perl/PHP FastCGI for nginx
  FastCGI will need php5-cgi or libfcgi-perl to actually run.
  .
  Homepage: https://yeupou.wordpress.com/
@@ -82,6 +82,14 @@ Depends: stalag13-utils, tftpd-hpa, isc-dhcp-server
 Description: Preboot Execution Environment setup
  Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
  at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
+ .
+ Homepage: https://yeupou.wordpress.com/
+ 
+Package: stalag13-utils-ssl
+Architecture: all
+Depends: stalag13-utils, openssl
+Breaks: stalag13-utils-nginx (<<3.201)
+Description: Generate TLS/SSL certificates
  .
  Homepage: https://yeupou.wordpress.com/
  

@@ -34,13 +34,16 @@ stalag13-utils-exim:
  Edit /etc/exim4/conf.d/main/00_stalag13-config to use bogofilter and spamassassin
 
 stalag13-utils-nginx:
- Perl/PHP FastCGI and TLS certificates setup for nginx
+ Perl/PHP FastCGI for nginx
  FastCGI will need php5-cgi or libfcgi-perl to actually run.
 
 stalag13-utils-pxe:
  Preboot Execution Environment setup
  Edit /etc/default/tftpd-hpa and /etc/dhcp/dhcpd.conf as described 
  at https://raw.githubusercontent.com/yeupou/calaboose.pxe/master/README
+
+stalag13-utils-ssl:
+ Generate TLS/SSL certificates
 
 stalag13-utils-torrent:
  Manage transmission via NFS/Samba
