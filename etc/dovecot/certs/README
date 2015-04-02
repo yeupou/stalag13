@@ -1,5 +1,1 @@
-Go to /etc/ssl/local to run makecert.sh script.
-
-It is probably best to generate/move there certificates to share them
-easily among daemons and to put here only symlinks.
-
+../../ssl/local/README

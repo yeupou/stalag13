@@ -1,0 +1,17 @@
+It is probably best to generate/move certificates in
+   /etc/ssl/local
+to share them easily among daemons and to put in
+   /etc/nginx/certs
+   /etc/dovecot/certs
+   ...
+only symlinks.
+
+The makecert.sh script from /etc/ssl/local should generate decent enough
+self-signed certificates.
+
+For the record, at the moment (2014 April) it's recommended to rely only on
+TLS and deactivate SSLv3, SSL2, etc.
+See https://yeupou.wordpress.com/2015/02/05/improving-qualys-ssl-server-test-results-regarding-poodle-attack-and-sha1/
+
+
+
