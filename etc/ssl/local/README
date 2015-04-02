@@ -18,7 +18,14 @@ Some daemon (exim4) need read access to the certs. In this case, it's possible t
      chgrp ssl-cert /etc/ssl/local/domain...
      chmod g+r /etc/ssl/local/domain...
 
+Daemons compiled with GNU TLS (exim once again) may have troubles to deal
+with SHA2-512 sigs along with TLS 1.2. The temporary workaround is to disable
+TLS 1.2 see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740160
+
+     tls_require_ciphers = NORMAL:-VERS-SSL3.0:-VERS-TLS1.2
+
 
 For the record, at the moment (2014 April) it's recommended to rely only on
 TLS and deactivate SSLv3, SSL2, etc.
 See https://yeupou.wordpress.com/2015/02/05/improving-qualys-ssl-server-test-results-regarding-poodle-attack-and-sha1/
+
