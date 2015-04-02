@@ -8,17 +8,17 @@ to share them easily among daemons and to put symlinks to it as
    ...
 
 The makecert.sh script from /etc/ssl/local should generate decent enough
-self-signed certificates.
+self-signed certificate:
+     .crt + .key
+     .pem as symlink to .crt
+     .der as der encoded version (sometimes necessary)
 
-Some daemon (exim4) need read access to the certs. In this case, it's possibile to use the special group ssl-certs
+Some daemon (exim4) need read access to the certs. In this case, it's possible to use the special group ssl-cert
      adduser Debian-exim ssl-cert
-     chgrp /etc/ssl/local/domain...
+     chgrp ssl-cert /etc/ssl/local/domain...
      chmod g+r /etc/ssl/local/domain...
 
 
 For the record, at the moment (2014 April) it's recommended to rely only on
 TLS and deactivate SSLv3, SSL2, etc.
 See https://yeupou.wordpress.com/2015/02/05/improving-qualys-ssl-server-test-results-regarding-poodle-attack-and-sha1/
-
-
-
