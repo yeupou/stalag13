@@ -16,10 +16,10 @@ function rebeep {
     # by default use beep if available unless we are on ubuntu
     if [ `grep ^ID=ubuntu$ /etc/os-release` ] || [ ! -x "$BEEP" ]; then
 	[ ! -x "$PLAY" ] && echo "unable to run play (sox)!" && return
-	$PLAY /usr/share/sounds/KDE-Im-Message-In.ogg synth .$2 $1 >/dev/null 2>/dev/null &
+	($PLAY /usr/share/sounds/KDE-Im-Message-In.ogg synth .$2 $1 >/dev/null 2>/dev/null) &
     else
 	[ ! -x "$BEEP" ] && echo "unable to run beep!" && return
-	$BEEP -f $1 -l $2 & 
+	($BEEP -f $1 -l $2) & 
     fi
 
 }
