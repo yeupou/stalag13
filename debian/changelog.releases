@@ -1,3 +1,15 @@
+stalag13-utils (3.203-20150417) unstable; urgency=low
+ 
+  * Run beep in parallel so if sound is stuck it does not affect the process
+    A etc/bashrc.d/stalag13-60-scan2pdf.sh
+    M debian/changelog.full
+    M debian/control
+    M debian/postinst
+    M etc/bashrc.d/stalag13-60-scan2pdf.sh
+    M etc/ssl/local/makecert-sha2.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 17 Apr 2015 13:48:06 +0200
+ 
 stalag13-utils (3.202-20150402) unstable; urgency=low
  
   * SSL/TLS now in a separate package. Now certificates generated goes in .crt, DER version going in .DER and .pem being a symlink to .crt. Add notes.
