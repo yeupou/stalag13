@@ -87,7 +87,7 @@ Description: Preboot Execution Environment setup
  
 Package: stalag13-utils-ssl
 Architecture: all
-Depends: stalag13-utils, openssl
+Depends: stalag13-utils, openssl, ca-certificates
 Breaks: stalag13-utils-nginx (<<3.201)
 Description: Generate TLS/SSL certificates
  .
