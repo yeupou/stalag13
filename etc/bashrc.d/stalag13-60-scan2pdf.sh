@@ -39,7 +39,7 @@ function scan2pdf1 {
     # beep when scanning is done
     rebeep 100 025
     # select /printer quality for 300dpi, /ebook for less
-    gs -q -sDEVICE=pdfwrite -UseCIEColor -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
+    gs -q -sDEVICE=pdfwrite -dUseCIEColor -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
     rm -f "$FILE".pnm "$FILE".ps
 }
 
