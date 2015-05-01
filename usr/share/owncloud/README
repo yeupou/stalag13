@@ -1,0 +1,7 @@
+mail:
+
+git clone https://github.com/owncloud/mail.git
+cd mail
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+
