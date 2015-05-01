@@ -1,0 +1,588 @@
+.loading {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+
+.mail_account {
+	width: 100%;
+}
+
+
+/* SETUP */
+#mail-setup {
+	position: absolute;
+	z-index: 1001;
+	width: 250px;
+	top: 10%;
+	left: 35%;
+	padding-bottom: 50px;
+}
+#mail-setup h2 {
+	text-align: center;
+	position: relative;
+	width: 300%;
+	left: -100%;
+	margin-bottom: 20px;
+}
+#mail-setup input {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#mail-setup-manual-toggle {
+	background-position: right;
+	padding-right: 16px;
+	margin-left: 6px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	filter: alpha(opacity=30);
+	opacity: .3;
+}
+
+#mail-imap-ssl,
+#mail-smtp-ssl {
+	float: right;
+	margin: -3px -3px -52px 0;
+	z-index: 100;
+}
+#mail-imap-ssl label,
+#mail-smtp-ssl label {
+	opacity: .4;
+}
+
+.connect {
+	margin: 0;
+}
+#connect-loading {
+	position: absolute;
+	top: 184px;
+	left: 43%;
+}
+
+
+
+
+/* app navigation */
+
+/* fix scrolling */
+#app-navigation {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#app-navigation .utils {
+	padding: 0 7px;
+}
+
+/* do not display empty folders in the sidebar */
+#app-navigation .empty {
+	display: none;
+}
+
+#app-navigation .special-inbox,
+#app-navigation .special-all {
+	display: block;
+}
+
+
+/* do not overlap collapse icon with special use icon */
+#app-navigation .special-inbox .collapse,
+#app-navigation .special-drafts .collapse,
+#app-navigation .special-sent .collapse,
+#app-navigation .special-trash .collapse {
+	display: none !important;
+}
+#app-navigation .special-inbox:hover .collapse,
+#app-navigation .special-inbox:focus .collapse,
+#app-navigation .special-drafts:hover .collapse,
+#app-navigation .special-drafts:focus .collapse,
+#app-navigation .special-sent:hover .collapse,
+#app-navigation .special-sent:focus .collapse,
+#app-navigation .special-trash:hover .collapse,
+#app-navigation .special-trash:focus .collapse {
+	display: inline-block !important;
+}
+
+
+/* START: should be done in core/apps.css */
+
+#app-navigation .collapse {
+	display: inline-block !important;
+	opacity: .3;
+}
+
+#app-navigation ul {
+	overflow-x: hidden;
+}
+
+#app-navigation ul ul {
+	display: block;
+}
+
+#app-navigation ul ul ul {
+	display: none;
+}
+
+#app-navigation ul ul li > a {
+	padding-left: 32px;
+}
+
+#app-navigation .with-icon ul li > a,
+#app-navigation .with-icon ul li.app-navigation-entry-loading > a {
+	padding-left: 68px;
+	background-position: 44px center;
+}
+
+#app-navigation ul .collapsible.open:hover {
+	box-shadow: inset 0 0 3px #ddd;
+}
+
+#app-navigation ul .collapsible.open ul {
+	display: block;
+}
+/* STOP: should be done in core/apps.css */
+
+#emptycontent,
+#mail_messages #emptycontent.emptycontent-search {
+	position: static;
+	margin-top: 2em;
+}
+#mail_messages #emptycontent.emptycontent-search h2 {
+	line-height: 150%;
+}
+#mail_messages #emptycontent {
+	position: absolute;
+}
+
+.mail_account_email {
+	opacity: .5;
+	padding: 20px 0 10px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mailaccount-list li {
+	padding: 10px 0;
+}
+.mailaccount-list .actions {
+	display: inline-flex;
+	position: absolute;
+	right: 0;
+	min-height: 16px;
+	min-width: 16px;
+}
+
+
+
+/* app content*/
+
+/* override the app content scrolling behavior
+	because we use 2 custom scrollable areas */
+#app-content {
+	overflow: hidden;
+}
+
+#mail_messages {
+	padding-bottom: 250px;
+	width: 30%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+#load-new-mail-messages,
+#load-more-mail-messages {
+	display: none;
+	margin: 10px auto;
+	padding: 10px 10px 6px;
+}
+/* TODO: put this in core icons.css as general rule for buttons with icons */
+#load-new-mail-messages.icon-loading-small,
+#load-more-mail-messages.icon-loading-small {
+	padding-left: 32px;
+	background-position: 9px center;
+}
+
+.mail-message-header {
+	height: 68px;
+}
+
+.mail_message_summary {
+	border-top: 1px solid #eee;
+	position: relative;
+}
+.mail_message_summary:hover,
+.mail_message_summary:focus,
+.mail_message_summary.active {
+	background-color: #f8f8f8;
+}
+
+.sender-image {
+	display: inline-block;
+	position: absolute;
+	padding: 5px;
+	padding-left: 10px;
+}
+
+.mail_message_summary_from,
+.mail_message_summary_subject,
+.date {
+	display: inline-block;
+	padding: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mail_message_summary_from {
+	width: 55%;
+	margin-left: 37px;
+	padding-bottom: 0;
+	opacity: .5;
+}
+
+.mail_message_summary_subject {
+	padding-top: 0;
+	width: 75%;
+	margin-left: 37px;
+}
+
+.date {
+	position: absolute;
+	right: 0;
+	top: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+.mail_message_summary.unseen .mail_message_summary_from,
+.mail_message_summary.unseen .mail_message_summary_subject,
+.mail_message_summary.unseen .date {
+	font-weight: bold;
+}
+
+#mail_messages .action.delete {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 20px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+	filter: alpha(opacity=20);
+	opacity: .2;
+}
+#mail_messages .action.delete:hover,
+#mail_messages .action.delete:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+#app-navigation .msg.success {
+	color: #fff;
+	background-color: #47a447;
+	padding: 3px;
+}
+#app-navigation .msg.error {
+	color: #fff;
+	background-color: #d2322d;
+	padding: 3px;
+}
+
+/* editor */
+
+#mail_new_message {
+	width: 92%;
+	padding: 10px;
+	padding-left: 34px;
+	margin: 12px 10px 0;
+	background-position: 10px center;
+	text-align: left;
+}
+
+#new-message {
+	margin: 10px;
+	z-index: 100;
+}
+#new-message-fields,
+.reply-message-fields {
+	position: relative;
+}
+#to,
+#cc,
+#bcc,
+#subject,
+#new-message-body,
+.reply-message-body {
+	width: 100%;
+}
+
+/* border and radius style rules to be replaced by grouptop, groupbottom etc
+	once https://github.com/owncloud/core/pull/9847 is merged and backported */
+#to {
+	margin: 0;
+	padding-right: 60px; /* for cc-bcc-toggle */
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#new-message-cc-bcc,
+#reply-message-cc-bcc {
+	position: relative;
+}
+#to-label,
+#cc-label,
+#bcc-label {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding: 6px;
+	cursor: text;
+}
+#bcc-label {
+	top: initial;
+	bottom: 0;
+}
+#to,
+#cc,
+#bcc {
+	padding-left: 30px;
+}
+
+#new-message-cc-bcc-toggle,
+#reply-message-cc-bcc-toggle {
+	position: absolute;
+	right: 0;
+	/*top: 0;*/
+	padding: 6px;
+}
+#new-message-cc-bcc {
+	display: none;
+}
+#subject,
+#cc,
+#bcc {
+	margin: 0;
+	border-top: none;
+	border-radius: 0;
+}
+#new-message-body,
+.reply-message-body {
+	margin: 0;
+	border-top: none;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	height: 100px;
+	resize: none;
+}
+#new-message-body {
+	height: 300px;
+}
+#new-message-send,
+.reply-message-send {
+	position: absolute;
+	bottom: 5px;
+	right: 0;
+	margin: 0 !important;
+}
+#reply-msg {
+	float: left;
+}
+
+.unread {
+	font-weight: bold;
+}
+/* make sure subfolders of unread folders are not bolded as well */
+.unread ul {
+	font-weight: normal;
+}
+
+
+.avatar {
+	width: 32px;
+	height: 32px;
+}
+
+.star {
+	width: 22px;
+	height: 22px;
+	background-size: 16px;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 31px;
+	z-index: 10;
+}
+/* only show star on hover of row */
+.star.icon-star {
+	display: none;
+}
+.mail_message_summary.active .star.icon-star,
+.mail_message_summary:hover .star.icon-star,
+.mail_message_summary:focus .star.icon-star {
+	display: inline-block;
+}
+
+.icon-reply {
+	background-image: url('../img/reply.svg');
+	position: absolute;
+	left: 9px;
+	top: 40px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+	filter: alpha(opacity=20);
+	opacity: .2;
+}
+
+.icon-attachment {
+	position: absolute;
+	left: 27px;
+	top: 40px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+	filter: alpha(opacity=20);
+	opacity: .2;
+}
+
+.icon-reply,
+.icon-attachment {
+	min-width: 16px;
+	min-height: 16px;
+}
+
+
+
+
+/* message display */
+
+#mail-message-header {
+	position: fixed;
+	height: 90px;
+	width: 50%;
+	background-color: rgba(255,255,255,.9);
+}
+#mail-message-header h2,
+#mail-message-header p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-bottom: 7px;
+	margin-bottom: 0;
+}
+
+.mail-message-body {
+	margin: 100px 10px 50px 30px;
+}
+#mail-content iframe {
+	width: 100%;
+}
+
+#mail-content a,
+.mail-signature a {
+	color: #07d;
+	border-bottom: 1px dotted #07d;
+	text-decoration: none;
+	word-wrap: break-word;
+}
+.mail-signature {
+	font-family: monospace;
+	opacity: 0.5;
+	line-height: initial;
+}
+
+.transparency {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+#mail-message {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 70%;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+
+.new-message-attachments-action {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	vertical-align: bottom
+}
+
+.mail-message-attachments {
+	margin-bottom: 20px;
+}
+.mail-message-attachment {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.attachment-save-to-cloud,
+.attachment-download {
+	height: 32px;
+	min-width: 32px;
+	float: left;
+	display: inline-block;
+}
+/* show icon + text for Download all button
+	as well as when there is only one attachment */
+.attachments-save-to-cloud,
+.attachments-download,
+.mail-message-attachment-single .attachment-save-to-cloud,
+.mail-message-attachment-single .attachment-download {
+	background-position: 9px center;
+	padding-left: 32px;
+}
+/* show attachment size less prominent */
+.attachment-size {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+.attachment-icon {
+	vertical-align: middle;
+}
+
+
+
+/* compose (handling mailto links) */
+
+.compose {
+	width: 60%;
+	margin: 0 auto;
+}
+
+
+/* settings */
+.mailaccount-list .mail-account-name {
+	display: inline-block;
+	width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.mailaccount-list .actions {
+	opacity: .5;
+}
+
+
+/* icons */
+.icon-inbox {
+	background-image: url('../img/inbox.svg');
+}
+.icon-flagged {
+	background-image: url('../img/star.svg');
+}
+.icon-drafts {
+	background-image: url('../img/drafts.svg');
+}
+.icon-sent {
+	background-image: url('../img/sent.svg');
+}
+.icon-junk {
+	background-image: url('../img/junk.svg');
+}
+.icon-trash {
+	background-image: url('../img/trash.svg');
+}
