@@ -50,7 +50,7 @@ Description: Steam downloads cache setup
 
 Package: stalag13-utils-cloud
 Architecture: all
-Depends: stalag13-utils, nginx, owncloud, stalag13-utils-nginx
+Depends: stalag13-utils, owncloud, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
 Description: ownCloud setup and extra apps 
  .
@@ -114,9 +114,9 @@ Description: Automated image post on tumblr
 
 Package: stalag13-utils-webmail
 Architecture: all
-Depends: stalag13-utils, nginx, roundcube, stalag13-utils-nginx
+Depends: stalag13-utils, sogo, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
-Description: Roundcube setup and plugins
+Description: SOGo setup and plugins
  .
  Homepage: https://yeupou.wordpress.com/
 

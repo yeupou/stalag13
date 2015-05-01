@@ -55,7 +55,7 @@ server {
 	location ~ \.php(?:$|/) {
 	        fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		# fastcgi_params is part of nginx-common
-		include fastcgi_params;
+		include fastcgi.conf;
 	        fastcgi_pass   127.0.0.1:9000;
 		fastcgi_index  index.php;
 		# serve static files by himself
