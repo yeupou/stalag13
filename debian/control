@@ -50,7 +50,7 @@ Description: Steam downloads cache setup
 
 Package: stalag13-utils-cloud
 Architecture: all
-Depends: stalag13-utils, owncloud, stalag13-utils-nginx
+Depends: stalag13-utils, owncloud, owncloud-calendar, owncloud-contacts, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
 Description: ownCloud setup and extra apps 
  .
