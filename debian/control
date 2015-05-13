@@ -105,7 +105,7 @@ Description: Manage transmission via NFS/Samba
  
 Package: stalag13-utils-tumblr
 Architecture: all
-Depends: stalag13-utils, libimage-exiftool-perl, liblwp-authen-oauth-perl, libnet-oauth-perl
+Depends: stalag13-utils, libimage-exiftool-perl, liblwp-authen-oauth-perl, libnet-oauth-perl, libencode-detect-perl
 Conflicts: stalag13-utils (<<3.166)
 Description: Automated image post on tumblr
  Check https://yeupou.wordpress.com/?s=tumblr beforehand

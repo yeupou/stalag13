@@ -284,7 +284,7 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
     system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
 } else {
     # Direct post 
-    ($blog->post(type => 'photo', 
+    ($blog->post(type => 'photo',
 		 tags => join(',', @image_tags),
 		 data => ["$image"]) 
      or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
