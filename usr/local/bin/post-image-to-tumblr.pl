@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2012-2013 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2012-2015 Mathieu Roy <yeupou--gnu.org>
 #        http://yeupou.wordpress.com/
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -74,6 +74,7 @@ use POSIX qw(strftime);
 use URI::Encode qw(uri_encode);
 use Image::ExifTool;
 use WWW::Tumblr;
+use Encode::Detect::Detector;
 
 ### INIT
 my $git = "/usr/bin/git";
@@ -85,7 +86,8 @@ my $tags_required = 0;
 
 # First thing first, user read config
 my $rc = File::HomeDir->my_home()."/.tumblrrc";
-my $content = File::HomeDir->my_home()."/tmp/tumblr";my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
+my $content = File::HomeDir->my_home()."/tmp/tumblr";
+my ($tumblr_base_url, $tumblr_consumer_key, $tumblr_consumer_secret, $tumblr_token, $tumblr_token_secret);
 my ($workaround_login, $workaround_dir, $workaround_url);
 die "Unable to read $rc, exiting" unless -r $rc;
 open(RCFILE, "< $rc");
@@ -205,7 +207,7 @@ for (sort(@images)) {
 	    # ignore this entry if not beginning with # 
 	    next unless s/^#//;
 	    # otherwise register it
-	    print "Register ($field) tag: $_\n" if $debug;
+	    print "Register ($field) tag: $_ (".detect($_).")\n" if $debug;
 	    push(@image_tags, $_);
 	}
 	
@@ -247,14 +249,14 @@ $exifTool->SetNewValue($image_info_kept, $$image_info{$image_info_kept});
 $exifTool->WriteInfo($image);
 if ($debug) {
     $image_info = $exifTool->ImageInfo($image);
-    foreach (sort keys %$image_info) { print "Kept tag $_ => $$image_info{$_}\n"; }
+    foreach (sort keys %$image_info) { print "Final tag $_ => $$image_info{$_}\n"; }
 }
 
 # Now set up API contact
 my $tumblr = WWW::Tumblr->new(
     consumer_key => $tumblr_consumer_key,
     secret_key =>$tumblr_consumer_secret,
-     token =>  $tumblr_token,
+    token =>  $tumblr_token,
     token_secret => $tumblr_token_secret,
     );
 my $blog = $tumblr->blog($tumblr_base_url);
