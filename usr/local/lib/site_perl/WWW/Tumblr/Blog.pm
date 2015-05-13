@@ -66,7 +66,7 @@ sub _post {
         auth => 'oauth',
         http_method => 'POST',
         url_path => 'blog/' . $self->base_hostname . '/' . $subr,
-        extra_args => utf8::decode(\%args),
+        extra_args => \%args,
     });
 
     if ( $response->is_success ) {
