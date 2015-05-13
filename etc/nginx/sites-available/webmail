@@ -15,57 +15,20 @@ server {
 	ssl_certificate_key  certs/webmail.key;
 	ssl_session_timeout 5m;
 
-	# set for SOGo http://wiki.sogo.nu/nginxSettings
-	root   /usr/lib/GNUstep/SOGo/WebServerResources/;
-
-	## requirement to create new calendars in Thunderbird ##
-	proxy_http_version 1.1;
-
-	location = / {
-	  rewrite ^ /SOGo; 
-	  allow all; 
-	}
-	# For IOS 7 
-	location = /principals/ {
-	  rewrite ^ /SOGo/dav; 
-	  allow all; 
-	}
-	location ^~/SOGo {
-  	  proxy_pass http://127.0.0.1:20000; 
-	  proxy_redirect http://127.0.0.1:20000 default; 
-	  # forward user's IP address 
-	  proxy_set_header X-Real-IP $remote_addr; 
-	  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
-	  proxy_set_header Host $host; 
-	  proxy_set_header x-webobjects-server-protocol HTTP/1.0; 
-	  proxy_set_header x-webobjects-remote-host 127.0.0.1; 
-	  proxy_set_header x-webobjects-server-name $server_name; 
-	  proxy_set_header x-webobjects-server-url $scheme://$host; 
-	  proxy_set_header x-webobjects-server-port $server_port; 
-	  proxy_connect_timeout 90;
-	  proxy_send_timeout 90;
-	  proxy_read_timeout 90;
-	  proxy_buffer_size 4k;
-	  proxy_buffers 4 32k;
-	  proxy_busy_buffers_size 64k;
-	  proxy_temp_file_write_size 64k;
-	  client_max_body_size 50m;
-	  client_body_buffer_size 128k;
-	  break;
-	}
-	location /SOGo.woa/WebServerResources/ 	{
-  	  alias /usr/lib/GNUstep/SOGo/WebServerResources/;
+	# set for roundcube
+	root /var/lib/roundcube/;
+	index index.php;
+	autoindex off;
+	allow all;
+	location ~ \.*php$ {
 	  allow all;
+	  # fastcgi_params is part of nginx-common
+	  include fastcgi.conf;
+	  fastcgi_pass 127.0.0.1:9000;
+	  fastcgi_index index.php;
 	}
-	location /SOGo/WebServerResources/ {
-  	  alias /usr/lib/GNUstep/SOGo/WebServerResources/; 
-	  allow all; 
-	} 
-	location (^/SOGo/so/ControlPanel/Products/([^/]*)/Resources/(.*)$) {
-    	  alias /usr/lib/GNUstep/SOGo/$1.SOGo/Resources/$2;
-	}
-	location (^/SOGo/so/ControlPanel/Products/[^/]*UI/Resources/.*\.(jpg|png|gif|css|js)$) {
-	  alias /usr/lib/GNUstep/SOGo/$1.SOGo/Resources/$2; 
-	}
+	location /config { deny all; }
+	location /temp { deny all; }
+	location /logs { deny all; }
 }
 
