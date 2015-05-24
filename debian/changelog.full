@@ -1,3 +1,19 @@
+stalag13-utils (3.205-20150524) unstable; urgency=low
+ 
+  * Update WWW::Tumblr, try to workaround accent oath problems. Update emacs.el towards v24.
+    A usr/local/lib/site_perl/WWW/Tumblr/Tagged.pm
+    M debian/changelog.full
+    M debian/control
+    M etc/emacs/site-start.d/99stalag13.el
+    M usr/local/bin/post-image-to-tumblr.pl
+    M usr/local/lib/site_perl/WWW/Tumblr/Blog.pm
+    M usr/local/lib/site_perl/WWW/Tumblr.pm
+    M usr/local/lib/site_perl/WWW/Tumblr/ResponseError.pm
+    M usr/local/lib/site_perl/WWW/Tumblr/Test.pm
+    M usr/local/lib/site_perl/WWW/Tumblr/User.pm
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 24 May 2015 16:28:31 +0200
+ 
 stalag13-utils (3.204+7-20150524) unstable; urgency=low
  
   * Upstream prerelease
