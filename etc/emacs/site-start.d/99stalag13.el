@@ -1,7 +1,7 @@
 ;; -*- emacs-lisp -*-
-;; System-wide configuration for Emacs 23.
+;; System-wide configuration for Emacs 2x.
 ;; /etc/emacs/site-start.d/99cgn.el
-;; Copyright 2000-2010 (c) Mathieu Roy <yeupou -- gnu.org>
+;; Copyright 2000-2015 (c) Mathieu Roy <yeupou -- gnu.org>
 ;;
 ;; "Emacs is not built by hate of vi.  vi is irrelevant.  It is no more 
 ;; then a strange punishment that the unbelievers submit themselves to.
@@ -48,7 +48,6 @@
  '(read-mail-command (quote gnus))
  '(save-place t nil (saveplace))
  '(show-paren-mode t nil (paren))
- '(spell-command "aspell")
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(transient-mark-mode t)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
@@ -78,13 +77,7 @@
 ;; Remove toolbar with ugly icons
 (tool-bar-mode -1)
 
-;; French i18n, utf-8 support
-;; (specific emacs >= 21!)
-;(require 'ucs-tables)
-;(unify-8859-on-encoding-mode 1)
-;(unify-8859-on-decoding-mode 1)
-;(set-input-mode nil nil 1)
-
+;; French i18n
 (setq calendar-week-start-day 1)
 (setq calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi" "Jeudi" "Vendredi" "Samedi"])
 (setq calendar-month-name-array ["Janvier" "Février" "Mars" "Avril" "Mai" "Juin" "Juillet" "Août" "Septembre" "Octobre" "Novembre" "Décembre"])
@@ -100,10 +93,6 @@
 ;; I like to see recent files.
 (require 'recentf)
 (recentf-mode 1)
-
-;; Enhanced C-x b
-(require 'iswitchb) 
- (iswitchb-default-keybindings) 
  
 ;; Why not opening compressed files? 
 (auto-compression-mode 1)
