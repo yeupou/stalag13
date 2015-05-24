@@ -43,8 +43,6 @@
  '(global-font-lock-mode t nil (font-lock))
  '(message-directory "~/.Mail/")
  '(mouse-wheel-mode t nil (mwheel))
- '(pc-select-meta-moves-sexps t)
- '(pc-selection-mode t nil (pc-select))
  '(read-mail-command (quote gnus))
  '(save-place t nil (saveplace))
  '(show-paren-mode t nil (paren))
