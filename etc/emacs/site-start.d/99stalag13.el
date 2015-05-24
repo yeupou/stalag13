@@ -40,6 +40,7 @@
 (custom-set-variables
  '(case-fold-search t)
  '(display-time-24hr-format t)
+ '(delete-selection-mode 1)
  '(global-font-lock-mode t nil (font-lock))
  '(message-directory "~/.Mail/")
  '(mouse-wheel-mode t nil (mwheel))
