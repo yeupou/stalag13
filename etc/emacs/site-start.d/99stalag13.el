@@ -115,7 +115,7 @@
 ;; Well, it's good to have such an hash, if someone forget shebang
 (setq auto-mode-alist
       '( 
-        ("\\ChangeLog$" . change-log-mode)
+        ("\\ChangeLog.*$" . change-log-mode)
         ("\\changelog$" . debian-changelog-mode)
         ("\\control$" . debian-control-mode)
         ("\\Makefile.*$" . makefile-mode)
