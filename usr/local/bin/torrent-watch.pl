@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2010-2014 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2010-2015 Mathieu Roy <yeupou--gnu.org>
 #                   http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,8 @@ use File::Copy;
 use Date::Parse;
 
 my $user = "debian-transmission";
-my $watchdir = "/home/torrent/watch";
+my $userdir = "/home/torrent";
+my $watchdir = "$userdir/watch";
 my $binwork = "/usr/bin/transmission-remote"; # Too noisy, so we cannot use system
 my $bininfo = "/usr/bin/transmission-show";
 my $debug = 0;
@@ -45,7 +46,13 @@ my $debug = 0;
 # su often mess it up)
 die "This should not be started by ".(getpwuid($<))[0]." but $user instead. Exit" unless ((getpwuid($<))[0] eq $user);
 
-# enter ~/watch
+# try to catch any mismatch between $userdir and /etc/passwd entry
+# but warn only if we cannot properly enter $watchdir
+# this cannot be fixed with the daemon up, the admin will have to fix it
+# by himself
+die "User ".(getpwuid($<))[0]." home should be $userdir while it is set to ".(getpwuid($<))[7].".\n\n1- shutdown the daemon\n2- run the command:\n\tusermod -d $userdir ".(getpwuid($<))[0]."\n3- restart the daemon\n\nYou may also need to restart cron daemon.\n\nExit" if ((getpwuid($<))[7] ne $userdir) and !chdir($watchdir);
+
+# enter ~/watch, it still fails 
 chdir($watchdir) or die "Unable to enter $watchdir. Exit";
 
 # silently forbid concurrent runs

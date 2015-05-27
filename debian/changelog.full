@@ -1,3 +1,9 @@
+stalag13-utils (3.207+1-20150527) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 27 May 2015 17:07:17 +0200
+ 
 stalag13-utils (3.207-20150527) unstable; urgency=low
  
   * Silence cronjob (smartmatch perl warning)
