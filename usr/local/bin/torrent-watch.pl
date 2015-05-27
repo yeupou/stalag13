@@ -46,11 +46,10 @@ my $debug = 0;
 # su often mess it up)
 die "This should not be started by ".(getpwuid($<))[0]." but $user instead. Exit" unless ((getpwuid($<))[0] eq $user);
 
-# try to catch any mismatch between $userdir and /etc/passwd entry
-# but warn only if we cannot properly enter $watchdir
+# catch any mismatch between $userdir and /etc/passwd entry
 # this cannot be fixed with the daemon up, the admin will have to fix it
 # by himself
-die "User ".(getpwuid($<))[0]." home should be $userdir while it is set to ".(getpwuid($<))[7].".\n\n1- shutdown the daemon\n2- run the command:\n\tusermod -d $userdir ".(getpwuid($<))[0]."\n3- restart the daemon\n\nYou may also need to restart cron daemon.\n\nExit" if ((getpwuid($<))[7] ne $userdir) and !chdir($watchdir);
+die "User ".(getpwuid($<))[0]." home should be $userdir while it is set to ".(getpwuid($<))[7].".\n\n1- shutdown the daemon\n2- run the command:\n\tusermod -d $userdir ".(getpwuid($<))[0]."\n3- restart the daemon\n\nYou may also need to restart cron daemon.\n\nExit" if ((getpwuid($<))[7] ne $userdir);
 
 # enter ~/watch, it still fails 
 chdir($watchdir) or die "Unable to enter $watchdir. Exit";
