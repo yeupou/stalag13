@@ -1,3 +1,11 @@
+stalag13-utils (3.208-20150527) unstable; urgency=low
+ 
+  * Handle .TORRENT. Warn if user directory mismatch the expected value - useful for upgrade to debian jessie.
+    M debian/changelog.full
+    M usr/local/bin/torrent-watch.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 27 May 2015 17:10:37 +0200
+ 
 stalag13-utils (3.207-20150527) unstable; urgency=low
  
   * Silence cronjob (smartmatch perl warning)

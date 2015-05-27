@@ -141,7 +141,7 @@ while (defined(my $file = readdir(WATCH))) {
     next unless $suffix && $name;
     
     # new .torrent file
-    if ($suffix eq ".torrent") {
+    if (lc($suffix) eq ".torrent") {
 
 	# Check if readable
 	unless (-r "$watchdir/$file") {
