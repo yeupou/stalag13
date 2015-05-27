@@ -29,3 +29,12 @@ Using Git:
   git commit -a
   git push github
 
+
+
+Rebuild calaboose.*:
+--------------------
+
+touch debian/utils-websysadmin.rebuild
+touch debian/utils-pxe.rebuild
+
+

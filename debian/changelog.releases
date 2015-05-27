@@ -1,3 +1,9 @@
+stalag13-utils (3.207-20150527) unstable; urgency=low
+ 
+  * Silence cronjob (smartmatch perl warning)
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 27 May 2015 15:43:29 +0200
+ 
 stalag13-utils (3.206-20150524) unstable; urgency=low
  
   * (delete-selection-mode 1) activated to mimic now obsolete pc-select
