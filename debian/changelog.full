@@ -1,3 +1,9 @@
+stalag13-utils (3.209+1-20150530) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 30 May 2015 16:07:26 +0200
+ 
 stalag13-utils (3.209-20150527) unstable; urgency=low
  
   * Testing ~ in any case for debian-transmission and stop if faulty

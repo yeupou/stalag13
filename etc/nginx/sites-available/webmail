@@ -1,34 +1,36 @@
 # more or less zeroconf for roundcube, assuming the rest is ok
-# (php fastcgi spawned, roundcube installed
+# (php fastcgi spawned, roundcube installed)
 server {
-	listen 443; ## listen for ipv4
+       listen 443; ## listen for ipv4
 
-	# catch all based on the domain name
-	server_name ~^mx;
+       # catch all based on the domain name
+       server_name ~^mx;
 
-	access_log  /var/log/nginx/webmail.access.log;
-	error_log   /var/log/nginx/webmail.error.log;
+       access_log  /var/log/nginx/webmail.access.log;
+       error_log   /var/log/nginx/webmail.error.log;
 
-	# can be created with certs/makecert.sh
-	ssl on;
-	ssl_certificate  certs/webmail.pem;
-	ssl_certificate_key  certs/webmail.key;
-	ssl_session_timeout 5m;
+       # can be created with certs/makecert.sh
+       ssl on;
+       ssl_certificate  certs/webmail.pem;
+       ssl_certificate_key  certs/webmail.key;
+       ssl_session_timeout 5m;
 
-	# set for roundcube
-	root /var/lib/roundcube/;
-	index index.php;
-	autoindex off;
-	allow all;
-	location ~ \.*php$ {
-	  allow all;
-	  # fastcgi_params is part of nginx-common
-	  include fastcgi.conf;
-	  fastcgi_pass 127.0.0.1:9000;
-	  fastcgi_index index.php;
-	}
-	location /config { deny all; }
-	location /temp { deny all; }
-	location /logs { deny all; }
+       # set for roundcube
+       root   /var/lib/roundcube; 
+       index  index.php;
+       autoindex off;
+       allow all;
+
+       location /config { deny all; }
+       location /temp { deny all; }
+       location /logs { deny all; }
+
+       location ~ \.php(?:$|/) {
+         fastcgi_split_path_info ^(.+\.php)(/.+)$;
+	 # fastcgi_params is part of nginx-common
+	 include fastcgi_params;
+  	 fastcgi_pass   127.0.0.1:9000;
+  	 fastcgi_index  index.php;
+       }
 }
 
