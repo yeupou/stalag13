@@ -294,6 +294,9 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
 	#    HTTP::Message content must be bytes at /usr/share/perl5/HTTP/Request/Common.pm line 94.
 	# or
 	#    Net::OAuth warning: your OAuth message appears to contain some multi-byte characters that need to be decoded via Encode.pm or a PerlIO layer first.  This may result in an incorrect signature. at /usr/share/perl5/Net/OAuth/Message.pm line 106.
+	# 
+	# In the doc they wrote: Per the OAuth spec, when making the signature Net::OAuth first encodes parameters to UTF-8. This means that any parameters you pass to Net::OAuth, if they might be outside of ASCII character set, should be run through Encode::decode() (or an equivalent PerlIO layer) first to decode them to Perl's internal character sructure.
+	# Encode::decode() fails too.
 	# The relevant bug report on perl oauth	cpan has not changed in 3 years.
 	($blog->post(type => 'photo',
 		     data => ["$image"])
