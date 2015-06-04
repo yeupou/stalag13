@@ -74,6 +74,7 @@ use POSIX qw(strftime);
 use URI::Encode qw(uri_encode);
 use Image::ExifTool;
 use WWW::Tumblr;
+use Encode;
 use Encode::Detect::Detector;
 
 ### INIT
@@ -207,7 +208,7 @@ for (sort(@images)) {
 	    # ignore this entry if not beginning with # 
 	    next unless s/^#//;
 	    # otherwise register it
-	    print "Register ($field) tag: $_ (".detect($_).")\n" if $debug;
+	    print "Register ($field) tag: $_ (".detect($_)."))\n" if $debug;
 	    push(@image_tags, $_);
 	}
 	
@@ -284,10 +285,21 @@ if ($workaround_login and $workaround_dir and $workaround_url) {
     system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
 } else {
     # Direct post 
-    ($blog->post(type => 'photo',
-		 tags => join(',', @image_tags),
-		 data => ["$image"]) 
-     or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
+    unless ($blog->post(type => 'photo',
+			tags => join(',', @image_tags),
+			data => ["$image"])) {
+	# if we fail to post with tags (utf8?), try without
+	# FIXME:
+	# get either
+	#    HTTP::Message content must be bytes at /usr/share/perl5/HTTP/Request/Common.pm line 94.
+	# or
+	#    Net::OAuth warning: your OAuth message appears to contain some multi-byte characters that need to be decoded via Encode.pm or a PerlIO layer first.  This may result in an incorrect signature. at /usr/share/perl5/Net/OAuth/Message.pm line 106.
+	# The relevant bug report on perl oauth	cpan has not changed in 3 years.
+	($blog->post(type => 'photo',
+		     data => ["$image"])
+	 or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
+	print $image." posted deprived of tags ".join(',', @image_tags)."\n";
+    }
 }
 
 # If we get here, we can assume everything went well. 
