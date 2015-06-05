@@ -1,3 +1,11 @@
+stalag13-utils (3.211-20150605) unstable; urgency=low
+ 
+  * One more workaround oauth problems with accents: post as html entities as caption (not possible as tag)
+    M debian/changelog.full
+    M usr/local/bin/post-image-to-tumblr.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 05 Jun 2015 17:19:38 +0200
+ 
 stalag13-utils (3.210+1-20150605) unstable; urgency=low
  
   * Upstream prerelease
