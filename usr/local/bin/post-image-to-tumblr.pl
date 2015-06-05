@@ -74,8 +74,9 @@ use POSIX qw(strftime);
 use URI::Encode qw(uri_encode);
 use Image::ExifTool;
 use WWW::Tumblr;
-use Encode;
+use Encode qw(encode decode);
 use Encode::Detect::Detector;
+use HTML::Entities;
 
 ### INIT
 my $git = "/usr/bin/git";
@@ -208,8 +209,28 @@ for (sort(@images)) {
 	    # ignore this entry if not beginning with # 
 	    next unless s/^#//;
 	    # otherwise register it
-	    print "Register ($field) tag: $_ (".detect($_)."))\n" if $debug;
-	    push(@image_tags, $_);
+	    print "Register ($field) tag: $_ (".detect($_).")\n" if $debug;
+	    if (detect($_)) {
+		#    with accents, we get either
+		#      HTTP::Message content must be bytes at 
+		#      /usr/share/perl5/HTTP/Request/Common.pm line 94.
+		#    or
+		#      Net::OAuth warning: your OAuth message appears to contain
+		#      some multi-byte characters that need to be decoded via
+		#      Encode.pm or a PerlIO layer first.  This may result in an
+		#      incorrect signature. at 
+		#      /usr/share/perl5/Net/OAuth/Message.pm line 106.
+		#
+		#    a possible workaround would be to encode as HTML entities 
+		#    after decoding to perl internal format (encode_entities
+		#    is inconsistent with UTF-8 cf.
+	        #    https://bugs.debian.org/787821 )  
+		#
+		# save the string in perl internal format		
+		push(@image_tags, decode(detect($_),$_));
+	    } else {
+		push(@image_tags, $_);
+	    }
 	}
 	
 	# if we found some valid #tags, dont check any other field
@@ -251,7 +272,7 @@ $exifTool->WriteInfo($image);
 if ($debug) {
     $image_info = $exifTool->ImageInfo($image);
     foreach (sort keys %$image_info) { print "Final tag $_ => $$image_info{$_}\n"; }
-}
+} 
 
 # Now set up API contact
 my $tumblr = WWW::Tumblr->new(
@@ -265,45 +286,22 @@ my $blog = $tumblr->blog($tumblr_base_url);
 # And post the image
 #
 # BASIC POST TEST
-#($blog->post(type => 'text', body => 'Delete me, I am a damned test.', title => 'test') or die $blog->error->code);
-# 
-#  If sending image data fails with error 400, here's a WORKAROUND: 
-#  we scp the image to a secondary/middleman http+ssh server and then post 
-#  using "source" (url) instead of "data" (encoded content).
-#  This require more configuration variables in ~/.tumblrrc
-#  and, obviously, a webserver accessible via SSH.
-#     workaround_login=user@server
-#     workaround_dir=/path/to/www
-#     workaround_url=http://server/public
-if ($workaround_login and $workaround_dir and $workaround_url) {
-    # Post with middleman server workaround
-    system("scp", "-q", "$queue/$image", "$workaround_login:$workaround_dir");
-    ($blog->post(type => 'photo', 
-		 tags => join(',', @image_tags),
-		 source => "$workaround_url/$image") 
-     or die $blog->error->code." while posting $workaround_url/$image with tags ".join(',', @image_tags));
-    system("ssh", "$workaround_login", "rm -f $workaround_dir/$image");
-} else {
-    # Direct post 
-    unless ($blog->post(type => 'photo',
-			tags => join(',', @image_tags),
-			data => ["$image"])) {
-	# if we fail to post with tags (utf8?), try without
-	# FIXME:
-	# get either
-	#    HTTP::Message content must be bytes at /usr/share/perl5/HTTP/Request/Common.pm line 94.
-	# or
-	#    Net::OAuth warning: your OAuth message appears to contain some multi-byte characters that need to be decoded via Encode.pm or a PerlIO layer first.  This may result in an incorrect signature. at /usr/share/perl5/Net/OAuth/Message.pm line 106.
-	# 
-	# In the doc they wrote: Per the OAuth spec, when making the signature Net::OAuth first encodes parameters to UTF-8. This means that any parameters you pass to Net::OAuth, if they might be outside of ASCII character set, should be run through Encode::decode() (or an equivalent PerlIO layer) first to decode them to Perl's internal character sructure.
-	# Encode::decode() fails too.
-	# The relevant bug report on perl oauth	cpan has not changed in 3 years.
-	($blog->post(type => 'photo',
-		     data => ["$image"])
-	 or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
-	print $image." posted deprived of tags ".join(',', @image_tags)."\n";
-    }
-}
+#($blog->post(type => 'text', body => 'Delete me, I am a damned test with '.join(',', @image_tags), title => 'test') or die $blog->error->code);
+
+# Direct post (see history of this file for a version that post with url)
+
+# temporary workaround with accentued characters: post with caption
+# encoded to HTML entities
+my $description = join(',', @image_tags);
+my $description_field = 'tags';
+$description_field = 'caption' if encode_entities($description) ne $description;
+
+($blog->post(type => 'photo',
+	     $description_field => encode_entities($description),
+	     data => ["$image"]) 
+ or die $blog->error->code." while posting $image with tags ".join(',', @image_tags));
+
+print "It was not possible to set $description as tag, it has been set as caption.\n" if $description_field eq 'caption'; 
 
 # If we get here, we can assume everything went well. 
 # Move the file in over/ and commit to git
