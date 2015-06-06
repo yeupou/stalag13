@@ -52,9 +52,6 @@
 #
 # This script was designed to run as a daily cronjob.
 #
-# (If you get error 400 while posting, please check in the code below for
-# the workaround using "source" and an intermediate webserver to post image)
-#
 # FACULTATIVE:
 # 
 # To randomize feed, you may just run, in queue/ the following:
