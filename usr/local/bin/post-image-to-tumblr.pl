@@ -221,9 +221,10 @@ for (sort(@images)) {
 		#      incorrect signature. at 
 		#      /usr/share/perl5/Net/OAuth/Message.pm line 106.
 		#
-		#    a possible workaround would be to encode as HTML entities 
+		#    a possible workaround is be encode as HTML entities 
 		#    after decoding to perl internal format (encode_entities
-		#    is inconsistent with UTF-8 cf.
+		#    requires encoding to be identified and defined, so 
+		#    it is best to simply decode first cf.
 	        #    https://bugs.debian.org/787821 )  
 		#
 		# save the string in perl internal format		
