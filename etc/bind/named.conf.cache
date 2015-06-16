@@ -1,0 +1,13 @@
+//
+// must be included in named.conf with
+//         include "/etc/bind/named.conf.cache";
+//
+
+zone "cache" {
+       type master;
+       notify no;
+       allow-query { none;};
+       file "/etc/bind/db.cache";
+};
+
+ 

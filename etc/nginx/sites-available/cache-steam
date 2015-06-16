@@ -8,9 +8,9 @@ server  {
   error_log /var/log/nginx/steam.error.log;
 
   root /srv/www/;
-  resolver 127.0.0.1;
+  #resolver 127.0.0.1;
   ## use this resolver instead if your local interface got domain names spoofed 
-  ##resolver 8.8.8.8 4.2.2.2;
+  resolver 8.8.8.8 4.2.2.2;
   
   include allow_local;
   allow 127.0.0.1;

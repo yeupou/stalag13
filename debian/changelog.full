@@ -1,3 +1,9 @@
+stalag13-utils (3.212+1-20150616) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 16 Jun 2015 19:18:04 +0200
+ 
 stalag13-utils (3.212-20150606) unstable; urgency=low
  
   * Update comments.

@@ -47,7 +47,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		keyring => ["/etc/apt/apt.conf.d/stalag13", "/etc/apt/sources.list.d/50-stalag13.list", "/etc/apt/trusted.gpg.d/stalag13.gpg"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"utils-cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
-		"utils-cache-spoof" => ["/etc/dnsspoof.conf", "/etc/default/dnsspoof", "/etc/init.d/dnsspoof"],
+		"utils-cache-spoof" => ["/etc/bind/db.cache", "/etc/bind/named.conf.cache"],
 		"utils-exim" => ["/etc/exim4", "/usr/local/bin/memcached-exim.pl"],
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/allow_local", "/etc/nginx/sites-available/fcgi", "/usr/local/bin/fastcgi-wrapper.pl"],
 		"utils-ssl" => ["/etc/dovecot/certs", "/etc/nginx/certs", "/etc/ssl"],

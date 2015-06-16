@@ -32,10 +32,11 @@ Description: APT downloads cache setup
 
 Package: stalag13-utils-cache-spoof
 Architecture: all
-Depends: stalag13-utils, stalag13-utils-nginx
+Depends: stalag13-utils, stalag13-utils-nginx, bind9
 Conflicts: stalag13-utils (<<3.166)
 Description: DNS spoofer needed by cache setups
- /etc/dnsspoof.conf must be edited
+ /etc/bind/db.cache must be edited
+ /etc/bind/named.conf.cache must be included in named.conf
  .
  Homepage: https://yeupou.wordpress.com/
  
