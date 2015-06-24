@@ -35,6 +35,9 @@
 # files from one same source at once, you'll still have enough files to
 # randomize it.
 #
+# If there are only few messages in the queue, it will slow down post unless
+# --always-post option is set.
+#
 # It requires your tumblr OAuth to be setup, for instance as described
 # in http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl using
 # the counterpart script post-image-to-tumblr-init-auth.pl
@@ -48,6 +51,7 @@
 # It could also take the following options:
 #     content= (default being ~/tmp/tumblr)
 #     debug
+#     always_post
 #     tags_required
 #
 # This script was designed to run as a daily cronjob.
@@ -81,6 +85,7 @@ my @metadata_fields = ("Description", "Comment", "ImageDescription", "UserCommen
 my $images_types = "png|gif|jpg|jpeg";
 my %images_max_size = ("gif" => "1048576");
 my $debug = 0;
+my $always_post = 0;
 my $tags_required = 0;
 
 # First thing first, user read config
@@ -101,6 +106,8 @@ while(<RCFILE>){
     # handle options
     $content = $1 if /^content\s?=\s?(.*)$/i;
     $debug = 1 if /^debug$/i;
+    $always_post = 1 if /^always_post$/i;
+    $always_post = 1 if /^alwayspost$/i;
     $tags_required = 1 if /^tags?_required$/i;
 
     # workaround, see below
@@ -118,7 +125,8 @@ my ($getopt,$help,$check);
 eval {
     $getopt = GetOptions("debug" => \$debug,
 			 "help" => \$help,
-			 "check-images" => \$check);
+			 "check-images" => \$check,
+	                 "always-post" => \$always_post);
 };
 $git = "/bin/echo" if $debug;
 
@@ -131,6 +139,8 @@ Usage: $0 [OPTIONS]
                        are ready to be posted (with proper #Tag and
 		       not exceding certain size depending on the
 		       file type).
+      --always-post    Not skipping post if the number of images in the
+                       queue is low.
       --debug          Not doing any git commit or moving files.
 
 This script will go through $images_types files found 
@@ -174,9 +184,9 @@ closedir(IMAGES);
 exit if scalar(@images) < 1;
 # end here if we only have the pool we want to keep, unless we're just 
 # checking files
-exit if scalar(@images) < 6 and ! $check;
+exit if scalar(@images) < 6 and ! $check and ! $always_post;
 # if we are low on images, slow down posting
-if (scalar(@images) < 63 and ! $check) {
+if (scalar(@images) < 63 and ! $check and ! $always_post) {
     if (scalar(@images) < 32) {
 	# only for one month, post only twice per week (monday and thursday)
 	exit unless (localtime(time))[6] eq 1 or (localtime(time))[6] eq 4;
