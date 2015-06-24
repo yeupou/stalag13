@@ -175,6 +175,16 @@ exit if scalar(@images) < 1;
 # end here if we only have the pool we want to keep, unless we're just 
 # checking files
 exit if scalar(@images) < 6 and ! $check;
+# if we are low on images, slow down posting
+if (scalar(@images) < 63 and ! $check) {
+    if (scalar(@images) < 32) {
+	# only for one month, post only twice per week (monday and thursday)
+	exit unless (localtime(time))[6] eq 1 or (localtime(time))[6] eq 4;
+    } else {
+	# otherwise, post every two days (even days)
+	exit unless ((localtime(time))[3] % 2) == 0;
+    }   
+}
 
 # Now go through the list of images in sorted order.
 # (vars set in this loop are necessary below, so init them outside the 
