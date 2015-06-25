@@ -43,7 +43,7 @@ for my $file (keys %changed) {
 print "\n";
   
 # handpick files or directories
-my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl", "/etc/default/shush-toram", "/etc/init.d/shush-toram", "/etc/cron.daily/shush-toram"],
+my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profile.d", "/usr/local/bin/qrename.pl", "/usr/local/bin/flonkout.pl", "/usr/local/bin/4-2cal.pl", "/usr/local/bin/switch-sound.pl", "/usr/local/bin/urlize.pl", "/usr/local/bin/wakey.pl", "/etc/default/shush-toram", "/etc/init.d/shush-toram", "/etc/cron.daily/shush-toram", "/etc/network"],
 		keyring => ["/etc/apt/apt.conf.d/stalag13", "/etc/apt/sources.list.d/50-stalag13.list", "/etc/apt/trusted.gpg.d/stalag13.gpg"],
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"utils-cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
