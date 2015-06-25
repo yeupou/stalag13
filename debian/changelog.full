@@ -1,3 +1,11 @@
+stalag13-utils (3.216-20150625) unstable; urgency=low
+ 
+  * auto/noauto switch for NFS mounts in if-up/down scripts now included in main package
+    M debian/changelog.full
+    M debian/repack.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 25 Jun 2015 17:27:39 +0200
+ 
 stalag13-utils (3.215+1-20150625) unstable; urgency=low
  
   * Upstream prerelease
