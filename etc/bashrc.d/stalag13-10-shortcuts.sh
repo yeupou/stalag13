@@ -6,8 +6,9 @@ alias l='ls -CF'
 
 # directories (no test whatsoever; the link to the NFS server is broken, 
 # the process would get stalled) 
-LAN=/mnt/lan/stalag13.ici
+LAN=/mnt/stalag13.ici
 if [[ -d /mnt/lan/gate.stalag13.ici ]]; then LAN=/mnt/lan/gate.stalag13.ici; fi
+if [[ -d /mnt/gate.stalag13.ici ]]; then LAN=/mnt/gate.stalag13.ici; fi
 alias musique='cd $LAN/musique'
 alias videos='cd $LAN/videos'
 alias suxor='cd $LAN/suxor'
