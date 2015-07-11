@@ -1,3 +1,13 @@
+stalag13-utils (3.217-20150711) unstable; urgency=low
+ 
+  * Volume now starts at 5% instead of 40%
+    M debian/changelog.full
+    M debian/postinst
+    M etc/bashrc.d/stalag13-50-torrent.sh
+    M usr/local/bin/wakey.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 11 Jul 2015 10:23:44 +0200
+ 
 stalag13-utils (3.216-20150625) unstable; urgency=low
  
   * auto/noauto switch for NFS mounts in if-up/down scripts now included in main package
