@@ -358,9 +358,9 @@ system($mixer_alsa, "-q", "set", "PCM", "unmute")
 # oss = no way found to do this with Audio::Mixer
 
 # Put PCM at 100%, start master volume at current - 25,
-# at least 40%
+# at least 10%
 my $mixer_volume = ($mixer_volume_before-25);
-$mixer_volume = 40 if $mixer_volume < 40;
+$mixer_volume = 10 if $mixer_volume < 10;
 system($mixer_alsa, "-q", "set", "Master", $mixer_volume."%");
 system($mixer_alsa, "-q", "set", "PCM", "100%")
     unless $mixer_volume_pcm_before eq $mixer_not_found;
