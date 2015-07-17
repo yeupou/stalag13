@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2010 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2010-2015 Mathieu Roy <yeupou--gnu.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@ VALID_USER="Debian-exim"
 if [ `whoami` != $VALID_USER ]; then echo "Only for "$VALID_USER && exit; fi
 
 MAILDIR="/home/klink/.Maildir/"
-SPAM_DIRS="$MAILDIR/Poubelle/Spam/cur/ $MAILDIR/Poubelle/Spam/new/"
-HAM_DIRS="$MAILDIR/INBOX/cur/ $MAILDIR/INBOX/new/"
+SPAM_DIRS="$MAILDIR/Bruit/cur/ $MAILDIR/Bruit/new/"
+HAM_DIRS=`find $MAILDIR -mindepth 2 -type d | grep --invert-match Brouillons | grep --invert-match Poubelle | grep --invert-match Bruit | grep --invert-match new`
 
 # SpamAssassin keeps tracks, so we can pass him everything as it comes
 /usr/bin/sa-learn --spam $SPAM_DIRS > /dev/null
