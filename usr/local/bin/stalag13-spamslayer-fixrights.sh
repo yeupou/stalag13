@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2010 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2010-2015 Mathieu Roy <yeupou--gnu.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 if [ "`id -u`" != 0 ]; then echo "Only for root" && exit; fi
 
 MAILDIR="/home/klink/.Maildir/"
-AFFECTED_DIRS="$MAILDIR/Bruit/cur/ $MAILDIR/Bruit/new/ $MAILDIR/INBOX/cur/ $MAILDIR/INBOX/new/"
+AFFECTED_DIRS=`find $MAILDIR -mindepth 2 -type d | grep --invert-match new`
 
 for file in `find $AFFECTED_DIRS -type f`; do 
     chmod 640 $file; 
