@@ -1,3 +1,11 @@
+stalag13-utils (3.219-20150718) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M debian/changelog.full
+    M usr/local/bin/stalag13-spamslayer-fixrights.sh
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 18 Jul 2015 15:11:20 +0200
+ 
 stalag13-utils (3.218+2-20150718) unstable; urgency=low
  
   * Upstream prerelease
