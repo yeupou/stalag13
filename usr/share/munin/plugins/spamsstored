@@ -19,7 +19,7 @@ byhand.label User, By Hand"
     exit 0
 fi
 
-SPAM_DIR="/home/klink/.Maildir/Poubelle/Spam/cur/ /home/klink/.Maildir/Poubelle/Spam/new/"
+SPAM_DIR="/home/klink/.Maildir/Bruit/cur/ /home/klink/.Maildir/Bruit/new/"
 SPAMS_24H=`find $SPAM_DIR -type f -ctime -1`
 
 SPAMS=0
