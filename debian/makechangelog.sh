@@ -19,7 +19,7 @@ echo "stalag13-utils ($VERSION-`date +%Y%m%d`) unstable; urgency=low" > tmp
 echo " " >> tmp  
 if [ ! $3 ]; then
     # release
-    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog$ | grep -E ^\(M\|A\|R\)"\s" | sort | uniq
+    git log --stat --name-status -n $COMMITS | grep -vE LATESTIS$\|debian/changelog | grep -E ^\(M\|A\|R\)"\s" | sort | uniq
     echo " "
     echo "What did you do? [Cosmetics/trivial fixes] by default"
     # changes description
