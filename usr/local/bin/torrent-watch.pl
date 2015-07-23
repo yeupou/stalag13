@@ -280,24 +280,7 @@ while (<LIST>) {
     # determine the trs filename 
     my $file = "$date-$id-$name";
     print "FILE:$file\n" if $debug;
-    
-    # finished
-    if ($percent eq "100%") {
-	print "mv $file.hash $file.hash+\n" if $debug;
-	print LOG strftime "%c - completed $name (#$id)\n", localtime;
-	# do not bother removing the torrent, done below
-	move("$watchdir/$file.trs",
-	     "$watchdir/$file.trs+")
-	    unless -e "$watchdir/$file.trs+";
-	
-	# warn (it should send a mail, if cron is properly configured)
-	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
-	    unless $count;
-	print "$name (#$id)\n";
-	$count++;
-
-    }
-
+  
     # should be paused
     if (-e "$watchdir/$file.trs-") {
 	print "$binwork -t $id --stop ($file.trs+ exists)\n" if $debug;
@@ -332,6 +315,23 @@ while (<LIST>) {
     close(INFO);
     close(TRSFILE);
 
+    # finished (do this now so trs+ is accurate)
+    if ($percent eq "100%") {
+	print "mv $file.trs $file.trs+\n" if $debug;
+	print LOG strftime "%c - completed $name (#$id)\n", localtime;
+	# the torrent will actually be removed from the daemon during the
+	# next run
+	move("$watchdir/$file.trs",
+	     "$watchdir/$file.trs+")
+	    unless -e "$watchdir/$file.trs+";
+	
+	# warn (it should send a mail, if cron is properly configured)
+	print "Hello,\n\nI assume the following torrent was completed:\n\n" 
+	    unless $count;
+	print "$name (#$id)\n";
+	$count++;
+    }
+    
     # safekeep .torrent: if only named by the id, give it the full name
     move("$watchdir/.$id.torrent~", "$watchdir/.$file.torrent~")
 	if (-e "$watchdir/.$id.torrent~" and
