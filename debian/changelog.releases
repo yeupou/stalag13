@@ -1,3 +1,11 @@
+stalag13-utils (3.220-20150723) unstable; urgency=low
+ 
+  * Did one last update of .trs when 100% reached
+    M debian/changelog.full
+    M usr/local/bin/torrent-watch.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Thu, 23 Jul 2015 15:42:38 +0200
+ 
 stalag13-utils (3.219-20150718) unstable; urgency=low
  
   * Cosmetics/trivial fixes
