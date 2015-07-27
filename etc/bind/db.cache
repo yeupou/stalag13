@@ -21,5 +21,6 @@ $TTL    86400   ; one day
 ;; uncomment this for cache-apt
 ;ftp.fr.debian.org     A192.168.1.1
 ;security.debian.org   A192.168.1.1
+;packages.devuan.org   A192.168.1.1
 ;fr.archive.ubuntu.com A192.168.1.1
 ;security.ubuntu.com   A192.168.1.1

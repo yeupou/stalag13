@@ -2,7 +2,7 @@
 # http://yeupou.wordpress.com/2014/01/28/caching-debianetc-apt-repositories-on-your-local-server-with-nginx-and-dsniff/
 server  {
   listen 80;
-  server_name *.debian.org *.ubuntu.com;
+  server_name *.devuan.org *.debian.org *.ubuntu.com;
 
   access_log off;
   error_log /var/log/nginx/apt.error.log;
@@ -16,17 +16,13 @@ server  {
   allow 127.0.0.1;
   deny all;
 
-  location /debian/pool/ {
-    try_files $uri @mirror;
-  }
-
-  location /debian-security/pool/ {
-    try_files $uri @mirror;
-  }
-
-  location /ubuntu/pool/ {
-    try_files $uri @mirror;
-  }
+  location /debian/pool/ { try_files $uri @mirror; }
+  location /debian-security/pool/ { try_files $uri @mirror;}
+  
+  location /devuan/pool/ { try_files $uri @mirror; }
+  location /merged/pool/ { try_files $uri @mirror; }
+  
+  location /ubuntu/pool/ { try_files $uri @mirror; }
 
   location / {
     include cache_proxy_params;
