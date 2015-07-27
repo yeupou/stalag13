@@ -1,26 +1,16 @@
+; File: null.zone
+; Last modified: 07-10-2005
+
 $TTL    86400   ; one day
 
-@       IN      SOA     localhost.   root.localhost. 1 12h 15m 3w 2h
-                IN NS      localhost.
+@       IN      SOA     localhost.   root.localhost. (
+                        2005071005       ; serial number YYYYMMDDNN
+                        28800   ; refresh  8 hours
+                        7200    ; retry    2 hours
+                        864000  ; expire  10 days
+                        86400 ) ; min ttl  1 day
+                NS      localhost.
 
-;; uncomment this for cache-steam
-;cs.steampowered.com   A	192.168.1.1
-;*.cs.steampowered.com A	192.168.1.1
-;content1.steampowered.com A	192.168.1.1
-;content2.steampowered.com A    192.168.1.1
-;content3.steampowered.com A    192.168.1.1
-;content4.steampowered.com A    192.168.1.1
-;content5.steampowered.com A    192.168.1.1
-;content6.steampowered.com A    192.168.1.1
-;content7.steampowered.com A    192.168.1.1
-;content8.steampowered.com A    192.168.1.1
-;content9.steampowered.com A    192.168.1.1
-;*.hsar.steampowered.com.edgesuite.net A 192.168.1.1
-;clientconfig.akamai.steamstatic.com A 192.168.1.1
+                A       192.168.1.1
 
-;; uncomment this for cache-apt
-;ftp.fr.debian.org     A	192.168.1.1
-;security.debian.org   A	192.168.1.1
-;packages.devuan.org   A	192.168.1.1
-;fr.archive.ubuntu.com A	192.168.1.1
-;security.ubuntu.com   A	192.168.1.1
+*               IN      A       192.168.1.1
