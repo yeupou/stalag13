@@ -4,23 +4,23 @@ $TTL    86400   ; one day
                 IN NS      localhost.
 
 ;; uncomment this for cache-steam
-;cs.steampowered.com   A192.168.1.1
-;*.cs.steampowered.com A192.168.1.1
-;content1.steampowered.com A192.168.1.1
-;content2.steampowered.com A     192.168.1.1
-;content3.steampowered.com A     192.168.1.1
-;content4.steampowered.com A     192.168.1.1
-;content5.steampowered.com A     192.168.1.1
-;content6.steampowered.com A     192.168.1.1
-;content7.steampowered.com A     192.168.1.1
-;content8.steampowered.com A     192.168.1.1
-;content9.steampowered.com A     192.168.1.1
+;cs.steampowered.com   A	192.168.1.1
+;*.cs.steampowered.com A	192.168.1.1
+;content1.steampowered.com A	192.168.1.1
+;content2.steampowered.com A    192.168.1.1
+;content3.steampowered.com A    192.168.1.1
+;content4.steampowered.com A    192.168.1.1
+;content5.steampowered.com A    192.168.1.1
+;content6.steampowered.com A    192.168.1.1
+;content7.steampowered.com A    192.168.1.1
+;content8.steampowered.com A    192.168.1.1
+;content9.steampowered.com A    192.168.1.1
 ;*.hsar.steampowered.com.edgesuite.net A 192.168.1.1
 ;clientconfig.akamai.steamstatic.com A 192.168.1.1
 
 ;; uncomment this for cache-apt
-;ftp.fr.debian.org     A192.168.1.1
-;security.debian.org   A192.168.1.1
-;packages.devuan.org   A192.168.1.1
-;fr.archive.ubuntu.com A192.168.1.1
-;security.ubuntu.com   A192.168.1.1
+;ftp.fr.debian.org     A	192.168.1.1
+;security.debian.org   A	192.168.1.1
+;packages.devuan.org   A	192.168.1.1
+;fr.archive.ubuntu.com A	192.168.1.1
+;security.ubuntu.com   A	192.168.1.1
