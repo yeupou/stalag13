@@ -2,33 +2,35 @@
 // must be included in named.conf with
 //         include "/etc/bind/named.conf.cache";
 //
+// DNS="192.168.1.1"
 // DOMAINS="cs.steampowered.com content1.steampowered.com content2.steampowered.com content3.steampowered.com content4.steampowered.com content5.steampowered.com content6.steampowered.com content7.steampowered.com content8.steampowered.com content9.steampowered.com hsar.steampowered.com.edgesuite.net clientconfig.akamai.steamstatic.com ftp.fr.debian.org security.debian.org  packages.devuan.org fr.archive.ubuntu.com security.ubuntu.com"
 //
-// for domain in $DOMAINS; do echo zone \"$domain\"  \{ type master\; notify no\; file \"/etc/bind/db.cache\"\; \} ; done >> named.conf.cache
+// for domain in $DOMAINS; do echo zone \"$domain\"  \{ type master\; notify no\; allow-query-on \{ 192.168.1.1\; \}\; file \"/etc/bind/db.cache\"\; \}\; ; done >> named.conf.cache
 //
 
 // uncomment for steam
-zone "cs.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content1.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content2.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content3.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content4.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content5.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content6.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content7.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content8.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "content9.steampowered.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "hsar.steampowered.com.edgesuite.net" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "clientconfig.akamai.steamstatic.com" { type master; notify no; file "/etc/bind/db.cache"; }
+// zone "cs.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content1.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content2.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content3.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content4.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content5.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content6.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content7.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content8.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "content9.steampowered.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "hsar.steampowered.com.edgesuite.net" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "clientconfig.akamai.steamstatic.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
 
 // uncomment for debian
-// zone "ftp.fr.debian.org" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "security.debian.org" { type master; notify no; file "/etc/bind/db.cache"; }
+// zone "ftp.fr.debian.org" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "security.debian.org" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
 
 // uncomment for devuan
-// zone "packages.devuan.org" { type master; notify no; file "/etc/bind/db.cache"; }
+// zone "packages.devuan.org" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
 
 // uncomment for ubuntu
-// zone "fr.archive.ubuntu.com" { type master; notify no; file "/etc/bind/db.cache"; }
-// zone "security.ubuntu.com" { type master; notify no; file "/etc/bind/db.cache"; 
-}
+// zone "fr.archive.ubuntu.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+// zone "security.ubuntu.com" { type master; notify no; allow-query-on { 192.168.1.1; }; file "/etc/bind/db.cache"; };
+
+// EOF

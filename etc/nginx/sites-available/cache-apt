@@ -8,9 +8,10 @@ server  {
   error_log /var/log/nginx/apt.error.log;
 
   root /srv/www/;
-  #resolver 127.0.0.1;
-  ## use this resolver instead if your local interface got domain names spoofed 
-  resolver 8.8.8.8 4.2.2.2;
+  resolver 127.0.0.1;
+  ## use this resolver instead if your local interface got domain names spoofed
+  ## (with default proposed bind setup, it should not be necessary)
+  #resolver 8.8.8.8 4.2.2.2;
 
   include allow_local;
   allow 127.0.0.1;
@@ -24,9 +25,7 @@ server  {
   
   location /ubuntu/pool/ { try_files $uri @mirror; }
 
-  location / {
-    include cache_proxy_params;
-  }
+  location / { include cache_proxy_params; }
 
   location @mirror {
     access_log /var/log/nginx/apt.remote.log;
