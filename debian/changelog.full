@@ -1,3 +1,21 @@
+stalag13-utils (3.222-20150728) unstable; urgency=low
+ 
+  * Now uses view so Bind treats differently loopback and intranet so nginx no longer needs to rely on external resolver
+    A etc/bind/db.cache10.0.0
+    A etc/bind/db.cache10.0.1
+    A etc/bind/db.cache192.168.1
+    A etc/bind/named.conf.acl
+    A etc/bind/named.conf.cache10.0.0
+    A etc/bind/named.conf.cache10.0.1
+    A etc/bind/named.conf.cache192.168.1
+    A etc/bind/named.conf.cache.sh
+    A etc/bind/named.conf.views
+    M etc/nginx/allow_local
+    M etc/nginx/sites-available/cache-apt
+    M etc/nginx/sites-available/cache-steam
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 28 Jul 2015 19:19:54 +0200
+ 
 stalag13-utils (3.221+1-20150728) unstable; urgency=low
  
   * Upstream prerelease
