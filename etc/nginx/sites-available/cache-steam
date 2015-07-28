@@ -9,8 +9,9 @@ server  {
 
   root /srv/www/;
   #resolver 127.0.0.1;
-  ## use this resolver instead if your local interface got domain names spoofed 
-  resolver 8.8.8.8 4.2.2.2;
+  ## (set resolver to something else if your local interface got
+  ## domain names spoofed, 8.8.8.8 for Google resolver for example.
+  ## the default bind9 setup should not require this)
   
   include allow_local;
   allow 127.0.0.1;

@@ -1,0 +1,48 @@
+// extra layer handling views
+// every zones must be included here, none directly within named.conf
+// only this file must be included in named.conf with
+//     include "/etc/bind/named.conf.views";
+
+// clients are set in named.conf.acl
+include "/etc/bind/named.conf.acl";
+
+// loopback view, for the server itself
+view "loopback" {
+     match-clients { loopback; };
+     include "/etc/bind/named.conf.default-zones";
+     include "/etc/bind/named.conf.local";
+     include "/etc/bind/named.conf.ads";
+};
+
+// otherwise intranet on 192.168
+view "intranet1921681" {
+     match-clients { intranet1921681; };
+     include "/etc/bind/named.conf.default-zones";
+     include "/etc/bind/named.conf.local";
+     include "/etc/bind/named.conf.cache192.168.1";
+     include "/etc/bind/named.conf.ads";
+};
+
+// otherwise intranet on 10.0.0
+view "intranet1000" {
+     match-clients { intranet1000; };
+     include "/etc/bind/named.conf.default-zones";
+     include "/etc/bind/named.conf.local";
+     include "/etc/bind/named.conf.cache10.0.0";
+     include "/etc/bind/named.conf.ads";
+};
+
+// otherwise intranet on 10.0.0
+view "intranet1001" {
+     match-clients { intranet1001; };
+     include "/etc/bind/named.conf.default-zones";
+     include "/etc/bind/named.conf.local";
+     include "/etc/bind/named.conf.cache10.0.1";
+     include "/etc/bind/named.conf.ads";
+};
+
+
+// dont bother
+
+
+// EOF
