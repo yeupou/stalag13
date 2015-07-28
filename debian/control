@@ -35,8 +35,8 @@ Architecture: all
 Depends: stalag13-utils, stalag13-utils-nginx, bind9
 Conflicts: stalag13-utils (<<3.166)
 Description: DNS spoofer needed by cache setups
- /etc/bind/db.cache must be edited
- /etc/bind/named.conf.cache must be included in named.conf
+ /etc/bind/named.conf.views must be included in named.conf
+ /etc/bind/named.conf.cache.sh can be edited and re-run
  .
  Homepage: https://yeupou.wordpress.com/
  

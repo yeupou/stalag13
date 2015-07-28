@@ -19,8 +19,8 @@ stalag13-utils-cache-apt:
 
 stalag13-utils-cache-spoof:
  DNS spoofer needed by cache setups
- /etc/bind/db.cache must be edited
- /etc/bind/named.conf.cache must be included in named.conf
+ /etc/bind/named.conf.views must be included in named.conf
+ /etc/bind/named.conf.cache.sh can be edited and re-run
 
 stalag13-utils-cache-steam:
  Steam downloads cache setup
