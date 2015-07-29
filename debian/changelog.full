@@ -1,3 +1,14 @@
+stalag13-utils (3.223-20150729) unstable; urgency=low
+ 
+  * Move bind related files in the appropriate package -utils-cache-spoof
+    A etc/bind/named.conf.ads
+    M debian/control
+    M debian/repack.pl
+    M etc/bind/named.conf.ads
+    M README
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 29 Jul 2015 17:01:02 +0200
+ 
 stalag13-utils (3.222+10-20150729) unstable; urgency=low
  
   * Upstream prerelease
