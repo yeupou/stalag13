@@ -37,6 +37,7 @@ Conflicts: stalag13-utils (<<3.166), stalag13-utils-ahem (<<3.222)
 Description: DNS spoofer needed by cache setups
  /etc/bind/named.conf.views must be included in named.conf
  /etc/bind/named.conf.cache.sh can be edited and re-run
+ /etc/bind/named.conf.ads usage is optional
  .
  Homepage: https://yeupou.wordpress.com/
  
