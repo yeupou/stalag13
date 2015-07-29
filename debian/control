@@ -33,7 +33,7 @@ Description: APT downloads cache setup
 Package: stalag13-utils-cache-spoof
 Architecture: all
 Depends: stalag13-utils, stalag13-utils-nginx, bind9
-Conflicts: stalag13-utils (<<3.166)
+Conflicts: stalag13-utils (<<3.166), stalag13-utils-ahem (<<3.222)
 Description: DNS spoofer needed by cache setups
  /etc/bind/named.conf.views must be included in named.conf
  /etc/bind/named.conf.cache.sh can be edited and re-run
@@ -115,9 +115,9 @@ Description: Automated image post on tumblr
 
 Package: stalag13-utils-webmail
 Architecture: all
-Depends: stalag13-utils, sogo, stalag13-utils-nginx
+Depends: stalag13-utils, stalag13-utils-nginx
 Conflicts: stalag13-utils (<<3.166)
-Description: SOGo setup and plugins
+Description: CURRENTLY OFF
  .
  Homepage: https://yeupou.wordpress.com/
 
