@@ -8,7 +8,7 @@ server  {
   error_log /var/log/nginx/steam.error.log;
 
   root /srv/www/;
-  #resolver 127.0.0.1;
+  resolver 127.0.0.1;
   ## (set resolver to something else if your local interface got
   ## domain names spoofed, 8.8.8.8 for Google resolver for example.
   ## the default bind9 setup should not require this)
