@@ -2,7 +2,7 @@
 # http://yeupou.wordpress.com/2014/01/28/caching-debianetc-apt-repositories-on-your-local-server-with-nginx-and-dsniff/
 server  {
   listen 80;
-  server_name *.devuan.org *.debian.org *.ubuntu.com;
+  server_name *.devuan.org *.debian.net *.debian.org *.ubuntu.com;
 
   access_log off;
   error_log /var/log/nginx/apt.error.log;
