@@ -1,3 +1,14 @@
+stalag13-utils (3.227-20150803) unstable; urgency=low
+ 
+  * Add http.debian.net to cache
+    M etc/bind/named.conf.cache10.0.0
+    M etc/bind/named.conf.cache10.0.1
+    M etc/bind/named.conf.cache192.168.1
+    M etc/bind/named.conf.cache.sh
+    M etc/nginx/sites-available/cache-apt
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 03 Aug 2015 14:53:33 +0200
+ 
 stalag13-utils (3.226-20150731) unstable; urgency=low
  
   * Cosmetics/trivial fixes
