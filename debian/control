@@ -116,9 +116,9 @@ Description: Automated image post on tumblr
 
 Package: stalag13-utils-webmail
 Architecture: all
-Depends: stalag13-utils, stalag13-utils-nginx
+Depends: stalag13-utils, stalag13-utils-nginx, squirrelmail
 Conflicts: stalag13-utils (<<3.166)
-Description: CURRENTLY OFF
+Description: Webmail with SquirrelMail 
  .
  Homepage: https://yeupou.wordpress.com/
 

@@ -16,7 +16,7 @@ server {
        ssl_session_timeout 5m;
 
        # set for roundcube
-       root   /var/lib/roundcube; 
+       root   /usr/share/squirrelmail; 
        index  index.php;
        autoindex off;
        allow all;
