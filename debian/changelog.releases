@@ -1,3 +1,51 @@
+stalag13-utils (3.229-20150816) unstable; urgency=low
+ 
+  * Add extra plugins for squirrelmail
+    A usr/share/squirrelmail/plugins/custom_from/config/config_default.php
+    A usr/share/squirrelmail/plugins/custom_from/config/config_example.php
+    A usr/share/squirrelmail/plugins/custom_from/config/custom_from_access_table_example.php
+    A usr/share/squirrelmail/plugins/custom_from/config/.htaccess
+    A usr/share/squirrelmail/plugins/custom_from/config/index.php
+    A usr/share/squirrelmail/plugins/custom_from/docs/COPYING
+    A usr/share/squirrelmail/plugins/custom_from/docs/.htaccess
+    A usr/share/squirrelmail/plugins/custom_from/docs/index.php
+    A usr/share/squirrelmail/plugins/custom_from/docs/INSTALL
+    A usr/share/squirrelmail/plugins/custom_from/docs/README
+    A usr/share/squirrelmail/plugins/custom_from/functions.php
+    A usr/share/squirrelmail/plugins/custom_from/index.php
+    A usr/share/squirrelmail/plugins/custom_from/locale/custom_from.pot
+    A usr/share/squirrelmail/plugins/custom_from/locale/getpot
+    A usr/share/squirrelmail/plugins/custom_from/locale/.htaccess
+    A usr/share/squirrelmail/plugins/custom_from/locale/index.php
+    A usr/share/squirrelmail/plugins/custom_from/make_release.sh
+    A usr/share/squirrelmail/plugins/custom_from/README
+    A usr/share/squirrelmail/plugins/custom_from/setup.php
+    A usr/share/squirrelmail/plugins/custom_from/version
+    A usr/share/squirrelmail/plugins/multiple_attachments/config_default.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/config_example.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/docs/COPYING
+    A usr/share/squirrelmail/plugins/multiple_attachments/docs/.htaccess
+    A usr/share/squirrelmail/plugins/multiple_attachments/docs/index.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/docs/INSTALL
+    A usr/share/squirrelmail/plugins/multiple_attachments/docs/README
+    A usr/share/squirrelmail/plugins/multiple_attachments/functions.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/index.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/locale/getpot
+    A usr/share/squirrelmail/plugins/multiple_attachments/locale/.htaccess
+    A usr/share/squirrelmail/plugins/multiple_attachments/locale/index.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/locale/multiple_attachments.pot
+    A usr/share/squirrelmail/plugins/multiple_attachments/make_release.sh
+    A usr/share/squirrelmail/plugins/multiple_attachments/patches/.htaccess
+    A usr/share/squirrelmail/plugins/multiple_attachments/patches/index.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/patches/save_attached_files_hook-squirrelmail_1.4.23.diff
+    A usr/share/squirrelmail/plugins/multiple_attachments/patches/save_attached_files_hook-squirrelmail_1.5.2.diff
+    A usr/share/squirrelmail/plugins/multiple_attachments/README
+    A usr/share/squirrelmail/plugins/multiple_attachments/setup.php
+    A usr/share/squirrelmail/plugins/multiple_attachments/version
+    M debian/repack.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 16 Aug 2015 17:23:36 +0200
+ 
 stalag13-utils (3.228-20150816) unstable; urgency=low
  
   * Move back from roundcube to squirrelmail (inconsistent issues)
