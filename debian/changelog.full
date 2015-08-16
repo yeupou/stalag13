@@ -1,3 +1,9 @@
+stalag13-utils (3.228+1-20150816) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sun, 16 Aug 2015 17:15:00 +0200
+ 
 stalag13-utils (3.228-20150816) unstable; urgency=low
  
   * Move back from roundcube to squirrelmail (inconsistent issues)

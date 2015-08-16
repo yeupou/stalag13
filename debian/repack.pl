@@ -52,7 +52,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/allow_local", "/etc/nginx/sites-available/fcgi", "/usr/local/bin/fastcgi-wrapper.pl"],
 		"utils-ssl" => ["/etc/dovecot/certs", "/etc/nginx/certs", "/etc/ssl"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
-		"utils-webmail" => ["/usr/share/roundcube", "/var/lib/roundcube/plugins/antibruteforce", "/var/lib/roundcube/plugins/carddav", "/etc/nginx/sites-available/webmail"],
+		"utils-webmail" => ["/usr/share/squirrelmail", "/etc/nginx/sites-available/webmail"],
 		"utils-torrent" => ["/usr/local/bin/torrent-watch.pl", "/etc/cron.d/torrent", "/etc/cron.weekly/torrent", "/etc/logrotate.d/torrent"],
 		"utils-tumblr" => ["/usr/local/bin/post-image-to-tumblr-init-auth.pl", "/usr/local/bin/post-image-to-tumblr.pl", "/usr/local/lib/site_perl/WWW/Tumblr.pm", "/usr/local/lib/site_perl/WWW/Tumblr"]
     );
