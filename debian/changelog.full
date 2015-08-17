@@ -1,3 +1,33 @@
+stalag13-utils (3.230-20150817) unstable; urgency=low
+ 
+  * Add autocomplete plugin
+    A usr/share/squirrelmail/plugins/autocomplete/abook_lookup.php
+    A usr/share/squirrelmail/plugins/autocomplete/config_default.php
+    A usr/share/squirrelmail/plugins/autocomplete/config_example.php
+    A usr/share/squirrelmail/plugins/autocomplete/docs/COPYING
+    A usr/share/squirrelmail/plugins/autocomplete/docs/.htaccess
+    A usr/share/squirrelmail/plugins/autocomplete/docs/index.php
+    A usr/share/squirrelmail/plugins/autocomplete/docs/INSTALL
+    A usr/share/squirrelmail/plugins/autocomplete/docs/README
+    A usr/share/squirrelmail/plugins/autocomplete/functions.php
+    A usr/share/squirrelmail/plugins/autocomplete/index.php
+    A usr/share/squirrelmail/plugins/autocomplete/locale/autocomplete.pot
+    A usr/share/squirrelmail/plugins/autocomplete/locale/getpot
+    A usr/share/squirrelmail/plugins/autocomplete/locale/.htaccess
+    A usr/share/squirrelmail/plugins/autocomplete/locale/index.php
+    A usr/share/squirrelmail/plugins/autocomplete/main.php
+    A usr/share/squirrelmail/plugins/autocomplete/make_release.sh
+    A usr/share/squirrelmail/plugins/autocomplete/README
+    A usr/share/squirrelmail/plugins/autocomplete/setup.php
+    A usr/share/squirrelmail/plugins/autocomplete/templates/default/autocomplete_javascript.tpl
+    A usr/share/squirrelmail/plugins/autocomplete/templates/default/autocomplete_stylesheet.tpl
+    A usr/share/squirrelmail/plugins/autocomplete/templates/default/index.php
+    A usr/share/squirrelmail/plugins/autocomplete/templates/.htaccess
+    A usr/share/squirrelmail/plugins/autocomplete/templates/index.php
+    A usr/share/squirrelmail/plugins/autocomplete/version
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Mon, 17 Aug 2015 21:49:56 +0200
+ 
 stalag13-utils (3.229+1-20150817) unstable; urgency=low
  
   * Upstream prerelease
