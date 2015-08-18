@@ -86,6 +86,7 @@ close($tempabook_fh);
 
 # overwrite if any results
 exit unless $count;
+die "No write access to $abook. Exiting" unless -w $abook;
 move($tempabook, $abook);
     
 # EOF 
