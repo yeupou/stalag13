@@ -116,8 +116,8 @@ for key in "$subdir/$set"/*.pub; do
 
     # actually update the file if need be
     if [ "$didwhat" == "+" ]; then
-	echo "# $0 `date --rfc-2822`" >> "$keyring"
-	cat "$key" >> "$keyring"
+	echo "# $0 `date --rfc-2822`" >> "$authorized_keys"
+	cat "$key" >> "$authorized_keys"
     fi
     
     # give feedback
