@@ -80,8 +80,8 @@ foreach my $vcard ($book->vcards()) {
     # from Squirrelmail doc
     #      An address book file contains five fields, which are delimited by the vertical line (|): the first field stores nicknames, short names that are used to identify address book entries; the second field stores names; the third field stores surnames; the forth field stores mail addresses; and the fifth field stores additional information.
     next unless $vcard->EMAIL();
-    print $tempabook_fh $vcard->fullname()."|||".$vcard->EMAIL()."||\n";
     $count++;
+    print $tempabook_fh $count."|".$vcard->fullname()."||".$vcard->EMAIL()."||\n";
   }
 close($tempabook_fh);
 
