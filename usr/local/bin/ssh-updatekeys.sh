@@ -34,6 +34,7 @@ cd "$dir" || exit 1
 # require write access to authorized_keys
 authorized_keys="$dir/authorized_keys"
 touch "$authorized_keys" || exit 1
+chmod -v 600 "$authorized_keys"
 
 # no keys subdirectory? need to set up
 subdir="$dir/updatekeys"
