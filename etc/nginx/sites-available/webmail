@@ -22,6 +22,9 @@ server {
        allow all;
 
        location /config { deny all; }
+       location /plugins { deny all; }
+       location /functions { deny all; }
+       location /help { deny all; }
        location /temp { deny all; }
        location /logs { deny all; }
 
