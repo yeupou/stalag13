@@ -1,3 +1,9 @@
+stalag13-utils (3.234-20150818) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 18 Aug 2015 16:47:59 +0200
+ 
 stalag13-utils (3.233-20150818) unstable; urgency=low
  
   * Do extra chmod 600 on authorized_keys just in case
