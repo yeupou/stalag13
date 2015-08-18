@@ -45,6 +45,7 @@ while(<RCFILE>){
 
 unless ($carddav and $abook and $user and $password) {
     print "You must write an $rc with the following contents:
+
 # url
 # example for owncloud addressbook
 # (ending by contacts_shared_by_USER?export instead for a shared one)
@@ -62,7 +63,7 @@ password = password
 #wget_args = --no-check-certificate
 # EOF
 ";
-    die "Exiting";
+    exit;
 }
 
 
