@@ -1,3 +1,11 @@
+stalag13-utils (3.232-20150818) unstable; urgency=low
+ 
+  * Initial release of ssh-updatekeys (was: update-authorized-keys.sh)
+    A usr/local/bin/ssh-updatekeys.sh
+    M debian/repack.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Tue, 18 Aug 2015 16:39:15 +0200
+ 
 stalag13-utils (3.231+1-20150818) unstable; urgency=low
  
   * Upstream prerelease
