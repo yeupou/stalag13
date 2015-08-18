@@ -62,7 +62,7 @@ password = password
 #wget_args = --no-check-certificate
 # EOF
 ";
-    die;
+    die "Exiting";
 }
 
 
