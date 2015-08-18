@@ -88,10 +88,16 @@ for my $package (keys %packages) {
     next if $updated;
     # not main utils package that we always want up to date no matter what?
     next if $package eq "utils";
-    # not selected by hand for rebuild?
+    # not selected by hand for rebuild (per package)?
     if (-e "$curdir/debian/$package.rebuild") {
 	unlink("$curdir/debian/$package.rebuild");
 	print "  => no changes but will be updated since debian/?.rebuild exists\n";
+	next;
+    }
+    # not selected by hand for rebuild (all)?
+    if (-e "$curdir/debian/rebuild") {
+	unlink("$curdir/debian/rebuild");
+	print "  => no changes but will be updated since debian/rebuild exists\n";
 	next;
     }
     
