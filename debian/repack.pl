@@ -96,7 +96,6 @@ for my $package (keys %packages) {
     }
     # not selected by hand for rebuild (all)?
     if (-e "$curdir/debian/rebuild") {
-	unlink("$curdir/debian/rebuild");
 	print "  => no changes but will be updated since debian/rebuild exists\n";
 	next;
     }
