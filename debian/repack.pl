@@ -106,3 +106,5 @@ for my $package (keys %packages) {
     print NOTUPDATED "$package\n";
 }
 close(NOTUPDATED);
+
+unlink("$curdir/debian/rebuild") if -e "$curdir/debian/rebuild";
