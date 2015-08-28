@@ -125,10 +125,10 @@ move-prepare:
 	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
 
 move-local: move-prepare
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/srv/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate.attique.org:/srv/www/apt/
 	rm -r $(TEMPDIR)
 
 move: move-prepare
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate:/var/www/apt/
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survival:/var/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate.attique.org:/var/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survival.attique.org:/var/www/apt/
 	rm -r $(TEMPDIR)
