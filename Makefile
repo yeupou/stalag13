@@ -107,7 +107,7 @@ clean-prev-dir:
 move-prepare:
 	# can be done only within stalag13 network
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
-	cd $(TEMPDIR) && scp gate:/srv/www/apt/* .
+	cd $(TEMPDIR) && scp gate.attique.org:/srv/www/apt/* .
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
