@@ -1,3 +1,20 @@
+stalag13-utils (3.241-20150831) unstable; urgency=low
+ 
+  * FDQN changes etc.
+    M debian/control
+    M debian/makereadme.pl
+    M etc/apt/apt.conf.d/stalag13
+    M etc/apt/sources.list.d/49-stalag13.list
+    M etc/apt/sources.list.d/50-stalag13.list
+    M etc/exim4/conf.d/acl/25_stalag13-greylist
+    M etc/exim4/conf.d/rewrite/15_stalag13
+    M etc/exim4/conf.d/router/350_stalag13-system_aliases_banned
+    M etc/exim4/conf.d/router/395_stalag13-shopping_catchall
+    M Makefile
+    M README
+ 
+ -- Mathieu Roy <klink@pancernik>  Mon, 31 Aug 2015 01:40:47 +0200
+ 
 stalag13-utils (3.240-20150818) unstable; urgency=low
  
   * Cosmetics/trivial fixes
