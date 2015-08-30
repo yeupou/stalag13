@@ -105,7 +105,6 @@ clean-prev-dir:
 	rm -f ../stalag13-utils*.deb ../stalag13-utils*.changes ../stalag13-keyring_* ../stalag13-utils*.tar.gz ../stalag13-utils*.dsc
 
 move-prepare:
-	# can be done only within stalag13 network
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp gate.attique.org:/srv/www/apt/* .
 	# only keep the latest build

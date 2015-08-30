@@ -9,7 +9,7 @@ print README  'Stuff completely useless, or almost, as described at # cd /scratc
 Check http://yeupou.wordpress.com/
 
 Debian packages are available. The easier way to get them is to get the keyring package as follows:
-  	# wget http://apt.attique.org/stalag13-keyring.deb
+  	# wget http://apt.rien.pl/stalag13-keyring.deb
 	# dpkg -i stalag13-keyring.deb
 	# apt-get update
 	# apt-get install ...

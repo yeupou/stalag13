@@ -6,8 +6,6 @@ system_aliases_banned:
   driver = redirect
   domains = +local_domains
   require_files = /etc/aliases.ban
-#  condition = ${lookup{$local_part}lsearch{/etc/aliases.ban}}
-#  data = spam@$domain
   data = ${lookup{$local_part}lsearch{/etc/aliases.ban}}
 
 
@@ -15,7 +13,7 @@ system_aliases_banned:
 system_aliases_banned_wtf:
   debug_print = "R: system_aliases_banned check for [wtf-]$local_part@plow"
   driver = redirect
-  domains = plow.attique.org
+  domains = plow.rien.pl : plow.attique.org
   local_part_prefix = wtf-
   require_files = /etc/aliases.ban
   data = ${lookup{$local_part}lsearch{/etc/aliases.ban}}

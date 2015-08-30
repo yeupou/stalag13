@@ -5,8 +5,17 @@ shopping_catchall:
   driver = redirect
   local_part_prefix = wtf-
   local_part_suffix = .*
-  domains = plow.attique.org
+  domains = plow.rien.pl
+  condition = ${if exists{/etc/aliases.d/rien.pl}}
+  data = ${lookup{$local_part}lsearch{/etc/aliases.d/rien.pl}}
+  file_transport = address_file
+
+shopping_catchall_DEPRECATED:
+  debug_print = "R: shopping_catchall for [wtf-]$local_part[.*]@plow OBSOLETE"
+  driver = redirect
+  local_part_prefix = wtf-
+  local_part_suffix = .*
+  domains = plow.attique.prg
   condition = ${if exists{/etc/aliases.d/attique.org}}
   data = ${lookup{$local_part}lsearch{/etc/aliases.d/attique.org}}
   file_transport = address_file
-

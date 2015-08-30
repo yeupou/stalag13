@@ -20,10 +20,14 @@
 # rules can themselves be replaced as a result of later rules
 # (see also q and R flags).
 
+# We dont deal with deprecated domains automatically so old address
+# being still used are noticed (could even be tagged)
+
 # specific catchalls that should be kept as they are
+^wtf-(.*)@plow\.rien\.pl * frFsbcTtr
 ^wtf-(.*)@plow\.attique\.org * frFsbcTtr
 
-# Remove irrelevant subdomains 
+# Remove irrelevant subdomains  
+^(.*)@.*\.rien\.pl ${1}@rien.pl frFsbcTtr
 ^(.*)@.*\.attique\.org ${1}@attique.org frFsbcTtr
-^(.*)@.*\.attique\.ici ${1}@stalag13.ici frFsbcTtr
 ^(.*)@.*\.stalag13\.ici ${1}@stalag13.ici frFsbcTtr
