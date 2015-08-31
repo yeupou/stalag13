@@ -34,6 +34,10 @@ SPAMBLOCKING_ENABLE = 1
 # http://yeupou.wordpress.com/2010/08/13/slaying-spams-with-both-bogofilter-and-spamassassin-embedded-in-exim/ )
 #SPAMBLOCKING_HEAVY_ENABLE = 1
 
+### BOUNCES WITHOUT MESSAGES
+# leds to issues when mailer daemon is bouncing spam so we ll never do
+
+bounce_return_message = false
 
 ### INTERNAL
 

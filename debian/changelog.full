@@ -1,3 +1,9 @@
+stalag13-utils (3.241+1-20150831) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@pancernik>  Mon, 31 Aug 2015 09:46:21 +0200
+ 
 stalag13-utils (3.241-20150831) unstable; urgency=low
  
   * FDQN changes etc.
