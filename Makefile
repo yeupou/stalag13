@@ -8,6 +8,7 @@ NEWVERSION = $(shell expr $(VERSION) \+ 1)
 NEWPREVERSION = $(shell expr $(PREVERSION) \+ 1)
 WHOAMI = $(shell whoami)
 KEYS = 0
+SSH = 22
 $(eval TEMPDIR := $(shell mktemp --directory)) 
 
 install: clean
@@ -90,6 +91,9 @@ pxe:
 	@echo Will update the pxe package
 	touch debian/utils-pxe.rebuild
 
+sshn:
+	$(eval SSH = 22222)
+
 clean:
 	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -f backup*
@@ -106,7 +110,7 @@ clean-prev-dir:
 
 move-prepare:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
-	cd $(TEMPDIR) && scp gate.attique.org:/srv/www/apt/* .
+	cd $(TEMPDIR) && scp porche.rien.pl:/srv/www/apt/* .
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
@@ -124,10 +128,10 @@ move-prepare:
 	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
 
 move-local: move-prepare
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate.attique.org:/srv/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)"  . root@porche.rien.pl:/srv/www/apt/
 	rm -r $(TEMPDIR)
 
 move: move-prepare
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@gate.attique.org:/var/www/apt/
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survival.attique.org:/var/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)" . root@porche.rien.pl:/var/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)" . root@survie.rien.pl:/var/www/apt/
 	rm -r $(TEMPDIR)
