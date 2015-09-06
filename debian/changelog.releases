@@ -1,3 +1,11 @@
+stalag13-utils (3.249-20150906) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M debian/control
+    M etc/exim4/conf.d/rewrite/15_stalag13
+ 
+ -- Mathieu Roy <klink@pancernik>  Sun, 06 Sep 2015 15:31:05 +0200
+ 
 stalag13-utils (3.248-20150906) unstable; urgency=low
  
   * FQDN changes
