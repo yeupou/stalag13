@@ -4,13 +4,6 @@ Priority: optional
 Maintainer: Mathieu Roy <yeupou@gnu.org>
 Standards-Version: 3.5.9.0
 
-Package: stalag13-keyring
-Architecture: all
-Conflicts: stalag13-utils (<<3.133)
-Description: Keyring used to signed packages along with repository set-up
- .
- Homepage: https://yeupou.wordpress.com/
-
 Package: stalag13-utils
 Architecture: all
 Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libtimedate-perl, debfoster, localepurge, etckeeper, libmoose-perl, liburi-encode-perl, libjson-perl, libio-interactive-perl, libhtml-tableextract-perl, libnumber-bytes-human-perl, bash-completion
@@ -18,6 +11,13 @@ Conflicts: ntpdate, darius-admin, darius-misc, darius-sound, darius-text, stalag
 Recommends: stalag13-keyring, sound-theme-freedesktop
 Suggests: libaudio-mixer-perl, stalag13-utils-cache-apt
 Description: Utmost generic stuff from stalag13
+ .
+ Homepage: https://yeupou.wordpress.com/
+
+Package: stalag13-keyring
+Architecture: all
+Conflicts: stalag13-utils (<<3.133)
+Description: Keyring used to signed packages along with repository set-up
  .
  Homepage: https://yeupou.wordpress.com/
 

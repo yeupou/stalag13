@@ -1,3 +1,9 @@
+stalag13-utils (3.245-20150906) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+ 
+ -- Mathieu Roy <klink@pancernik>  Sun, 06 Sep 2015 14:38:51 +0200
+ 
 stalag13-utils (3.244-20150906) unstable; urgency=low
  
   * Update GPG key

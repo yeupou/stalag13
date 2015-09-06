@@ -7,11 +7,11 @@ Debian packages are available. The easier way to get them is to get the keyring 
 	# apt-get update
 	# apt-get install ...
 
-stalag13-keyring:
- Keyring used to signed packages along with repository set-up
-
 stalag13-utils:
  Utmost generic stuff from stalag13
+
+stalag13-keyring:
+ Keyring used to signed packages along with repository set-up
 
 stalag13-utils-cache-apt:
  APT downloads cache setup
