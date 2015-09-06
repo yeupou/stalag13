@@ -336,7 +336,7 @@ acl_check_rcpt_stalag13:
   # Handle obsolete local domain by denying access with meaningful messages
   # We do it late in the checks in order to catch spam sources early on
   # (since they are likely to target obsolete domains)
-  .ifdef OBSOLETE_LOCALDOMAINSD
+  .ifdef OBSOLETE_LOCALDOMAINS
   deny
       	message = "The once valid and legitimate domain to which you tried to send a mail will be discontinued soon. No message will be accepted anymore. Update your addressbook!
 
