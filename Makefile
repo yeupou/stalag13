@@ -120,7 +120,7 @@ move-prepare:
 		cp $$deb $(TEMPDIR); \
 	done
 	# update the keyring only if make was called with 'keys' 
-	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring_*.deb; fi
+	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && ln -s stalag13-keyring_$(MAJORVERSION).*.deb stalag13-keyring.deb; fi
 	# build proper required repository files
