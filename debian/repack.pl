@@ -88,6 +88,9 @@ for my $package (keys %packages) {
     next if $updated;
     # not main utils package that we always want up to date no matter what?
     next if $package eq "utils";
+    # not keyring package that we always hand pick with the 'make keys'
+    # independantly of file changes
+    next if $package eq "keyring";
     # not selected by hand for rebuild (per package)?
     if (-e "$curdir/debian/$package.rebuild") {
 	unlink("$curdir/debian/$package.rebuild");
