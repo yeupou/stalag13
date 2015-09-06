@@ -1,3 +1,12 @@
+stalag13-utils (3.246-20150906) unstable; urgency=low
+ 
+  * Update GPG keys, FQDN changes
+    M debian/control
+    M debian/repack.pl
+    M Makefile
+ 
+ -- Mathieu Roy <klink@pancernik>  Sun, 06 Sep 2015 15:02:42 +0200
+ 
 stalag13-utils (3.245+7-20150906) unstable; urgency=low
  
   * Upstream prerelease
