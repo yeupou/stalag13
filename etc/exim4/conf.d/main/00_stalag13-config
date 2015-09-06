@@ -36,8 +36,12 @@ SPAMBLOCKING_ENABLE = 1
 
 ### BOUNCES WITHOUT MESSAGES
 # leds to issues when mailer daemon is bouncing spam so we ll never do
-
 bounce_return_message = false
+
+### DENY AT SMTP OBSOLETE LOCALDOMAIN NAMES OTHERWISE LEGIT
+# leds to issues when mailer daemon is bouncing spam so we ll never do
+OBSOLETE_LOCALDOMAINS = false
+
 
 ### INTERNAL
 
@@ -50,3 +54,4 @@ perl_at_start
 MAIN_ACL_CHECK_RCPT= acl_check_rcpt_stalag13
 .endif
 
+# EOF
