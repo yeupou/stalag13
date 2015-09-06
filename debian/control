@@ -14,7 +14,7 @@ Description: Keyring used to signed packages along with repository set-up
 Package: stalag13-utils
 Architecture: all
 Depends: perl-base (>=5.6.0), perl-modules, coreutils (>=4.5.0) | fileutils (>=4.1), bash (>=2.04), findutils (>=4.1), apt-utils, gzip (>=1), libnet-dns-perl, libfile-find-rule-perl, libapt-pkg-perl, libterm-readkey-perl, libfile-homedir-perl, libtimedate-perl, debfoster, localepurge, etckeeper, libmoose-perl, liburi-encode-perl, libjson-perl, libio-interactive-perl, libhtml-tableextract-perl, libnumber-bytes-human-perl, bash-completion
-Conflicts: ntpdate, darius-admin, darius-misc, darius-sound, darius-text
+Conflicts: ntpdate, darius-admin, darius-misc, darius-sound, darius-text, stalag13-keyring (<<3.243)
 Recommends: stalag13-keyring, sound-theme-freedesktop
 Suggests: libaudio-mixer-perl, stalag13-utils-cache-apt
 Description: Utmost generic stuff from stalag13
@@ -61,7 +61,7 @@ Description: ownCloud setup and extra apps
 Package: stalag13-utils-exim
 Architecture: all
 Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter, stalag13-utils-ssl
-Conflicts: stalag13-utils (<<3.166)
+Conflicts: stalag13-utils (<<3.166), stalag13-utils-ahem (<<3.243)
 Description: Exim greylist, bogofilter and spamassassin setup
  Assumes you use splitted exim4 conf files
  Edit /etc/exim4/conf.d/main/00_stalag13-config to use bogofilter and spamassassin

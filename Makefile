@@ -133,5 +133,5 @@ move-local: move-prepare
 
 move: move-prepare
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)" . root@porche.rien.pl:/var/www/apt/
-	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)" . root@survie.rien.pl:/var/www/apt/
+	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survie.rien.pl:/var/www/apt/
 	rm -r $(TEMPDIR)

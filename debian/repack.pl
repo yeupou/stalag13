@@ -48,7 +48,7 @@ my %packages = (utils => ["/etc/bash_completion.d", "/etc/bashrc.d", "/etc/profi
 		"utils-cache-apt" => ["/etc/nginx/sites-available/cache-apt", "/etc/cron.weekly/cache-apt"],
 		"utils-cache-steam" => ["/etc/nginx/sites-available/cache-steam", "/etc/cron.daily/cache-steam"],
 		"utils-cache-spoof" => ["/etc/bind", "/usr/local/bin/update-bind-ads-block.pl"],
-		"utils-exim" => ["/etc/exim4", "/usr/local/bin/memcached-exim.pl"],
+		"utils-exim" => ["/etc/spamassassin", "/etc/exim4", "/usr/local/bin/memcached-exim.pl"],
 		"utils-nginx" => ["/etc/init.d/perl-fcgi", "/etc/init.d/php-fcgi", "/etc/nginx/cache_proxy_params", "/etc/nginx/allow_local", "/etc/nginx/sites-available/fcgi", "/usr/local/bin/fastcgi-wrapper.pl"],
 		"utils-ssl" => ["/etc/dovecot/certs", "/etc/nginx/certs", "/etc/ssl"],
 		"utils-cloud" => ["/usr/share/owncloud", "/etc/nginx/sites-available/cloud"],
