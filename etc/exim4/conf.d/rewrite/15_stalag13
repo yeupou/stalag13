@@ -29,3 +29,5 @@
 # Remove irrelevant subdomains  
 ^(.*)@.*\.rien\.pl ${1}@rien.pl frFsbcTtr
 ^(.*)@.*\.stalag13\.ici ${1}@stalag13.ici frFsbcTtr
+
+# EOF
