@@ -1,3 +1,9 @@
+stalag13-utils (3.243-20150906) unstable; urgency=low
+ 
+  * FQDN changes, etc
+ 
+ -- Mathieu Roy <klink@pancernik>  Sun, 06 Sep 2015 14:16:50 +0200
+ 
 stalag13-utils (3.242-20150906) unstable; urgency=low
  
   * FDQN changes etc, add script to fast grab GPG subkey
