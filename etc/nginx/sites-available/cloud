@@ -4,7 +4,7 @@ server {
 	listen 443; ## listen for ipv4
 
 	# catch all based on the domain name
-	server_name ~^cloud ~^prive;
+	server_name ~^cloud ~^nuage ~^prive;
 
 	access_log  /var/log/nginx/cloud.access.log;
 	error_log   /var/log/nginx/cloud.error.log;
