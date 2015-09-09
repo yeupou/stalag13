@@ -194,8 +194,9 @@ acl_check_rcpt_stalag13:
   # (final_from_hosts can be generated via cron from final_from_domains
   # with /etc/cron.hourly/exim-final_from)
   accept
-    hosts = CONFDIR/final_from_hosts
-    control = dkim_disable_verify
+    hosts = ${if exists{CONFDIR/final_from_hosts\
+                 {CONFDIR/final_from_hosts}\
+                 {}}
 
 
   # Verify recipients listed in local_rcpt_callout with a callout.
