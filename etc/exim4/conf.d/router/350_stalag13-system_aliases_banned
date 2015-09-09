@@ -11,7 +11,7 @@ system_aliases_banned:
 
 # counterpart of the later shopping_catchall
 system_aliases_banned_wtf:
-  debug_print = "R: system_aliases_banned check for [wtf-]$local_part@plow"
+  debug_print = "R: system_aliases_banned check for wtf-($local_part)@$domain"
   driver = redirect
   domains = plow.rien.pl : plow.attique.org
   local_part_prefix = wtf-
