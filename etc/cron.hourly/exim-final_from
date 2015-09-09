@@ -1,0 +1,18 @@
+#!/bin/sh
+
+CONFDIR=/etc/exim4
+DOMAINS=$CONFDIR/final_from_domains
+HOSTS=$CONFDIR/final_from_hosts
+
+# exit if no DOMAINS are set
+#meanin the feature is probably not active
+[ ! -e $DOMAINS ] && exit
+
+# otherwise, fill HOST with IP of domains listed in DOMAINS
+while IFS= read -r line; do
+     hosts="$hosts"`dig +short "$line"`"\n"
+done < $DOMAINS
+
+echo "$hosts" | head -n -1  > $HOSTS
+
+# EOF
