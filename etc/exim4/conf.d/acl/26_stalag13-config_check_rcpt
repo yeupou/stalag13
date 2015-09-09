@@ -188,6 +188,13 @@ acl_check_rcpt_stalag13:
     verify = recipient
 
 
+  # Accept if the message arrived from domains that are expected to
+  # forward us mails
+  # Do this check after open relay checks and verify are made.
+  accept
+    sender_domains = FINAL_FROM_DOMAINS
+	
+
   # Verify recipients listed in local_rcpt_callout with a callout.
   # This is especially handy for forwarding MX hosts (secondary MX or
   # mail hubs) of domains that receive a lot of spam to non-existent
@@ -266,7 +273,6 @@ acl_check_rcpt_stalag13:
               {$sender_address}{$sender_helo_name}};ip=$sender_host_address
     log_message = SPF check failed ++BAN:$sender_host_address++
     !acl = acl_local_deny_exceptions
-    !senders = FINAL_FROM_DOMAINS
     condition = ${run{/usr/bin/spfquery.mail-spf-perl --ip \
                    ${quote:$sender_host_address} --identity \
                    ${if def:sender_address_domain \
@@ -347,7 +353,6 @@ Ce domaine, autrefois valide, auquel vous venez d'essayer d'envoyer un courriel 
     	log_message = obsolete localdomain
         domains = OBSOLETE_LOCALDOMAINS
 	!local_parts = lost+found
-	!senders = FINAL_FROM_DOMAINS
   .endif OBSOLETE_LOCALDOMAINS
 
 
