@@ -70,7 +70,7 @@ password = password
 ## RUN
 # download the vcard in a tempfile
 my ($tempvcard_fh, $tempvcard) = tempfile(UNLINK => 1);
-`wget $wget_args --quiet --output-document="$tempvcard" --no-check-certificate --http-user="$user" --http-password="$password" "$carddav"`;
+`wget $wget_args --quiet --output-document="$tempvcard" --http-user="$user" --http-password="$password" "$carddav"`;
 
 # register each vcard entry in a temp abook file
 my ($tempabook_fh, $tempabook) = tempfile(UNLINK => 1);
