@@ -160,6 +160,7 @@ acl_check_rcpt_stalag13:
     hosts = +relay_from_hosts
     control = submission/sender_retain
     control = dkim_disable_verify
+    log_message = accepted: from relay_from_hosts
     
 
   # Accept if the message arrived over an authenticated connection, from
@@ -170,6 +171,7 @@ acl_check_rcpt_stalag13:
     authenticated = *
     control = submission/sender_retain
     control = dkim_disable_verify
+    log_message = accepted: authenticated
 
 
   # Insist that any other recipient address that we accept is either in one of
@@ -192,7 +194,8 @@ acl_check_rcpt_stalag13:
   # forward us mails
   # Do this check after open relay checks and verify are made.
   accept
-    sender_domains = FINAL_FROM_DOMAINS
+    sender_domains = +FINAL_FROM_DOMAINS
+    log_message = accepted: from FINAL_FROM_DOMAINS
 	
 
   # Verify recipients listed in local_rcpt_callout with a callout.
