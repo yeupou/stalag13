@@ -1,3 +1,11 @@
+stalag13-utils (3.254-20150909) unstable; urgency=low
+ 
+  * Cosmetics/trivial fixes
+    M Makefile
+    M usr/local/bin/carddav2abook.pl
+ 
+ -- Mathieu Roy <klink@pancernik>  Wed, 09 Sep 2015 12:09:43 +0200
+ 
 stalag13-utils (3.253-20150909) unstable; urgency=low
  
   * Cosmetics/trivial fixes
