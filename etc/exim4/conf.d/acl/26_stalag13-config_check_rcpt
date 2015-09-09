@@ -336,19 +336,17 @@ acl_check_rcpt_stalag13:
   # Handle obsolete local domain by denying access with meaningful messages
   # We do it late in the checks in order to catch spam sources early on
   # (since they are likely to target obsolete domains)
-  # Allow some whitelisting to pass this through, mostly for hosts that
-  # should forwards mail to this server.
+  # You can use the non standard relay_from_domains to whitelist some
+  # hosts (old forwarding setups, etc)
   .ifdef OBSOLETE_LOCALDOMAINS
   deny
-	!senders = ${if exists{CONFDIR/local_domain_whitelist}\
-                    {CONFDIR/local_domain_whitelist}\
-                    {}}
       	message = The once valid and legitimate domain to which you tried to send a mail will be discontinued soon. No message will be accepted anymore, except, for a short time span, at the address to lost+found@ \
 \
 Ce domaine, autrefois valide, auquel vous venez d'essayer d'envoyer un courriel va bientôt être abandonné. Plus aucun message n'y est désormais accepté, sauf temporairement à lost+found@
     	log_message = obsolete localdomain
         domains = OBSOLETE_LOCALDOMAINS
 	!local_parts = lost+found
+	!senders = FINAL_FROM_DOMAINS
   .endif OBSOLETE_LOCALDOMAINS
 
 
