@@ -43,10 +43,6 @@ bounce_return_message = false
 # leds to issues when mailer daemon is bouncing spam so we ll never do
 OBSOLETE_LOCALDOMAINS = false
 
-### FINAL_FROM_DOMAINS
-# light whitelist from DOMAINS that usually forward us mail
-FINAL_FROM_DOMAINS = fencepost.gnu.org : eggs.gnu.org
-
 
 ###### INTERNAL
 
