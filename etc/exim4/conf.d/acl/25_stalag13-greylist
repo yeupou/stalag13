@@ -6,6 +6,7 @@
 defer  !senders       = :
        !authenticated = *
        !hosts         = +relay_from_hosts : 82.231.5.173 : 195.154.9.197
+       !sender_domains = FINAL_FROM_DOMAINS
        # plow.attique.org is deprecated and so wont get special treatment
        !domains	      = plow.rien.pl
        set acl_c_grey_host = 1
