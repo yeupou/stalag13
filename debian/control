@@ -60,7 +60,7 @@ Description: ownCloud setup and extra apps
 
 Package: stalag13-utils-exim
 Architecture: all
-Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter, stalag13-utils-ssl
+Depends: stalag13-utils, exim4, memcached, libcache-memcached-perl, spamc, spamassassin, bogofilter, spf-tools-perl, stalag13-utils-ssl
 Conflicts: stalag13-utils (<<3.166), stalag13-utils-ahem (<<3.243)
 Description: Exim greylist, bogofilter and spamassassin setup
  Assumes you use splitted exim4 conf files
