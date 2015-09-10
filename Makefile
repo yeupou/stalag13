@@ -77,11 +77,13 @@ deb-release:
 
 pre: prerelease
 
-prerelease: clean-prev-dir readme deb-prerelease clean move-local
+prerelease: clean-prev-dir readme deb-prerelease clean move-prepare move-local
 
 rel: release
 
-release: clean-prev-dir readme deb-release clean move
+release: clean-prev-dir readme deb-release clean move-prepare move
+
+norel: move-grab move-sign move
 
 keys:
 	$(eval KEYS = 1)
@@ -108,9 +110,10 @@ clean:
 clean-prev-dir:
 	rm -f ../stalag13-utils*.deb ../stalag13-utils*.changes ../stalag13-keyring_* ../stalag13-utils*.tar.gz ../stalag13-utils*.dsc
 
-move-prepare:
+move-grab:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
-	cd $(TEMPDIR) && scp porche.rien.pl:/srv/www/apt/* .
+
+move-litter:
 	# only keep the latest build
 	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
 	cd ../ && for deb in stalag13-utils*.deb; do \
@@ -123,15 +126,19 @@ move-prepare:
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && rm -f stalag13-keyring*.deb; fi
 	if [ $(KEYS) != 0 ]; then cp ../stalag13-keyring_$(MAJORVERSION).*.deb $(TEMPDIR)/; fi
 	if [ $(KEYS) != 0 ]; then cd $(TEMPDIR) && ln -s stalag13-keyring_$(MAJORVERSION).*.deb stalag13-keyring.deb; fi
+
+move-sign:
 	# build proper required repository files
 	cd $(TEMPDIR) && apt-ftparchive packages . > Packages 
 	cd $(TEMPDIR) && apt-ftparchive release . > Release && gpg --clearsign -o InRelease Release && gpg -abs -o Release.gpg Release
 
-move-local: move-prepare
+move-prepare: move-grab move-litter move-sign
+
+move-local:
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)"  . root@porche.rien.pl:/srv/www/apt/
 	rm -r $(TEMPDIR)
 
-move: move-prepare
+move:
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete -e "ssh -p $(SSH)" . root@porche.rien.pl:/var/www/apt/
 	cd $(TEMPDIR) && rsync -rl --chmod=ug=rw -chmod=o=rWX --delete . root@survie.rien.pl:/var/www/apt/
 	rm -r $(TEMPDIR)
