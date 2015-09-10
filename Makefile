@@ -112,6 +112,7 @@ clean-prev-dir:
 
 move-grab:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
+	cd $(TEMPDIR) && scp porche.rien.pl:/srv/www/apt/* .
 
 move-litter:
 	# only keep the latest build
