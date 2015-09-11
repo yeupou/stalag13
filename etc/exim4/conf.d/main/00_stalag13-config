@@ -1,18 +1,6 @@
 ### main/00_stalag13-config
 #################################
 
-####### SSL/TLS
-
-# activate TLS
-MAIN_TLS_ENABLE = true
-MAIN_TLS_ADVERTISE_HOSTS = *
-
-# deactivate outdated SSLv3 (compiled with TLS)
-tls_require_ciphers = NORMAL:!VERS-SSL3.0
-# deactivate outdated SSLv3 (compiled with openssl)
-#openssl_options = +no_sslv2 +no_sslv3
-
-
 ### DENY AT SMTP OBSOLETE LOCALDOMAIN NAMES OTHERWISE LEGIT
 # (will probably be moved in a file to remove unnecessary edit of this file)
 # leds to issues when mailer daemon is bouncing spam so we ll never do
