@@ -1,21 +1,4 @@
-### acl/25_greylist
+### acl/25_stalag13-greylist
 #################################
 
-.ifdef GREYLISTING_ENABLE
-
-defer  !senders       = :
-       !authenticated = *
-       !hosts         = +relay_from_hosts : 82.231.5.173 : 195.154.9.197
-       !sender_domains = FINAL_FROM_DOMAINS
-       # plow.attique.org is deprecated and so wont get special treatment
-       !domains	      = plow.rien.pl
-       set acl_c_grey_host = 1
-       condition      = ${perl{check_greylist}GREYLIST_ARGS}
-       set acl_c_grey_time = ${perl{greylist_time}GREYLIST_ARGS}
-       log_message    = greylist $sender_host_address for $acl_c_grey_time minutes
-
-
-warn   condition      = ${if eq {$acl_c_grey_host}{1}}
-       add_header     = X-Greylist: $sender_host_address passed GREY_MINUTES minute in greylist
-
-.endif
+# included directly in acl/26_stalag13-config_check_rcpt

@@ -113,10 +113,12 @@ clean-prev-dir:
 move-grab:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
 	cd $(TEMPDIR) && scp porche.rien.pl:/srv/www/apt/* .
+	# remove apt files
+	cd $(TEMPDIR) && rm -f Packages* Release* InRelease*
 
 move-litter:
 	# only keep the latest build
-	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb Packages* Release* InRelease*
+	cd $(TEMPDIR) && rm -f stalag13-utils_*.deb 
 	cd ../ && for deb in stalag13-utils*.deb; do \
 		if [ `echo $$deb | cut -f 1 -d "_"` != "stalag13-utils" ]; then \
 			rm -f $(TEMPDIR)/`echo $$deb | cut -f 1 -d "_"`*; \
