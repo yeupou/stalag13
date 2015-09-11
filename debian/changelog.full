@@ -1,3 +1,9 @@
+stalag13-utils (3.256+1-20150911) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@pancernik>  Fri, 11 Sep 2015 12:00:31 +0200
+ 
 stalag13-utils (3.256-20150911) unstable; urgency=low
  
   * Cosmetics/trivial fixes. Rewriting acl and moving around (greylist directly in check_rcpt, banned system aliases dropped at SMTP time, etc)
