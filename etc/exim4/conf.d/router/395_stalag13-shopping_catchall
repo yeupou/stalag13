@@ -1,3 +1,6 @@
+### router/395_stalag13-shopping_catchall
+#################################
+
 # a specific domain was set to catchall mails from shopping website
 # this catchall is prefiltered with the aliases.ban list
 shopping_catchall:

@@ -1,4 +1,4 @@
-### router/450_spamblock
+### router/450_stalag13-spamblock
 #################################
 .ifdef SPAMBLOCKING_HEAVY_ENABLE
 

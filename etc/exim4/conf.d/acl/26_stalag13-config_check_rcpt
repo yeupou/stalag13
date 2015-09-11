@@ -247,11 +247,39 @@ acl_check_rcpt_stalag13:
   # the black list. See exim4-config_files(5) for details.
   deny
     message = sender IP address $sender_host_address is locally blacklisted here. If you think this is wrong, get in touch with postmaster
+    log_message = ++BAN:$sender_host_address++ listed in local_host_blacklist
     !acl = acl_local_deny_exceptions
     hosts = ${if exists{CONFDIR/local_host_blacklist}\
                  {CONFDIR/local_host_blacklist}\
                  {}}
+    
+  # /etc/aliases.ban holds a list of banned local aliases
+  # It is assumed that theses addresses are no longer used except by spam
+  # sources so incoming messages with one of these recipient
+  # are dropped at RCPT time.
+  #
+  # The explicit white lists are honored as well as negative items in
+  # the black list. See exim4-config_files(5) for details.
+  drop
+     log_message = send mail to banned address ++BAN:$sender_host_address++
+     !acl = acl_local_deny_exceptions
+     recipients = ${lookup{$local_part}lsearch{/etc/aliases.ban}
+		    
 
+  # CONFDIR/local_sender_blacklist holds a list of envelope senders that
+  # should have their access denied to the local host. Incoming messages
+  # with one of these senders are rejected at RCPT time.
+  #
+  # The explicit white lists are honored as well as negative items in
+  # the black list. See exim4-config_files(5) for details.
+  deny
+    message = sender envelope address $sender_address is locally blacklisted here. If you think this is wrong, get in touch with postmaster
+    !acl = acl_local_deny_exceptions
+    senders = ${if exists{CONFDIR/local_sender_blacklist}\
+                   {CONFDIR/local_sender_blacklist}\
+                   {}}
+
+    
   # If we arrived so far, put on hold with a greylist
   .ifdef GREYLISTING_ENABLE
   defer
@@ -339,7 +367,6 @@ acl_check_rcpt_stalag13:
   drop
     dnslists = CHECK_RCPT_IP_DNSBLS
     !acl = acl_local_deny_exceptions
-    add_header = X-Warning: $sender_host_address is listed at $dnslist_domain ($dnslist_value: $dnslist_text)
     log_message = $sender_host_address is listed at $dnslist_domain ($dnslist_value: $dnslist_text) ++BAN:$sender_host_address++
   .endif
 
@@ -358,7 +385,6 @@ acl_check_rcpt_stalag13:
                     {}}
     dnslists = CHECK_RCPT_DOMAIN_DNSBLS
     !acl = acl_local_deny_exceptions
-    add_header = X-Warning: $sender_address_domain is listed at $dnslist_domain ($dnslist_value: $dnslist_text)
     log_message = $sender_address_domain is listed at $dnslist_domain ($dnslist_value: $dnslist_text) ++BAN:$sender_host_address++
   .endif
 
