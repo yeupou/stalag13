@@ -1,3 +1,18 @@
+stalag13-utils (3.257-20150911) unstable; urgency=low
+ 
+  * Split exim4/conf.d/main/00_stalag13-config
+    A etc/exim4/conf.d/main/00_stalag13-config_0greylist
+    A etc/exim4/conf.d/main/00_stalag13-config_0spamblock
+    A etc/exim4/conf.d/main/00_stalag13-config_0ssl
+    A etc/exim4/conf.d/main/00_stalag13-config_9internal
+    A etc/exim4/conf.d/main/05_stalag13-config_greylist
+    A etc/exim4/conf.d/main/05_stalag13-config_spamblock
+    A etc/exim4/conf.d/main/99_stalag13-config_9internal
+    A etc/exim4/conf.d/main/99_stalag13-config_internal
+    M etc/exim4/conf.d/main/00_stalag13-config
+ 
+ -- Mathieu Roy <klink@pancernik>  Fri, 11 Sep 2015 17:02:32 +0200
+ 
 stalag13-utils (3.256-20150911) unstable; urgency=low
  
   * Cosmetics/trivial fixes. Rewriting acl and moving around (greylist directly in check_rcpt, banned system aliases dropped at SMTP time, etc)
