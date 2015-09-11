@@ -1,4 +1,4 @@
-### transport/35_spamblock
+### transport/35_stalag13-spamblock
 #################################
 .ifdef SPAMBLOCKING_HEAVY_ENABLE
 
