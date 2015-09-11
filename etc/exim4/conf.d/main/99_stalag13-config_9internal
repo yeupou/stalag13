@@ -1,8 +1,8 @@
-### main/99_stalag13-config_internal
+### main/00_stalag13-config_9internal
 #################################
 
 ###### INTERNAL
-
+# will be used by next exim4 conffiles so it must be loaded before
 
 .ifdef SPAMBLOCKING_ENABLE
 MAIN_ACL_CHECK_RCPT= acl_check_rcpt_stalag13
