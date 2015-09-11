@@ -263,8 +263,8 @@ acl_check_rcpt_stalag13:
   drop
      log_message = send mail to banned address ++BAN:$sender_host_address++
      !acl = acl_local_deny_exceptions
-     recipients = ${lookup{$local_part}lsearch{/etc/aliases.ban}
-		    
+     condition = ${lookup{$local_part}lsearch{/etc/aliases.ban} {yes}{no}}
+     	    
 
   # CONFDIR/local_sender_blacklist holds a list of envelope senders that
   # should have their access denied to the local host. Incoming messages
