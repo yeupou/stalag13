@@ -8,7 +8,7 @@ NEWVERSION = $(shell expr $(VERSION) \+ 1)
 NEWPREVERSION = $(shell expr $(PREVERSION) \+ 1)
 WHOAMI = $(shell whoami)
 KEYS = 0
-SSH = 22
+SSH = 22222
 $(eval TEMPDIR := $(shell mktemp --directory)) 
 
 install: clean
