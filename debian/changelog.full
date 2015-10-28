@@ -1,3 +1,9 @@
+stalag13-utils (3.257+1-20151028) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 28 Oct 2015 14:24:53 +0100
+ 
 stalag13-utils (3.257-20150911) unstable; urgency=low
  
   * Split exim4/conf.d/main/00_stalag13-config

@@ -36,6 +36,8 @@ use Getopt::Long;
 use File::Copy qw(move);
 use IO::Interactive qw(is_interactive);
 use Term::ANSIColor;
+use Image::ExifTool qw(:Public);
+use Text::Unaccent;
 
 ## Determines possible prefixes
 # List of chars valid to use in the prefix:
@@ -63,11 +65,12 @@ my $queue_max_nondigits = ($chars_max * $chars_max * $chars_max);
 my $queue_max_digits = 3;
 
 ## Get options and provide help
-my ($help,$getopt,$please_do,$verbose);
+my ($help,$getopt,$please_do,$with_description,$verbose);
 eval {
     $getopt = GetOptions("help" => \$help,
 			 "max-queue-digits=s" => \$queue_max_digits,
 			 "please-do" => \$please_do,
+			 "description" => \$with_description,
 			 "verbose" => \$verbose);
 };
 
@@ -79,6 +82,7 @@ Prefix files in the current directory with alphabetical characters
 to ease queue management.
 
   -h, --help                 display this help and exit
+  -d, --description          suffix file name with image description
       --max-queue-digits N   defines how many digits to use for the numerical
                              counter used when out of alphabetical chars
 			     (default: $queue_max_digits)
@@ -106,7 +110,18 @@ while(defined(my $file = glob('*'))){
 
     # increment counters
     $count++;
-    
+
+    # find out file ext and name
+    my ($name, $ext) = $file =~ /^(.*)(\.[^.]+)$/;
+    # lower case
+    $ext = lc($ext);
+    $name = lc($name);
+    # remove accents
+    $name = unac_string("", $name);
+    # keep only words, remove white space etc
+    $name =~ s/\W//g;
+
+    # set the prefix
     unless ($char1 == $chars_max and
 	    $char2 == $chars_max and
 	    $char3 >= ($chars_max - 1)) {
@@ -119,7 +134,6 @@ while(defined(my $file = glob('*'))){
 	$char4 = sprintf("%0".$queue_max_digits."d",($count-$queue_max_nondigits)).$char_extra."_";
 	$char3 = $chars_max;
     }
-
     if ($char3 > $chars_max) {
 	# increment char2 when char3 is higher than max chars available
 	$char2++;
@@ -130,16 +144,35 @@ while(defined(my $file = glob('*'))){
 	$char1++;
 	$char2 = 1;
     }
+    my $prefix = uc($chars{$char1}.$chars{$char2}.$chars{$char3}.$char4);
 
-    # Determine the new filename, either simply adding the prefix
-    # (if the full name is smaller than the prefix)
-    # or replacing the current prefix - point being to keep a filename
-    # with a reasonable length.
+    # set the suffix, if any
+    my $suffix;
+    if ($with_description) {
+	# extract image description or comment field
+	my $image_info = ImageInfo($file);
+	$suffix = %$image_info{'Description'};
+	$suffix = %$image_info{'Comment'} if $suffix eq '';
+	# remove accents
+	$suffix = unac_string("", $suffix);
+	# capitalize first letter of each word
+	$suffix =~ s/([\w']+)/\u\L$1/g;
+	# keep only words, remove white space etc
+	$suffix =~ s/\W//g;
+    }
+
+    # Determine the new filename, trying to keep it short.
+    # prefix = upper case
+    # string = lower case
+    # suffix = mixed case
+    #
+    # either simply adding the prefix and suffix
+    # (if the full name is smaller than the prefix and suffix)
+    # or replacing the current prefix
     # (Prefix will be upper case while the rest of the line will be lower case)
-    my $prefix = $chars{$char1}.$chars{$char2}.$chars{$char3}.$char4;
-    my $newfile = $prefix.lc($file);
-    if (length($file) >= length($prefix.".ext")) {
-	$newfile = $prefix.lc(substr($file, length($prefix)));
+    my $newfile = $prefix.$name.$suffix.$ext;
+    if (length($name) >= length($prefix.$suffix)) {
+	$newfile = $prefix.substr($name, length($prefix.$suffix)).$suffix.$ext;
     }
 
     # If the filename is not changed, skip this one
