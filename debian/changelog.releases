@@ -1,3 +1,9 @@
+stalag13-utils (3.259-20151028) unstable; urgency=low
+ 
+  * libimage-exiftool-perl is now mandatory due to qrename.pl update
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Wed, 28 Oct 2015 15:00:24 +0100
+ 
 stalag13-utils (3.258-20151028) unstable; urgency=low
  
   * Add --description to include as suffix the Comment/Description exif data
