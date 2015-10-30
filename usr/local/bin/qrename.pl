@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2013 Mathieu Roy <yeupou--gnu.org>
+# Copyright (c) 2013-2015 Mathieu Roy <yeupou--gnu.org>
 #      http://yeupou.wordpress.com
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -168,11 +168,10 @@ while(defined(my $file = glob('*'))){
     #
     # either simply adding the prefix and suffix
     # (if the full name is smaller than the prefix and suffix)
-    # or replacing the current prefix
-    # (Prefix will be upper case while the rest of the line will be lower case)
     my $newfile = $prefix.$name.$suffix.$ext;
+    # or replacing both prefix and suffixes
     if (length($name) >= length($prefix.$suffix)) {
-	$newfile = $prefix.substr($name, length($prefix.$suffix)).$suffix.$ext;
+	$newfile = $prefix.substr($name, length($prefix), -length($suffix)).$suffix.$ext;
     }
 
     # If the filename is not changed, skip this one
