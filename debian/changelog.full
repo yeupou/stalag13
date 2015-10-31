@@ -1,3 +1,9 @@
+stalag13-utils (3.260+1-20151031) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@pancernik>  Sat, 31 Oct 2015 14:12:29 +0100
+ 
 stalag13-utils (3.260-20151030) unstable; urgency=low
  
   * Cosmetics/trivial fixes
