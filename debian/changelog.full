@@ -1,3 +1,9 @@
+stalag13-utils (3.262-20151031) unstable; urgency=low
+ 
+  * Repack PXE package
+ 
+ -- Mathieu Roy <klink@kparcell.stalag13.ici>  Sat, 31 Oct 2015 19:45:21 +0100
+ 
 stalag13-utils (3.261-20151031) unstable; urgency=low
  
   * Add extra domains names (./named.conf.cache.sh + bind9 restart needed)
