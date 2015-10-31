@@ -1,3 +1,10 @@
+stalag13-utils (3.261-20151031) unstable; urgency=low
+ 
+  * Add extra domains names (./named.conf.cache.sh + bind9 restart needed)
+    M etc/bind/named.conf.cache.sh
+ 
+ -- Mathieu Roy <klink@pancernik>  Sat, 31 Oct 2015 14:21:13 +0100
+ 
 stalag13-utils (3.260+2-20151031) unstable; urgency=low
  
   * Upstream prerelease
