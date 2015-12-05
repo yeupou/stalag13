@@ -227,9 +227,7 @@ for (sort(@images)) {
 	    s/^\s+//;
 	    s/\s+$//;
 	    # ignore full blank
-	    next if /^$/;	    
-	    # ignore this entry if not beginning with # 
-#	    next unless s/^#//;
+	    next if /^$/;
 	    # otherwise register it
 	    print "Register ($field) tag: $_ (".detect($_).")\n" if $debug;
 	    if (detect($_)) {
@@ -281,7 +279,7 @@ for (sort(@images)) {
 
 # Exit here if we are just checking files, everything beyond has to do
 # with actual posting
-exit(1) if $check;
+exit(0) if $check;
 
 # Exit if no tag found and nonetheless required
 die "No tag found for $image, exiting" if (scalar(@image_tags) < 1) and $tags_required;
