@@ -153,6 +153,11 @@ while(defined(my $file = glob('*'))){
 	my $image_info = ImageInfo($file);
 	$suffix = %$image_info{'Description'};
 	$suffix = %$image_info{'Comment'} if $suffix eq '';
+	# if there are several #tags, just take the first
+	if ($suffix =~ /#\S/) {
+	    my $null;
+	    ($null,$suffix) = split("#", $suffix);
+	}
 	# remove accents
 	$suffix = unac_string("", $suffix);
 	# capitalize first letter of each word

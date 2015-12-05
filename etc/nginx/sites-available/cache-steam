@@ -18,11 +18,15 @@ server  {
   deny all;
 
   location /depot/ {
-    try_files $uri @mirror;
+    proxy_ignore_headers Expires;
+    proxy_cache_key "$server_name$uri";
+	#    try_files $uri @mirror;
     }
     
   location /serverlist/ {
-    try_files $uri @mirror;
+    proxy_store /srv/www/depot/servers.txt;
+    proxy_store_access user:rw group:rw all:r;
+    #try_files $uri @mirror;
   }
 
   location / {

@@ -26,11 +26,6 @@ use strict;
 use Getopt::Long;
 use Text::Unaccent;
 
-# Usual for Darius Tools perl scripts
-my $DARIUS_AUTHOR="2002-2015 Mathieu Roy";
-my $DARIUS_MAIL="yeupou--gnu.org";
-my $DARIUS_VER="Irrelevant";
-
 # Specific
 my $getopt;
 my $help;
@@ -59,12 +54,10 @@ eval {
 if($help) {
     print STDERR <<EOF;
 Usage: $0 [OPTION]
-Rename files in a directory to a simplified name, 
-(mainly for Universal Ressources Locators, URL.
+Rename files in a directory to a simplified name.
+(mainly for Universal Ressources Locators, URL)
 
   -h, --help                 display this help and exit
-      --version              output version information and exit
-
   -d, --dir D                rename files in dir D (default)
   -e, --expression E         urlize expression E
       --verbose              tells you what is done
@@ -72,20 +65,8 @@ Rename files in a directory to a simplified name,
 EXAMPLE: $0 .    # would urlize each file in the current dir
          $0 -d . # same command
 
-
-Report bugs or suggestions to <$DARIUS_MAIL>
-EOF
-exit(1);
-}
-
-if($version) {
-    print STDERR <<EOF;
-$0 $DARIUS_VER
-
-Copyright (c) $DARIUS_AUTHOR <$DARIUS_MAIL>
-This is free software; see the source for copying conditions.
-There is NO warranty; not even for MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.
+Report bugs or suggestions to yeupou\@gnu.org
+       http://yeupou.wordpress.com/
 EOF
 exit(1);
 }
@@ -96,6 +77,7 @@ sub Urlize {
     $ret = unac_string("", $ret);
     $ret =~ tr/+/_/;
     $ret =~ tr/=/_/;
+    $ret =~ s/\:/_/g;
     $ret =~ s/\&//g;
     $ret =~ s/\!//g;
     $ret =~ s/\'//g;

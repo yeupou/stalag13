@@ -4,6 +4,7 @@ DNSS="192.168.1 10.0.0 10.0.1"
 DOMAINS=""
 
 # comment this if you dont cache steam
+# (note: nginx cache must also cover this)
 DOMAINS="$DOMAINS cs.steampowered.com content1.steampowered.com content2.steampowered.com content3.steampowered.com content4.steampowered.com content5.steampowered.com content6.steampowered.com content7.steampowered.com content8.steampowered.com content9.steampowered.com hsar.steampowered.com.edgesuite.net akamai.steamstatic.com content-origin.steampowered.com client-download.steampowered.com"
 # comment this if you dont cache debian
 DOMAINS="$DOMAINS http.debian.net ftp.fr.debian.org ftp.debian.org security.debian.org"

@@ -217,14 +217,19 @@ for (sort(@images)) {
     foreach my $field (@metadata_fields) {
 	# Remember which metadata field was useful
 	$image_info_kept = $field;
+
+	# Ignore if missing one or more #tag
+	next unless $$image_info{$field} =~ /(^|\s)#\S/;
 	
-	# Assume this line is a comma-separated list
-	foreach (split(",",$$image_info{$field})) {
+	# Split it with the # sign
+	foreach (split("#", $$image_info{$field})) {
 	    # ignore blank before and after
 	    s/^\s+//;
 	    s/\s+$//;
+	    # ignore full blank
+	    next if /^$/;	    
 	    # ignore this entry if not beginning with # 
-	    next unless s/^#//;
+#	    next unless s/^#//;
 	    # otherwise register it
 	    print "Register ($field) tag: $_ (".detect($_).")\n" if $debug;
 	    if (detect($_)) {
