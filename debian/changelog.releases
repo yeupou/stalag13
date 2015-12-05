@@ -1,3 +1,15 @@
+stalag13-utils (3.264-20151205) unstable; urgency=low
+ 
+  * Handle multiple #tags posts, use only the first one in file renaming. Update servers list
+    M etc/bind/named.conf.cache.sh
+    M etc/nginx/cache_proxy_params
+    M etc/nginx/sites-available/cache-steam
+    M usr/local/bin/post-image-to-tumblr.pl
+    M usr/local/bin/qrename.pl
+    M usr/local/bin/urlize.pl
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Sat, 05 Dec 2015 17:08:32 +0100
+ 
 stalag13-utils (3.263-20151031) unstable; urgency=low
  
   * Repack sysadmin
