@@ -83,6 +83,7 @@ to ease queue management.
 
   -h, --help                 display this help and exit
   -d, --description          suffix file name with image description
+                             (in particular with the first #tag string, if any)
       --max-queue-digits N   defines how many digits to use for the numerical
                              counter used when out of alphabetical chars
 			     (default: $queue_max_digits)
