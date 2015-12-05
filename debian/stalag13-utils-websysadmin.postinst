@@ -1,0 +1,5 @@
+#!/bin/sh
+# required to generate wifi qrcode on the fly
+chown -v www-data /srv/www/sysadmin
+
+# EOF

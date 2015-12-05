@@ -124,7 +124,7 @@ Description: Webmail with SquirrelMail
 
 Package: stalag13-utils-websysadmin
 Architecture: all
-Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-perl, mysql-server | mariadb-server, passwdqc, liburi-encode-perl, libdata-password-perl, libdbd-mysql-perl, libmailtools-perl
+Depends: stalag13-utils, stalag13-utils-nginx, phpsysinfo, php5-cgi, libfcgi-perl, mysql-server | mariadb-server, passwdqc, liburi-encode-perl, libdata-password-perl, libdbd-mysql-perl, libmailtools-perl, libimager-qrcode-perl
 Conflicts: stalag13-utils (<<3.166)
 Description: Basic sysadmin via intranet
  Build the database according to the README and set MySQL database password in
