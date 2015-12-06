@@ -112,7 +112,7 @@ clean-prev-dir:
 
 move-grab:
 	$(eval TEMPDIR := $(shell mktemp --directory)) 
-	cd $(TEMPDIR) && scp porche.rien.pl:/srv/www/apt/* .
+	cd $(TEMPDIR) && rsync -avz porche.rien.pl:/srv/www/apt/* .
 	# remove apt files
 	cd $(TEMPDIR) && rm -f Packages* Release* InRelease*
 
