@@ -7,7 +7,7 @@ server  {
   access_log off;
   error_log /var/log/nginx/steam.error.log;
 
-  root /srv/www/;
+   root /srv/www/;
   resolver 127.0.0.1;
   ## (set resolver to something else if your local interface got
   ## domain names spoofed, 8.8.8.8 for Google resolver for example.
@@ -18,15 +18,15 @@ server  {
   deny all;
 
   location /depot/ {
-    proxy_ignore_headers Expires;
-    proxy_cache_key "$server_name$uri";
-	#    try_files $uri @mirror;
+    #proxy_ignore_headers Expires;
+    #proxy_cache_key "$server_name$uri";
+    try_files $uri @mirror;
     }
     
   location /serverlist/ {
-    proxy_store /srv/www/depot/servers.txt;
-    proxy_store_access user:rw group:rw all:r;
-    #try_files $uri @mirror;
+    #proxy_store /srv/www/depot/servers.txt;
+    #proxy_store_access user:rw group:rw all:r;
+    try_files $uri @mirror;
   }
 
   location / {
