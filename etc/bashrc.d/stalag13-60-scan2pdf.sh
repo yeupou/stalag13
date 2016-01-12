@@ -29,24 +29,31 @@ function rebeep {
 function scan2pdf1 {
     cd $SCAN2PDF_DIRECTORY
     FILE=$1
+    # prompt user if no argument passed
     [ "$FILE" == "" ] && echo "filename: " && read FILE
-    [ -e "$FILE".pdf ] && return
-    echo -e "scanning \033[1;34m$FILE\033[0m..."
-    # scan in A4 gray with decent contrast for text 
+    echo -e "scanning \033[1;34m$FILE\033[0m... \c"
+    # skip existing scan, never overwrite
+    [ -e "$FILE".pdf ] && echo "exists already" && return
+    # scan in A4 gray with decent contrast for text
+    echo -e ">pnm \c"
     scanimage -l 0 -t 0 -x 215 -y 297 $SCAN2PDF_SCANIMAGE_OPTIONS --resolution=$SCAN2PDF_DPI > "$FILE".pnm
-    # convert to A4 postscript
-    pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
-    # beep when scanning is done
+    # beep when scanning is done (and so when the page can be changed)
     rebeep 100 025
+    # convert to A4 postscript
+    echo -e ">ps \c"
+    pnmtops -width 8.263 -height 11.69 -imagewidth 8.263 -imageheight 11.69 -dpi $SCAN2PDF_DPI "$FILE".pnm > "$FILE".ps
     # select /printer quality for 300dpi, /ebook for less
-    gs -q -sDEVICE=pdfwrite -dUseCIEColor -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
+    echo -e ">pdf \c"
+    gs -q -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dBATCH -sOutputFile="$FILE".pdf "$FILE".ps
     rm -f "$FILE".pnm "$FILE".ps
+    echo -e ""
 }
 
 # merge multiples PDF into one
 function pdfmerge {
     ENDFILE=$1
     [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
+    # skip if endfile exists already
     [ -e "$ENDFILE".pdf ] && return
     echo -e "merging \033[1;34m$ENDFILE*\033[0m..."
     gs -q -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOutputFile="$ENDFILE".pdf -f "$ENDFILE"*.pdf
@@ -66,7 +73,14 @@ function pdfmerge {
 function scan2pdf {
     cd $SCAN2PDF_DIRECTORY
     ENDFILE=$1
+    # prompt user if no argument passed
     [ "$ENDFILE" == "" ] && echo "filename: " && read ENDFILE
+    # remove any ending .pdf from the name
+    ENDFILE="${ENDFILE%.pdf}" 
+    ENDFILE="${ENDFILE%.PDF}"   
+    # exists already? then treat it as first (000) page + ending random string
+    [ -e "$ENDFILE".pdf ] && mv "$ENDFILE".pdf "$ENDFILE"`mktemp --dry-run 000XXXX`.pdf && echo -e "\033[1;34m$ENDFILE\033[0m is now \033[1;34m$ENDFILE""000\033[0m"
+    # scan one page at a time
     for i in `seq --equal-width 999`; do
 	scan2pdf1 "$ENDFILE"$i
 	# beep when prompting user
@@ -74,7 +88,7 @@ function scan2pdf {
 	rebeep 01 025
 	rebeep 100 025
 	# by default scan another page
-	echo -e "Another page? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
+	echo -e "another page? [\033[1;32mY\033[0m/\033[1;31mn\033[0m]"
 	read NEXT
 	[ "$NEXT" == "n" ] && break
 	[ "$NEXT" == "N" ] && break
