@@ -79,7 +79,7 @@ function scan2pdf {
     ENDFILE="${ENDFILE%.pdf}" 
     ENDFILE="${ENDFILE%.PDF}"   
     # exists already? then treat it as first (000) page + ending random string
-    [ -e "$ENDFILE".pdf ] && mv "$ENDFILE".pdf "$ENDFILE"`mktemp --dry-run 000XXXX`.pdf && echo -e "\033[1;34m$ENDFILE\033[0m is now \033[1;34m$ENDFILE""000\033[0m"
+    [ -e "$ENDFILE".pdf ] && mv "$ENDFILE".pdf "$ENDFILE"`mktemp --dry-run 000eXXX`.pdf && echo -e "\033[1;34m$ENDFILE\033[0m is now \033[1;34m$ENDFILE""000\033[0m"
     # scan one page at a time
     for i in `seq --equal-width 999`; do
 	scan2pdf1 "$ENDFILE"$i

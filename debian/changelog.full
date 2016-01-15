@@ -1,3 +1,9 @@
+stalag13-utils (3.269+1-20160115) unstable; urgency=low
+ 
+  * Upstream prerelease
+ 
+ -- Mathieu Roy <klink@bender.stalag13.ici>  Fri, 15 Jan 2016 18:08:13 +0100
+ 
 stalag13-utils (3.269-20160112) unstable; urgency=low
  
   * remove call to -dUseCIEColor not wanted with recent Ghostscript; when the scan name is the one of a currently existing pdf, rename it as first file of the final pdf.
