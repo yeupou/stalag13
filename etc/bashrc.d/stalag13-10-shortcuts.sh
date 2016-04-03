@@ -13,7 +13,6 @@ alias musique='cd $LAN/musique'
 alias videos='cd $LAN/videos'
 alias suxor='cd $LAN/suxor'
 
-
 # cleanup
 function mrclean { 
     find $1 \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \; 

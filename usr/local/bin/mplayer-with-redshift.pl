@@ -20,8 +20,11 @@
 use strict;
 use POSIX qw/setsid/;
 
-my @redshift_opts=("-l", "48.799:2.505",
-		   "-t", "6500:3700");
+my @redshift_opts=();
+# now redshift include geoclue2 method to find location, use this
+# instead of hardcoded location
+#"-l", "48.799:2.505",
+#"-t", "6500:3700");
 
 # search for any redshift process in /proc
 my @tokill;
