@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-#  Copyright 2010-2012 (c) Mathieu Roy <yeupou--gnu.org> 
+#  Copyright 2010-2016 (c) Mathieu Roy <yeupou--gnu.org> 
 #     http://yeupou.wordpress.com
 #
 # Thi program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ kill(15, @tokill);
 
 # starts mplayer with given args (we use perl because a basic sh would
 # easily mess up here)
-system("mplayer", 
+system("mpv", 
        @ARGV);
 
 # wait a few seconds after mplayer died, in case it segfault immediately 
