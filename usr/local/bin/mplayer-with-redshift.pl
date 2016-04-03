@@ -47,6 +47,8 @@ closedir(PROC);
 # now kill these with SIGTERM (15), software termination
 kill(15, @tokill);
 
+# run redshift -x option that reset it, just in case
+exec("redshift", "-x");
 
 # starts mplayer with given args (we use perl because a basic sh would
 # easily mess up here)
