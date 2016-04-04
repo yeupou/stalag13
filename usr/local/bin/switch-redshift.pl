@@ -44,31 +44,19 @@ while (defined(my $pid = readdir(PROC))) {
     close(PID);
 }
 closedir(PROC);
-# now kill these with SIGTERM (15), software termination
-kill(15, @tokill);
 
-# starts mplayer with given args (we use perl because a basic sh would
-# easily mess up here)
-system("mpv", 
-       @ARGV);
 
-# wait a few seconds after mplayer died, in case it segfault immediately 
-sleep(1);
-
-# when mplayer dies, restart redshift, with nohup so it is kept up even
-# if this script was called in a xterm killed afterwards.
-# (actually, mimic nohup but do not use it)
-#     spawn a child,
-my $pid = fork();
-#     die parent
-exit 0 if $pid;
-#     free the child
-setsid();
-#     deal with STDIN/STDOUT
-open(STDIN, "</dev/null");
-open(STDOUT, ">/dev/null");
-open(STDERR, ">&STDOUT");
-#     make it redshift
-exec("redshift", @redshift_opts);
+if (scalar(@tokill) > 0) {
+    # if any process found
+    # now kill these with SIGTERM (15), software termination
+    kill(15, @tokill);
+    
+    # wait a bit and then make sure redshift is properly reset by using -x  
+    sleep(1);
+    system("redshift", "-x");
+} else {
+    # otherwise, just start a redshift process
+    exec("redshift", @redshift_opts);
+}
 
 # EOF
