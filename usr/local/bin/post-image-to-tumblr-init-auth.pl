@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/local/bin/post-image-to-tumblr-init-auth.pl
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 #!/usr/bin/perl
 # grabbed at http://ryanwark.com/blog/posting-to-the-tumblr-v2-api-in-perl
 

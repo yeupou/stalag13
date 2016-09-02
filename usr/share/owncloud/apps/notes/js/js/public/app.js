@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/share/owncloud/apps/notes/js/js/public/app.js
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 
 // taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind?redirectlocale=en-US&redirectslug=JavaScript%2FReference%2FGlobal_Objects%2FFunction%2Fbind#Compatibility
 

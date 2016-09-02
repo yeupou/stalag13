@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/share/owncloud/apps/notes/js/vendor/markdown/test/fixtures/Text-Markdown.mdtest/HTML-Comment-encoding.text
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 A markdown paragraph with a comment that *will* be processed by original Markdown. However MultiMarkdown and Pandoc do not convert the & sigil in the comment.. 
 
 A paragraph <!-- This & *will* be converted by original Markdown -->

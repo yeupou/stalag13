@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/share/owncloud/apps/notes/js/vendor/markdown/test/fixtures/PHP_Markdown-from-MDTest1.1.mdtest/MD5_Hashes.json
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 ["html", ["h1", "Character Escapes"], "\u000a\u000a", ["p", "The MD5 value for ", ["code", "+"], " is \"26b17225b626fb9238849fd60eabdf60\"."], "\u000a\u000a", ["h1", "HTML Blocks"], "\u000a\u000a", ["p", "test"],
     ["p", "The MD5 value for ", ["code", "<p>test</p>"], " is:"],
     ["p", "6205333b793f34273d75379350b36826"]]

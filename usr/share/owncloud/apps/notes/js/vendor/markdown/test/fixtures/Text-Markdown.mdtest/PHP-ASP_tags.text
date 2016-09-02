@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/share/owncloud/apps/notes/js/vendor/markdown/test/fixtures/Text-Markdown.mdtest/PHP-ASP_tags.text
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 I am going with the same as Markdown.pl 1.0.2b8 here. *However* I reserve the right to also leave Template toolkit alone at a later date if I need to..
 
 <%foo ok %>

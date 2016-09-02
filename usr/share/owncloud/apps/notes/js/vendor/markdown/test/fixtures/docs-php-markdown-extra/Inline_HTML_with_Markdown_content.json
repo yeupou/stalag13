@@ -1,3 +1,28 @@
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/usr/share/owncloud/apps/notes/js/vendor/markdown/test/fixtures/docs-php-markdown-extra/Inline_HTML_with_Markdown_content.json
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
 ["html", ["h1", "Markdown inside code blocks"], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["div", ["p", "foo"]], "\u000a\u000a", ["table", ["tr", ["td", "test ", ["em", "emphasis"], " (span)"]]], "\u000a\u000a", ["table", ["tr", ["td", "test ", ["em", "emphasis"], " (span)"]]], "\u000a\u000a", ["table", ["tr", ["td", ["p", "test ", ["em", "emphasis"], " (block)"]]]], "\u000a\u000a", ["h2", "More complicated"], "\u000a\u000a", ["table", ["tr", ["td", "\u000a* this is ", ["em", "not"], " a list item"]],
     ["tr", ["td", "\u000a* this is ", ["em", "not"], " a list item"]],
     ["tr", ["td", ["ul", ["li", "this ", ["em", "is"], " a list item"]]]]], "\u000a\u000a", ["h2", "With indent"], "\u000a\u000a", ["div", "\u000a    ", ["div", ["p", "This text is no code block: if it was, the \u000aclosing ", ["code", "<div>"], " would be too and the HTML block \u000awould be invalid."],

@@ -1,1 +1,56 @@
-../../ssl/local/README
+#
+# FILE DISCONTINUED HERE
+# UPDATED VERSION AT
+#         https://gitlab.com/yeupou/stalag13/raw/master/etc/nginx/certs/README
+#
+#                                 |     |
+#                                 \_V_//
+#                                 \/=|=\/
+#                                  [=v=]
+#                                __\___/_____
+#                               /..[  _____  ]
+#                              /_  [ [  M /] ]
+#                             /../.[ [ M /@] ]
+#                            <-->[_[ [M /@/] ]
+#                           /../ [.[ [ /@/ ] ]
+#      _________________]\ /__/  [_[ [/@/ C] ]
+#     <_________________>>0---]  [=\ \@/ C / /
+#        ___      ___   ]/000o   /__\ \ C / /
+#           \    /              /....\ \_/ /
+#        ....\||/....           [___/=\___/
+#       .    .  .    .          [...] [...]
+#      .      ..      .         [___/ \___]
+#      .    0 .. 0    .         <---> <--->
+#   /\/\.    .  .    ./\/\      [..]   [..]
+#
+It is probably best to generate/move certificates in
+   /etc/ssl/local
+to share them easily among daemons and to put symlinks to it as
+   /etc/nginx/certs
+   /etc/dovecot/certs
+   /etc/exim4/exim.crt
+   /etc/exim4/exim.key
+   ...
+
+The makecert.sh script from /etc/ssl/local should generate decent enough
+self-signed certificate:
+     .crt + .key
+     .pem as symlink to .crt
+     .der as der encoded version (sometimes necessary)
+
+Some daemon (exim4) need read access to the certs. In this case, it's possible to use the special group ssl-cert
+     adduser Debian-exim ssl-cert
+     chgrp ssl-cert /etc/ssl/local/domain...
+     chmod g+r /etc/ssl/local/domain...
+
+Daemons compiled with GNU TLS (exim once again) may have troubles to deal
+with SHA2-512 sigs along with TLS 1.2. The temporary workaround is to disable
+TLS 1.2 see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740160
+
+     tls_require_ciphers = NORMAL:-VERS-SSL3.0:-VERS-TLS1.2
+
+
+For the record, at the moment (2014 April) it's recommended to rely only on
+TLS and deactivate SSLv3, SSL2, etc.
+See https://yeupou.wordpress.com/2015/02/05/improving-qualys-ssl-server-test-results-regarding-poodle-attack-and-sha1/
+
